@@ -35,7 +35,7 @@
         "@typescript-eslint/eslint-plugin": "^5.27.1",
         "@typescript-eslint/parser": "^5.27.1",
         "@vercel/ncc": "^0.34.0",
-        "dependency-cruiser": "^11.9.0",
+        "dependency-cruiser": "^11.16.1",
         "eslint": "^8.17.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-import-resolver-typescript": "^2.7.1",
