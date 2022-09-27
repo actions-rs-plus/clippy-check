@@ -47,7 +47,7 @@ jobs:
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
 
       - name: Set up node
-        uses: actions/setup-node@eeb10cff27034e7acf239c5d29f62154018672fd
+        uses: actions/setup-node@969bd2663942d722d85b6a8626225850c2f7be4b
         with:
           cache: "npm"
           cache-dependency-path: package-lock.json
@@ -71,7 +71,7 @@ jobs:
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
 
       - name: Set up node
-        uses: actions/setup-node@eeb10cff27034e7acf239c5d29f62154018672fd
+        uses: actions/setup-node@969bd2663942d722d85b6a8626225850c2f7be4b
         with:
           node-version-file: ".nvmrc"
           cache: "npm"
@@ -97,7 +97,7 @@ jobs:
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
 
       - name: Set up node
-        uses: actions/setup-node@eeb10cff27034e7acf239c5d29f62154018672fd
+        uses: actions/setup-node@969bd2663942d722d85b6a8626225850c2f7be4b
         with:
           node-version-file: ".nvmrc"
           cache: "npm"
@@ -132,7 +132,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up node
-        uses: actions/setup-node@eeb10cff27034e7acf239c5d29f62154018672fd
+        uses: actions/setup-node@969bd2663942d722d85b6a8626225850c2f7be4b
         with:
           node-version-file: ".nvmrc"
           cache: "npm"
@@ -182,7 +182,7 @@ jobs:
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
 
       - name: Set up node
-        uses: actions/setup-node@eeb10cff27034e7acf239c5d29f62154018672fd
+        uses: actions/setup-node@969bd2663942d722d85b6a8626225850c2f7be4b
         with:
           node-version-file: ".nvmrc"
           cache: "npm"
