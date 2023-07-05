@@ -149,7 +149,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload unit-test results
-        uses: enricomi/publish-unit-test-result-action@7377632048da85434c30810c38353542d3162dc4
+        uses: enricomi/publish-unit-test-result-action@4e7013f9576bd22ffdae979dc6e68cb9ec2aeece
         with:
           check_name: Unit-test results
           files: reports/unit-tests-report.xml
