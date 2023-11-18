@@ -91156,31 +91156,32 @@ const exec = __importStar(__nccwpck_require__(1514));
 const core_1 = __nccwpck_require__(4543);
 const outputParser_1 = __nccwpck_require__(3237);
 const reporter_1 = __nccwpck_require__(5021);
-async function buildContext(program) {
+async function buildContext(program, toolchain) {
     const context = {
         cargo: "",
         clippy: "",
         rustc: "",
     };
+    toolchain = `+${toolchain}` ?? 0;
     await Promise.all([
-        await exec.exec("rustc", ["-V"], {
-            silent: true,
+        await exec.exec("rustc", [toolchain, "-V"], {
+            silent: false,
             listeners: {
                 stdout: (buffer) => {
                     return (context.rustc = buffer.toString().trim());
                 },
             },
         }),
-        await program.call(["-V"], {
-            silent: true,
+        await program.call([toolchain, "-V"], {
+            silent: false,
             listeners: {
                 stdout: (buffer) => {
                     return (context.cargo = buffer.toString().trim());
                 },
             },
         }),
-        await program.call(["clippy", "-V"], {
-            silent: true,
+        await program.call([toolchain, "clippy", "-V"], {
+            silent: false,
             listeners: {
                 stdout: (buffer) => {
                     return (context.clippy = buffer.toString().trim());
@@ -91229,7 +91230,7 @@ function getProgram(useCross) {
 }
 async function run(actionInput) {
     const program = await getProgram(actionInput.useCross);
-    const context = await buildContext(program);
+    const context = await buildContext(program, actionInput.toolchain);
     const { stats, annotations, exitCode } = await runClippy(actionInput, program);
     await new reporter_1.Reporter().report(stats, annotations, context);
     if (exitCode !== 0) {

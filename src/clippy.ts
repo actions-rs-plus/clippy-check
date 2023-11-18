@@ -17,32 +17,34 @@ interface ClippyResult {
     exitCode: number;
 }
 
-async function buildContext(program: Program): Promise<Context> {
+async function buildContext(program: Program, toolchain: string | undefined): Promise<Context> {
     const context: Context = {
         cargo: "",
         clippy: "",
         rustc: "",
     };
 
+    toolchain = `+${toolchain}` ?? "";
+
     await Promise.all([
-        await exec.exec("rustc", ["-V"], {
-            silent: true,
+        await exec.exec("rustc", [toolchain, "-V"], {
+            silent: false,
             listeners: {
                 stdout: (buffer: Buffer) => {
                     return (context.rustc = buffer.toString().trim());
                 },
             },
         }),
-        await program.call(["-V"], {
-            silent: true,
+        await program.call([toolchain, "-V"], {
+            silent: false,
             listeners: {
                 stdout: (buffer: Buffer) => {
                     return (context.cargo = buffer.toString().trim());
                 },
             },
         }),
-        await program.call(["clippy", "-V"], {
-            silent: true,
+        await program.call([toolchain, "clippy", "-V"], {
+            silent: false,
             listeners: {
                 stdout: (buffer: Buffer) => {
                     return (context.clippy = buffer.toString().trim());
@@ -99,7 +101,7 @@ function getProgram(useCross: boolean): Promise<Program> {
 export async function run(actionInput: input.ParsedInput): Promise<void> {
     const program: Program = await getProgram(actionInput.useCross);
 
-    const context = await buildContext(program);
+    const context = await buildContext(program, actionInput.toolchain);
 
     const { stats, annotations, exitCode } = await runClippy(actionInput, program);
 
