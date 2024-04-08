@@ -107,7 +107,7 @@ module.exports = {
             },
         },
     ],
-    extends: ["eslint:recommended", "standard-with-typescript", "plugin:import/typescript", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
+    extends: ["eslint:recommended", "love", "plugin:import/typescript", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
     plugins: ["import"],
     parserOptions: {
         ecmaVersion: "latest",
