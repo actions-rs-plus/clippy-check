@@ -1,5 +1,6 @@
 code:
-  - ".nvimrc"
+  - ".nvmrc"
+  - "Dockerfile"
   - "dist/**"
   - "src/**"
   - "package.json"
