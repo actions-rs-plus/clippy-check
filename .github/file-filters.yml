@@ -1,4 +1,5 @@
 code:
+  - ".nvimrc"
   - "dist/**"
   - "src/**"
   - "package.json"
