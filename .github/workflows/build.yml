@@ -229,7 +229,10 @@ jobs:
       - name: Upload coverage results (to Codecov.io)
         uses: codecov/codecov-action@125fc84a9a348dbcf27191600683ec096ec9021c # v4.4.1
         with:
-          file: reports/lcov.info
+          disable_search: true
+          fail_ci_if_error: true
+          files: coverage/lcov.info
+          plugins: ""
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Fail if tests failed
