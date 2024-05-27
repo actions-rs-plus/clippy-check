@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="28" failures="0" errors="0" time="3.958">
+  <testsuite name="outputParser" errors="0" failures="0" skipped="0" timestamp="2024-05-27T17:11:56" time="3.471" tests="13">
+    <testcase classname="outputParser ignores invalid json" name="outputParser ignores invalid json" time="0.004">
+    </testcase>
+    <testcase classname="outputParser ignores non-compiler-messages" name="outputParser ignores non-compiler-messages" time="0.001">
+    </testcase>
+    <testcase classname="outputParser ignores when compiler-message doesn&apos;t have a code" name="outputParser ignores when compiler-message doesn&apos;t have a code" time="0">
+    </testcase>
+    <testcase classname="outputParser bumps help when message level is undefined" name="outputParser bumps help when message level is undefined" time="0">
+    </testcase>
+    <testcase classname="outputParser bumps note when message level is undefined" name="outputParser bumps note when message level is undefined" time="0">
+    </testcase>
+    <testcase classname="outputParser bumps warning when message level is undefined" name="outputParser bumps warning when message level is undefined" time="0">
+    </testcase>
+    <testcase classname="outputParser bumps error when message level is undefined" name="outputParser bumps error when message level is undefined" time="0">
+    </testcase>
+    <testcase classname="outputParser bumps error: internal compiler error when message level is ice" name="outputParser bumps error: internal compiler error when message level is ice" time="0.001">
+    </testcase>
+    <testcase classname="outputParser ignores when level is not help, note, warning, error, ice" name="outputParser ignores when level is not help, note, warning, error, ice" time="0">
+    </testcase>
+    <testcase classname="outputParser ignores duplicate" name="outputParser ignores duplicate" time="0.001">
+    </testcase>
+    <testcase classname="outputParser fails when primary span cannot be found" name="outputParser fails when primary span cannot be found" time="0.01">
+    </testcase>
+    <testcase classname="outputParser parses annotations into AnnotationWithMessageAndLevel" name="outputParser parses annotations into AnnotationWithMessageAndLevel" time="0.001">
+    </testcase>
+    <testcase classname="outputParser parses annotations into AnnotationWithMessageAndLevel" name="outputParser parses annotations into AnnotationWithMessageAndLevel" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="reporter" errors="0" failures="0" skipped="0" timestamp="2024-05-27T17:11:56" time="3.493" tests="1">
+    <testcase classname="reporter works" name="reporter works" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="input" errors="0" failures="0" skipped="0" timestamp="2024-05-27T17:11:56" time="3.657" tests="5">
+    <testcase classname="input get 1, parses defaults" name="input get 1, parses defaults" time="0.01">
+    </testcase>
+    <testcase classname="input get 2, can use cross" name="input get 2, can use cross" time="0.001">
+    </testcase>
+    <testcase classname="input get 3, parses toolchain" name="input get 3, parses toolchain" time="0">
+    </testcase>
+    <testcase classname="input get 4, parses +toolchain to toolchain" name="input get 4, parses +toolchain to toolchain" time="0">
+    </testcase>
+    <testcase classname="input get 5, parses arguments" name="input get 5, parses arguments" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="clippy" errors="0" failures="0" skipped="0" timestamp="2024-05-27T17:11:56" time="3.696" tests="6">
+    <testcase classname="clippy runs with cargo" name="clippy runs with cargo" time="0.019">
+    </testcase>
+    <testcase classname="clippy runs with cross" name="clippy runs with cross" time="0.013">
+    </testcase>
+    <testcase classname="clippy reports when clippy fails" name="clippy reports when clippy fails" time="0.02">
+    </testcase>
+    <testcase classname="clippy records versions with toolchain" name="clippy records versions with toolchain" time="0.01">
+    </testcase>
+    <testcase classname="clippy records versions" name="clippy records versions" time="0.007">
+    </testcase>
+    <testcase classname="clippy clippy captures stdout" name="clippy clippy captures stdout" time="0.006">
+    </testcase>
+  </testsuite>
+  <testsuite name="index" errors="0" failures="0" skipped="0" timestamp="2024-05-27T17:11:56" time="3.714" tests="3">
+    <testcase classname="index works" name="index works" time="0.055">
+    </testcase>
+    <testcase classname="index catches Error" name="index catches Error" time="0.009">
+    </testcase>
+    <testcase classname="index catches not-error" name="index catches not-error" time="0">
+    </testcase>
+  </testsuite>
+</testsuites>
