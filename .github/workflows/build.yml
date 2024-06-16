@@ -180,7 +180,7 @@ jobs:
         continue-on-error: true
 
       - name: Annotate Code Linting Results
-        uses: ataylorme/eslint-annotate-action@3.0.0
+        uses: ataylorme/eslint-annotate-action@d57a1193d4c59cbfbf3f86c271f42612f9dbd9e9 # 3.0.0
         with:
           report-json: reports/lint-report.json
 
