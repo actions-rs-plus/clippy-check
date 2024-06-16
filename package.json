@@ -25,7 +25,8 @@
         "deps:graph": "depcruise --output-type dot src | dot -T svg > dependency-graph.svg",
         "deps:report": "depcruise --output-type err-html --output-to dependency-report.html src",
         "postversion": "cp package.json package-lock.json ..",
-        "release": "semantic-release"
+        "release": "semantic-release",
+        "postinstall": "patch-package"
     },
     "repository": {
         "type": "git",
@@ -43,6 +44,7 @@
         "@actions-rs-plus/core": "^0.1.13",
         "@actions/core": "^1.10.1",
         "@actions/exec": "^1.1.1",
+        "patch-package": "8.0.0",
         "string-argv": "^0.3.2"
     },
     "devDependencies": {
