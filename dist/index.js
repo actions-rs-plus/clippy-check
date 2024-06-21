@@ -71454,7 +71454,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.run = void 0;
+exports.run = run;
 const path_1 = __nccwpck_require__(1017);
 const core = __importStar(__nccwpck_require__(2186));
 const exec = __importStar(__nccwpck_require__(1514));
@@ -71541,7 +71541,6 @@ async function run(actionInput) {
         throw new Error(`Clippy had exited with the ${exitCode} exit code`);
     }
 }
-exports.run = run;
 function buildToolchainArguments(toolchain, after) {
     const args = [];
     if (toolchain) {
@@ -71627,7 +71626,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.get = void 0;
+exports.get = get;
 const core_1 = __nccwpck_require__(4543);
 const string_argv_1 = __importDefault(__nccwpck_require__(9663));
 function get() {
@@ -71642,7 +71641,6 @@ function get() {
         toolchain: toolchain || undefined,
     };
 }
-exports.get = get;
 
 
 /***/ }),
