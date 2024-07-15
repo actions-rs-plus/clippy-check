@@ -76843,7 +76843,7 @@ exports.buildCreatePoller = buildCreatePoller;
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.DEFAULT_RETRY_POLICY_COUNT = exports.SDK_VERSION = void 0;
-exports.SDK_VERSION = "1.16.1";
+exports.SDK_VERSION = "1.16.2";
 exports.DEFAULT_RETRY_POLICY_COUNT = 3;
 //# sourceMappingURL=constants.js.map
 
@@ -76857,7 +76857,7 @@ exports.DEFAULT_RETRY_POLICY_COUNT = 3;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createPipelineFromOptions = void 0;
+exports.createPipelineFromOptions = createPipelineFromOptions;
 const logPolicy_js_1 = __nccwpck_require__(6821);
 const pipeline_js_1 = __nccwpck_require__(3906);
 const redirectPolicy_js_1 = __nccwpck_require__(8526);
@@ -76904,7 +76904,6 @@ function createPipelineFromOptions(options) {
     pipeline.addPolicy((0, logPolicy_js_1.logPolicy)(options.loggingOptions), { afterPhase: "Sign" });
     return pipeline;
 }
-exports.createPipelineFromOptions = createPipelineFromOptions;
 //# sourceMappingURL=createPipelineFromOptions.js.map
 
 /***/ }),
@@ -76917,7 +76916,7 @@ exports.createPipelineFromOptions = createPipelineFromOptions;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createDefaultHttpClient = void 0;
+exports.createDefaultHttpClient = createDefaultHttpClient;
 const nodeHttpClient_js_1 = __nccwpck_require__(9463);
 /**
  * Create the correct HttpClient for the current environment.
@@ -76925,7 +76924,6 @@ const nodeHttpClient_js_1 = __nccwpck_require__(9463);
 function createDefaultHttpClient() {
     return (0, nodeHttpClient_js_1.createNodeHttpClient)();
 }
-exports.createDefaultHttpClient = createDefaultHttpClient;
 //# sourceMappingURL=defaultHttpClient.js.map
 
 /***/ }),
@@ -76938,7 +76936,7 @@ exports.createDefaultHttpClient = createDefaultHttpClient;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createHttpHeaders = void 0;
+exports.createHttpHeaders = createHttpHeaders;
 function normalizeName(name) {
     return name.toLowerCase();
 }
@@ -77025,7 +77023,6 @@ class HttpHeadersImpl {
 function createHttpHeaders(rawHeaders) {
     return new HttpHeadersImpl(rawHeaders);
 }
-exports.createHttpHeaders = createHttpHeaders;
 //# sourceMappingURL=httpHeaders.js.map
 
 /***/ }),
@@ -77135,7 +77132,8 @@ exports.logger = (0, logger_1.createClientLogger)("core-rest-pipeline");
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createNodeHttpClient = exports.getBodyLength = void 0;
+exports.getBodyLength = getBodyLength;
+exports.createNodeHttpClient = createNodeHttpClient;
 const tslib_1 = __nccwpck_require__(4351);
 const http = tslib_1.__importStar(__nccwpck_require__(8849));
 const https = tslib_1.__importStar(__nccwpck_require__(5200));
@@ -77459,7 +77457,6 @@ function getBodyLength(body) {
         return null;
     }
 }
-exports.getBodyLength = getBodyLength;
 /**
  * Create a new HttpClient instance for the NodeJS environment.
  * @internal
@@ -77467,7 +77464,6 @@ exports.getBodyLength = getBodyLength;
 function createNodeHttpClient() {
     return new NodeHttpClient();
 }
-exports.createNodeHttpClient = createNodeHttpClient;
 //# sourceMappingURL=nodeHttpClient.js.map
 
 /***/ }),
@@ -77480,7 +77476,7 @@ exports.createNodeHttpClient = createNodeHttpClient;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createEmptyPipeline = void 0;
+exports.createEmptyPipeline = createEmptyPipeline;
 const ValidPhaseNames = new Set(["Deserialize", "Serialize", "Retry", "Sign"]);
 /**
  * A private implementation of Pipeline.
@@ -77740,7 +77736,6 @@ class HttpPipeline {
 function createEmptyPipeline() {
     return HttpPipeline.create();
 }
-exports.createEmptyPipeline = createEmptyPipeline;
 //# sourceMappingURL=pipeline.js.map
 
 /***/ }),
@@ -77753,7 +77748,7 @@ exports.createEmptyPipeline = createEmptyPipeline;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createPipelineRequest = void 0;
+exports.createPipelineRequest = createPipelineRequest;
 const httpHeaders_js_1 = __nccwpck_require__(118);
 const core_util_1 = __nccwpck_require__(637);
 class PipelineRequestImpl {
@@ -77787,7 +77782,6 @@ class PipelineRequestImpl {
 function createPipelineRequest(options) {
     return new PipelineRequestImpl(options);
 }
-exports.createPipelineRequest = createPipelineRequest;
 //# sourceMappingURL=pipelineRequest.js.map
 
 /***/ }),
@@ -77800,7 +77794,8 @@ exports.createPipelineRequest = createPipelineRequest;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.auxiliaryAuthenticationHeaderPolicy = exports.auxiliaryAuthenticationHeaderPolicyName = void 0;
+exports.auxiliaryAuthenticationHeaderPolicyName = void 0;
+exports.auxiliaryAuthenticationHeaderPolicy = auxiliaryAuthenticationHeaderPolicy;
 const tokenCycler_js_1 = __nccwpck_require__(601);
 const log_js_1 = __nccwpck_require__(648);
 /**
@@ -77861,7 +77856,6 @@ function auxiliaryAuthenticationHeaderPolicy(options) {
         },
     };
 }
-exports.auxiliaryAuthenticationHeaderPolicy = auxiliaryAuthenticationHeaderPolicy;
 //# sourceMappingURL=auxiliaryAuthenticationHeaderPolicy.js.map
 
 /***/ }),
@@ -77874,7 +77868,8 @@ exports.auxiliaryAuthenticationHeaderPolicy = auxiliaryAuthenticationHeaderPolic
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.bearerTokenAuthenticationPolicy = exports.bearerTokenAuthenticationPolicyName = void 0;
+exports.bearerTokenAuthenticationPolicyName = void 0;
+exports.bearerTokenAuthenticationPolicy = bearerTokenAuthenticationPolicy;
 const tokenCycler_js_1 = __nccwpck_require__(601);
 const log_js_1 = __nccwpck_require__(648);
 /**
@@ -77980,7 +77975,6 @@ function bearerTokenAuthenticationPolicy(options) {
         },
     };
 }
-exports.bearerTokenAuthenticationPolicy = bearerTokenAuthenticationPolicy;
 //# sourceMappingURL=bearerTokenAuthenticationPolicy.js.map
 
 /***/ }),
@@ -77993,7 +77987,8 @@ exports.bearerTokenAuthenticationPolicy = bearerTokenAuthenticationPolicy;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.decompressResponsePolicy = exports.decompressResponsePolicyName = void 0;
+exports.decompressResponsePolicyName = void 0;
+exports.decompressResponsePolicy = decompressResponsePolicy;
 /**
  * The programmatic identifier of the decompressResponsePolicy.
  */
@@ -78014,7 +78009,6 @@ function decompressResponsePolicy() {
         },
     };
 }
-exports.decompressResponsePolicy = decompressResponsePolicy;
 //# sourceMappingURL=decompressResponsePolicy.js.map
 
 /***/ }),
@@ -78027,7 +78021,8 @@ exports.decompressResponsePolicy = decompressResponsePolicy;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.defaultRetryPolicy = exports.defaultRetryPolicyName = void 0;
+exports.defaultRetryPolicyName = void 0;
+exports.defaultRetryPolicy = defaultRetryPolicy;
 const exponentialRetryStrategy_js_1 = __nccwpck_require__(843);
 const throttlingRetryStrategy_js_1 = __nccwpck_require__(6645);
 const retryPolicy_js_1 = __nccwpck_require__(9700);
@@ -78051,7 +78046,6 @@ function defaultRetryPolicy(options = {}) {
         }).sendRequest,
     };
 }
-exports.defaultRetryPolicy = defaultRetryPolicy;
 //# sourceMappingURL=defaultRetryPolicy.js.map
 
 /***/ }),
@@ -78064,7 +78058,8 @@ exports.defaultRetryPolicy = defaultRetryPolicy;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.exponentialRetryPolicy = exports.exponentialRetryPolicyName = void 0;
+exports.exponentialRetryPolicyName = void 0;
+exports.exponentialRetryPolicy = exponentialRetryPolicy;
 const exponentialRetryStrategy_js_1 = __nccwpck_require__(843);
 const retryPolicy_js_1 = __nccwpck_require__(9700);
 const constants_js_1 = __nccwpck_require__(3171);
@@ -78084,7 +78079,6 @@ function exponentialRetryPolicy(options = {}) {
         maxRetries: (_a = options.maxRetries) !== null && _a !== void 0 ? _a : constants_js_1.DEFAULT_RETRY_POLICY_COUNT,
     });
 }
-exports.exponentialRetryPolicy = exponentialRetryPolicy;
 //# sourceMappingURL=exponentialRetryPolicy.js.map
 
 /***/ }),
@@ -78097,7 +78091,8 @@ exports.exponentialRetryPolicy = exponentialRetryPolicy;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.formDataPolicy = exports.formDataPolicyName = void 0;
+exports.formDataPolicyName = void 0;
+exports.formDataPolicy = formDataPolicy;
 const core_util_1 = __nccwpck_require__(637);
 const httpHeaders_js_1 = __nccwpck_require__(118);
 /**
@@ -78138,7 +78133,6 @@ function formDataPolicy() {
         },
     };
 }
-exports.formDataPolicy = formDataPolicy;
 function wwwFormUrlEncode(formData) {
     const urlSearchParams = new URLSearchParams();
     for (const [key, value] of Object.entries(formData)) {
@@ -78204,7 +78198,8 @@ async function prepareFormData(formData, request) {
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.logPolicy = exports.logPolicyName = void 0;
+exports.logPolicyName = void 0;
+exports.logPolicy = logPolicy;
 const log_js_1 = __nccwpck_require__(648);
 const sanitizer_js_1 = __nccwpck_require__(4472);
 /**
@@ -78236,7 +78231,6 @@ function logPolicy(options = {}) {
         },
     };
 }
-exports.logPolicy = logPolicy;
 //# sourceMappingURL=logPolicy.js.map
 
 /***/ }),
@@ -78249,7 +78243,8 @@ exports.logPolicy = logPolicy;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.multipartPolicy = exports.multipartPolicyName = void 0;
+exports.multipartPolicyName = void 0;
+exports.multipartPolicy = multipartPolicy;
 const core_util_1 = __nccwpck_require__(637);
 const concat_js_1 = __nccwpck_require__(107);
 const typeGuards_js_1 = __nccwpck_require__(8520);
@@ -78358,7 +78353,6 @@ function multipartPolicy() {
         },
     };
 }
-exports.multipartPolicy = multipartPolicy;
 //# sourceMappingURL=multipartPolicy.js.map
 
 /***/ }),
@@ -78371,7 +78365,8 @@ exports.multipartPolicy = multipartPolicy;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.ndJsonPolicy = exports.ndJsonPolicyName = void 0;
+exports.ndJsonPolicyName = void 0;
+exports.ndJsonPolicy = ndJsonPolicy;
 /**
  * The programmatic identifier of the ndJsonPolicy.
  */
@@ -78394,7 +78389,6 @@ function ndJsonPolicy() {
         },
     };
 }
-exports.ndJsonPolicy = ndJsonPolicy;
 //# sourceMappingURL=ndJsonPolicy.js.map
 
 /***/ }),
@@ -78407,7 +78401,10 @@ exports.ndJsonPolicy = ndJsonPolicy;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.proxyPolicy = exports.getDefaultProxySettings = exports.loadNoProxy = exports.globalNoProxyList = exports.proxyPolicyName = void 0;
+exports.globalNoProxyList = exports.proxyPolicyName = void 0;
+exports.loadNoProxy = loadNoProxy;
+exports.getDefaultProxySettings = getDefaultProxySettings;
+exports.proxyPolicy = proxyPolicy;
 const https_proxy_agent_1 = __nccwpck_require__(7219);
 const http_proxy_agent_1 = __nccwpck_require__(3764);
 const log_js_1 = __nccwpck_require__(648);
@@ -78492,7 +78489,6 @@ function loadNoProxy() {
     }
     return [];
 }
-exports.loadNoProxy = loadNoProxy;
 /**
  * This method converts a proxy url into `ProxySettings` for use with ProxyPolicy.
  * If no argument is given, it attempts to parse a proxy URL from the environment
@@ -78516,7 +78512,6 @@ function getDefaultProxySettings(proxyUrl) {
         password: parsedUrl.password,
     };
 }
-exports.getDefaultProxySettings = getDefaultProxySettings;
 /**
  * This method attempts to parse a proxy URL from the environment
  * variables `HTTPS_PROXY` or `HTTP_PROXY`.
@@ -78598,7 +78593,6 @@ function proxyPolicy(proxySettings, options) {
         },
     };
 }
-exports.proxyPolicy = proxyPolicy;
 //# sourceMappingURL=proxyPolicy.js.map
 
 /***/ }),
@@ -78611,7 +78605,8 @@ exports.proxyPolicy = proxyPolicy;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.redirectPolicy = exports.redirectPolicyName = void 0;
+exports.redirectPolicyName = void 0;
+exports.redirectPolicy = redirectPolicy;
 /**
  * The programmatic identifier of the redirectPolicy.
  */
@@ -78636,7 +78631,6 @@ function redirectPolicy(options = {}) {
         },
     };
 }
-exports.redirectPolicy = redirectPolicy;
 async function handleRedirect(next, response, maxRetries, currentRetries = 0) {
     const { request, status, headers } = response;
     const locationHeader = headers.get("location");
@@ -78674,7 +78668,7 @@ async function handleRedirect(next, response, maxRetries, currentRetries = 0) {
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.retryPolicy = void 0;
+exports.retryPolicy = retryPolicy;
 const helpers_js_1 = __nccwpck_require__(1333);
 const logger_1 = __nccwpck_require__(9497);
 const abort_controller_1 = __nccwpck_require__(6666);
@@ -78778,7 +78772,6 @@ function retryPolicy(strategies, options = { maxRetries: constants_js_1.DEFAULT_
         },
     };
 }
-exports.retryPolicy = retryPolicy;
 //# sourceMappingURL=retryPolicy.js.map
 
 /***/ }),
@@ -78791,7 +78784,8 @@ exports.retryPolicy = retryPolicy;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.setClientRequestIdPolicy = exports.setClientRequestIdPolicyName = void 0;
+exports.setClientRequestIdPolicyName = void 0;
+exports.setClientRequestIdPolicy = setClientRequestIdPolicy;
 /**
  * The programmatic identifier of the setClientRequestIdPolicy.
  */
@@ -78813,7 +78807,6 @@ function setClientRequestIdPolicy(requestIdHeaderName = "x-ms-client-request-id"
         },
     };
 }
-exports.setClientRequestIdPolicy = setClientRequestIdPolicy;
 //# sourceMappingURL=setClientRequestIdPolicy.js.map
 
 /***/ }),
@@ -78826,7 +78819,8 @@ exports.setClientRequestIdPolicy = setClientRequestIdPolicy;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.systemErrorRetryPolicy = exports.systemErrorRetryPolicyName = void 0;
+exports.systemErrorRetryPolicyName = void 0;
+exports.systemErrorRetryPolicy = systemErrorRetryPolicy;
 const exponentialRetryStrategy_js_1 = __nccwpck_require__(843);
 const retryPolicy_js_1 = __nccwpck_require__(9700);
 const constants_js_1 = __nccwpck_require__(3171);
@@ -78851,7 +78845,6 @@ function systemErrorRetryPolicy(options = {}) {
         }).sendRequest,
     };
 }
-exports.systemErrorRetryPolicy = systemErrorRetryPolicy;
 //# sourceMappingURL=systemErrorRetryPolicy.js.map
 
 /***/ }),
@@ -78864,7 +78857,8 @@ exports.systemErrorRetryPolicy = systemErrorRetryPolicy;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.throttlingRetryPolicy = exports.throttlingRetryPolicyName = void 0;
+exports.throttlingRetryPolicyName = void 0;
+exports.throttlingRetryPolicy = throttlingRetryPolicy;
 const throttlingRetryStrategy_js_1 = __nccwpck_require__(6645);
 const retryPolicy_js_1 = __nccwpck_require__(9700);
 const constants_js_1 = __nccwpck_require__(3171);
@@ -78891,7 +78885,6 @@ function throttlingRetryPolicy(options = {}) {
         }).sendRequest,
     };
 }
-exports.throttlingRetryPolicy = throttlingRetryPolicy;
 //# sourceMappingURL=throttlingRetryPolicy.js.map
 
 /***/ }),
@@ -78904,7 +78897,8 @@ exports.throttlingRetryPolicy = throttlingRetryPolicy;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.tlsPolicy = exports.tlsPolicyName = void 0;
+exports.tlsPolicyName = void 0;
+exports.tlsPolicy = tlsPolicy;
 /**
  * Name of the TLS Policy
  */
@@ -78924,7 +78918,6 @@ function tlsPolicy(tlsSettings) {
         },
     };
 }
-exports.tlsPolicy = tlsPolicy;
 //# sourceMappingURL=tlsPolicy.js.map
 
 /***/ }),
@@ -78937,7 +78930,8 @@ exports.tlsPolicy = tlsPolicy;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.tracingPolicy = exports.tracingPolicyName = void 0;
+exports.tracingPolicyName = void 0;
+exports.tracingPolicy = tracingPolicy;
 const core_tracing_1 = __nccwpck_require__(9363);
 const constants_js_1 = __nccwpck_require__(3171);
 const userAgent_js_1 = __nccwpck_require__(6158);
@@ -78994,7 +78988,6 @@ function tracingPolicy(options = {}) {
         },
     };
 }
-exports.tracingPolicy = tracingPolicy;
 function tryCreateTracingClient() {
     try {
         return (0, core_tracing_1.createTracingClient)({
@@ -79075,7 +79068,8 @@ function tryProcessResponse(span, response) {
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.userAgentPolicy = exports.userAgentPolicyName = void 0;
+exports.userAgentPolicyName = void 0;
+exports.userAgentPolicy = userAgentPolicy;
 const userAgent_js_1 = __nccwpck_require__(6158);
 const UserAgentHeaderName = (0, userAgent_js_1.getUserAgentHeaderName)();
 /**
@@ -79099,7 +79093,6 @@ function userAgentPolicy(options = {}) {
         },
     };
 }
-exports.userAgentPolicy = userAgentPolicy;
 //# sourceMappingURL=userAgentPolicy.js.map
 
 /***/ }),
@@ -79112,7 +79105,8 @@ exports.userAgentPolicy = userAgentPolicy;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.isRestError = exports.RestError = void 0;
+exports.RestError = void 0;
+exports.isRestError = isRestError;
 const core_util_1 = __nccwpck_require__(637);
 const inspect_js_1 = __nccwpck_require__(3106);
 const sanitizer_js_1 = __nccwpck_require__(4472);
@@ -79159,7 +79153,6 @@ function isRestError(e) {
     }
     return (0, core_util_1.isError)(e) && e.name === "RestError";
 }
-exports.isRestError = isRestError;
 //# sourceMappingURL=restError.js.map
 
 /***/ }),
@@ -79172,7 +79165,9 @@ exports.isRestError = isRestError;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.isSystemError = exports.isExponentialRetryResponse = exports.exponentialRetryStrategy = void 0;
+exports.exponentialRetryStrategy = exponentialRetryStrategy;
+exports.isExponentialRetryResponse = isExponentialRetryResponse;
+exports.isSystemError = isSystemError;
 const core_util_1 = __nccwpck_require__(637);
 const throttlingRetryStrategy_js_1 = __nccwpck_require__(6645);
 // intervals are in milliseconds
@@ -79214,7 +79209,6 @@ function exponentialRetryStrategy(options = {}) {
         },
     };
 }
-exports.exponentialRetryStrategy = exponentialRetryStrategy;
 /**
  * A response is a retry response if it has status codes:
  * - 408, or
@@ -79227,7 +79221,6 @@ function isExponentialRetryResponse(response) {
         response.status !== 501 &&
         response.status !== 505);
 }
-exports.isExponentialRetryResponse = isExponentialRetryResponse;
 /**
  * Determines whether an error from a pipeline response was triggered in the network layer.
  */
@@ -79242,7 +79235,6 @@ function isSystemError(err) {
         err.code === "ENOENT" ||
         err.code === "ENOTFOUND");
 }
-exports.isSystemError = isSystemError;
 //# sourceMappingURL=exponentialRetryStrategy.js.map
 
 /***/ }),
@@ -79255,7 +79247,8 @@ exports.isSystemError = isSystemError;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.throttlingRetryStrategy = exports.isThrottlingRetryResponse = void 0;
+exports.isThrottlingRetryResponse = isThrottlingRetryResponse;
+exports.throttlingRetryStrategy = throttlingRetryStrategy;
 const helpers_js_1 = __nccwpck_require__(1333);
 /**
  * The header that comes back from Azure services representing
@@ -79313,7 +79306,6 @@ function getRetryAfterInMs(response) {
 function isThrottlingRetryResponse(response) {
     return Number.isFinite(getRetryAfterInMs(response));
 }
-exports.isThrottlingRetryResponse = isThrottlingRetryResponse;
 function throttlingRetryStrategy() {
     return {
         name: "throttlingRetryStrategy",
@@ -79328,7 +79320,6 @@ function throttlingRetryStrategy() {
         },
     };
 }
-exports.throttlingRetryStrategy = throttlingRetryStrategy;
 //# sourceMappingURL=throttlingRetryStrategy.js.map
 
 /***/ }),
@@ -79341,7 +79332,7 @@ exports.throttlingRetryStrategy = throttlingRetryStrategy;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.concat = void 0;
+exports.concat = concat;
 const tslib_1 = __nccwpck_require__(4351);
 const node_stream_1 = __nccwpck_require__(4492);
 const typeGuards_js_1 = __nccwpck_require__(8520);
@@ -79427,7 +79418,6 @@ async function concat(sources) {
         })());
     };
 }
-exports.concat = concat;
 //# sourceMappingURL=concat.js.map
 
 /***/ }),
@@ -79440,7 +79430,9 @@ exports.concat = concat;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createFile = exports.createFileFromStream = exports.getRawContent = void 0;
+exports.getRawContent = getRawContent;
+exports.createFileFromStream = createFileFromStream;
+exports.createFile = createFile;
 const core_util_1 = __nccwpck_require__(637);
 const typeGuards_js_1 = __nccwpck_require__(8520);
 const unimplementedMethods = {
@@ -79487,7 +79479,6 @@ function getRawContent(blob) {
         return blob.stream();
     }
 }
-exports.getRawContent = getRawContent;
 /**
  * Create an object that implements the File interface. This object is intended to be
  * passed into RequestBodyType.formData, and is not guaranteed to work as expected in
@@ -79515,7 +79506,6 @@ function createFileFromStream(stream, name, options = {}) {
             return s;
         }, [rawContent]: stream });
 }
-exports.createFileFromStream = createFileFromStream;
 /**
  * Create an object that implements the File interface. This object is intended to be
  * passed into RequestBodyType.formData, and is not guaranteed to work as expected in
@@ -79536,7 +79526,6 @@ function createFile(content, name, options = {}) {
         return new File([content], name, options);
     }
 }
-exports.createFile = createFile;
 //# sourceMappingURL=file.js.map
 
 /***/ }),
@@ -79549,7 +79538,8 @@ exports.createFile = createFile;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.parseHeaderValueAsNumber = exports.delay = void 0;
+exports.delay = delay;
+exports.parseHeaderValueAsNumber = parseHeaderValueAsNumber;
 const abort_controller_1 = __nccwpck_require__(6666);
 const StandardAbortMessage = "The operation was aborted.";
 /**
@@ -79592,7 +79582,6 @@ function delay(delayInMs, value, options) {
         }
     });
 }
-exports.delay = delay;
 /**
  * @internal
  * @returns the parsed value or undefined if the parsed value is invalid.
@@ -79606,7 +79595,6 @@ function parseHeaderValueAsNumber(response, headerName) {
         return;
     return valueAsNum;
 }
-exports.parseHeaderValueAsNumber = parseHeaderValueAsNumber;
 //# sourceMappingURL=helpers.js.map
 
 /***/ }),
@@ -79729,7 +79717,7 @@ class Sanitizer {
         }, 2);
     }
     sanitizeUrl(value) {
-        if (typeof value !== "string" || value === null) {
+        if (typeof value !== "string" || value === null || value === "") {
             return value;
         }
         const url = new URL(value);
@@ -79784,7 +79772,8 @@ exports.Sanitizer = Sanitizer;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createTokenCycler = exports.DEFAULT_CYCLER_OPTIONS = void 0;
+exports.DEFAULT_CYCLER_OPTIONS = void 0;
+exports.createTokenCycler = createTokenCycler;
 const helpers_js_1 = __nccwpck_require__(1333);
 // Default options for the cycler if none are provided
 exports.DEFAULT_CYCLER_OPTIONS = {
@@ -79939,7 +79928,6 @@ function createTokenCycler(credential, tokenCyclerOptions) {
         return token;
     };
 }
-exports.createTokenCycler = createTokenCycler;
 //# sourceMappingURL=tokenCycler.js.map
 
 /***/ }),
@@ -79952,25 +79940,24 @@ exports.createTokenCycler = createTokenCycler;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.isBlob = exports.isReadableStream = exports.isWebReadableStream = exports.isNodeReadableStream = void 0;
+exports.isNodeReadableStream = isNodeReadableStream;
+exports.isWebReadableStream = isWebReadableStream;
+exports.isReadableStream = isReadableStream;
+exports.isBlob = isBlob;
 function isNodeReadableStream(x) {
     return Boolean(x && typeof x["pipe"] === "function");
 }
-exports.isNodeReadableStream = isNodeReadableStream;
 function isWebReadableStream(x) {
     return Boolean(x &&
         typeof x.getReader === "function" &&
         typeof x.tee === "function");
 }
-exports.isWebReadableStream = isWebReadableStream;
 function isReadableStream(x) {
     return isNodeReadableStream(x) || isWebReadableStream(x);
 }
-exports.isReadableStream = isReadableStream;
 function isBlob(x) {
     return typeof x.stream === "function";
 }
-exports.isBlob = isBlob;
 //# sourceMappingURL=typeGuards.js.map
 
 /***/ }),
@@ -79983,7 +79970,8 @@ exports.isBlob = isBlob;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getUserAgentValue = exports.getUserAgentHeaderName = void 0;
+exports.getUserAgentHeaderName = getUserAgentHeaderName;
+exports.getUserAgentValue = getUserAgentValue;
 const userAgentPlatform_js_1 = __nccwpck_require__(5316);
 const constants_js_1 = __nccwpck_require__(3171);
 function getUserAgentString(telemetryInfo) {
@@ -80000,7 +79988,6 @@ function getUserAgentString(telemetryInfo) {
 function getUserAgentHeaderName() {
     return (0, userAgentPlatform_js_1.getHeaderName)();
 }
-exports.getUserAgentHeaderName = getUserAgentHeaderName;
 /**
  * @internal
  */
@@ -80012,7 +79999,6 @@ async function getUserAgentValue(prefix) {
     const userAgentValue = prefix ? `${prefix} ${defaultAgent}` : defaultAgent;
     return userAgentValue;
 }
-exports.getUserAgentValue = getUserAgentValue;
 //# sourceMappingURL=userAgent.js.map
 
 /***/ }),
@@ -80025,7 +80011,8 @@ exports.getUserAgentValue = getUserAgentValue;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.setPlatformSpecificData = exports.getHeaderName = void 0;
+exports.getHeaderName = getHeaderName;
+exports.setPlatformSpecificData = setPlatformSpecificData;
 const tslib_1 = __nccwpck_require__(4351);
 const os = tslib_1.__importStar(__nccwpck_require__(612));
 const process = tslib_1.__importStar(__nccwpck_require__(7742));
@@ -80035,7 +80022,6 @@ const process = tslib_1.__importStar(__nccwpck_require__(7742));
 function getHeaderName() {
     return "User-Agent";
 }
-exports.getHeaderName = getHeaderName;
 /**
  * @internal
  */
@@ -80054,7 +80040,6 @@ async function setPlatformSpecificData(map) {
     }
     map.set("OS", `(${os.arch()}-${os.type()}-${os.release()})`);
 }
-exports.setPlatformSpecificData = setPlatformSpecificData;
 //# sourceMappingURL=userAgentPlatform.js.map
 
 /***/ }),
@@ -80376,7 +80361,7 @@ exports.TracingContextImpl = TracingContextImpl;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.cancelablePromiseRace = void 0;
+exports.cancelablePromiseRace = cancelablePromiseRace;
 /**
  * promise.race() wrapper that aborts rest of promises as soon as the first promise settles.
  */
@@ -80395,7 +80380,6 @@ async function cancelablePromiseRace(abortablePromiseBuilders, options) {
         (_b = options === null || options === void 0 ? void 0 : options.abortSignal) === null || _b === void 0 ? void 0 : _b.removeEventListener("abort", abortHandler);
     }
 }
-exports.cancelablePromiseRace = cancelablePromiseRace;
 //# sourceMappingURL=aborterUtils.js.map
 
 /***/ }),
@@ -80408,7 +80392,8 @@ exports.cancelablePromiseRace = cancelablePromiseRace;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.stringToUint8Array = exports.uint8ArrayToString = void 0;
+exports.uint8ArrayToString = uint8ArrayToString;
+exports.stringToUint8Array = stringToUint8Array;
 /**
  * The helper that transforms bytes with specific character encoding into string
  * @param bytes - the uint8array bytes
@@ -80418,7 +80403,6 @@ exports.stringToUint8Array = exports.uint8ArrayToString = void 0;
 function uint8ArrayToString(bytes, format) {
     return Buffer.from(bytes).toString(format);
 }
-exports.uint8ArrayToString = uint8ArrayToString;
 /**
  * The helper that transforms string to specific character encoded bytes array.
  * @param value - the string to be converted
@@ -80428,7 +80412,6 @@ exports.uint8ArrayToString = uint8ArrayToString;
 function stringToUint8Array(value, format) {
     return Buffer.from(value, format);
 }
-exports.stringToUint8Array = stringToUint8Array;
 //# sourceMappingURL=bytesEncoding.js.map
 
 /***/ }),
@@ -80498,7 +80481,7 @@ exports.isReactNative = typeof navigator !== "undefined" && (navigator === null 
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createAbortablePromise = void 0;
+exports.createAbortablePromise = createAbortablePromise;
 const abort_controller_1 = __nccwpck_require__(4812);
 /**
  * Creates an abortable promise.
@@ -80538,7 +80521,6 @@ function createAbortablePromise(buildPromise, options) {
         abortSignal === null || abortSignal === void 0 ? void 0 : abortSignal.addEventListener("abort", onAbort);
     });
 }
-exports.createAbortablePromise = createAbortablePromise;
 //# sourceMappingURL=createAbortablePromise.js.map
 
 /***/ }),
@@ -80551,7 +80533,7 @@ exports.createAbortablePromise = createAbortablePromise;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.delay = void 0;
+exports.delay = delay;
 const createAbortablePromise_js_1 = __nccwpck_require__(2376);
 const StandardAbortMessage = "The delay was aborted.";
 /**
@@ -80571,7 +80553,6 @@ function delay(timeInMs, options) {
         abortErrorMsg: abortErrorMsg !== null && abortErrorMsg !== void 0 ? abortErrorMsg : StandardAbortMessage,
     });
 }
-exports.delay = delay;
 //# sourceMappingURL=delay.js.map
 
 /***/ }),
@@ -80584,7 +80565,8 @@ exports.delay = delay;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getErrorMessage = exports.isError = void 0;
+exports.isError = isError;
+exports.getErrorMessage = getErrorMessage;
 const object_js_1 = __nccwpck_require__(6538);
 /**
  * Typeguard for an error object shape (has name and message)
@@ -80598,7 +80580,6 @@ function isError(e) {
     }
     return false;
 }
-exports.isError = isError;
 /**
  * Given what is thought to be an error object, return the message if possible.
  * If the message is missing, returns a stringified version of the input.
@@ -80625,7 +80606,6 @@ function getErrorMessage(e) {
         return `Unknown error ${stringified}`;
     }
 }
-exports.getErrorMessage = getErrorMessage;
 //# sourceMappingURL=error.js.map
 
 /***/ }),
@@ -80685,7 +80665,7 @@ Object.defineProperty(exports, "stringToUint8Array", ({ enumerable: true, get: f
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.isObject = void 0;
+exports.isObject = isObject;
 /**
  * Helper to determine when an input is a generic JS object.
  * @returns true when input is an object type that is not null, Array, RegExp, or Date.
@@ -80697,7 +80677,6 @@ function isObject(input) {
         !(input instanceof RegExp) &&
         !(input instanceof Date));
 }
-exports.isObject = isObject;
 //# sourceMappingURL=object.js.map
 
 /***/ }),
@@ -80710,7 +80689,7 @@ exports.isObject = isObject;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getRandomIntegerInclusive = void 0;
+exports.getRandomIntegerInclusive = getRandomIntegerInclusive;
 /**
  * Returns a random integer value between a lower and upper bound,
  * inclusive of both bounds.
@@ -80729,7 +80708,6 @@ function getRandomIntegerInclusive(min, max) {
     const offset = Math.floor(Math.random() * (max - min + 1));
     return offset + min;
 }
-exports.getRandomIntegerInclusive = getRandomIntegerInclusive;
 //# sourceMappingURL=random.js.map
 
 /***/ }),
@@ -80742,7 +80720,8 @@ exports.getRandomIntegerInclusive = getRandomIntegerInclusive;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.computeSha256Hash = exports.computeSha256Hmac = void 0;
+exports.computeSha256Hmac = computeSha256Hmac;
+exports.computeSha256Hash = computeSha256Hash;
 const crypto_1 = __nccwpck_require__(6113);
 /**
  * Generates a SHA-256 HMAC signature.
@@ -80754,7 +80733,6 @@ async function computeSha256Hmac(key, stringToSign, encoding) {
     const decodedKey = Buffer.from(key, "base64");
     return (0, crypto_1.createHmac)("sha256", decodedKey).update(stringToSign).digest(encoding);
 }
-exports.computeSha256Hmac = computeSha256Hmac;
 /**
  * Generates a SHA-256 hash.
  * @param content - The data to be included in the hash.
@@ -80763,7 +80741,6 @@ exports.computeSha256Hmac = computeSha256Hmac;
 async function computeSha256Hash(content, encoding) {
     return (0, crypto_1.createHash)("sha256").update(content).digest(encoding);
 }
-exports.computeSha256Hash = computeSha256Hash;
 //# sourceMappingURL=sha256.js.map
 
 /***/ }),
@@ -80776,7 +80753,9 @@ exports.computeSha256Hash = computeSha256Hash;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.objectHasProperty = exports.isObjectWithProperties = exports.isDefined = void 0;
+exports.isDefined = isDefined;
+exports.isObjectWithProperties = isObjectWithProperties;
+exports.objectHasProperty = objectHasProperty;
 /**
  * Helper TypeGuard that checks if something is defined or not.
  * @param thing - Anything
@@ -80784,7 +80763,6 @@ exports.objectHasProperty = exports.isObjectWithProperties = exports.isDefined =
 function isDefined(thing) {
     return typeof thing !== "undefined" && thing !== null;
 }
-exports.isDefined = isDefined;
 /**
  * Helper TypeGuard that checks if the input is an object with the specified properties.
  * @param thing - Anything.
@@ -80801,7 +80779,6 @@ function isObjectWithProperties(thing, properties) {
     }
     return true;
 }
-exports.isObjectWithProperties = isObjectWithProperties;
 /**
  * Helper TypeGuard that checks if the input is an object with the specified property.
  * @param thing - Any object.
@@ -80810,7 +80787,6 @@ exports.isObjectWithProperties = isObjectWithProperties;
 function objectHasProperty(thing, property) {
     return (isDefined(thing) && typeof thing === "object" && property in thing);
 }
-exports.objectHasProperty = objectHasProperty;
 //# sourceMappingURL=typeGuards.js.map
 
 /***/ }),
@@ -80824,7 +80800,7 @@ exports.objectHasProperty = objectHasProperty;
 // Licensed under the MIT license.
 var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.randomUUID = void 0;
+exports.randomUUID = randomUUID;
 const crypto_1 = __nccwpck_require__(6113);
 // NOTE: This is a workaround until we can use `globalThis.crypto.randomUUID` in Node.js 19+.
 const uuidFunction = typeof ((_a = globalThis === null || globalThis === void 0 ? void 0 : globalThis.crypto) === null || _a === void 0 ? void 0 : _a.randomUUID) === "function"
@@ -80838,7 +80814,6 @@ const uuidFunction = typeof ((_a = globalThis === null || globalThis === void 0 
 function randomUUID() {
     return uuidFunction();
 }
-exports.randomUUID = randomUUID;
 //# sourceMappingURL=uuidUtils.js.map
 
 /***/ }),
@@ -81121,7 +81096,10 @@ exports["default"] = debugObj;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createClientLogger = exports.getLogLevel = exports.setLogLevel = exports.AzureLogger = void 0;
+exports.AzureLogger = void 0;
+exports.setLogLevel = setLogLevel;
+exports.getLogLevel = getLogLevel;
+exports.createClientLogger = createClientLogger;
 const tslib_1 = __nccwpck_require__(4351);
 const debug_js_1 = tslib_1.__importDefault(__nccwpck_require__(162));
 const registeredLoggers = new Set();
@@ -81168,14 +81146,12 @@ function setLogLevel(level) {
     }
     debug_js_1.default.enable(enabledNamespaces.join(","));
 }
-exports.setLogLevel = setLogLevel;
 /**
  * Retrieves the currently specified log level.
  */
 function getLogLevel() {
     return azureLogLevel;
 }
-exports.getLogLevel = getLogLevel;
 const levelMap = {
     verbose: 400,
     info: 300,
@@ -81197,7 +81173,6 @@ function createClientLogger(namespace) {
         verbose: createLogger(clientRootLogger, "verbose"),
     };
 }
-exports.createClientLogger = createClientLogger;
 function patchLogMethod(parent, child) {
     child.log = (...args) => {
         parent.log(...args);
@@ -81233,7 +81208,7 @@ function isAzureLogLevel(logLevel) {
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.log = void 0;
+exports.log = log;
 const tslib_1 = __nccwpck_require__(4351);
 const node_os_1 = __nccwpck_require__(612);
 const node_util_1 = tslib_1.__importDefault(__nccwpck_require__(7261));
@@ -81241,7 +81216,6 @@ const process = tslib_1.__importStar(__nccwpck_require__(7742));
 function log(message, ...args) {
     process.stderr.write(`${node_util_1.default.format(message, ...args)}${node_os_1.EOL}`);
 }
-exports.log = log;
 //# sourceMappingURL=log.js.map
 
 /***/ }),
