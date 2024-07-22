@@ -172,7 +172,7 @@ jobs:
 
       - name: Run lint
         shell: bash
-        id: tests
+        id: lint
         run: |
           npm run lint -- --format=json --output-file reports/lint-report.json
         continue-on-error: true
@@ -182,12 +182,12 @@ jobs:
         with:
           report-json: reports/lint-report.json
 
-      - name: Fail if tests failed
+      - name: Fail if lint failed
         shell: bash
         if: |
-          steps.tests.outcome != 'success'
+          steps.lint.outcome != 'success'
         run: |
-          echo "Tests failed"
+          echo "Lint failed"
           exit 1;
 
   npm-test:

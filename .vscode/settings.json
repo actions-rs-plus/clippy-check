@@ -1,5 +1,6 @@
 {
     "jest.autoRevealOutput": "on-run",
     "jest.jestCommandLine": "node_modules/.bin/jest",
-    "jest.showCoverageOnLoad": true
+    "jest.showCoverageOnLoad": true,
+    "typescript.tsdk": "node_modules/typescript/lib"
 }
