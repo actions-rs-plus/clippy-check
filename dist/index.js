@@ -77084,7 +77084,7 @@ exports.buildCreatePoller = buildCreatePoller;
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.DEFAULT_RETRY_POLICY_COUNT = exports.SDK_VERSION = void 0;
-exports.SDK_VERSION = "1.16.2";
+exports.SDK_VERSION = "1.16.3";
 exports.DEFAULT_RETRY_POLICY_COUNT = 3;
 //# sourceMappingURL=constants.js.map
 
@@ -79361,15 +79361,21 @@ class RestError extends Error {
         this.name = "RestError";
         this.code = options.code;
         this.statusCode = options.statusCode;
-        this.request = options.request;
-        this.response = options.response;
+        // The request and response may contain sensitive information in the headers or body.
+        // To help prevent this sensitive information being accidentally logged, the request and response
+        // properties are marked as non-enumerable here. This prevents them showing up in the output of
+        // JSON.stringify and console.log.
+        Object.defineProperty(this, "request", { value: options.request, enumerable: false });
+        Object.defineProperty(this, "response", { value: options.response, enumerable: false });
         Object.setPrototypeOf(this, RestError.prototype);
     }
     /**
      * Logging method for util.inspect in Node
      */
     [inspect_js_1.custom]() {
-        return `RestError: ${this.message} \n ${errorSanitizer.sanitize(this)}`;
+        // Extract non-enumerable properties and add them back. This is OK since in this output the request and
+        // response get sanitized.
+        return `RestError: ${this.message} \n ${errorSanitizer.sanitize(Object.assign(Object.assign({}, this), { request: this.request, response: this.response }))}`;
     }
 }
 exports.RestError = RestError;
@@ -81160,7 +81166,8 @@ exports.XML_CHARKEY = "_";
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.parseXML = exports.stringifyXML = void 0;
+exports.stringifyXML = stringifyXML;
+exports.parseXML = parseXML;
 const fast_xml_parser_1 = __nccwpck_require__(2603);
 const xml_common_js_1 = __nccwpck_require__(2060);
 function getCommonOptions(options) {
@@ -81192,7 +81199,6 @@ function stringifyXML(obj, opts = {}) {
     const xmlData = j2x.build(node);
     return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>${xmlData}`.replace(/\n/g, "");
 }
-exports.stringifyXML = stringifyXML;
 /**
  * Converts given XML string into JSON
  * @param str - String containing the XML content to be parsed into JSON
@@ -81222,7 +81228,6 @@ async function parseXML(str, opts = {}) {
     }
     return parsedXml;
 }
-exports.parseXML = parseXML;
 //# sourceMappingURL=xml.js.map
 
 /***/ }),
