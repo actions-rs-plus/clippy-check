@@ -186,7 +186,8 @@
             "package.json",
             "package-lock.json",
             "tsconfig.json",
-            "tsconfig.dev.json"
+            "tsconfig.dev.json",
+            "tsconfig.build.json"
         ]
     }
 }
