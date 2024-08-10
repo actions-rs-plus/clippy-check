@@ -2,12 +2,20 @@ import { join } from "path";
 
 import * as core from "@actions/core";
 
-import type { AnnotationWithMessageAndLevel, CargoMessage, MaybeCargoMessage, Stats } from "./schema";
+import type {
+    AnnotationWithMessageAndLevel,
+    CargoMessage,
+    MaybeCargoMessage,
+    Stats,
+} from "./schema";
 import { AnnotationLevel } from "./schema";
 
 export class OutputParser {
     private readonly _workingDirectory: string | null;
-    private readonly _uniqueAnnotations: Map<string, AnnotationWithMessageAndLevel>;
+    private readonly _uniqueAnnotations: Map<
+        string,
+        AnnotationWithMessageAndLevel
+    >;
     private readonly _stats: Stats;
 
     public constructor(workingDirectory?: string) {
@@ -34,13 +42,15 @@ export class OutputParser {
         let contents: MaybeCargoMessage;
         try {
             contents = JSON.parse(line);
-        } catch (error) {
+        } catch (_error) {
             core.debug("Not a JSON, ignoring it");
             return;
         }
 
         if (contents.reason !== "compiler-message") {
-            core.debug(`Unexpected reason field, ignoring it: ${contents.reason}`);
+            core.debug(
+                `Unexpected reason field, ignoring it: ${contents.reason}`,
+            );
             return;
         }
 
@@ -97,7 +107,9 @@ export class OutputParser {
     /// Convert parsed JSON line into the GH annotation object
     ///
     /// https://developer.github.com/v3/checks/runs/#annotations-object
-    private makeAnnotation(contents: CargoMessage): AnnotationWithMessageAndLevel {
+    private makeAnnotation(
+        contents: CargoMessage,
+    ): AnnotationWithMessageAndLevel {
         const primarySpan = contents.message.spans.find((span) => {
             return span.is_primary;
         });

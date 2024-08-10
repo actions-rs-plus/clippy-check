@@ -19,4 +19,5 @@ async function main(): Promise<void> {
     }
 }
 
+// biome-ignore lint/complexity/noVoid: we use void to signify that we're ignoring the return type of main, which is a promise
 void main();

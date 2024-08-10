@@ -1,8 +1,8 @@
 import { join } from "path";
 
+import { Cargo, Cross } from "@actions-rs-plus/core";
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
-import { Cargo, Cross } from "@actions-rs-plus/core";
 
 import type * as input from "./input";
 import { OutputParser } from "./outputParser";
@@ -17,7 +17,10 @@ interface ClippyResult {
     exitCode: number;
 }
 
-async function buildContext(program: Program, toolchain: string | undefined): Promise<Context> {
+async function buildContext(
+    program: Program,
+    toolchain: string | undefined,
+): Promise<Context> {
     const context: Context = {
         cargo: "",
         clippy: "",
@@ -29,7 +32,8 @@ async function buildContext(program: Program, toolchain: string | undefined): Pr
             silent: false,
             listeners: {
                 stdout: (buffer: Buffer) => {
-                    return (context.rustc = buffer.toString().trim());
+                    context.rustc = buffer.toString().trim();
+                    return context.rustc;
                 },
             },
         }),
@@ -37,24 +41,32 @@ async function buildContext(program: Program, toolchain: string | undefined): Pr
             silent: false,
             listeners: {
                 stdout: (buffer: Buffer) => {
-                    return (context.cargo = buffer.toString().trim());
+                    context.cargo = buffer.toString().trim();
+                    return context.cargo;
                 },
             },
         }),
-        await program.call(buildToolchainArguments(toolchain, ["clippy", "-V"]), {
-            silent: false,
-            listeners: {
-                stdout: (buffer: Buffer) => {
-                    return (context.clippy = buffer.toString().trim());
+        await program.call(
+            buildToolchainArguments(toolchain, ["clippy", "-V"]),
+            {
+                silent: false,
+                listeners: {
+                    stdout: (buffer: Buffer) => {
+                        context.clippy = buffer.toString().trim();
+                        return context.clippy;
+                    },
                 },
             },
-        }),
+        ),
     ]);
 
     return context;
 }
 
-async function runClippy(actionInput: input.ParsedInput, program: Program): Promise<ClippyResult> {
+async function runClippy(
+    actionInput: input.ParsedInput,
+    program: Program,
+): Promise<ClippyResult> {
     const args = buildClippyArguments(actionInput);
     const outputParser = new OutputParser();
 
@@ -101,7 +113,10 @@ export async function run(actionInput: input.ParsedInput): Promise<void> {
 
     const context = await buildContext(program, actionInput.toolchain);
 
-    const { stats, annotations, exitCode } = await runClippy(actionInput, program);
+    const { stats, annotations, exitCode } = await runClippy(
+        actionInput,
+        program,
+    );
 
     await new Reporter().report(stats, annotations, context);
 
@@ -110,7 +125,10 @@ export async function run(actionInput: input.ParsedInput): Promise<void> {
     }
 }
 
-function buildToolchainArguments(toolchain: string | undefined, after: string[]): string[] {
+function buildToolchainArguments(
+    toolchain: string | undefined,
+    after: string[],
+): string[] {
     const args = [];
 
     if (toolchain) {
