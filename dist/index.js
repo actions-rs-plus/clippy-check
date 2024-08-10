@@ -71697,9 +71697,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = run;
 const path_1 = __nccwpck_require__(1017);
+const core_1 = __nccwpck_require__(4543);
 const core = __importStar(__nccwpck_require__(2186));
 const exec = __importStar(__nccwpck_require__(1514));
-const core_1 = __nccwpck_require__(4543);
 const outputParser_1 = __nccwpck_require__(3237);
 const reporter_1 = __nccwpck_require__(5021);
 async function buildContext(program, toolchain) {
@@ -71713,7 +71713,8 @@ async function buildContext(program, toolchain) {
             silent: false,
             listeners: {
                 stdout: (buffer) => {
-                    return (context.rustc = buffer.toString().trim());
+                    context.rustc = buffer.toString().trim();
+                    return context.rustc;
                 },
             },
         }),
@@ -71721,7 +71722,8 @@ async function buildContext(program, toolchain) {
             silent: false,
             listeners: {
                 stdout: (buffer) => {
-                    return (context.cargo = buffer.toString().trim());
+                    context.cargo = buffer.toString().trim();
+                    return context.cargo;
                 },
             },
         }),
@@ -71729,7 +71731,8 @@ async function buildContext(program, toolchain) {
             silent: false,
             listeners: {
                 stdout: (buffer) => {
-                    return (context.clippy = buffer.toString().trim());
+                    context.clippy = buffer.toString().trim();
+                    return context.clippy;
                 },
             },
         }),
@@ -71853,6 +71856,7 @@ async function main() {
         }
     }
 }
+// biome-ignore lint/complexity/noVoid: we use void to signify that we're ignoring the return type of main, which is a promise
 void main();
 
 
@@ -71945,7 +71949,7 @@ class OutputParser {
         try {
             contents = JSON.parse(line);
         }
-        catch (error) {
+        catch (_error) {
             core.debug("Not a JSON, ignoring it");
             return;
         }
