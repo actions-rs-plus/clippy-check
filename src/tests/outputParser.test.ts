@@ -1,5 +1,5 @@
 import { OutputParser } from "outputParser";
-import { type CargoMessage, type MaybeCargoMessage, type Stats } from "schema";
+import type { CargoMessage, MaybeCargoMessage, Stats } from "schema";
 
 jest.mock("@actions/core");
 
@@ -21,11 +21,18 @@ describe("outputParser", () => {
             level: "warning",
             spans: [
                 {
+                    // biome-ignore lint/style/useNamingConvention: contract
                     is_primary: true,
+                    // biome-ignore lint/style/useNamingConvention: contract
                     column_start: 10,
+                    // biome-ignore lint/style/useNamingConvention: contract
                     column_end: 15,
+                    // biome-ignore lint/style/useNamingConvention: contract
                     line_start: 30,
+                    // biome-ignore lint/style/useNamingConvention: contract
+                    // biome-ignore lint/style/useNamingConvention: contract
                     line_end: 30,
+                    // biome-ignore lint/style/useNamingConvention: contract
                     file_name: "main.rs",
                 },
             ],
@@ -71,7 +78,7 @@ describe("outputParser", () => {
         expect(outputParser.stats).toEqual(emptyStats);
     });
 
-    test.each([
+    it.each([
         ["help", undefined],
         ["note", undefined],
         ["warning", undefined],
@@ -90,7 +97,10 @@ describe("outputParser", () => {
 
         outputParser.tryParseClippyLine(JSON.stringify(output));
 
-        expect(outputParser.stats).toEqual({ ...emptyStats, [test ?? level]: 1 });
+        expect(outputParser.stats).toEqual({
+            ...emptyStats,
+            [test ?? level]: 1,
+        });
     });
 
     it("ignores when level is not help, note, warning, error, ice", () => {
@@ -115,7 +125,10 @@ describe("outputParser", () => {
         outputParser.tryParseClippyLine(JSON.stringify(defaultMessage));
         outputParser.tryParseClippyLine(JSON.stringify(defaultMessage));
 
-        expect(outputParser.stats).toEqual({ ...emptyStats, [defaultMessage.message.level]: 1 });
+        expect(outputParser.stats).toEqual({
+            ...emptyStats,
+            [defaultMessage.message.level]: 1,
+        });
     });
 
     it("fails when primary span cannot be found", () => {

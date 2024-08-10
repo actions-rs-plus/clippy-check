@@ -15,8 +15,9 @@
     "scripts": {
         "build": "ncc build src/index.ts --source-map && mkdir -p dist/.matchers && cp matchers/rust.json dist/.matchers/rust.json",
         "watch": "ncc build src/index.ts --watch",
-        "lint": "eslint src --ext=ts,tsx",
-        "lint:fix": "npm run lint -- --fix",
+        "lint": "biome format && biome lint",
+        "lint:fix": "biome format --fix && biome lint --fix",
+        "lint:ci": "biome ci",
         "format": "prettier --write \"src/**/*.ts\"",
         "clean": "rm -rf ./dist/* && rm tsconfig.tsbuildinfo && npm run build",
         "test": "jest --watchAll",
@@ -48,21 +49,13 @@
         "string-argv": "^0.3.2"
     },
     "devDependencies": {
+        "@biomejs/biome": "1.8.3",
         "@types/jest": "29.5.12",
-        "@types/node": "20.14.15",
+        "@types/node": "22.2.0",
         "@types/semver": "7.5.8",
-        "@typescript-eslint/eslint-plugin": "7.18.0",
-        "@typescript-eslint/parser": "7.18.0",
         "@vercel/ncc": "0.38.1",
         "conventional-changelog-conventionalcommits": "8.0.0",
         "dependency-cruiser": "16.3.10",
-        "eslint": "8.57.0",
-        "eslint-config-love": "47.0.0",
-        "eslint-config-prettier": "9.1.0",
-        "eslint-import-resolver-typescript": "3.6.1",
-        "eslint-plugin-import": "2.29.1",
-        "eslint-plugin-prettier": "5.2.1",
-        "eslint-plugin-promise": "6.6.0",
         "husky": "9.1.4",
         "jest": "29.7.0",
         "jest-junit": "16.0.0",
@@ -75,7 +68,7 @@
     },
     "lint-staged": {
         "*.{ts,tsx}": [
-            "npm run test:lint:fix",
+            "npm run lint:fix",
             "depcruise --validate -- "
         ]
     },

@@ -4,7 +4,11 @@ import type { AnnotationWithMessageAndLevel, Context, Stats } from "./schema";
 import { AnnotationLevel } from "./schema";
 
 export class Reporter {
-    public async report(stats: Stats, annotations: AnnotationWithMessageAndLevel[], context: Context): Promise<void> {
+    public async report(
+        stats: Stats,
+        annotations: AnnotationWithMessageAndLevel[],
+        context: Context,
+    ): Promise<void> {
         for (const annotation of annotations) {
             switch (annotation.level) {
                 case AnnotationLevel.Error: {

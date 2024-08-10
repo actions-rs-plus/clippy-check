@@ -18,7 +18,9 @@ describe("index", () => {
     });
 
     it("catches Error", async () => {
-        jest.spyOn(clippy, "run").mockRejectedValue(new Error("It looks like you're running a test"));
+        jest.spyOn(clippy, "run").mockRejectedValue(
+            new Error("It looks like you're running a test"),
+        );
 
         const setFailedSpy = jest.spyOn(core, "setFailed");
 
@@ -26,11 +28,15 @@ describe("index", () => {
             await import("index");
         });
 
-        expect(setFailedSpy).toHaveBeenCalledWith("It looks like you're running a test");
+        expect(setFailedSpy).toHaveBeenCalledWith(
+            "It looks like you're running a test",
+        );
     });
 
     it("catches not-error", async () => {
-        jest.spyOn(clippy, "run").mockRejectedValue("It looks like you're trying to write a test, would you like some assistance? [YES / NO]");
+        jest.spyOn(clippy, "run").mockRejectedValue(
+            "It looks like you're trying to write a test, would you like some assistance? [YES / NO]",
+        );
 
         const setFailedSpy = jest.spyOn(core, "setFailed");
 
@@ -38,6 +44,8 @@ describe("index", () => {
             await import("index");
         });
 
-        expect(setFailedSpy).toHaveBeenCalledWith("It looks like you're trying to write a test, would you like some assistance? [YES / NO]");
+        expect(setFailedSpy).toHaveBeenCalledWith(
+            "It looks like you're trying to write a test, would you like some assistance? [YES / NO]",
+        );
     });
 });

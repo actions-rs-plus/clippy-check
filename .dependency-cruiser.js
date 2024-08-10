@@ -5,7 +5,8 @@ module.exports = {
             name: "no-circular",
             severity: "warn",
             comment:
-                "This dependency is part of a circular relationship. You might want to revise " + "your solution (i.e. use dependency inversion, make sure the modules have a single responsibility) ",
+                "This dependency is part of a circular relationship. You might want to revise " +
+                "your solution (i.e. use dependency inversion, make sure the modules have a single responsibility) ",
             from: {},
             to: {
                 circular: true,
@@ -33,7 +34,9 @@ module.exports = {
         },
         {
             name: "no-deprecated-core",
-            comment: "A module depends on a node core module that has been deprecated. Find an alternative - these are " + "bound to exist - node doesn't deprecate lightly.",
+            comment:
+                "A module depends on a node core module that has been deprecated. Find an alternative - these are " +
+                "bound to exist - node doesn't deprecate lightly.",
             severity: "warn",
             from: {},
             to: {
@@ -139,7 +142,8 @@ module.exports = {
                 "from.pathNot re of the not-to-dev-dep rule in the dependency-cruiser configuration",
             from: {
                 path: "^(src)",
-                pathNot: ".(spec|test).(js|mjs|cjs|ts|ls|coffee|litcoffee|coffee.md)$",
+                pathNot:
+                    ".(spec|test).(js|mjs|cjs|ts|ls|coffee|litcoffee|coffee.md)$",
             },
             to: {
                 dependencyTypes: ["npm-dev"],
@@ -412,7 +416,8 @@ module.exports = {
           dependency graph reporter (`archi`) you probably want to tweak
           this collapsePattern to your situation.
         */
-                collapsePattern: "^(packages|src|lib|app|bin|test(s?)|spec(s?))/[^/]+|node_modules/(@[^/]+/[^/]+|[^/]+)",
+                collapsePattern:
+                    "^(packages|src|lib|app|bin|test(s?)|spec(s?))/[^/]+|node_modules/(@[^/]+/[^/]+|[^/]+)",
 
                 /* Options to tweak the appearance of your graph.See
            https://github.com/sverweij/dependency-cruiser/blob/main/doc/options-reference.md#reporteroptions

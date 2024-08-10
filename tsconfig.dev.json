@@ -6,7 +6,6 @@
   "include": [
     "src/**/*.ts",
     "*.ts",
-    ".eslintrc.js",
     ".dependency-cruiser.js"
   ]
 }
