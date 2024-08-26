@@ -1,8 +1,6 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": [
-        "github>kristof-mattei/renovate-config",
-    ],
+    "extends": ["github>kristof-mattei/renovate-config"],
     "forkProcessing": "enabled",
     "encrypted": {
         "npmToken": "wcFMA/xDdHCJBTolAQ/+OcrVkRjaqNS2ETYGkw/KRPc+w/02quwJ9HotKwSX/cjeOIKqeI4DaM+6ZrgqzN0ursGImWHHAijchznFfsJtU02nKpXjiz+TJnD9nTp1XFqEkLnpg01beATWERK30/FT9KUWLr48ojpcb3tJaLZ5B3bcib1mmQNYp45DEXcqBGmkz7FQm6zcZATl7Zz4RJYmWsXuEezlkTjrVPAjyTC2R8OR0L9LxVRgjCukAOgY90AKYs9KKjpG2euc+IJAWUJPJhHF8y+5KqinQ6LQ8uY2Q5VJ9Sh21W8lEQ2PazoDOORgsByauFbE1XfUQqn8O8ovyAL6yZtnoGl5wSh192ZEj9b5Gj7okwQHEk5tyV2zMbVSiO3i1+tz6mnDlG83C9L7RXYbEuGh3/T7ysaCSOGA8+gROwV6mMPi0kv4fuDQTorjeqq1dQLmpHpPFw7Qda6TsBAehS1jWvaz4jliOETHJeaxuSI4J6itmaVSG0R0BlVJMq4e/1n6tr986KAazokqXgTGKfZ4d8gpXlh1xQ3fl33hLn87+Mn/0tf/sXfqQkXx0aV6u4jzn4+7wMM8hsKqqL+PwORrdgxxBiIufsDAFVcEm1oSf9WNoTQUXxCnwQUHT2PzkPt8CpocBRjKcAzQo5Lm9MP8AEkZ8YwGZx8XSuggd6l1J0X54xIkW/80VvDSigFXcUHDSjVoDQc+iS4nJh0Eqt8kAg6V19QBSdCgSm70Qm7gHcqsSDvjv2vc0QqGajXHy8PknAOCJX+pvEy+541pB3KBl4WoHbs5jKQ3yT2MTO4LIyxjfU529+WZWPJS9AQO+u34uZ8uuqXxffzmPzxgf28hysFi1otgBewUAYU/Km3UxHW8H1pYEg"
