@@ -1,5 +1,0 @@
-dist
-!.prettierrc.cjs
-!.dependency-cruiser.cjs
-node_modules
-tmp

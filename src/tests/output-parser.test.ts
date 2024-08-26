@@ -1,7 +1,7 @@
-import { OutputParser } from "outputParser";
-import { type CargoMessage, type MaybeCargoMessage, type Stats } from "schema";
+import { describe, expect, it } from "vitest";
 
-jest.mock("@actions/core");
+import { OutputParser } from "@/output-parser";
+import type { CargoMessage, MaybeCargoMessage, Stats } from "@/schema";
 
 describe("outputParser", () => {
     const emptyStats: Stats = {
@@ -71,7 +71,7 @@ describe("outputParser", () => {
         expect(outputParser.stats).toEqual(emptyStats);
     });
 
-    test.each([
+    it.each([
         ["help", undefined],
         ["note", undefined],
         ["warning", undefined],

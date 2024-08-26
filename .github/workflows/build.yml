@@ -218,25 +218,16 @@ jobs:
       - name: Run tests
         shell: bash
         id: tests
-        env:
-          JEST_JUNIT_OUTPUT_DIR: reports/
-          JEST_JUNIT_OUTPUT_NAME: unit-tests-report.xml
         run: |
-          npm run test:ci -- --coverage --testLocationInResults --reporters=default --reporters=jest-junit
+          npm run test -- --reporter=basic --reporter=github-actions --coverage.reporter=text --coverage.reporter=lcovonly
         continue-on-error: true
-
-      - name: Upload unit-test results
-        uses: enricomi/publish-unit-test-result-action@567cc7f8dcea3eba5da355f6ebc95663310d8a07 # v2.17.0
-        with:
-          check_name: Unit-test results
-          files: reports/unit-tests-report.xml
 
       - name: Upload coverage results (to Codecov.io)
         uses: codecov/codecov-action@e28ff129e5465c2c0dcc6f003fc735cb6ae0c673 # v4.5.0
         with:
           disable_search: true
           fail_ci_if_error: true
-          files: coverage/coverage-final.json
+          files: coverage/lcov.info
           plugins: ""
           token: ${{ secrets.CODECOV_TOKEN }}
 

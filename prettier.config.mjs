@@ -1,35 +1,35 @@
-// eslint-disable-next-line no-undef
-module.exports = {
+/** @type {import("prettier").Config} */
+export default {
     arrowParens: "always",
     bracketSpacing: true,
-    printWidth: 200,
+    printWidth: 120,
     quoteProps: "as-needed",
     semi: true,
     singleQuote: false,
-    useTabs: false,
     tabWidth: 4,
     trailingComma: "all",
+    useTabs: false,
     overrides: [
         {
-            files: "*.js",
-            options: {
-                parser: "babel",
-            },
-        },
-        {
-            files: "*.json",
-            options: {
-                parser: "json",
-            },
-        },
-        {
-            files: "*.ts",
+            files: ["**/*.ts", "**/*.tsx"],
             options: {
                 parser: "typescript",
             },
         },
         {
+            files: ["**/*.json"],
+            options: {
+                trailingComma: "none",
+            },
+        },
+        {
             files: ["*.yaml", "*.yml"],
+            options: {
+                tabWidth: 2,
+            },
+        },
+        {
+            files: ["package.json", "package-lock.json"],
             options: {
                 tabWidth: 2,
             },

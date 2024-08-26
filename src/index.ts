@@ -1,8 +1,8 @@
 import * as core from "@actions/core";
 
-import * as input from "./input";
+import { run } from "@/clippy";
 
-import { run } from "clippy";
+import * as input from "@/input";
 
 async function main(): Promise<void> {
     try {
@@ -14,9 +14,9 @@ async function main(): Promise<void> {
             core.setFailed(error.message);
         } else {
             // use the magic of string templates
-            core.setFailed(`${String(error)}`);
+            core.setFailed(String(error));
         }
     }
 }
 
-void main();
+await main();
