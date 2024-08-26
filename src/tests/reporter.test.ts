@@ -1,9 +1,13 @@
-import { Reporter } from "reporter";
-import { AnnotationLevel } from "schema";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-jest.mock("@actions/core");
+import { Reporter } from "@/reporter";
+import { AnnotationLevel } from "@/schema";
 
 describe("reporter", () => {
+    beforeEach(() => {
+        vi.mock("@actions/core");
+    });
+
     it("works", async () => {
         const r = new Reporter();
 

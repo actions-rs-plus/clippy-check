@@ -1,15 +1,15 @@
-import { join } from "path";
+import nodePath from "node:path";
 
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
 import { Cargo, Cross } from "@actions-rs-plus/core";
 
-import type * as input from "./input";
-import { OutputParser } from "./outputParser";
-import { Reporter } from "./reporter";
-import type { AnnotationWithMessageAndLevel, Context, Stats } from "./schema";
+import type { BaseProgram } from "@actions-rs-plus/core/dist/commands/base-program";
 
-type Program = Cargo | Cross;
+import type * as input from "@/input";
+import { OutputParser } from "@/output-parser";
+import { Reporter } from "@/reporter";
+import type { AnnotationWithMessageAndLevel, Context, Stats } from "@/schema";
 
 interface ClippyResult {
     stats: Stats;
@@ -17,7 +17,7 @@ interface ClippyResult {
     exitCode: number;
 }
 
-async function buildContext(program: Program, toolchain: string | undefined): Promise<Context> {
+async function buildContext(program: BaseProgram, toolchain: string | undefined): Promise<Context> {
     const context: Context = {
         cargo: "",
         clippy: "",
@@ -25,42 +25,42 @@ async function buildContext(program: Program, toolchain: string | undefined): Pr
     };
 
     await Promise.all([
-        await exec.exec("rustc", buildToolchainArguments(toolchain, ["-V"]), {
-            silent: false,
+        exec.exec("rustc", buildToolchainArguments(toolchain, ["-V"]), {
             listeners: {
                 stdout: (buffer: Buffer) => {
                     return (context.rustc = buffer.toString().trim());
                 },
             },
-        }),
-        await program.call(buildToolchainArguments(toolchain, ["-V"]), {
             silent: false,
+        }),
+        program.call(buildToolchainArguments(toolchain, ["-V"]), {
             listeners: {
                 stdout: (buffer: Buffer) => {
                     return (context.cargo = buffer.toString().trim());
                 },
             },
-        }),
-        await program.call(buildToolchainArguments(toolchain, ["clippy", "-V"]), {
             silent: false,
+        }),
+        program.call(buildToolchainArguments(toolchain, ["clippy", "-V"]), {
             listeners: {
                 stdout: (buffer: Buffer) => {
                     return (context.clippy = buffer.toString().trim());
                 },
             },
+            silent: false,
         }),
     ]);
 
     return context;
 }
 
-async function runClippy(actionInput: input.ParsedInput, program: Program): Promise<ClippyResult> {
-    const args = buildClippyArguments(actionInput);
+async function runClippy(actionInput: input.ParsedInput, program: BaseProgram): Promise<ClippyResult> {
+    const arguments_ = buildClippyArguments(actionInput);
     const outputParser = new OutputParser();
 
     const options: exec.ExecOptions = {
-        ignoreReturnCode: true,
         failOnStdErr: false,
+        ignoreReturnCode: true,
         listeners: {
             stdline: (line: string) => {
                 outputParser.tryParseClippyLine(line);
@@ -68,15 +68,15 @@ async function runClippy(actionInput: input.ParsedInput, program: Program): Prom
         },
     };
 
-    if (actionInput.workingDirectory) {
-        options.cwd = join(process.cwd(), actionInput.workingDirectory);
+    if (actionInput.workingDirectory !== undefined && actionInput.workingDirectory !== "") {
+        options.cwd = nodePath.join(process.cwd(), actionInput.workingDirectory);
     }
 
     let exitCode = 0;
 
     try {
         core.startGroup("Executing cargo clippy (JSON output)");
-        exitCode = await program.call(args, options);
+        exitCode = await program.call(arguments_, options);
     } finally {
         core.endGroup();
     }
@@ -88,7 +88,7 @@ async function runClippy(actionInput: input.ParsedInput, program: Program): Prom
     };
 }
 
-function getProgram(useCross: boolean): Promise<Program> {
+function getProgram(useCross: boolean): Promise<BaseProgram> {
     if (useCross) {
         return Cross.getOrInstall();
     } else {
@@ -97,7 +97,7 @@ function getProgram(useCross: boolean): Promise<Program> {
 }
 
 export async function run(actionInput: input.ParsedInput): Promise<void> {
-    const program: Program = await getProgram(actionInput.useCross);
+    const program: BaseProgram = await getProgram(actionInput.useCross);
 
     const context = await buildContext(program, actionInput.toolchain);
 
@@ -111,15 +111,15 @@ export async function run(actionInput: input.ParsedInput): Promise<void> {
 }
 
 function buildToolchainArguments(toolchain: string | undefined, after: string[]): string[] {
-    const args = [];
+    const arguments_ = [];
 
-    if (toolchain) {
-        args.push(`+${toolchain}`);
+    if (toolchain !== undefined && toolchain !== "") {
+        arguments_.push(`+${toolchain}`);
     }
 
-    args.push(...after);
+    arguments_.push(...after);
 
-    return args;
+    return arguments_;
 }
 
 function buildClippyArguments(actionInput: input.ParsedInput): string[] {

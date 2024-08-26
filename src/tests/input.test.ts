@@ -1,4 +1,6 @@
-import { get } from "../input";
+import { afterAll, beforeEach, describe, expect, test } from "vitest";
+
+import { get } from "@/input";
 
 describe("input", () => {
     const OLD_ENV = process.env;
@@ -32,6 +34,11 @@ describe("input", () => {
 
     test("get 5, parses arguments", () => {
         process.env["INPUT_ARGS"] = "--all-features --all-targets";
-        expect(get()).toStrictEqual({ args: ["--all-features", "--all-targets"], toolchain: undefined, useCross: false, workingDirectory: undefined });
+        expect(get()).toStrictEqual({
+            args: ["--all-features", "--all-targets"],
+            toolchain: undefined,
+            useCross: false,
+            workingDirectory: undefined,
+        });
     });
 });

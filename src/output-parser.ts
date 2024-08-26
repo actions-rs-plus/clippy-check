@@ -1,9 +1,9 @@
-import { join } from "path";
+import nodePath from "node:path";
 
 import * as core from "@actions/core";
 
-import type { AnnotationWithMessageAndLevel, CargoMessage, MaybeCargoMessage, Stats } from "./schema";
-import { AnnotationLevel } from "./schema";
+import type { AnnotationWithMessageAndLevel, CargoMessage, MaybeCargoMessage, Stats } from "@/schema";
+import { AnnotationLevel } from "@/schema";
 
 export class OutputParser {
     private readonly _workingDirectory: string | null;
@@ -34,7 +34,7 @@ export class OutputParser {
         let contents: MaybeCargoMessage;
         try {
             contents = JSON.parse(line);
-        } catch (error) {
+        } catch {
             core.debug("Not a JSON, ignoring it");
             return;
         }
@@ -60,23 +60,29 @@ export class OutputParser {
         }
 
         switch (contents.message.level) {
-            case "help":
+            case "help": {
                 this._stats.help += 1;
                 break;
-            case "note":
+            }
+            case "note": {
                 this._stats.note += 1;
                 break;
-            case "warning":
+            }
+            case "warning": {
                 this._stats.warning += 1;
                 break;
-            case "error":
+            }
+            case "error": {
                 this._stats.error += 1;
                 break;
-            case "error: internal compiler error":
+            }
+            case "error: internal compiler error": {
                 this._stats.ice += 1;
                 break;
-            default:
+            }
+            default: {
                 break;
+            }
         }
 
         this._uniqueAnnotations.set(key, parsedAnnotation);
@@ -85,12 +91,15 @@ export class OutputParser {
     private static parseLevel(level: string): AnnotationLevel {
         switch (level) {
             case "help":
-            case "note":
+            case "note": {
                 return AnnotationLevel.Notice;
-            case "warning":
+            }
+            case "warning": {
                 return AnnotationLevel.Warning;
-            default:
+            }
+            default: {
                 return AnnotationLevel.Error;
+            }
         }
     }
 
@@ -110,7 +119,7 @@ export class OutputParser {
         let path = primarySpan.file_name;
 
         if (this._workingDirectory) {
-            path = join(this._workingDirectory, path);
+            path = nodePath.join(this._workingDirectory, path);
         }
 
         const annotation: AnnotationWithMessageAndLevel = {

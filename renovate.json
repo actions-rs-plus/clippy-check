@@ -2,7 +2,6 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "github>kristof-mattei/renovate-config",
-        "local>kristof-mattei/renovate-config"
     ],
     "forkProcessing": "enabled",
     "encrypted": {

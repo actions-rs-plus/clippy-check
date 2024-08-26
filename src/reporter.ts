@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
 
-import type { AnnotationWithMessageAndLevel, Context, Stats } from "./schema";
-import { AnnotationLevel } from "./schema";
+import type { AnnotationWithMessageAndLevel, Context, Stats } from "@/schema";
+import { AnnotationLevel } from "@/schema";
 
 export class Reporter {
     public async report(stats: Stats, annotations: AnnotationWithMessageAndLevel[], context: Context): Promise<void> {
