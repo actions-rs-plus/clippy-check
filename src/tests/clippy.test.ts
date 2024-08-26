@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { run } from "@/clippy";
 import type { ParsedInput } from "@/input";
-import { Reporter } from "@/reporter";
+import * as report from "@/reporter";
 import type { CargoMessage } from "@/schema";
 
 describe("clippy", () => {
@@ -65,7 +65,7 @@ describe("clippy", () => {
     });
 
     it("records versions with toolchain", async () => {
-        const reportSpy = vi.spyOn(Reporter.prototype, "report");
+        const reportSpy = vi.spyOn(report, "report");
         vi.spyOn(exec, "exec").mockImplementation(
             (commandline: string, arguments_?: string[], options?: exec.ExecOptions) => {
                 if (commandline.endsWith("cargo")) {
@@ -98,7 +98,7 @@ describe("clippy", () => {
     });
 
     it("records versions", async () => {
-        const reportSpy = vi.spyOn(Reporter.prototype, "report");
+        const reportSpy = vi.spyOn(report, "report");
         vi.spyOn(exec, "exec").mockImplementation(
             (commandline: string, arguments_?: string[], options?: exec.ExecOptions) => {
                 if (commandline.endsWith("cargo")) {

@@ -71523,6 +71523,452 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
+/***/ 3124:
+/***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
+
+
+// EXPORTS
+__nccwpck_require__.d(__webpack_exports__, {
+  "K": () => (/* binding */ run)
+});
+
+;// CONCATENATED MODULE: external "node:path"
+const external_node_path_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:path");
+var external_node_path_default = /*#__PURE__*/__nccwpck_require__.n(external_node_path_namespaceObject);
+// EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
+var core = __nccwpck_require__(2186);
+// EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
+var exec = __nccwpck_require__(1514);
+// EXTERNAL MODULE: ./node_modules/@actions-rs-plus/core/dist/core.js
+var dist_core = __nccwpck_require__(4543);
+;// CONCATENATED MODULE: ./src/schema.ts
+var AnnotationLevel;
+(function (AnnotationLevel) {
+    AnnotationLevel[AnnotationLevel["Error"] = 0] = "Error";
+    AnnotationLevel[AnnotationLevel["Warning"] = 1] = "Warning";
+    AnnotationLevel[AnnotationLevel["Notice"] = 2] = "Notice";
+})(AnnotationLevel || (AnnotationLevel = {}));
+
+;// CONCATENATED MODULE: ./src/output-parser.ts
+
+
+
+class OutputParser {
+    _workingDirectory;
+    _uniqueAnnotations;
+    _stats;
+    constructor(workingDirectory) {
+        this._workingDirectory = workingDirectory ?? null;
+        this._uniqueAnnotations = new Map();
+        this._stats = {
+            ice: 0,
+            error: 0,
+            warning: 0,
+            note: 0,
+            help: 0,
+        };
+    }
+    get stats() {
+        return this._stats;
+    }
+    get annotations() {
+        return [...this._uniqueAnnotations.values()];
+    }
+    tryParseClippyLine(line) {
+        // eslint-disable-next-line @typescript-eslint/init-declarations
+        let contents;
+        try {
+            contents = JSON.parse(line);
+        }
+        catch {
+            core.debug("Not a JSON, ignoring it");
+            return;
+        }
+        if (contents.reason !== "compiler-message") {
+            core.debug(`Unexpected reason field, ignoring it: ${contents.reason}`);
+            return;
+        }
+        if (contents.message?.code === undefined || contents.message.code === null) {
+            core.debug("Message code is missing, ignoring it");
+            return;
+        }
+        const cargoMessage = contents;
+        const parsedAnnotation = this.makeAnnotation(cargoMessage);
+        const key = JSON.stringify(parsedAnnotation);
+        if (this._uniqueAnnotations.has(key)) {
+            return;
+        }
+        switch (contents.message.level) {
+            case "help": {
+                this._stats.help += 1;
+                break;
+            }
+            case "note": {
+                this._stats.note += 1;
+                break;
+            }
+            case "warning": {
+                this._stats.warning += 1;
+                break;
+            }
+            case "error": {
+                this._stats.error += 1;
+                break;
+            }
+            case "error: internal compiler error": {
+                this._stats.ice += 1;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+        this._uniqueAnnotations.set(key, parsedAnnotation);
+    }
+    static parseLevel(level) {
+        switch (level) {
+            case "help":
+            case "note": {
+                return AnnotationLevel.Notice;
+            }
+            case "warning": {
+                return AnnotationLevel.Warning;
+            }
+            default: {
+                return AnnotationLevel.Error;
+            }
+        }
+    }
+    /// Convert parsed JSON line into the GH annotation object
+    ///
+    /// https://developer.github.com/v3/checks/runs/#annotations-object
+    makeAnnotation(contents) {
+        const primarySpan = contents.message.spans.find((span) => {
+            return span.is_primary;
+        });
+        // TODO: Handle it properly
+        if (primarySpan === undefined) {
+            throw new Error("Unable to find primary span for message");
+        }
+        let path = primarySpan.file_name;
+        if (this._workingDirectory !== null) {
+            path = external_node_path_default().join(this._workingDirectory, path);
+        }
+        const annotation = {
+            level: OutputParser.parseLevel(contents.message.level),
+            message: contents.message.rendered,
+            properties: {
+                file: path,
+                startLine: primarySpan.line_start,
+                endLine: primarySpan.line_end,
+                title: contents.message.message,
+            },
+        };
+        // Omit these parameters if `start_line` and `end_line` have different values.
+        if (primarySpan.line_start === primarySpan.line_end) {
+            annotation.properties.startColumn = primarySpan.column_start;
+            annotation.properties.endColumn = primarySpan.column_end;
+        }
+        return annotation;
+    }
+}
+
+;// CONCATENATED MODULE: ./src/reporter.ts
+
+
+async function report(stats, annotations, context) {
+    for (const annotation of annotations) {
+        switch (annotation.level) {
+            case AnnotationLevel.Error: {
+                core.error(annotation.message, annotation.properties);
+                break;
+            }
+            case AnnotationLevel.Notice: {
+                core.notice(annotation.message, annotation.properties);
+                break;
+            }
+            case AnnotationLevel.Warning: {
+                core.warning(annotation.message, annotation.properties);
+                break;
+            }
+        }
+    }
+    core.summary.addHeading("Clippy summary", 2);
+    core.summary.addTable([
+        [
+            {
+                header: true,
+                data: "Message level",
+            },
+            {
+                header: true,
+                data: "Amount",
+            },
+        ],
+        [
+            {
+                data: "Internal compiler error",
+            },
+            {
+                data: stats.ice.toString(),
+            },
+        ],
+        [
+            {
+                data: "Error",
+            },
+            {
+                data: stats.error.toString(),
+            },
+        ],
+        [
+            {
+                data: "Warning",
+            },
+            {
+                data: stats.warning.toString(),
+            },
+        ],
+        [
+            {
+                data: "Note",
+            },
+            {
+                data: stats.note.toString(),
+            },
+        ],
+        [
+            {
+                data: "Help",
+            },
+            {
+                data: stats.help.toString(),
+            },
+        ],
+    ]);
+    core.summary.addHeading("Versions", 2);
+    core.summary.addList([context.rustc, context.cargo, context.clippy]);
+    await core.summary.write();
+}
+
+;// CONCATENATED MODULE: ./src/clippy.ts
+
+
+
+
+
+
+async function buildContext(program, toolchain) {
+    const context = {
+        cargo: "",
+        clippy: "",
+        rustc: "",
+    };
+    await Promise.all([
+        exec.exec("rustc", buildToolchainArguments(toolchain, ["-V"]), {
+            listeners: {
+                stdout: (buffer) => {
+                    return (context.rustc = buffer.toString().trim());
+                },
+            },
+            silent: false,
+        }),
+        program.call(buildToolchainArguments(toolchain, ["-V"]), {
+            listeners: {
+                stdout: (buffer) => {
+                    return (context.cargo = buffer.toString().trim());
+                },
+            },
+            silent: false,
+        }),
+        program.call(buildToolchainArguments(toolchain, ["clippy", "-V"]), {
+            listeners: {
+                stdout: (buffer) => {
+                    return (context.clippy = buffer.toString().trim());
+                },
+            },
+            silent: false,
+        }),
+    ]);
+    return context;
+}
+async function runClippy(actionInput, program) {
+    const arguments_ = buildClippyArguments(actionInput);
+    const outputParser = new OutputParser();
+    const options = {
+        failOnStdErr: false,
+        ignoreReturnCode: true,
+        listeners: {
+            stdline: (line) => {
+                outputParser.tryParseClippyLine(line);
+            },
+        },
+    };
+    if (actionInput.workingDirectory !== undefined && actionInput.workingDirectory !== "") {
+        options.cwd = external_node_path_default().join(process.cwd(), actionInput.workingDirectory);
+    }
+    let exitCode = 0;
+    try {
+        core.startGroup("Executing cargo clippy (JSON output)");
+        exitCode = await program.call(arguments_, options);
+    }
+    finally {
+        core.endGroup();
+    }
+    return {
+        stats: outputParser.stats,
+        annotations: outputParser.annotations,
+        exitCode,
+    };
+}
+function getProgram(useCross) {
+    if (useCross) {
+        return dist_core.Cross.getOrInstall();
+    }
+    else {
+        return dist_core.Cargo.get();
+    }
+}
+async function run(actionInput) {
+    const program = await getProgram(actionInput.useCross);
+    const context = await buildContext(program, actionInput.toolchain);
+    const { stats, annotations, exitCode } = await runClippy(actionInput, program);
+    await report(stats, annotations, context);
+    if (exitCode !== 0) {
+        throw new Error(`Clippy had exited with the ${exitCode} exit code`);
+    }
+}
+function buildToolchainArguments(toolchain, after) {
+    const arguments_ = [];
+    if (toolchain !== undefined && toolchain !== "") {
+        arguments_.push(`+${toolchain}`);
+    }
+    arguments_.push(...after);
+    return arguments_;
+}
+function buildClippyArguments(actionInput) {
+    // Toolchain selection MUST go first in any condition!
+    return buildToolchainArguments(actionInput.toolchain, [
+        "clippy",
+        // `--message-format=json` should just right after the `cargo clippy`
+        // because usually people are adding the `-- -D warnings` at the end
+        // of arguments and it will mess up the output.
+        "--message-format=json",
+        // and the rest
+        ...actionInput.args,
+    ]);
+}
+
+
+/***/ }),
+
+/***/ 6144:
+/***/ ((module, __unused_webpack___webpack_exports__, __nccwpck_require__) => {
+
+__nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(2186);
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _clippy__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(3124);
+/* harmony import */ var _input__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(2461);
+
+
+
+async function main() {
+    try {
+        const actionInput = _input__WEBPACK_IMPORTED_MODULE_2__/* .get */ .U();
+        await (0,_clippy__WEBPACK_IMPORTED_MODULE_1__/* .run */ .K)(actionInput);
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(error.message);
+        }
+        else {
+            // use the magic of string templates
+            _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(String(error));
+        }
+    }
+}
+await main();
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } }, 1);
+
+/***/ }),
+
+/***/ 2461:
+/***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
+
+
+// EXPORTS
+__nccwpck_require__.d(__webpack_exports__, {
+  "U": () => (/* binding */ get)
+});
+
+// EXTERNAL MODULE: ./node_modules/@actions-rs-plus/core/dist/core.js
+var core = __nccwpck_require__(4543);
+;// CONCATENATED MODULE: ./node_modules/string-argv/index.js
+
+function parseArgsStringToArgv(value, env, file) {
+    // ([^\s'"]([^\s'"]*(['"])([^\3]*?)\3)+[^\s'"]*) Matches nested quotes until the first space outside of quotes
+    // [^\s'"]+ or Match if not a space ' or "
+    // (['"])([^\5]*?)\5 or Match "quoted text" without quotes
+    // `\3` and `\5` are a backreference to the quote style (' or ") captured
+    var myRegexp = /([^\s'"]([^\s'"]*(['"])([^\3]*?)\3)+[^\s'"]*)|[^\s'"]+|(['"])([^\5]*?)\5/gi;
+    var myString = value;
+    var myArray = [];
+    if (env) {
+        myArray.push(env);
+    }
+    if (file) {
+        myArray.push(file);
+    }
+    var match;
+    do {
+        // Each call to exec returns the next regex match as an array
+        match = myRegexp.exec(myString);
+        if (match !== null) {
+            // Index 1 in the array is the captured group if it exists
+            // Index 0 is the matched text, which we use if no captured group exists
+            myArray.push(firstString(match[1], match[6], match[0]));
+        }
+    } while (match !== null);
+    return myArray;
+}
+// Accepts any number of arguments, and returns the first one that is a string
+// (even an empty string)
+function firstString() {
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+    }
+    for (var i = 0; i < args.length; i++) {
+        var arg = args[i];
+        if (typeof arg === "string") {
+            return arg;
+        }
+    }
+}
+
+;// CONCATENATED MODULE: ./src/input.ts
+
+
+function get() {
+    let toolchain = core.input.getInput("toolchain");
+    if (toolchain.startsWith("+")) {
+        toolchain = toolchain.slice(1);
+    }
+    const workingDirectory = core.input.getInput("working-directory");
+    return {
+        args: parseArgsStringToArgv(core.input.getInput("args")),
+        useCross: core.input.getInputBool("use-cross"),
+        workingDirectory: workingDirectory === "" ? undefined : workingDirectory,
+        toolchain: toolchain === "" ? undefined : toolchain,
+    };
+}
+
+
+/***/ }),
+
 /***/ 9491:
 /***/ ((module) => {
 
@@ -82327,6 +82773,75 @@ module.exports = parseParams
 /******/ }
 /******/ 
 /************************************************************************/
+/******/ /* webpack/runtime/async module */
+/******/ (() => {
+/******/ 	var webpackQueues = typeof Symbol === "function" ? Symbol("webpack queues") : "__webpack_queues__";
+/******/ 	var webpackExports = typeof Symbol === "function" ? Symbol("webpack exports") : "__webpack_exports__";
+/******/ 	var webpackError = typeof Symbol === "function" ? Symbol("webpack error") : "__webpack_error__";
+/******/ 	var resolveQueue = (queue) => {
+/******/ 		if(queue && !queue.d) {
+/******/ 			queue.d = 1;
+/******/ 			queue.forEach((fn) => (fn.r--));
+/******/ 			queue.forEach((fn) => (fn.r-- ? fn.r++ : fn()));
+/******/ 		}
+/******/ 	}
+/******/ 	var wrapDeps = (deps) => (deps.map((dep) => {
+/******/ 		if(dep !== null && typeof dep === "object") {
+/******/ 			if(dep[webpackQueues]) return dep;
+/******/ 			if(dep.then) {
+/******/ 				var queue = [];
+/******/ 				queue.d = 0;
+/******/ 				dep.then((r) => {
+/******/ 					obj[webpackExports] = r;
+/******/ 					resolveQueue(queue);
+/******/ 				}, (e) => {
+/******/ 					obj[webpackError] = e;
+/******/ 					resolveQueue(queue);
+/******/ 				});
+/******/ 				var obj = {};
+/******/ 				obj[webpackQueues] = (fn) => (fn(queue));
+/******/ 				return obj;
+/******/ 			}
+/******/ 		}
+/******/ 		var ret = {};
+/******/ 		ret[webpackQueues] = x => {};
+/******/ 		ret[webpackExports] = dep;
+/******/ 		return ret;
+/******/ 	}));
+/******/ 	__nccwpck_require__.a = (module, body, hasAwait) => {
+/******/ 		var queue;
+/******/ 		hasAwait && ((queue = []).d = 1);
+/******/ 		var depQueues = new Set();
+/******/ 		var exports = module.exports;
+/******/ 		var currentDeps;
+/******/ 		var outerResolve;
+/******/ 		var reject;
+/******/ 		var promise = new Promise((resolve, rej) => {
+/******/ 			reject = rej;
+/******/ 			outerResolve = resolve;
+/******/ 		});
+/******/ 		promise[webpackExports] = exports;
+/******/ 		promise[webpackQueues] = (fn) => (queue && fn(queue), depQueues.forEach(fn), promise["catch"](x => {}));
+/******/ 		module.exports = promise;
+/******/ 		body((deps) => {
+/******/ 			currentDeps = wrapDeps(deps);
+/******/ 			var fn;
+/******/ 			var getResult = () => (currentDeps.map((d) => {
+/******/ 				if(d[webpackError]) throw d[webpackError];
+/******/ 				return d[webpackExports];
+/******/ 			}))
+/******/ 			var promise = new Promise((resolve) => {
+/******/ 				fn = () => (resolve(getResult));
+/******/ 				fn.r = 0;
+/******/ 				var fnQueue = (q) => (q !== queue && !depQueues.has(q) && (depQueues.add(q), q && !q.d && (fn.r++, q.push(fn))));
+/******/ 				currentDeps.map((dep) => (dep[webpackQueues](fnQueue)));
+/******/ 			});
+/******/ 			return fn.r ? promise : getResult();
+/******/ 		}, (err) => ((err ? reject(promise[webpackError] = err) : outerResolve(exports)), resolveQueue(queue)));
+/******/ 		queue && (queue.d = 0);
+/******/ 	};
+/******/ })();
+/******/ 
 /******/ /* webpack/runtime/compat get default export */
 /******/ (() => {
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -82361,419 +82876,12 @@ module.exports = parseParams
 /******/ if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = new URL('.', import.meta.url).pathname.slice(import.meta.url.match(/^file:\/\/\/\w:/) ? 1 : 0, -1) + "/";
 /******/ 
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
-
-// EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
-var core = __nccwpck_require__(2186);
-;// CONCATENATED MODULE: external "node:path"
-const external_node_path_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:path");
-var external_node_path_default = /*#__PURE__*/__nccwpck_require__.n(external_node_path_namespaceObject);
-// EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
-var exec = __nccwpck_require__(1514);
-// EXTERNAL MODULE: ./node_modules/@actions-rs-plus/core/dist/core.js
-var dist_core = __nccwpck_require__(4543);
-;// CONCATENATED MODULE: ./src/schema.ts
-var AnnotationLevel;
-(function (AnnotationLevel) {
-    AnnotationLevel[AnnotationLevel["Error"] = 0] = "Error";
-    AnnotationLevel[AnnotationLevel["Warning"] = 1] = "Warning";
-    AnnotationLevel[AnnotationLevel["Notice"] = 2] = "Notice";
-})(AnnotationLevel || (AnnotationLevel = {}));
-
-;// CONCATENATED MODULE: ./src/output-parser.ts
-
-
-
-class OutputParser {
-    _workingDirectory;
-    _uniqueAnnotations;
-    _stats;
-    constructor(workingDirectory) {
-        this._workingDirectory = workingDirectory ?? null;
-        this._uniqueAnnotations = new Map();
-        this._stats = {
-            ice: 0,
-            error: 0,
-            warning: 0,
-            note: 0,
-            help: 0,
-        };
-    }
-    get stats() {
-        return this._stats;
-    }
-    get annotations() {
-        return [...this._uniqueAnnotations.values()];
-    }
-    tryParseClippyLine(line) {
-        let contents;
-        try {
-            contents = JSON.parse(line);
-        }
-        catch {
-            core.debug("Not a JSON, ignoring it");
-            return;
-        }
-        if (contents.reason !== "compiler-message") {
-            core.debug(`Unexpected reason field, ignoring it: ${contents.reason}`);
-            return;
-        }
-        if (!contents.message?.code) {
-            core.debug("Message code is missing, ignoring it");
-            return;
-        }
-        const cargoMessage = contents;
-        const parsedAnnotation = this.makeAnnotation(cargoMessage);
-        const key = JSON.stringify(parsedAnnotation);
-        if (this._uniqueAnnotations.has(key)) {
-            return;
-        }
-        switch (contents.message.level) {
-            case "help": {
-                this._stats.help += 1;
-                break;
-            }
-            case "note": {
-                this._stats.note += 1;
-                break;
-            }
-            case "warning": {
-                this._stats.warning += 1;
-                break;
-            }
-            case "error": {
-                this._stats.error += 1;
-                break;
-            }
-            case "error: internal compiler error": {
-                this._stats.ice += 1;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-        this._uniqueAnnotations.set(key, parsedAnnotation);
-    }
-    static parseLevel(level) {
-        switch (level) {
-            case "help":
-            case "note": {
-                return AnnotationLevel.Notice;
-            }
-            case "warning": {
-                return AnnotationLevel.Warning;
-            }
-            default: {
-                return AnnotationLevel.Error;
-            }
-        }
-    }
-    /// Convert parsed JSON line into the GH annotation object
-    ///
-    /// https://developer.github.com/v3/checks/runs/#annotations-object
-    makeAnnotation(contents) {
-        const primarySpan = contents.message.spans.find((span) => {
-            return span.is_primary;
-        });
-        // TODO: Handle it properly
-        if (!primarySpan) {
-            throw new Error("Unable to find primary span for message");
-        }
-        let path = primarySpan.file_name;
-        if (this._workingDirectory) {
-            path = external_node_path_default().join(this._workingDirectory, path);
-        }
-        const annotation = {
-            level: OutputParser.parseLevel(contents.message.level),
-            message: contents.message.rendered,
-            properties: {
-                file: path,
-                startLine: primarySpan.line_start,
-                endLine: primarySpan.line_end,
-                title: contents.message.message,
-            },
-        };
-        // Omit these parameters if `start_line` and `end_line` have different values.
-        if (primarySpan.line_start === primarySpan.line_end) {
-            annotation.properties.startColumn = primarySpan.column_start;
-            annotation.properties.endColumn = primarySpan.column_end;
-        }
-        return annotation;
-    }
-}
-
-;// CONCATENATED MODULE: ./src/reporter.ts
-
-
-class Reporter {
-    async report(stats, annotations, context) {
-        for (const annotation of annotations) {
-            switch (annotation.level) {
-                case AnnotationLevel.Error: {
-                    core.error(annotation.message, annotation.properties);
-                    break;
-                }
-                case AnnotationLevel.Notice: {
-                    core.notice(annotation.message, annotation.properties);
-                    break;
-                }
-                case AnnotationLevel.Warning: {
-                    core.warning(annotation.message, annotation.properties);
-                    break;
-                }
-            }
-        }
-        core.summary.addHeading("Clippy summary", 2);
-        core.summary.addTable([
-            [
-                {
-                    header: true,
-                    data: "Message level",
-                },
-                {
-                    header: true,
-                    data: "Amount",
-                },
-            ],
-            [
-                {
-                    data: "Internal compiler error",
-                },
-                {
-                    data: stats.ice.toString(),
-                },
-            ],
-            [
-                {
-                    data: "Error",
-                },
-                {
-                    data: stats.error.toString(),
-                },
-            ],
-            [
-                {
-                    data: "Warning",
-                },
-                {
-                    data: stats.warning.toString(),
-                },
-            ],
-            [
-                {
-                    data: "Note",
-                },
-                {
-                    data: stats.note.toString(),
-                },
-            ],
-            [
-                {
-                    data: "Help",
-                },
-                {
-                    data: stats.help.toString(),
-                },
-            ],
-        ]);
-        core.summary.addHeading("Versions", 2);
-        core.summary.addList([context.rustc, context.cargo, context.clippy]);
-        await core.summary.write();
-    }
-}
-
-;// CONCATENATED MODULE: ./src/clippy.ts
-
-
-
-
-
-
-async function buildContext(program, toolchain) {
-    const context = {
-        cargo: "",
-        clippy: "",
-        rustc: "",
-    };
-    await Promise.all([
-        exec.exec("rustc", buildToolchainArguments(toolchain, ["-V"]), {
-            listeners: {
-                stdout: (buffer) => {
-                    return (context.rustc = buffer.toString().trim());
-                },
-            },
-            silent: false,
-        }),
-        program.call(buildToolchainArguments(toolchain, ["-V"]), {
-            listeners: {
-                stdout: (buffer) => {
-                    return (context.cargo = buffer.toString().trim());
-                },
-            },
-            silent: false,
-        }),
-        program.call(buildToolchainArguments(toolchain, ["clippy", "-V"]), {
-            listeners: {
-                stdout: (buffer) => {
-                    return (context.clippy = buffer.toString().trim());
-                },
-            },
-            silent: false,
-        }),
-    ]);
-    return context;
-}
-async function runClippy(actionInput, program) {
-    const arguments_ = buildClippyArguments(actionInput);
-    const outputParser = new OutputParser();
-    const options = {
-        failOnStdErr: false,
-        ignoreReturnCode: true,
-        listeners: {
-            stdline: (line) => {
-                outputParser.tryParseClippyLine(line);
-            },
-        },
-    };
-    if (actionInput.workingDirectory !== undefined && actionInput.workingDirectory !== "") {
-        options.cwd = external_node_path_default().join(process.cwd(), actionInput.workingDirectory);
-    }
-    let exitCode = 0;
-    try {
-        core.startGroup("Executing cargo clippy (JSON output)");
-        exitCode = await program.call(arguments_, options);
-    }
-    finally {
-        core.endGroup();
-    }
-    return {
-        stats: outputParser.stats,
-        annotations: outputParser.annotations,
-        exitCode,
-    };
-}
-function getProgram(useCross) {
-    if (useCross) {
-        return dist_core.Cross.getOrInstall();
-    }
-    else {
-        return dist_core.Cargo.get();
-    }
-}
-async function run(actionInput) {
-    const program = await getProgram(actionInput.useCross);
-    const context = await buildContext(program, actionInput.toolchain);
-    const { stats, annotations, exitCode } = await runClippy(actionInput, program);
-    await new Reporter().report(stats, annotations, context);
-    if (exitCode !== 0) {
-        throw new Error(`Clippy had exited with the ${exitCode} exit code`);
-    }
-}
-function buildToolchainArguments(toolchain, after) {
-    const arguments_ = [];
-    if (toolchain !== undefined && toolchain !== "") {
-        arguments_.push(`+${toolchain}`);
-    }
-    arguments_.push(...after);
-    return arguments_;
-}
-function buildClippyArguments(actionInput) {
-    // Toolchain selection MUST go first in any condition!
-    return buildToolchainArguments(actionInput.toolchain, [
-        "clippy",
-        // `--message-format=json` should just right after the `cargo clippy`
-        // because usually people are adding the `-- -D warnings` at the end
-        // of arguments and it will mess up the output.
-        "--message-format=json",
-        // and the rest
-        ...actionInput.args,
-    ]);
-}
-
-;// CONCATENATED MODULE: ./node_modules/string-argv/index.js
-
-function parseArgsStringToArgv(value, env, file) {
-    // ([^\s'"]([^\s'"]*(['"])([^\3]*?)\3)+[^\s'"]*) Matches nested quotes until the first space outside of quotes
-    // [^\s'"]+ or Match if not a space ' or "
-    // (['"])([^\5]*?)\5 or Match "quoted text" without quotes
-    // `\3` and `\5` are a backreference to the quote style (' or ") captured
-    var myRegexp = /([^\s'"]([^\s'"]*(['"])([^\3]*?)\3)+[^\s'"]*)|[^\s'"]+|(['"])([^\5]*?)\5/gi;
-    var myString = value;
-    var myArray = [];
-    if (env) {
-        myArray.push(env);
-    }
-    if (file) {
-        myArray.push(file);
-    }
-    var match;
-    do {
-        // Each call to exec returns the next regex match as an array
-        match = myRegexp.exec(myString);
-        if (match !== null) {
-            // Index 1 in the array is the captured group if it exists
-            // Index 0 is the matched text, which we use if no captured group exists
-            myArray.push(firstString(match[1], match[6], match[0]));
-        }
-    } while (match !== null);
-    return myArray;
-}
-// Accepts any number of arguments, and returns the first one that is a string
-// (even an empty string)
-function firstString() {
-    var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-    }
-    for (var i = 0; i < args.length; i++) {
-        var arg = args[i];
-        if (typeof arg === "string") {
-            return arg;
-        }
-    }
-}
-
-;// CONCATENATED MODULE: ./src/input.ts
-
-
-function get() {
-    let toolchain = dist_core.input.getInput("toolchain");
-    if (toolchain.startsWith("+")) {
-        toolchain = toolchain.slice(1);
-    }
-    return {
-        args: parseArgsStringToArgv(dist_core.input.getInput("args")),
-        useCross: dist_core.input.getInputBool("use-cross"),
-        workingDirectory: dist_core.input.getInput("working-directory") || undefined,
-        toolchain: toolchain || undefined,
-    };
-}
-
-;// CONCATENATED MODULE: ./src/index.ts
-
-
-
-async function main() {
-    try {
-        const actionInput = get();
-        await run(actionInput);
-    }
-    catch (error) {
-        if (error instanceof Error) {
-            core.setFailed(error.message);
-        }
-        else {
-            // use the magic of string templates
-            core.setFailed(String(error));
-        }
-    }
-}
-void main();
-
-})();
-
+/******/ 
+/******/ // startup
+/******/ // Load entry module and return exports
+/******/ // This entry module used 'module' so it can't be inlined
+/******/ var __webpack_exports__ = __nccwpck_require__(6144);
+/******/ __webpack_exports__ = await __webpack_exports__;
+/******/ 
 
 //# sourceMappingURL=index.js.map

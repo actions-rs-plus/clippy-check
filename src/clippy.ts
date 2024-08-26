@@ -8,7 +8,7 @@ import type { BaseProgram } from "@actions-rs-plus/core/dist/commands/base-progr
 
 import type * as input from "@/input";
 import { OutputParser } from "@/output-parser";
-import { Reporter } from "@/reporter";
+import { report } from "@/reporter";
 import type { AnnotationWithMessageAndLevel, Context, Stats } from "@/schema";
 
 interface ClippyResult {
@@ -103,7 +103,7 @@ export async function run(actionInput: input.ParsedInput): Promise<void> {
 
     const { stats, annotations, exitCode } = await runClippy(actionInput, program);
 
-    await new Reporter().report(stats, annotations, context);
+    await report(stats, annotations, context);
 
     if (exitCode !== 0) {
         throw new Error(`Clippy had exited with the ${exitCode} exit code`);

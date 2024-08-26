@@ -16,10 +16,12 @@ export function get(): ParsedInput {
         toolchain = toolchain.slice(1);
     }
 
+    const workingDirectory = input.getInput("working-directory");
+
     return {
         args: stringArgv(input.getInput("args")),
         useCross: input.getInputBool("use-cross"),
-        workingDirectory: input.getInput("working-directory") || undefined,
-        toolchain: toolchain || undefined,
+        workingDirectory: workingDirectory === "" ? undefined : workingDirectory,
+        toolchain: toolchain === "" ? undefined : toolchain,
     };
 }

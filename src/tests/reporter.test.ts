@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { Reporter } from "@/reporter";
+import { report } from "@/reporter";
 import { AnnotationLevel } from "@/schema";
 
 describe("reporter", () => {
@@ -9,10 +9,8 @@ describe("reporter", () => {
     });
 
     it("works", async () => {
-        const r = new Reporter();
-
         await expect(
-            r.report(
+            report(
                 {
                     error: 0,
                     help: 0,

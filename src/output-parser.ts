@@ -31,9 +31,10 @@ export class OutputParser {
     }
 
     public tryParseClippyLine(line: string): void {
+        // eslint-disable-next-line @typescript-eslint/init-declarations
         let contents: MaybeCargoMessage;
         try {
-            contents = JSON.parse(line);
+            contents = JSON.parse(line) as MaybeCargoMessage;
         } catch {
             core.debug("Not a JSON, ignoring it");
             return;
@@ -44,7 +45,7 @@ export class OutputParser {
             return;
         }
 
-        if (!contents.message?.code) {
+        if (contents.message?.code === undefined || contents.message.code === null) {
             core.debug("Message code is missing, ignoring it");
             return;
         }
@@ -112,13 +113,13 @@ export class OutputParser {
         });
 
         // TODO: Handle it properly
-        if (!primarySpan) {
+        if (primarySpan === undefined) {
             throw new Error("Unable to find primary span for message");
         }
 
         let path = primarySpan.file_name;
 
-        if (this._workingDirectory) {
+        if (this._workingDirectory !== null) {
             path = nodePath.join(this._workingDirectory, path);
         }
 
