@@ -81998,113 +81998,122 @@ __nccwpck_require__.d(input_namespaceObject, {
 // EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
 var lib_github = __nccwpck_require__(5438);
 ;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/checks.js
+var __defProp = Object.defineProperty;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 
-/**
- * Thin wrapper around the GitHub Checks API
- */
 class Check {
-    client;
-    checkName;
-    checkId;
-    constructor(client, checkName, checkId) {
-        this.client = client;
-        this.checkName = checkName;
-        this.checkId = checkId;
-    }
-    /**
-     * Starts a new Check and returns check ID.
-     */
-    static async startCheck(client, checkName, status = "in_progress") {
-        const { owner, repo } = github.context.repo;
-        const response = await client.rest.checks.create({
-            owner,
-            repo,
-            name: checkName,
-            head_sha: github.context.sha,
-            status,
-        });
-        // TODO: Check for errors
-        return new Check(client, checkName, response.data.id);
-    }
-    // TODO:
-    //     public async sendAnnotations(annotations: Array<octokit.ChecksCreateParamsOutputAnnotations>): Promise<void> {
-    //     }
-    async finishCheck(conclusion, output) {
-        const { owner, repo } = github.context.repo;
-        // TODO: Check for errors
-        await this.client.rest.checks.update({
-            owner,
-            repo,
-            name: this.checkName,
-            check_run_id: this.checkId,
-            status: "completed",
-            conclusion,
-            completed_at: new Date().toISOString(),
-            output,
-        });
-    }
-    async cancelCheck() {
-        const { owner, repo } = github.context.repo;
-        // TODO: Check for errors
-        await this.client.rest.checks.update({
-            owner,
-            repo,
-            name: this.checkName,
-            check_run_id: this.checkId,
-            status: "completed",
-            conclusion: "cancelled",
-            completed_at: new Date().toISOString(),
-            output: {
-                title: this.checkName,
-                summary: "Unhandled error",
-                text: "Check was cancelled due to unhandled error. Check the Action logs for details.",
-            },
-        });
-    }
+  constructor(client, checkName, checkId) {
+    __publicField(this, "client");
+    __publicField(this, "checkName");
+    __publicField(this, "checkId");
+    this.client = client;
+    this.checkName = checkName;
+    this.checkId = checkId;
+  }
+  /**
+   * Starts a new Check and returns check ID.
+   */
+  static async startCheck(client, checkName, status = "in_progress") {
+    const { owner, repo } = github.context.repo;
+    const response = await client.rest.checks.create({
+      owner,
+      repo,
+      name: checkName,
+      head_sha: github.context.sha,
+      status
+    });
+    return new Check(client, checkName, response.data.id);
+  }
+  // TODO:
+  //     public async sendAnnotations(annotations: Array<octokit.ChecksCreateParamsOutputAnnotations>): Promise<void> {
+  //     }
+  async finishCheck(conclusion, output) {
+    const { owner, repo } = github.context.repo;
+    await this.client.rest.checks.update({
+      owner,
+      repo,
+      name: this.checkName,
+      check_run_id: this.checkId,
+      status: "completed",
+      conclusion,
+      completed_at: (/* @__PURE__ */ new Date()).toISOString(),
+      output
+    });
+  }
+  async cancelCheck() {
+    const { owner, repo } = github.context.repo;
+    await this.client.rest.checks.update({
+      owner,
+      repo,
+      name: this.checkName,
+      check_run_id: this.checkId,
+      status: "completed",
+      conclusion: "cancelled",
+      completed_at: (/* @__PURE__ */ new Date()).toISOString(),
+      output: {
+        title: this.checkName,
+        summary: "Unhandled error",
+        text: "Check was cancelled due to unhandled error. Check the Action logs for details."
+      }
+    });
+  }
 }
+
 //# sourceMappingURL=checks.js.map
+
 // EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
-var lib_exec = __nccwpck_require__(1514);
+var exec = __nccwpck_require__(1514);
 ;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/commands/base-program.js
+var base_program_defProp = Object.defineProperty;
+var base_program_defNormalProp = (obj, key, value) => key in obj ? base_program_defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var base_program_publicField = (obj, key, value) => base_program_defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 
 class BaseProgram {
-    path;
-    constructor(path) {
-        this.path = path;
-    }
-    call(arguments_, options) {
-        return lib_exec.exec(this.path, arguments_, options);
-    }
+  constructor(path) {
+    base_program_publicField(this, "path");
+    this.path = path;
+  }
+  call(arguments_, options) {
+    return exec.exec(this.path, arguments_, options);
+  }
 }
+
 //# sourceMappingURL=base-program.js.map
+
 // EXTERNAL MODULE: external "node:path"
 var external_node_path_ = __nccwpck_require__(9411);
 // EXTERNAL MODULE: ./node_modules/@actions/cache/lib/cache.js
 var cache = __nccwpck_require__(7799);
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
-var lib_core = __nccwpck_require__(2186);
+var core = __nccwpck_require__(2186);
 // EXTERNAL MODULE: ./node_modules/@actions/io/lib/io.js
-var lib_io = __nccwpck_require__(7436);
+var io = __nccwpck_require__(7436);
 // EXTERNAL MODULE: ./node_modules/@actions/http-client/lib/index.js
 var lib = __nccwpck_require__(6255);
 ;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/commands/crates.js
 
 async function resolveVersion(crate) {
-    const url = `https://crates.io/api/v1/crates/${crate}`;
-    const client = new lib.HttpClient("@actions-rs-plus (https://github.com/actions-rs-plus/)");
-    const response = await client.getJson(url);
-    if (response.result === null) {
-        throw new Error(`Unable to fetch latest crate version of "${crate}"`);
-    }
-    if ("errors" in response.result) {
-        throw new Error(`Unable to fetch latest crate version of "${crate}", server returned ${JSON.stringify(response.result, null, 2)}`);
-    }
-    if (response.result.crate?.newest_version === undefined) {
-        throw new Error(`Unable to fetch latest crate version of "${crate}"`);
-    }
-    return response.result.crate.newest_version;
+  var _a;
+  const url = `https://crates.io/api/v1/crates/${crate}`;
+  const client = new lib.HttpClient("@actions-rs-plus (https://github.com/actions-rs-plus/)");
+  const response = await client.getJson(url);
+  if (response.result === null) {
+    throw new Error(`Unable to fetch latest crate version of "${crate}"`);
+  }
+  if ("errors" in response.result) {
+    throw new Error(
+      `Unable to fetch latest crate version of "${crate}", server returned ${JSON.stringify(response.result, null, 2)}`
+    );
+  }
+  if (((_a = response.result.crate) == null ? void 0 : _a.newest_version) === void 0) {
+    throw new Error(`Unable to fetch latest crate version of "${crate}"`);
+  }
+  return response.result.crate.newest_version;
 }
+
 //# sourceMappingURL=crates.js.map
+
 ;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/commands/cargo.js
 
 
@@ -82113,118 +82122,113 @@ async function resolveVersion(crate) {
 
 
 class Cargo extends BaseProgram {
-    constructor(pathToCargo) {
-        super(pathToCargo);
+  constructor(pathToCargo) {
+    super(pathToCargo);
+  }
+  static async get() {
+    try {
+      const pathToCargo = await io.which("cargo", true);
+      return new Cargo(pathToCargo);
+    } catch (error) {
+      core.error(
+        "cargo is not installed by default for some virtual environments, see https://help.github.com/en/articles/software-in-virtual-environments-for-github-actions"
+      );
+      core.error("To install it, use this action: https://github.com/actions-rs/toolchain");
+      throw error;
     }
-    static async get() {
+  }
+  /**
+   * Executes `cargo install ${program}`.
+   *
+   * TODO: Caching ability implementation is blocked,
+   * see https://github.com/actions-rs/core/issues/31
+   * As for now it acts just like an stub and simply installs the program
+   * on each call.
+   *
+   * `version` argument could be either actual program version or `"latest"` string,
+   * which can be provided by user input.
+   *
+   * If `version` is `undefined` or `"latest"`, this method could call the Crates.io API,
+   * fetch the latest version and search for it in cache.
+   * TODO: Actually implement this.
+   *
+   * ## Returns
+   *
+   * Path to the installed program.
+   * As the $PATH should be already tuned properly at this point,
+   * returned value at the moment is simply equal to the `program` argument.
+   */
+  async installCached(program, version, primaryKey, restoreKeys = []) {
+    if (version === "latest") {
+      version = await resolveVersion(program);
+    }
+    if (primaryKey === void 0) {
+      return await this.install(program, version);
+    } else {
+      const paths = [external_node_path_.join(external_node_path_.dirname(this.path), program)];
+      const versionForKey = version === void 0 ? "" : `-${version}`;
+      const programKey = `${program}${versionForKey}-${primaryKey}`;
+      const programRestoreKeys = restoreKeys.map((key) => {
+        return `${program}${versionForKey}-${key}`;
+      });
+      const cacheKey = await cache.restoreCache(paths, programKey, programRestoreKeys);
+      if (cacheKey === void 0) {
+        const result = await this.install(program, version);
         try {
-            const pathToCargo = await lib_io.which("cargo", true);
-            return new Cargo(pathToCargo);
-        }
-        catch (error) {
-            lib_core.error("cargo is not installed by default for some virtual environments, see https://help.github.com/en/articles/software-in-virtual-environments-for-github-actions");
-            lib_core.error("To install it, use this action: https://github.com/actions-rs/toolchain");
-            // eslint-disable-next-line @typescript-eslint/only-throw-error
+          core.info(`Caching \`${program}\` with key ${programKey}`);
+          await cache.saveCache(paths, programKey);
+        } catch (error) {
+          if (error instanceof Error) {
+            if (error.name === cache.ValidationError.name) {
+              throw error;
+            } else if (error.name === cache.ReserveCacheError.name) {
+              core.warning(error.message);
+            }
+          } else if (typeof error === "string") {
+            core.warning(error);
+          } else {
             throw error;
+          }
         }
-    }
-    /**
-     * Executes `cargo install ${program}`.
-     *
-     * TODO: Caching ability implementation is blocked,
-     * see https://github.com/actions-rs/core/issues/31
-     * As for now it acts just like an stub and simply installs the program
-     * on each call.
-     *
-     * `version` argument could be either actual program version or `"latest"` string,
-     * which can be provided by user input.
-     *
-     * If `version` is `undefined` or `"latest"`, this method could call the Crates.io API,
-     * fetch the latest version and search for it in cache.
-     * TODO: Actually implement this.
-     *
-     * ## Returns
-     *
-     * Path to the installed program.
-     * As the $PATH should be already tuned properly at this point,
-     * returned value at the moment is simply equal to the `program` argument.
-     */
-    async installCached(program, version, primaryKey, restoreKeys = []) {
-        if (version === "latest") {
-            version = await resolveVersion(program);
-        }
-        if (primaryKey === undefined) {
-            return await this.install(program, version);
-        }
-        else {
-            const paths = [external_node_path_.join(external_node_path_.dirname(this.path), program)];
-            const versionForKey = version === undefined ? "" : `-${version}`;
-            const programKey = `${program}${versionForKey}-${primaryKey}`;
-            const programRestoreKeys = restoreKeys.map((key) => {
-                return `${program}${versionForKey}-${key}`;
-            });
-            const cacheKey = await cache.restoreCache(paths, programKey, programRestoreKeys);
-            if (cacheKey === undefined) {
-                const result = await this.install(program, version);
-                try {
-                    lib_core.info(`Caching \`${program}\` with key ${programKey}`);
-                    await cache.saveCache(paths, programKey);
-                }
-                catch (error) {
-                    if (error instanceof Error) {
-                        if (error.name === cache.ValidationError.name) {
-                            throw error;
-                        }
-                        else if (error.name === cache.ReserveCacheError.name) {
-                            lib_core.warning(error.message);
-                        }
-                    }
-                    else if (typeof error === "string") {
-                        lib_core.warning(error);
-                    }
-                    else {
-                        // eslint-disable-next-line @typescript-eslint/only-throw-error
-                        throw error;
-                    }
-                }
-                return result;
-            }
-            else {
-                lib_core.info(`Using cached \`${program}\` with version ${version ?? "installed-version"} from ${cacheKey}`);
-                return program;
-            }
-        }
-    }
-    async install(program, version) {
-        const arguments_ = ["install"];
-        if (version !== undefined && version !== "latest") {
-            arguments_.push("--version", version);
-        }
-        arguments_.push(program);
-        try {
-            lib_core.startGroup(`Installing "${program} = ${version ?? "latest"}"`);
-            await this.call(arguments_);
-        }
-        finally {
-            lib_core.endGroup();
-        }
+        return result;
+      } else {
+        core.info(
+          `Using cached \`${program}\` with version ${version ?? "installed-version"} from ${cacheKey}`
+        );
         return program;
+      }
     }
-    /**
-     * Find the cargo sub-command or install it
-     */
-    async findOrInstall(program, version) {
-        try {
-            void (await lib_io.which(program, true));
-            return program;
-        }
-        catch {
-            lib_core.info(`${program} is not installed, installing it now`);
-        }
-        return await this.installCached(program, version);
+  }
+  async install(program, version) {
+    const arguments_ = ["install"];
+    if (version !== void 0 && version !== "latest") {
+      arguments_.push("--version", version);
     }
+    arguments_.push(program);
+    try {
+      core.startGroup(`Installing "${program} = ${version ?? "latest"}"`);
+      await this.call(arguments_);
+    } finally {
+      core.endGroup();
+    }
+    return program;
+  }
+  /**
+   * Find the cargo sub-command or install it
+   */
+  async findOrInstall(program, version) {
+    try {
+      void await io.which(program, true);
+      return program;
+    } catch {
+      core.info(`${program} is not installed, installing it now`);
+    }
+    return await this.installCached(program, version);
+  }
 }
+
 //# sourceMappingURL=cargo.js.map
+
 // EXTERNAL MODULE: external "node:os"
 var external_node_os_ = __nccwpck_require__(612);
 ;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/commands/cross.js
@@ -82234,48 +82238,37 @@ var external_node_os_ = __nccwpck_require__(612);
 
 
 class Cross extends BaseProgram {
-    constructor(path) {
-        super(path);
+  constructor(path) {
+    super(path);
+  }
+  static async getOrInstall() {
+    try {
+      return await Cross.get();
+    } catch (error) {
+      core.debug(String(error));
+      return await Cross.install();
     }
-    static async getOrInstall() {
-        try {
-            return await Cross.get();
-        }
-        catch (error) {
-            lib_core.debug(String(error));
-            return await Cross.install();
-        }
+  }
+  static async get() {
+    const path = await io.which("cross", true);
+    return new Cross(path);
+  }
+  static async install(version) {
+    const cargo = await Cargo.get();
+    const cwd = process.cwd();
+    process.chdir(external_node_os_.tmpdir());
+    try {
+      const crossPath = await cargo.installCached("cross", version);
+      return new Cross(crossPath);
+    } finally {
+      process.chdir(cwd);
+      core.endGroup();
     }
-    static async get() {
-        const path = await lib_io.which("cross", true);
-        return new Cross(path);
-    }
-    static async install(version) {
-        const cargo = await Cargo.get();
-        // Somewhat new Rust is required to compile `cross`
-        // (TODO: Not sure what version exactly, should clarify)
-        // but if some action will set an override toolchain before this action called
-        // (ex. `@actions-rs/toolchain` with `toolchain: 1.31.0`)
-        // `cross` compilation will fail.
-        //
-        // In order to skip this problem and install `cross` globally
-        // using the pre-installed system Rust,
-        // we are going to jump to the tmpdir (skipping directory override that way)
-        // install `cross` from there and then jump back.
-        const cwd = process.cwd();
-        process.chdir(external_node_os_.tmpdir());
-        try {
-            const crossPath = await cargo.installCached("cross", version);
-            return new Cross(crossPath);
-        }
-        finally {
-            // It is important to chdir back!
-            process.chdir(cwd);
-            lib_core.endGroup();
-        }
-    }
+  }
 }
+
 //# sourceMappingURL=cross.js.map
+
 ;// CONCATENATED MODULE: external "node:fs"
 const external_node_fs_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:fs");
 // EXTERNAL MODULE: ./node_modules/@actions/tool-cache/lib/tool-cache.js
@@ -82283,6 +82276,9 @@ var tool_cache = __nccwpck_require__(7784);
 // EXTERNAL MODULE: ./node_modules/semver/index.js
 var node_modules_semver = __nccwpck_require__(1383);
 ;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/commands/rustup.js
+var rustup_defProp = Object.defineProperty;
+var rustup_defNormalProp = (obj, key, value) => key in obj ? rustup_defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var rustup_publicField = (obj, key, value) => rustup_defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 
 
 
@@ -82294,229 +82290,203 @@ var node_modules_semver = __nccwpck_require__(1383);
 const PROFILES_MIN_VERSION = "1.20.1";
 const COMPONENTS_MIN_VERSION = "1.20.1";
 class RustUp {
-    path;
-    constructor(exePath) {
-        this.path = exePath;
+  constructor(exePath) {
+    rustup_publicField(this, "path");
+    this.path = exePath;
+  }
+  static async getOrInstall() {
+    try {
+      return await RustUp.get();
+    } catch (error) {
+      core__default.debug(`Unable to find "rustup" executable, installing it now. Reason: ${String(error)}`);
+      return await RustUp.install();
     }
-    static async getOrInstall() {
-        try {
-            return await RustUp.get();
-        }
-        catch (error) {
-            core.debug(`Unable to find "rustup" executable, installing it now. Reason: ${String(error)}`);
-            return await RustUp.install();
-        }
+  }
+  // Will throw an error if `rustup` is not installed.
+  static async get() {
+    const exePath = await io__default.which("rustup", true);
+    return new RustUp(exePath);
+  }
+  static async install() {
+    const arguments_ = [
+      "--default-toolchain",
+      "none",
+      "-y"
+      // No need for the prompts (hard error from within the Docker containers)
+    ];
+    const platform = os.platform();
+    switch (platform) {
+      case "darwin":
+      case "linux": {
+        const rustupSh = await tc.downloadTool("https://sh.rustup.rs");
+        core__default.debug(`Executing chmod 755 on the ${rustupSh}`);
+        await promises.chmod(rustupSh, 493);
+        await exec__default.exec(rustupSh, arguments_);
+        break;
+      }
+      case "win32": {
+        const rustupExe = await tc.downloadTool("https://win.rustup.rs");
+        await exec__default.exec(rustupExe, arguments_);
+        break;
+      }
+      default: {
+        throw new Error(`Unknown platform ${platform}, can't install rustup`);
+      }
     }
-    // Will throw an error if `rustup` is not installed.
-    static async get() {
-        const exePath = await io.which("rustup", true);
-        return new RustUp(exePath);
+    core__default.addPath(path.join(process.env["HOME"], ".cargo", "bin"));
+    return new RustUp("rustup");
+  }
+  async installToolchain(name, options) {
+    const arguments_ = ["toolchain", "install", name];
+    if (options !== void 0) {
+      if (options.components !== void 0 && options.components.length > 0) {
+        for (const component of options.components) {
+          arguments_.push("--component", component);
+        }
+      }
+      if (options.noSelfUpdate === true) {
+        arguments_.push("--no-self-update");
+      }
+      if (options.allowDowngrade === true) {
+        arguments_.push("--allow-downgrade");
+      }
+      if (options.force === true) {
+        arguments_.push("--force");
+      }
     }
-    static async install() {
-        const arguments_ = [
-            "--default-toolchain",
-            "none",
-            "-y", // No need for the prompts (hard error from within the Docker containers)
-        ];
-        const platform = os.platform();
-        switch (platform) {
-            case "darwin":
-            case "linux": {
-                const rustupSh = await tc.downloadTool("https://sh.rustup.rs");
-                // While the `rustup-init.sh` is properly executed as is,
-                // when Action is running on the VM itself,
-                // it fails with `EACCES` when called in the Docker container.
-                // Adding the execution bit manually just in case.
-                // See: https://github.com/actions-rs/toolchain/pull/19#issuecomment-543358693
-                core.debug(`Executing chmod 755 on the ${rustupSh}`);
-                await fs.chmod(rustupSh, 0o755);
-                await exec.exec(rustupSh, arguments_);
-                break;
-            }
-            case "win32": {
-                const rustupExe = await tc.downloadTool("https://win.rustup.rs");
-                await exec.exec(rustupExe, arguments_);
-                break;
-            }
-            default: {
-                throw new Error(`Unknown platform ${platform}, can't install rustup`);
-            }
-        }
-        // `$HOME` should always be declared, so it is more to get the linters happy
-        core.addPath(path.join(process.env["HOME"], ".cargo", "bin")); // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        // Assuming it is in the $PATH already
-        return new RustUp("rustup");
+    await this.call(arguments_);
+    if ((options == null ? void 0 : options.default) === true) {
+      await this.call(["default", name]);
     }
-    async installToolchain(name, options) {
-        const arguments_ = ["toolchain", "install", name];
-        if (options !== undefined) {
-            if (options.components !== undefined && options.components.length > 0) {
-                for (const component of options.components) {
-                    arguments_.push("--component", component);
-                }
-            }
-            if (options.noSelfUpdate === true) {
-                arguments_.push("--no-self-update");
-            }
-            if (options.allowDowngrade === true) {
-                arguments_.push("--allow-downgrade");
-            }
-            if (options.force === true) {
-                arguments_.push("--force");
-            }
-        }
-        await this.call(arguments_);
-        if (options?.default === true) {
-            await this.call(["default", name]);
-        }
-        if (options?.override === true) {
-            await this.call(["override", "set", name]);
-        }
-        // TODO: Is there smth like Rust' `return Ok(())`?
-        return 0;
+    if ((options == null ? void 0 : options.override) === true) {
+      await this.call(["override", "set", name]);
     }
-    addTarget(name, forToolchain) {
-        const arguments_ = ["target", "add"];
-        if (forToolchain !== undefined) {
-            arguments_.push("--toolchain", forToolchain);
-        }
-        arguments_.push(name);
-        return this.call(arguments_);
+    return 0;
+  }
+  addTarget(name, forToolchain) {
+    const arguments_ = ["target", "add"];
+    if (forToolchain !== void 0) {
+      arguments_.push("--toolchain", forToolchain);
     }
-    async activeToolchain() {
-        const stdout = await this.callStdout(["show", "active-toolchain"]);
-        const split = stdout.split(" ", 2)[0];
-        if (split === undefined || split === "") {
-            throw new Error("Unable to determine active toolchain");
-        }
-        else {
-            return split;
-        }
+    arguments_.push(name);
+    return this.call(arguments_);
+  }
+  async activeToolchain() {
+    const stdout = await this.callStdout(["show", "active-toolchain"]);
+    const split = stdout.split(" ", 2)[0];
+    if (split === void 0 || split === "") {
+      throw new Error("Unable to determine active toolchain");
+    } else {
+      return split;
     }
-    async supportProfiles() {
-        const version = await this.version();
-        const supports = semver.gte(version, PROFILES_MIN_VERSION);
-        if (supports) {
-            core.info(`Installed rustup ${version} support profiles`);
-        }
-        else {
-            core.info(`Installed rustup ${version} does not support profiles, \
-expected at least ${PROFILES_MIN_VERSION}`);
-        }
-        return supports;
+  }
+  async supportProfiles() {
+    const version = await this.version();
+    const supports = semver.gte(version, PROFILES_MIN_VERSION);
+    if (supports) {
+      core__default.info(`Installed rustup ${version} support profiles`);
+    } else {
+      core__default.info(`Installed rustup ${version} does not support profiles, expected at least ${PROFILES_MIN_VERSION}`);
     }
-    async supportComponents() {
-        const version = await this.version();
-        const supports = semver.gte(version, COMPONENTS_MIN_VERSION);
-        if (supports) {
-            core.info(`Installed rustup ${version} support components`);
+    return supports;
+  }
+  async supportComponents() {
+    const version = await this.version();
+    const supports = semver.gte(version, COMPONENTS_MIN_VERSION);
+    if (supports) {
+      core__default.info(`Installed rustup ${version} support components`);
+    } else {
+      core__default.info(`Installed rustup ${version} does not support components, expected at least ${PROFILES_MIN_VERSION}`);
+    }
+    return supports;
+  }
+  /**
+   * Executes `rustup set profile ${name}`
+   *
+   * Note that it includes the check if currently installed rustup support profiles at all
+   */
+  setProfile(name) {
+    return this.call(["set", "profile", name]);
+  }
+  async version() {
+    const stdout = await this.callStdout(["-V"]);
+    const split = stdout.split(" ")[1];
+    if (split === void 0) {
+      throw new Error("Unable to determine version");
+    } else {
+      return split;
+    }
+  }
+  // rustup which `program`
+  async which(program) {
+    const stdout = await this.callStdout(["which", program]);
+    if (stdout === "") {
+      throw new Error(`Unable to find "${program}"`);
+    } else {
+      return stdout;
+    }
+  }
+  selfUpdate() {
+    return this.call(["self", "update"]);
+  }
+  call(arguments_, options) {
+    return exec__default.exec(this.path, arguments_, options);
+  }
+  /**
+   * Call the `rustup` and return an stdout
+   */
+  async callStdout(arguments_, options) {
+    let stdout = "";
+    const stdoutOptions = Object.assign({}, options, {
+      listeners: {
+        stdout: (buffer) => {
+          stdout += buffer.toString();
         }
-        else {
-            core.info(`Installed rustup ${version} does not support components, \
-expected at least ${PROFILES_MIN_VERSION}`);
-        }
-        return supports;
-    }
-    /**
-     * Executes `rustup set profile ${name}`
-     *
-     * Note that it includes the check if currently installed rustup support profiles at all
-     */
-    setProfile(name) {
-        return this.call(["set", "profile", name]);
-    }
-    async version() {
-        const stdout = await this.callStdout(["-V"]);
-        const split = stdout.split(" ")[1];
-        if (split === undefined) {
-            throw new Error("Unable to determine version");
-        }
-        else {
-            return split;
-        }
-    }
-    // rustup which `program`
-    async which(program) {
-        const stdout = await this.callStdout(["which", program]);
-        if (stdout === "") {
-            throw new Error(`Unable to find "${program}"`);
-        }
-        else {
-            return stdout;
-        }
-    }
-    selfUpdate() {
-        return this.call(["self", "update"]);
-    }
-    call(arguments_, options) {
-        return exec.exec(this.path, arguments_, options);
-    }
-    /**
-     * Call the `rustup` and return an stdout
-     */
-    async callStdout(arguments_, options) {
-        let stdout = "";
-        const stdoutOptions = Object.assign({}, options, {
-            listeners: {
-                stdout: (buffer) => {
-                    stdout += buffer.toString();
-                },
-            },
-        });
-        await this.call(arguments_, stdoutOptions);
-        return stdout;
-    }
+      }
+    });
+    await this.call(arguments_, stdoutOptions);
+    return stdout;
+  }
 }
+
 //# sourceMappingURL=rustup.js.map
+
 ;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/input.js
 
-/**
- * Workaround for a GitHub weird input naming.
- *
- * For input `all-features: true` it will generate the `INPUT_ALL-FEATURES: true`
- * env variable, which looks too weird.
- * Here we are trying to get proper name `INPUT_NO_DEFAULT_FEATURES` first,
- * and if it does not exist, trying the `INPUT_NO-DEFAULT-FEATURES`.
- **/
 function getInput(name, options) {
-    const inputFullName = name.replaceAll("-", "_");
-    const value = lib_core.getInput(inputFullName, options);
-    if (value.length > 0) {
-        return value;
-    }
-    return lib_core.getInput(name, options);
+  const inputFullName = name.replaceAll("-", "_");
+  const value = core.getInput(inputFullName, options);
+  if (value.length > 0) {
+    return value;
+  }
+  return core.getInput(name, options);
 }
 function getInputBool(name, options) {
-    const value = getInput(name, options);
-    if (value === "true" || value === "1") {
-        return true;
-    }
-    else {
-        return false;
-    }
+  const value = getInput(name, options);
+  if (value === "true" || value === "1") {
+    return true;
+  } else {
+    return false;
+  }
 }
 function getInputList(name, options) {
-    const raw = getInput(name, options);
-    return raw
-        .split(",")
-        .map((item) => {
-        return item.trim();
-    })
-        .filter((item) => {
-        return item.length > 0;
-    });
+  const raw = getInput(name, options);
+  return raw.split(",").map((item) => {
+    return item.trim();
+  }).filter((item) => {
+    return item.length > 0;
+  });
 }
 function getInputAsArray(name, options) {
-    return getInput(name, options)
-        .split("\n")
-        .map((s) => {
-        return s.trim();
-    })
-        .filter((x) => {
-        return x !== "";
-    });
+  return getInput(name, options).split("\n").map((s) => {
+    return s.trim();
+  }).filter((x) => {
+    return x !== "";
+  });
 }
+
 //# sourceMappingURL=input.js.map
+
 ;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/core.js
 
 
@@ -82524,7 +82494,9 @@ function getInputAsArray(name, options) {
 
 
 
+
 //# sourceMappingURL=core.js.map
+
 
 /***/ })
 
