@@ -1,15 +1,14 @@
 import * as core from "@actions/core";
 
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import * as clippy from "@/clippy";
 
-describe("index", () => {
-    beforeEach(() => {
-        vi.resetModules();
+vi.mock("@/clippy");
 
-        vi.mock("@/clippy");
-        vi.mock("@actions/core");
+describe("index", () => {
+    afterEach(() => {
+        vi.resetModules();
     });
 
     it("works", async () => {

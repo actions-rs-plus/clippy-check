@@ -1,13 +1,11 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { report } from "@/reporter";
 import { AnnotationLevel } from "@/schema";
 
-describe("reporter", () => {
-    beforeEach(() => {
-        vi.mock("@actions/core");
-    });
+vi.mock("@actions/core");
 
+describe("reporter", () => {
     it("works", async () => {
         await expect(
             report(
