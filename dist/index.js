@@ -1,774 +1,6 @@
 import './sourcemap-register.cjs';import { createRequire as __WEBPACK_EXTERNAL_createRequire } from "module";
 /******/ var __webpack_modules__ = ({
 
-/***/ 1189:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Check = void 0;
-const github = __importStar(__nccwpck_require__(5438));
-/**
- * Thin wrapper around the GitHub Checks API
- */
-class Check {
-    client;
-    checkName;
-    checkId;
-    constructor(client, checkName, checkId) {
-        this.client = client;
-        this.checkName = checkName;
-        this.checkId = checkId;
-    }
-    /**
-     * Starts a new Check and returns check ID.
-     */
-    static async startCheck(client, checkName, status = "in_progress") {
-        const { owner, repo } = github.context.repo;
-        const response = await client.rest.checks.create({
-            owner,
-            repo,
-            name: checkName,
-            head_sha: github.context.sha,
-            status,
-        });
-        // TODO: Check for errors
-        return new Check(client, checkName, response.data.id);
-    }
-    // TODO:
-    //     public async sendAnnotations(annotations: Array<octokit.ChecksCreateParamsOutputAnnotations>): Promise<void> {
-    //     }
-    async finishCheck(conclusion, output) {
-        const { owner, repo } = github.context.repo;
-        // TODO: Check for errors
-        await this.client.rest.checks.update({
-            owner,
-            repo,
-            name: this.checkName,
-            check_run_id: this.checkId,
-            status: "completed",
-            conclusion,
-            completed_at: new Date().toISOString(),
-            output,
-        });
-    }
-    async cancelCheck() {
-        const { owner, repo } = github.context.repo;
-        // TODO: Check for errors
-        await this.client.rest.checks.update({
-            owner,
-            repo,
-            name: this.checkName,
-            check_run_id: this.checkId,
-            status: "completed",
-            conclusion: "cancelled",
-            completed_at: new Date().toISOString(),
-            output: {
-                title: this.checkName,
-                summary: "Unhandled error",
-                text: "Check was cancelled due to unhandled error. Check the Action logs for details.",
-            },
-        });
-    }
-}
-exports.Check = Check;
-//# sourceMappingURL=checks.js.map
-
-/***/ }),
-
-/***/ 7070:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.BaseProgram = void 0;
-const exec = __importStar(__nccwpck_require__(1514));
-class BaseProgram {
-    path;
-    constructor(path) {
-        this.path = path;
-    }
-    call(args, options) {
-        return exec.exec(this.path, args, options);
-    }
-}
-exports.BaseProgram = BaseProgram;
-//# sourceMappingURL=base-program.js.map
-
-/***/ }),
-
-/***/ 9757:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Cargo = void 0;
-const path = __importStar(__nccwpck_require__(1017));
-const cache = __importStar(__nccwpck_require__(7799));
-const core = __importStar(__nccwpck_require__(2186));
-const io = __importStar(__nccwpck_require__(7436));
-const base_program_1 = __nccwpck_require__(7070);
-const crates_1 = __nccwpck_require__(1774);
-class Cargo extends base_program_1.BaseProgram {
-    constructor(pathToCargo) {
-        super(pathToCargo);
-    }
-    static async get() {
-        try {
-            const pathToCargo = await io.which("cargo", true);
-            return new Cargo(pathToCargo);
-        }
-        catch (error) {
-            core.error("cargo is not installed by default for some virtual environments, see https://help.github.com/en/articles/software-in-virtual-environments-for-github-actions");
-            core.error("To install it, use this action: https://github.com/actions-rs/toolchain");
-            throw error;
-        }
-    }
-    /**
-     * Executes `cargo install ${program}`.
-     *
-     * TODO: Caching ability implementation is blocked,
-     * see https://github.com/actions-rs/core/issues/31
-     * As for now it acts just like an stub and simply installs the program
-     * on each call.
-     *
-     * `version` argument could be either actual program version or `"latest"` string,
-     * which can be provided by user input.
-     *
-     * If `version` is `undefined` or `"latest"`, this method could call the Crates.io API,
-     * fetch the latest version and search for it in cache.
-     * TODO: Actually implement this.
-     *
-     * ## Returns
-     *
-     * Path to the installed program.
-     * As the $PATH should be already tuned properly at this point,
-     * returned value at the moment is simply equal to the `program` argument.
-     */
-    async installCached(program, version, primaryKey, restoreKeys = []) {
-        if (version === "latest") {
-            version = await (0, crates_1.resolveVersion)(program);
-        }
-        if (primaryKey) {
-            const paths = [path.join(path.dirname(this.path), program)];
-            const programKey = `${program}-${version}-${primaryKey}`;
-            const programRestoreKeys = restoreKeys.map((key) => {
-                return `${program}-${version}-${key}`;
-            });
-            const cacheKey = await cache.restoreCache(paths, programKey, programRestoreKeys);
-            if (cacheKey) {
-                core.info(`Using cached \`${program}\` with version ${version} from ${cacheKey}`);
-                return program;
-            }
-            else {
-                const res = await this.install(program, version);
-                try {
-                    core.info(`Caching \`${program}\` with key ${programKey}`);
-                    await cache.saveCache(paths, programKey);
-                }
-                catch (error) {
-                    if (error instanceof Error) {
-                        if (error.name === cache.ValidationError.name) {
-                            throw error;
-                        }
-                        else if (error.name === cache.ReserveCacheError.name) {
-                            core.warning(error.message);
-                        }
-                    }
-                    else if (typeof error === "string") {
-                        core.warning(error);
-                    }
-                    else {
-                        throw error;
-                    }
-                }
-                return res;
-            }
-        }
-        else {
-            return await this.install(program, version);
-        }
-    }
-    async install(program, version) {
-        const args = ["install"];
-        if (version && version !== "latest") {
-            args.push("--version");
-            args.push(version);
-        }
-        args.push(program);
-        try {
-            core.startGroup(`Installing "${program} = ${version ?? "latest"}"`);
-            await this.call(args);
-        }
-        finally {
-            core.endGroup();
-        }
-        return program;
-    }
-    /**
-     * Find the cargo sub-command or install it
-     */
-    async findOrInstall(program, version) {
-        try {
-            void (await io.which(program, true));
-            return program;
-        }
-        catch (error) {
-            core.info(`${program} is not installed, installing it now`);
-        }
-        return await this.installCached(program, version);
-    }
-}
-exports.Cargo = Cargo;
-//# sourceMappingURL=cargo.js.map
-
-/***/ }),
-
-/***/ 1774:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.resolveVersion = void 0;
-const http = __importStar(__nccwpck_require__(6255));
-async function resolveVersion(crate) {
-    const url = `https://crates.io/api/v1/crates/${crate}`;
-    const client = new http.HttpClient("@actions-rs-plus (https://github.com/actions-rs-plus/)");
-    const resp = await client.getJson(url);
-    if (!resp.result) {
-        throw new Error(`Unable to fetch latest crate version of "${crate}"`);
-    }
-    if ("errors" in resp.result) {
-        throw new Error(`Unable to fetch latest crate version of "${crate}", server returned ${JSON.stringify(resp.result, null, 2)}`);
-    }
-    if (!resp.result?.crate?.newest_version) {
-        throw new Error(`Unable to fetch latest crate version of "${crate}"`);
-    }
-    return resp.result.crate.newest_version;
-}
-exports.resolveVersion = resolveVersion;
-//# sourceMappingURL=crates.js.map
-
-/***/ }),
-
-/***/ 5972:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Cross = void 0;
-const os = __importStar(__nccwpck_require__(2037));
-const core = __importStar(__nccwpck_require__(2186));
-const io = __importStar(__nccwpck_require__(7436));
-const base_program_1 = __nccwpck_require__(7070);
-const cargo_1 = __nccwpck_require__(9757);
-class Cross extends base_program_1.BaseProgram {
-    constructor(path) {
-        super(path);
-    }
-    static async getOrInstall() {
-        try {
-            return await Cross.get();
-        }
-        catch (error) {
-            core.debug(`${String(error)}`);
-            return await Cross.install();
-        }
-    }
-    static async get() {
-        const path = await io.which("cross", true);
-        return new Cross(path);
-    }
-    static async install(version) {
-        const cargo = await cargo_1.Cargo.get();
-        // Somewhat new Rust is required to compile `cross`
-        // (TODO: Not sure what version exactly, should clarify)
-        // but if some action will set an override toolchain before this action called
-        // (ex. `@actions-rs/toolchain` with `toolchain: 1.31.0`)
-        // `cross` compilation will fail.
-        //
-        // In order to skip this problem and install `cross` globally
-        // using the pre-installed system Rust,
-        // we are going to jump to the tmpdir (skipping directory override that way)
-        // install `cross` from there and then jump back.
-        const cwd = process.cwd();
-        process.chdir(os.tmpdir());
-        try {
-            const crossPath = await cargo.installCached("cross", version);
-            return new Cross(crossPath);
-        }
-        finally {
-            // It is important to chdir back!
-            process.chdir(cwd);
-            core.endGroup();
-        }
-    }
-}
-exports.Cross = Cross;
-//# sourceMappingURL=cross.js.map
-
-/***/ }),
-
-/***/ 4473:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.RustUp = void 0;
-const fs_1 = __nccwpck_require__(7147);
-const path = __importStar(__nccwpck_require__(1017));
-const process = __importStar(__nccwpck_require__(7282));
-const core = __importStar(__nccwpck_require__(2186));
-const exec = __importStar(__nccwpck_require__(1514));
-const io = __importStar(__nccwpck_require__(7436));
-const tc = __importStar(__nccwpck_require__(7784));
-const semver = __importStar(__nccwpck_require__(1383));
-const PROFILES_MIN_VERSION = "1.20.1";
-const COMPONENTS_MIN_VERSION = "1.20.1";
-class RustUp {
-    path;
-    constructor(exePath) {
-        this.path = exePath;
-    }
-    static async getOrInstall() {
-        try {
-            return await RustUp.get();
-        }
-        catch (error) {
-            core.debug(`Unable to find "rustup" executable, installing it now. Reason: ${String(error)}`);
-            return await RustUp.install();
-        }
-    }
-    // Will throw an error if `rustup` is not installed.
-    static async get() {
-        const exePath = await io.which("rustup", true);
-        return new RustUp(exePath);
-    }
-    static async install() {
-        const args = [
-            "--default-toolchain",
-            "none",
-            "-y", // No need for the prompts (hard error from within the Docker containers)
-        ];
-        switch (process.platform) {
-            case "darwin":
-            case "linux": {
-                const rustupSh = await tc.downloadTool("https://sh.rustup.rs");
-                // While the `rustup-init.sh` is properly executed as is,
-                // when Action is running on the VM itself,
-                // it fails with `EACCES` when called in the Docker container.
-                // Adding the execution bit manually just in case.
-                // See: https://github.com/actions-rs/toolchain/pull/19#issuecomment-543358693
-                core.debug(`Executing chmod 755 on the ${rustupSh}`);
-                await fs_1.promises.chmod(rustupSh, 0o755);
-                await exec.exec(rustupSh, args);
-                break;
-            }
-            case "win32": {
-                const rustupExe = await tc.downloadTool("https://win.rustup.rs");
-                await exec.exec(rustupExe, args);
-                break;
-            }
-            default:
-                throw new Error(`Unknown platform ${process.platform}, can't install rustup`);
-        }
-        // `$HOME` should always be declared, so it is more to get the linters happy
-        core.addPath(path.join(process.env["HOME"], ".cargo", "bin")); // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        // Assuming it is in the $PATH already
-        return new RustUp("rustup");
-    }
-    async installToolchain(name, options) {
-        const args = ["toolchain", "install", name];
-        if (options) {
-            if (options.components && options.components.length > 0) {
-                for (const component of options.components) {
-                    args.push("--component");
-                    args.push(component);
-                }
-            }
-            if (options.noSelfUpdate) {
-                args.push("--no-self-update");
-            }
-            if (options.allowDowngrade) {
-                args.push("--allow-downgrade");
-            }
-            if (options.force) {
-                args.push("--force");
-            }
-        }
-        await this.call(args);
-        if (options && options.default) {
-            await this.call(["default", name]);
-        }
-        if (options && options.override) {
-            await this.call(["override", "set", name]);
-        }
-        // TODO: Is there smth like Rust' `return Ok(())`?
-        return 0;
-    }
-    addTarget(name, forToolchain) {
-        const args = ["target", "add"];
-        if (forToolchain) {
-            args.push("--toolchain");
-            args.push(forToolchain);
-        }
-        args.push(name);
-        return this.call(args);
-    }
-    async activeToolchain() {
-        const stdout = await this.callStdout(["show", "active-toolchain"]);
-        const split = stdout?.split(" ", 2)[0];
-        if (split) {
-            return split;
-        }
-        else {
-            throw new Error("Unable to determine active toolchain");
-        }
-    }
-    async supportProfiles() {
-        const version = await this.version();
-        const supports = semver.gte(version, PROFILES_MIN_VERSION);
-        if (supports) {
-            core.info(`Installed rustup ${version} support profiles`);
-        }
-        else {
-            core.info(`Installed rustup ${version} does not support profiles, \
-expected at least ${PROFILES_MIN_VERSION}`);
-        }
-        return supports;
-    }
-    async supportComponents() {
-        const version = await this.version();
-        const supports = semver.gte(version, COMPONENTS_MIN_VERSION);
-        if (supports) {
-            core.info(`Installed rustup ${version} support components`);
-        }
-        else {
-            core.info(`Installed rustup ${version} does not support components, \
-expected at least ${PROFILES_MIN_VERSION}`);
-        }
-        return supports;
-    }
-    /**
-     * Executes `rustup set profile ${name}`
-     *
-     * Note that it includes the check if currently installed rustup support profiles at all
-     */
-    setProfile(name) {
-        return this.call(["set", "profile", name]);
-    }
-    async version() {
-        const stdout = await this.callStdout(["-V"]);
-        const split = stdout?.split(" ")[1];
-        if (split) {
-            return split;
-        }
-        else {
-            throw new Error("Unable to determine version");
-        }
-    }
-    // rustup which `program`
-    async which(program) {
-        const stdout = await this.callStdout(["which", program]);
-        if (stdout) {
-            return stdout;
-        }
-        else {
-            throw new Error(`Unable to find "${program}"`);
-        }
-    }
-    selfUpdate() {
-        return this.call(["self", "update"]);
-    }
-    call(args, options) {
-        return exec.exec(this.path, args, options);
-    }
-    /**
-     * Call the `rustup` and return an stdout
-     */
-    async callStdout(args, options) {
-        let stdout = "";
-        const resOptions = Object.assign({}, options, {
-            listeners: {
-                stdout: (buffer) => {
-                    stdout += buffer.toString();
-                },
-            },
-        });
-        await this.call(args, resOptions);
-        return stdout;
-    }
-}
-exports.RustUp = RustUp;
-//# sourceMappingURL=rustup.js.map
-
-/***/ }),
-
-/***/ 4543:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.checks = exports.input = void 0;
-const checks = __importStar(__nccwpck_require__(1189));
-exports.checks = checks;
-const input = __importStar(__nccwpck_require__(9380));
-exports.input = input;
-__exportStar(__nccwpck_require__(9757), exports);
-__exportStar(__nccwpck_require__(5972), exports);
-__exportStar(__nccwpck_require__(4473), exports);
-//# sourceMappingURL=core.js.map
-
-/***/ }),
-
-/***/ 9380:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getInputAsArray = exports.getInputList = exports.getInputBool = exports.getInput = void 0;
-const core = __importStar(__nccwpck_require__(2186));
-/**
- * Workaround for a GitHub weird input naming.
- *
- * For input `all-features: true` it will generate the `INPUT_ALL-FEATURES: true`
- * env variable, which looks too weird.
- * Here we are trying to get proper name `INPUT_NO_DEFAULT_FEATURES` first,
- * and if it does not exist, trying the `INPUT_NO-DEFAULT-FEATURES`.
- **/
-function getInput(name, options) {
-    const inputFullName = name.replace(/-/g, "_");
-    const value = core.getInput(inputFullName, options);
-    if (value.length > 0) {
-        return value;
-    }
-    return core.getInput(name, options);
-}
-exports.getInput = getInput;
-function getInputBool(name, options) {
-    const value = getInput(name, options);
-    if (value && (value === "true" || value === "1")) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-exports.getInputBool = getInputBool;
-function getInputList(name, options) {
-    const raw = getInput(name, options);
-    return raw
-        .split(",")
-        .map((item) => {
-        return item.trim();
-    })
-        .filter((item) => {
-        return item.length > 0;
-    });
-}
-exports.getInputList = getInputList;
-function getInputAsArray(name, options) {
-    return getInput(name, options)
-        .split("\n")
-        .map((s) => {
-        return s.trim();
-    })
-        .filter((x) => {
-        return x !== "";
-    });
-}
-exports.getInputAsArray = getInputAsArray;
-//# sourceMappingURL=input.js.map
-
-/***/ }),
-
 /***/ 7799:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -47135,7 +46367,7 @@ const minSatisfying = __nccwpck_require__(832)
 const minVersion = __nccwpck_require__(4179)
 const validRange = __nccwpck_require__(2098)
 const outside = __nccwpck_require__(420)
-const gtr = __nccwpck_require__(1243)
+const gtr = __nccwpck_require__(9380)
 const ltr = __nccwpck_require__(3323)
 const intersects = __nccwpck_require__(7008)
 const simplifyRange = __nccwpck_require__(5297)
@@ -47572,7 +46804,7 @@ createToken('GTE0PRE', '^\\s*>=\\s*0\\.0\\.0-0\\s*$')
 
 /***/ }),
 
-/***/ 1243:
+/***/ 9380:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 // Determine if version is greater than all the versions possible in the range.
@@ -71523,7 +70755,7 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
-/***/ 3124:
+/***/ 7488:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 
@@ -71532,15 +70764,15 @@ __nccwpck_require__.d(__webpack_exports__, {
   "K": () => (/* binding */ run)
 });
 
-;// CONCATENATED MODULE: external "node:path"
-const external_node_path_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:path");
-var external_node_path_default = /*#__PURE__*/__nccwpck_require__.n(external_node_path_namespaceObject);
+// EXTERNAL MODULE: external "node:path"
+var external_node_path_ = __nccwpck_require__(9411);
+var external_node_path_default = /*#__PURE__*/__nccwpck_require__.n(external_node_path_);
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(2186);
 // EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
 var exec = __nccwpck_require__(1514);
-// EXTERNAL MODULE: ./node_modules/@actions-rs-plus/core/dist/core.js
-var dist_core = __nccwpck_require__(4543);
+// EXTERNAL MODULE: ./node_modules/@actions-rs-plus/core/dist/core.js + 8 modules
+var dist_core = __nccwpck_require__(1683);
 ;// CONCATENATED MODULE: ./src/schema.ts
 var AnnotationLevel;
 (function (AnnotationLevel) {
@@ -71823,10 +71055,10 @@ async function runClippy(actionInput, program) {
 }
 function getProgram(useCross) {
     if (useCross) {
-        return dist_core.Cross.getOrInstall();
+        return dist_core/* Cross.getOrInstall */.X1.getOrInstall();
     }
     else {
-        return dist_core.Cargo.get();
+        return dist_core/* Cargo.get */.rR.get();
     }
 }
 async function run(actionInput) {
@@ -71868,7 +71100,7 @@ function buildClippyArguments(actionInput) {
 __nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(2186);
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _clippy__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(3124);
+/* harmony import */ var _clippy__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(7488);
 /* harmony import */ var _input__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(2461);
 
 
@@ -71904,8 +71136,8 @@ __nccwpck_require__.d(__webpack_exports__, {
   "U": () => (/* binding */ get)
 });
 
-// EXTERNAL MODULE: ./node_modules/@actions-rs-plus/core/dist/core.js
-var core = __nccwpck_require__(4543);
+// EXTERNAL MODULE: ./node_modules/@actions-rs-plus/core/dist/core.js + 8 modules
+var core = __nccwpck_require__(1683);
 ;// CONCATENATED MODULE: ./node_modules/string-argv/index.js
 
 function parseArgsStringToArgv(value, env, file) {
@@ -71953,14 +71185,14 @@ function firstString() {
 
 
 function get() {
-    let toolchain = core.input.getInput("toolchain");
+    let toolchain = core/* input.getInput */.qH.getInput("toolchain");
     if (toolchain.startsWith("+")) {
         toolchain = toolchain.slice(1);
     }
-    const workingDirectory = core.input.getInput("working-directory");
+    const workingDirectory = core/* input.getInput */.qH.getInput("working-directory");
     return {
-        args: parseArgsStringToArgv(core.input.getInput("args")),
-        useCross: core.input.getInputBool("use-cross"),
+        args: parseArgsStringToArgv(core/* input.getInput */.qH.getInput("args")),
+        useCross: core/* input.getInputBool */.qH.getInputBool("use-cross"),
         workingDirectory: workingDirectory === "" ? undefined : workingDirectory,
         toolchain: toolchain === "" ? undefined : toolchain,
     };
@@ -72088,6 +71320,13 @@ module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:os");
 
 /***/ }),
 
+/***/ 9411:
+/***/ ((module) => {
+
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:path");
+
+/***/ }),
+
 /***/ 7742:
 /***/ ((module) => {
 
@@ -72134,13 +71373,6 @@ module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("path");
 /***/ ((module) => {
 
 module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("perf_hooks");
-
-/***/ }),
-
-/***/ 7282:
-/***/ ((module) => {
-
-module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("process");
 
 /***/ }),
 
@@ -82738,6 +81970,562 @@ function parseParams (str) {
 module.exports = parseParams
 
 
+/***/ }),
+
+/***/ 1683:
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
+
+
+// EXPORTS
+__nccwpck_require__.d(__webpack_exports__, {
+  "rR": () => (/* reexport */ Cargo),
+  "X1": () => (/* reexport */ Cross),
+  "qH": () => (/* reexport */ input_namespaceObject)
+});
+
+// UNUSED EXPORTS: BaseProgram, RustUp, checks
+
+// NAMESPACE OBJECT: ./node_modules/@actions-rs-plus/core/dist/input.js
+var input_namespaceObject = {};
+__nccwpck_require__.r(input_namespaceObject);
+__nccwpck_require__.d(input_namespaceObject, {
+  "getInput": () => (getInput),
+  "getInputAsArray": () => (getInputAsArray),
+  "getInputBool": () => (getInputBool),
+  "getInputList": () => (getInputList)
+});
+
+// EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
+var lib_github = __nccwpck_require__(5438);
+;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/checks.js
+
+/**
+ * Thin wrapper around the GitHub Checks API
+ */
+class Check {
+    client;
+    checkName;
+    checkId;
+    constructor(client, checkName, checkId) {
+        this.client = client;
+        this.checkName = checkName;
+        this.checkId = checkId;
+    }
+    /**
+     * Starts a new Check and returns check ID.
+     */
+    static async startCheck(client, checkName, status = "in_progress") {
+        const { owner, repo } = github.context.repo;
+        const response = await client.rest.checks.create({
+            owner,
+            repo,
+            name: checkName,
+            head_sha: github.context.sha,
+            status,
+        });
+        // TODO: Check for errors
+        return new Check(client, checkName, response.data.id);
+    }
+    // TODO:
+    //     public async sendAnnotations(annotations: Array<octokit.ChecksCreateParamsOutputAnnotations>): Promise<void> {
+    //     }
+    async finishCheck(conclusion, output) {
+        const { owner, repo } = github.context.repo;
+        // TODO: Check for errors
+        await this.client.rest.checks.update({
+            owner,
+            repo,
+            name: this.checkName,
+            check_run_id: this.checkId,
+            status: "completed",
+            conclusion,
+            completed_at: new Date().toISOString(),
+            output,
+        });
+    }
+    async cancelCheck() {
+        const { owner, repo } = github.context.repo;
+        // TODO: Check for errors
+        await this.client.rest.checks.update({
+            owner,
+            repo,
+            name: this.checkName,
+            check_run_id: this.checkId,
+            status: "completed",
+            conclusion: "cancelled",
+            completed_at: new Date().toISOString(),
+            output: {
+                title: this.checkName,
+                summary: "Unhandled error",
+                text: "Check was cancelled due to unhandled error. Check the Action logs for details.",
+            },
+        });
+    }
+}
+//# sourceMappingURL=checks.js.map
+// EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
+var lib_exec = __nccwpck_require__(1514);
+;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/commands/base-program.js
+
+class BaseProgram {
+    path;
+    constructor(path) {
+        this.path = path;
+    }
+    call(arguments_, options) {
+        return lib_exec.exec(this.path, arguments_, options);
+    }
+}
+//# sourceMappingURL=base-program.js.map
+// EXTERNAL MODULE: external "node:path"
+var external_node_path_ = __nccwpck_require__(9411);
+// EXTERNAL MODULE: ./node_modules/@actions/cache/lib/cache.js
+var cache = __nccwpck_require__(7799);
+// EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
+var lib_core = __nccwpck_require__(2186);
+// EXTERNAL MODULE: ./node_modules/@actions/io/lib/io.js
+var lib_io = __nccwpck_require__(7436);
+// EXTERNAL MODULE: ./node_modules/@actions/http-client/lib/index.js
+var lib = __nccwpck_require__(6255);
+;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/commands/crates.js
+
+async function resolveVersion(crate) {
+    const url = `https://crates.io/api/v1/crates/${crate}`;
+    const client = new lib.HttpClient("@actions-rs-plus (https://github.com/actions-rs-plus/)");
+    const response = await client.getJson(url);
+    if (response.result === null) {
+        throw new Error(`Unable to fetch latest crate version of "${crate}"`);
+    }
+    if ("errors" in response.result) {
+        throw new Error(`Unable to fetch latest crate version of "${crate}", server returned ${JSON.stringify(response.result, null, 2)}`);
+    }
+    if (response.result.crate?.newest_version === undefined) {
+        throw new Error(`Unable to fetch latest crate version of "${crate}"`);
+    }
+    return response.result.crate.newest_version;
+}
+//# sourceMappingURL=crates.js.map
+;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/commands/cargo.js
+
+
+
+
+
+
+class Cargo extends BaseProgram {
+    constructor(pathToCargo) {
+        super(pathToCargo);
+    }
+    static async get() {
+        try {
+            const pathToCargo = await lib_io.which("cargo", true);
+            return new Cargo(pathToCargo);
+        }
+        catch (error) {
+            lib_core.error("cargo is not installed by default for some virtual environments, see https://help.github.com/en/articles/software-in-virtual-environments-for-github-actions");
+            lib_core.error("To install it, use this action: https://github.com/actions-rs/toolchain");
+            // eslint-disable-next-line @typescript-eslint/only-throw-error
+            throw error;
+        }
+    }
+    /**
+     * Executes `cargo install ${program}`.
+     *
+     * TODO: Caching ability implementation is blocked,
+     * see https://github.com/actions-rs/core/issues/31
+     * As for now it acts just like an stub and simply installs the program
+     * on each call.
+     *
+     * `version` argument could be either actual program version or `"latest"` string,
+     * which can be provided by user input.
+     *
+     * If `version` is `undefined` or `"latest"`, this method could call the Crates.io API,
+     * fetch the latest version and search for it in cache.
+     * TODO: Actually implement this.
+     *
+     * ## Returns
+     *
+     * Path to the installed program.
+     * As the $PATH should be already tuned properly at this point,
+     * returned value at the moment is simply equal to the `program` argument.
+     */
+    async installCached(program, version, primaryKey, restoreKeys = []) {
+        if (version === "latest") {
+            version = await resolveVersion(program);
+        }
+        if (primaryKey === undefined) {
+            return await this.install(program, version);
+        }
+        else {
+            const paths = [external_node_path_.join(external_node_path_.dirname(this.path), program)];
+            const versionForKey = version === undefined ? "" : `-${version}`;
+            const programKey = `${program}${versionForKey}-${primaryKey}`;
+            const programRestoreKeys = restoreKeys.map((key) => {
+                return `${program}${versionForKey}-${key}`;
+            });
+            const cacheKey = await cache.restoreCache(paths, programKey, programRestoreKeys);
+            if (cacheKey === undefined) {
+                const result = await this.install(program, version);
+                try {
+                    lib_core.info(`Caching \`${program}\` with key ${programKey}`);
+                    await cache.saveCache(paths, programKey);
+                }
+                catch (error) {
+                    if (error instanceof Error) {
+                        if (error.name === cache.ValidationError.name) {
+                            throw error;
+                        }
+                        else if (error.name === cache.ReserveCacheError.name) {
+                            lib_core.warning(error.message);
+                        }
+                    }
+                    else if (typeof error === "string") {
+                        lib_core.warning(error);
+                    }
+                    else {
+                        // eslint-disable-next-line @typescript-eslint/only-throw-error
+                        throw error;
+                    }
+                }
+                return result;
+            }
+            else {
+                lib_core.info(`Using cached \`${program}\` with version ${version ?? "installed-version"} from ${cacheKey}`);
+                return program;
+            }
+        }
+    }
+    async install(program, version) {
+        const arguments_ = ["install"];
+        if (version !== undefined && version !== "latest") {
+            arguments_.push("--version", version);
+        }
+        arguments_.push(program);
+        try {
+            lib_core.startGroup(`Installing "${program} = ${version ?? "latest"}"`);
+            await this.call(arguments_);
+        }
+        finally {
+            lib_core.endGroup();
+        }
+        return program;
+    }
+    /**
+     * Find the cargo sub-command or install it
+     */
+    async findOrInstall(program, version) {
+        try {
+            void (await lib_io.which(program, true));
+            return program;
+        }
+        catch {
+            lib_core.info(`${program} is not installed, installing it now`);
+        }
+        return await this.installCached(program, version);
+    }
+}
+//# sourceMappingURL=cargo.js.map
+// EXTERNAL MODULE: external "node:os"
+var external_node_os_ = __nccwpck_require__(612);
+;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/commands/cross.js
+
+
+
+
+
+class Cross extends BaseProgram {
+    constructor(path) {
+        super(path);
+    }
+    static async getOrInstall() {
+        try {
+            return await Cross.get();
+        }
+        catch (error) {
+            lib_core.debug(String(error));
+            return await Cross.install();
+        }
+    }
+    static async get() {
+        const path = await lib_io.which("cross", true);
+        return new Cross(path);
+    }
+    static async install(version) {
+        const cargo = await Cargo.get();
+        // Somewhat new Rust is required to compile `cross`
+        // (TODO: Not sure what version exactly, should clarify)
+        // but if some action will set an override toolchain before this action called
+        // (ex. `@actions-rs/toolchain` with `toolchain: 1.31.0`)
+        // `cross` compilation will fail.
+        //
+        // In order to skip this problem and install `cross` globally
+        // using the pre-installed system Rust,
+        // we are going to jump to the tmpdir (skipping directory override that way)
+        // install `cross` from there and then jump back.
+        const cwd = process.cwd();
+        process.chdir(external_node_os_.tmpdir());
+        try {
+            const crossPath = await cargo.installCached("cross", version);
+            return new Cross(crossPath);
+        }
+        finally {
+            // It is important to chdir back!
+            process.chdir(cwd);
+            lib_core.endGroup();
+        }
+    }
+}
+//# sourceMappingURL=cross.js.map
+;// CONCATENATED MODULE: external "node:fs"
+const external_node_fs_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:fs");
+// EXTERNAL MODULE: ./node_modules/@actions/tool-cache/lib/tool-cache.js
+var tool_cache = __nccwpck_require__(7784);
+// EXTERNAL MODULE: ./node_modules/semver/index.js
+var node_modules_semver = __nccwpck_require__(1383);
+;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/commands/rustup.js
+
+
+
+
+
+
+
+
+const PROFILES_MIN_VERSION = "1.20.1";
+const COMPONENTS_MIN_VERSION = "1.20.1";
+class RustUp {
+    path;
+    constructor(exePath) {
+        this.path = exePath;
+    }
+    static async getOrInstall() {
+        try {
+            return await RustUp.get();
+        }
+        catch (error) {
+            core.debug(`Unable to find "rustup" executable, installing it now. Reason: ${String(error)}`);
+            return await RustUp.install();
+        }
+    }
+    // Will throw an error if `rustup` is not installed.
+    static async get() {
+        const exePath = await io.which("rustup", true);
+        return new RustUp(exePath);
+    }
+    static async install() {
+        const arguments_ = [
+            "--default-toolchain",
+            "none",
+            "-y", // No need for the prompts (hard error from within the Docker containers)
+        ];
+        const platform = os.platform();
+        switch (platform) {
+            case "darwin":
+            case "linux": {
+                const rustupSh = await tc.downloadTool("https://sh.rustup.rs");
+                // While the `rustup-init.sh` is properly executed as is,
+                // when Action is running on the VM itself,
+                // it fails with `EACCES` when called in the Docker container.
+                // Adding the execution bit manually just in case.
+                // See: https://github.com/actions-rs/toolchain/pull/19#issuecomment-543358693
+                core.debug(`Executing chmod 755 on the ${rustupSh}`);
+                await fs.chmod(rustupSh, 0o755);
+                await exec.exec(rustupSh, arguments_);
+                break;
+            }
+            case "win32": {
+                const rustupExe = await tc.downloadTool("https://win.rustup.rs");
+                await exec.exec(rustupExe, arguments_);
+                break;
+            }
+            default: {
+                throw new Error(`Unknown platform ${platform}, can't install rustup`);
+            }
+        }
+        // `$HOME` should always be declared, so it is more to get the linters happy
+        core.addPath(path.join(process.env["HOME"], ".cargo", "bin")); // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        // Assuming it is in the $PATH already
+        return new RustUp("rustup");
+    }
+    async installToolchain(name, options) {
+        const arguments_ = ["toolchain", "install", name];
+        if (options !== undefined) {
+            if (options.components !== undefined && options.components.length > 0) {
+                for (const component of options.components) {
+                    arguments_.push("--component", component);
+                }
+            }
+            if (options.noSelfUpdate === true) {
+                arguments_.push("--no-self-update");
+            }
+            if (options.allowDowngrade === true) {
+                arguments_.push("--allow-downgrade");
+            }
+            if (options.force === true) {
+                arguments_.push("--force");
+            }
+        }
+        await this.call(arguments_);
+        if (options?.default === true) {
+            await this.call(["default", name]);
+        }
+        if (options?.override === true) {
+            await this.call(["override", "set", name]);
+        }
+        // TODO: Is there smth like Rust' `return Ok(())`?
+        return 0;
+    }
+    addTarget(name, forToolchain) {
+        const arguments_ = ["target", "add"];
+        if (forToolchain !== undefined) {
+            arguments_.push("--toolchain", forToolchain);
+        }
+        arguments_.push(name);
+        return this.call(arguments_);
+    }
+    async activeToolchain() {
+        const stdout = await this.callStdout(["show", "active-toolchain"]);
+        const split = stdout.split(" ", 2)[0];
+        if (split === undefined || split === "") {
+            throw new Error("Unable to determine active toolchain");
+        }
+        else {
+            return split;
+        }
+    }
+    async supportProfiles() {
+        const version = await this.version();
+        const supports = semver.gte(version, PROFILES_MIN_VERSION);
+        if (supports) {
+            core.info(`Installed rustup ${version} support profiles`);
+        }
+        else {
+            core.info(`Installed rustup ${version} does not support profiles, \
+expected at least ${PROFILES_MIN_VERSION}`);
+        }
+        return supports;
+    }
+    async supportComponents() {
+        const version = await this.version();
+        const supports = semver.gte(version, COMPONENTS_MIN_VERSION);
+        if (supports) {
+            core.info(`Installed rustup ${version} support components`);
+        }
+        else {
+            core.info(`Installed rustup ${version} does not support components, \
+expected at least ${PROFILES_MIN_VERSION}`);
+        }
+        return supports;
+    }
+    /**
+     * Executes `rustup set profile ${name}`
+     *
+     * Note that it includes the check if currently installed rustup support profiles at all
+     */
+    setProfile(name) {
+        return this.call(["set", "profile", name]);
+    }
+    async version() {
+        const stdout = await this.callStdout(["-V"]);
+        const split = stdout.split(" ")[1];
+        if (split === undefined) {
+            throw new Error("Unable to determine version");
+        }
+        else {
+            return split;
+        }
+    }
+    // rustup which `program`
+    async which(program) {
+        const stdout = await this.callStdout(["which", program]);
+        if (stdout === "") {
+            throw new Error(`Unable to find "${program}"`);
+        }
+        else {
+            return stdout;
+        }
+    }
+    selfUpdate() {
+        return this.call(["self", "update"]);
+    }
+    call(arguments_, options) {
+        return exec.exec(this.path, arguments_, options);
+    }
+    /**
+     * Call the `rustup` and return an stdout
+     */
+    async callStdout(arguments_, options) {
+        let stdout = "";
+        const stdoutOptions = Object.assign({}, options, {
+            listeners: {
+                stdout: (buffer) => {
+                    stdout += buffer.toString();
+                },
+            },
+        });
+        await this.call(arguments_, stdoutOptions);
+        return stdout;
+    }
+}
+//# sourceMappingURL=rustup.js.map
+;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/input.js
+
+/**
+ * Workaround for a GitHub weird input naming.
+ *
+ * For input `all-features: true` it will generate the `INPUT_ALL-FEATURES: true`
+ * env variable, which looks too weird.
+ * Here we are trying to get proper name `INPUT_NO_DEFAULT_FEATURES` first,
+ * and if it does not exist, trying the `INPUT_NO-DEFAULT-FEATURES`.
+ **/
+function getInput(name, options) {
+    const inputFullName = name.replaceAll("-", "_");
+    const value = lib_core.getInput(inputFullName, options);
+    if (value.length > 0) {
+        return value;
+    }
+    return lib_core.getInput(name, options);
+}
+function getInputBool(name, options) {
+    const value = getInput(name, options);
+    if (value === "true" || value === "1") {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+function getInputList(name, options) {
+    const raw = getInput(name, options);
+    return raw
+        .split(",")
+        .map((item) => {
+        return item.trim();
+    })
+        .filter((item) => {
+        return item.length > 0;
+    });
+}
+function getInputAsArray(name, options) {
+    return getInput(name, options)
+        .split("\n")
+        .map((s) => {
+        return s.trim();
+    })
+        .filter((x) => {
+        return x !== "";
+    });
+}
+//# sourceMappingURL=input.js.map
+;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/core.js
+
+
+
+
+
+
+//# sourceMappingURL=core.js.map
+
 /***/ })
 
 /******/ });
@@ -82869,6 +82657,17 @@ module.exports = parseParams
 /******/ /* webpack/runtime/hasOwnProperty shorthand */
 /******/ (() => {
 /******/ 	__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ })();
+/******/ 
+/******/ /* webpack/runtime/make namespace object */
+/******/ (() => {
+/******/ 	// define __esModule on exports
+/******/ 	__nccwpck_require__.r = (exports) => {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
 /******/ })();
 /******/ 
 /******/ /* webpack/runtime/compat */
