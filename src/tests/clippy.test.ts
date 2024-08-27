@@ -1,17 +1,15 @@
 import * as exec from "@actions/exec";
 
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { run } from "@/clippy";
 import type { ParsedInput } from "@/input";
 import * as report from "@/reporter";
 import type { CargoMessage } from "@/schema";
 
-describe("clippy", () => {
-    beforeEach(() => {
-        vi.mock("@actions/core");
-    });
+vi.mock("@actions/core");
 
+describe("clippy", () => {
     it("runs with cargo", async () => {
         vi.spyOn(exec, "exec").mockResolvedValue(0);
 
