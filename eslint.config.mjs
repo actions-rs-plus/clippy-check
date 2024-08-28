@@ -85,6 +85,12 @@ export default tseslint.config(
             "no-dupe-keys": ["warn"],
             "no-extra-semi": ["off"],
             "no-param-reassign": ["off"],
+            "no-restricted-imports": [
+                "error",
+                {
+                    patterns: [".*"],
+                },
+            ],
             "no-restricted-syntax": ["error", "DebuggerStatement", "LabeledStatement", "WithStatement"],
             "no-return-await": ["error"],
             "no-shadow": ["error"],
