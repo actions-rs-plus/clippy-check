@@ -1,3 +1,4 @@
+import { codecovVitePlugin } from "@codecov/vite-plugin";
 import type { UserConfig } from "vite";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 import { coverageConfigDefaults, defineConfig } from "vitest/config";
@@ -8,7 +9,14 @@ const deps: string[] = ["@actions-rs-plus/core"];
 export default defineConfig(() => {
     const config: UserConfig = {
         appType: "custom",
-        plugins: [viteTsConfigPaths()],
+        plugins: [
+            viteTsConfigPaths(),
+            codecovVitePlugin({
+                enableBundleAnalysis: process.env["CODECOV_TOKEN"] !== undefined,
+                bundleName: "library",
+                uploadToken: process.env["CODECOV_TOKEN"] ?? "",
+            }),
+        ],
         test: {
             coverage: {
                 exclude: [...coverageConfigDefaults.exclude, "./dependency-cruiser.config.mjs"],
