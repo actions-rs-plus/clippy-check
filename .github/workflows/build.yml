@@ -97,6 +97,8 @@ jobs:
 
       - name: Run build
         shell: bash
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: |
           npm run build
 
@@ -219,7 +221,7 @@ jobs:
         shell: bash
         id: tests
         run: |
-          npm run test -- --reporter=basic --reporter=github-actions --coverage.reporter=text --coverage.reporter=lcovonly
+          npm run test -- --reporter=basic --reporter=github-actions --reporter=junit --coverage.reporter=text --coverage.reporter=lcovonly
         continue-on-error: true
 
       - name: Upload coverage results (to Codecov.io)
@@ -229,6 +231,14 @@ jobs:
           fail_ci_if_error: true
           files: coverage/lcov.info
           plugins: ""
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload test results to Codecov
+        uses: codecov/test-results-action@1b5b448b98e58ba90d1a1a1d9fcb72ca2263be46 # v1
+        with:
+          disable_search: true
+          fail_ci_if_error: true
+          files: reports/test-report.xml
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Fail if tests failed
