@@ -37,7 +37,7 @@ describe("clippy", () => {
     });
 
     it("reports when clippy fails", async () => {
-        vi.spyOn(exec, "exec").mockImplementation((_commandline: string, arguments_?: string[] | undefined) => {
+        vi.spyOn(exec, "exec").mockImplementation((_commandline: string, arguments_?: string[]) => {
             const expected = ["clippy", "--message-format=json"];
 
             if (
@@ -130,7 +130,7 @@ describe("clippy", () => {
 
     it("clippy captures stdout", async () => {
         vi.spyOn(exec, "exec").mockImplementation(
-            (_commandline: string, arguments_?: string[] | undefined, options?: exec.ExecOptions) => {
+            (_commandline: string, arguments_?: string[], options?: exec.ExecOptions) => {
                 const expected = ["clippy", "--message-format=json"];
 
                 if (
