@@ -6,9 +6,7 @@
         {
             "matchHost": "https://npm.pkg.github.com/",
             "hostType": "npm",
-            "encrypted": {
-                "token": "{{ secrets.NPM_TOKEN }}"
-            }
+            "token": "{{ secrets.NPM_TOKEN }}"
         }
     ],
     "npmrc": "@actions-rs-plus:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/"
