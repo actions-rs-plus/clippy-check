@@ -183,6 +183,9 @@ jobs:
         uses: ataylorme/eslint-annotate-action@d57a1193d4c59cbfbf3f86c271f42612f9dbd9e9 # 3.0.0
         with:
           report-json: reports/lint-report.json
+          fail-on-error: true
+          fail-on-warning: true
+          only-pr-files: false
 
       - name: Fail if lint failed
         shell: bash
