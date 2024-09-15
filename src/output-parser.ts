@@ -6,7 +6,7 @@ import type { AnnotationWithMessageAndLevel, CargoMessage, MaybeCargoMessage, St
 import { AnnotationLevel } from "@/schema";
 
 export class OutputParser {
-    private readonly _workingDirectory: string | null;
+    private readonly _workingDirectory: null | string;
     private readonly _uniqueAnnotations: Map<string, AnnotationWithMessageAndLevel>;
     private readonly _stats: Stats;
 

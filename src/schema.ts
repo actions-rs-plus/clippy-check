@@ -15,7 +15,7 @@ export interface AnnotationWithMessageAndLevel {
 export interface MaybeCargoMessage {
     reason: string;
     message?: {
-        code?: string | null;
+        code?: null | string;
         level: string;
         message: string;
         rendered: string;
