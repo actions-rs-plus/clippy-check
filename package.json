@@ -40,7 +40,7 @@
         "url": "https://github.com/actions-rs-plus/core/issues"
     },
     "devDependencies": {
-        "@codecov/vite-plugin": "1.1.0",
+        "@codecov/vite-plugin": "1.2.0",
         "@eslint/compat": "1.1.1",
         "@eslint/eslintrc": "3.1.0",
         "@eslint/js": "9.11.0",
