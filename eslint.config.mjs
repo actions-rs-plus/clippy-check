@@ -1,14 +1,8 @@
-import path from "node:path";
-
-import { fileURLToPath } from "node:url";
-
-import { fixupConfigRules } from "@eslint/compat";
-import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
 import stylistic from "@stylistic/eslint-plugin-ts";
 import tsParser from "@typescript-eslint/parser";
 import love from "eslint-config-love";
-import importPlugin from "eslint-plugin-import-x";
+import importPlugin from "eslint-plugin-import";
 import nPlugin from "eslint-plugin-n";
 import perfectionist from "eslint-plugin-perfectionist";
 import prettier from "eslint-plugin-prettier/recommended";
@@ -18,28 +12,8 @@ import eslintPluginUnicorn from "eslint-plugin-unicorn";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-    allConfig: js.configs.all,
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-});
-
-function fixUpLoveRules() {
-    const rules = {};
-
-    const regex = new RegExp(/^import\//);
-
-    for (const [key, value] of Object.entries(love.rules)) {
-        rules[key.replace(regex, "import-x/")] = value;
-    }
-
-    return rules;
-}
-
 export default tseslint.config(
-    ...fixupConfigRules(compat.extends("eslint:recommended")),
+    js.configs.recommended,
     {
         ignores: ["dist/**", "reports/**", "coverage/**"],
     },
@@ -55,10 +29,10 @@ export default tseslint.config(
             },
         },
         plugins: {
-            "import-x": importPlugin,
+            import: importPlugin,
         },
         settings: {
-            "import-x/resolver": {
+            "import/resolver": {
                 node: {
                     extensions: [".d.ts", ".ts"],
                 },
@@ -71,12 +45,12 @@ export default tseslint.config(
             ...importPlugin.configs.recommended.rules,
             ...eslintPluginUnicorn.configs.recommended.rules,
 
-            "import-x/export": ["error"],
-            "import-x/first": ["error"],
-            "import-x/no-absolute-path": ["error", { esmodule: true, commonjs: true, amd: false }],
-            "import-x/no-duplicates": ["error"],
-            "import-x/no-named-default": ["error"],
-            "import-x/no-webpack-loader-syntax": ["error"],
+            "import/export": ["error"],
+            "import/first": ["error"],
+            "import/no-absolute-path": ["error", { esmodule: true, commonjs: true, amd: false }],
+            "import/no-duplicates": ["error"],
+            "import/no-named-default": ["error"],
+            "import/no-webpack-loader-syntax": ["error"],
             "arrow-body-style": ["error", "always"],
 
             curly: ["error", "all"],
@@ -122,26 +96,26 @@ export default tseslint.config(
             "unicorn/no-null": ["off"],
             "unicorn/prefer-ternary": ["off"],
 
-            "import-x/extensions": [
+            "import/extensions": [
                 "error",
                 "never",
                 {
                     json: "always",
                 },
             ],
-            "import-x/newline-after-import": ["error"],
-            "import-x/no-cycle": ["off"],
-            "import-x/no-extraneous-dependencies": ["off"],
-            "import-x/no-relative-packages": ["error"],
-            "import-x/no-unresolved": ["error"],
-            "import-x/order": [
+            "import/newline-after-import": ["error"],
+            "import/no-cycle": ["off"],
+            "import/no-extraneous-dependencies": ["off"],
+            "import/no-relative-packages": ["error"],
+            "import/no-unresolved": ["error"],
+            "import/order": [
                 "error",
                 {
                     alphabetize: { caseInsensitive: true, order: "asc" },
                     "newlines-between": "always-and-inside-groups",
                 },
             ],
-            "import-x/prefer-default-export": ["off"],
+            "import/prefer-default-export": ["off"],
         },
     },
     ...tseslint.configs.strictTypeChecked,
@@ -160,13 +134,13 @@ export default tseslint.config(
         },
         plugins: {
             "@stylistic/ts": stylistic,
-            "import-x": importPlugin,
+            import: importPlugin,
             n: nPlugin,
             promise,
             perfectionist,
         },
         settings: {
-            "import-x/resolver": {
+            "import/resolver": {
                 node: {
                     extensions: [".ts"],
                 },
@@ -177,7 +151,7 @@ export default tseslint.config(
         },
         rules: {
             ...importPlugin.configs.typescript.rules,
-            ...fixUpLoveRules(),
+            ...love.rules,
 
             "@stylistic/ts/no-extra-semi": ["error"],
             "@typescript-eslint/array-type": ["error", { default: "array" }],
@@ -190,6 +164,8 @@ export default tseslint.config(
                     prefer: "type-imports",
                 },
             ],
+
+            "@typescript-eslint/prefer-destructuring": ["off"],
 
             "@typescript-eslint/explicit-member-accessibility": ["error"],
 
@@ -263,7 +239,7 @@ export default tseslint.config(
 
             "@typescript-eslint/unified-signatures": ["error"],
 
-            "import-x/consistent-type-specifier-style": ["error", "prefer-top-level"],
+            "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
 
             "n/handle-callback-err": ["error", "^(err|error)$"],
             "n/no-callback-literal": ["error"],
