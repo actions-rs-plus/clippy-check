@@ -72065,7 +72065,7 @@ class OutputParser {
         return [...this._uniqueAnnotations.values()];
     }
     tryParseClippyLine(line) {
-        // eslint-disable-next-line @typescript-eslint/init-declarations
+        // eslint-disable-next-line @typescript-eslint/init-declarations -- return if we don't initialize it
         let contents;
         try {
             contents = JSON.parse(line);
