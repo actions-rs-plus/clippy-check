@@ -31,7 +31,7 @@ export class OutputParser {
     }
 
     public tryParseClippyLine(line: string): void {
-        // eslint-disable-next-line @typescript-eslint/init-declarations
+        // eslint-disable-next-line @typescript-eslint/init-declarations -- return if we don't initialize it
         let contents: MaybeCargoMessage;
         try {
             contents = JSON.parse(line) as MaybeCargoMessage;
