@@ -174,28 +174,20 @@ jobs:
 
       - name: Run lint
         shell: bash
-        id: lint
-        continue-on-error: true
         run: |
-          npm run lint -- --format=json --output-file reports/lint-report.json
+          npm run lint -- --format=json --output-file reports/lint-report.json || true
+
           # hack to print results in the console
           node --print "require('./node_modules/eslint/lib/cli-engine/formatters/stylish.js')(require('./reports/lint-report.json'))"
 
       - name: Annotate Code Linting Results
         uses: ataylorme/eslint-annotate-action@d57a1193d4c59cbfbf3f86c271f42612f9dbd9e9 # 3.0.0
         with:
-          report-json: reports/lint-report.json
           fail-on-error: true
           fail-on-warning: true
+          markdown-report-on-step-summary: true
           only-pr-files: false
-
-      - name: Fail if lint failed
-        shell: bash
-        if: |
-          steps.lint.outcome != 'success'
-        run: |
-          echo "Lint failed"
-          exit 1;
+          report-json: reports/lint-report.json
 
   npm-test:
     name: Test the code
