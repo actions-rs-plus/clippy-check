@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { OutputParser } from "@/output-parser";
-import type { CargoMessage, MaybeCargoMessage, Stats } from "@/schema";
+import type { CargoMessage, CompilerMessage, Stats } from "@/schema";
 
 describe("outputParser", () => {
     const emptyStats: Stats = {
@@ -12,7 +12,7 @@ describe("outputParser", () => {
         help: 0,
     };
 
-    const defaultMessage: CargoMessage = {
+    const defaultMessage: CompilerMessage = {
         reason: "compiler-message",
         message: {
             code: "code",
@@ -43,7 +43,7 @@ describe("outputParser", () => {
     it("ignores non-compiler-messages", () => {
         const outputParser = new OutputParser();
 
-        const output: MaybeCargoMessage = {
+        const output: CargoMessage = {
             reason: "not-a-compiler-message",
         };
 
@@ -55,7 +55,7 @@ describe("outputParser", () => {
     it("ignores when compiler-message doesn't have a code", () => {
         const outputParser = new OutputParser();
 
-        const output: MaybeCargoMessage = {
+        const output: CargoMessage = {
             reason: "compiler-message",
             message: {
                 code: null,
@@ -80,7 +80,7 @@ describe("outputParser", () => {
     ])("bumps %s when message level is %s", (level, test) => {
         const outputParser = new OutputParser();
 
-        const output: CargoMessage = {
+        const output: CompilerMessage = {
             reason: defaultMessage.reason,
             message: {
                 ...defaultMessage.message,
@@ -96,7 +96,7 @@ describe("outputParser", () => {
     it("ignores when level is not help, note, warning, error, ice", () => {
         const outputParser = new OutputParser();
 
-        const output: CargoMessage = {
+        const output: CompilerMessage = {
             reason: defaultMessage.reason,
             message: {
                 ...defaultMessage.message,
@@ -121,7 +121,7 @@ describe("outputParser", () => {
     it("fails when primary span cannot be found", () => {
         const outputParser = new OutputParser();
 
-        const output: CargoMessage = {
+        const output: CompilerMessage = {
             reason: defaultMessage.reason,
             message: {
                 ...defaultMessage.message,

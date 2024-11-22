@@ -12,7 +12,7 @@ export interface AnnotationWithMessageAndLevel {
     properties: AnnotationProperties;
 }
 
-export interface MaybeCargoMessage {
+export interface CargoMessage {
     reason: string;
     message?: {
         code?: null | string;
@@ -23,7 +23,7 @@ export interface MaybeCargoMessage {
     };
 }
 
-export interface CargoMessage {
+export interface CompilerMessage extends CargoMessage {
     reason: "compiler-message";
     message: {
         code: string;

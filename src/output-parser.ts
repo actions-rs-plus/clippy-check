@@ -2,7 +2,13 @@ import nodePath from "node:path";
 
 import * as core from "@actions/core";
 
-import type { AnnotationWithMessageAndLevel, CargoMessage, MaybeCargoMessage, Stats } from "@/schema";
+import type {
+    AnnotationWithMessageAndLevel,
+    CargoMessage,
+    CompilerMessage,
+    CargoMessage as Message,
+    Stats,
+} from "@/schema";
 import { AnnotationLevel } from "@/schema";
 
 export class OutputParser {
@@ -31,28 +37,18 @@ export class OutputParser {
     }
 
     public tryParseClippyLine(line: string): void {
-        // eslint-disable-next-line @typescript-eslint/init-declarations -- return if we don't initialize it
-        let contents: MaybeCargoMessage;
-        try {
-            contents = JSON.parse(line) as MaybeCargoMessage;
-        } catch {
-            core.debug("Not a JSON, ignoring it");
+        const message = OutputParser.parseCargoJson(line);
+
+        if (message === null) {
+            core.debug("Not valid JSON or null, ignoring it");
             return;
         }
 
-        if (contents.reason !== "compiler-message") {
-            core.debug(`Unexpected reason field, ignoring it: ${contents.reason}`);
+        if (!OutputParser.validateMessageIsCargoMessage(message)) {
             return;
         }
 
-        if (contents.message?.code === undefined || contents.message.code === null) {
-            core.debug("Message code is missing, ignoring it");
-            return;
-        }
-
-        const cargoMessage = contents as CargoMessage;
-
-        const parsedAnnotation = this.makeAnnotation(cargoMessage);
+        const parsedAnnotation = this.makeAnnotation(message);
 
         const key = JSON.stringify(parsedAnnotation);
 
@@ -60,7 +56,7 @@ export class OutputParser {
             return;
         }
 
-        switch (contents.message.level) {
+        switch (message.message.level) {
             case "help": {
                 this._stats.help += 1;
                 break;
@@ -89,6 +85,29 @@ export class OutputParser {
         this._uniqueAnnotations.set(key, parsedAnnotation);
     }
 
+    public static parseCargoJson(line: string): Message | null {
+        try {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion -- I am not checking each property manually
+            return JSON.parse(line) as Message;
+        } catch {
+            return null;
+        }
+    }
+
+    public static validateMessageIsCargoMessage(contents: CargoMessage): contents is CompilerMessage {
+        if (contents.reason !== "compiler-message") {
+            core.debug(`Unexpected reason field, ignoring it: ${contents.reason}`);
+            return false;
+        }
+
+        if (contents.message?.code === undefined || contents.message.code === null) {
+            core.debug("Message code is missing, ignoring it");
+            return false;
+        }
+
+        return true;
+    }
+
     private static parseLevel(level: string): AnnotationLevel {
         switch (level) {
             case "help":
@@ -107,7 +126,7 @@ export class OutputParser {
     /// Convert parsed JSON line into the GH annotation object
     ///
     /// https://developer.github.com/v3/checks/runs/#annotations-object
-    private makeAnnotation(contents: CargoMessage): AnnotationWithMessageAndLevel {
+    private makeAnnotation(contents: CompilerMessage): AnnotationWithMessageAndLevel {
         const primarySpan = contents.message.spans.find((span) => {
             return span.is_primary;
         });
