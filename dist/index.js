@@ -72065,30 +72065,20 @@ class OutputParser {
         return [...this._uniqueAnnotations.values()];
     }
     tryParseClippyLine(line) {
-        // eslint-disable-next-line @typescript-eslint/init-declarations -- return if we don't initialize it
-        let contents;
-        try {
-            contents = JSON.parse(line);
-        }
-        catch {
-            core.debug("Not a JSON, ignoring it");
+        const message = OutputParser.parseCargoJson(line);
+        if (message === null) {
+            core.debug("Not valid JSON or null, ignoring it");
             return;
         }
-        if (contents.reason !== "compiler-message") {
-            core.debug(`Unexpected reason field, ignoring it: ${contents.reason}`);
+        if (!OutputParser.validateMessageIsCargoMessage(message)) {
             return;
         }
-        if (contents.message?.code === undefined || contents.message.code === null) {
-            core.debug("Message code is missing, ignoring it");
-            return;
-        }
-        const cargoMessage = contents;
-        const parsedAnnotation = this.makeAnnotation(cargoMessage);
+        const parsedAnnotation = this.makeAnnotation(message);
         const key = JSON.stringify(parsedAnnotation);
         if (this._uniqueAnnotations.has(key)) {
             return;
         }
-        switch (contents.message.level) {
+        switch (message.message.level) {
             case "help": {
                 this._stats.help += 1;
                 break;
@@ -72114,6 +72104,26 @@ class OutputParser {
             }
         }
         this._uniqueAnnotations.set(key, parsedAnnotation);
+    }
+    static parseCargoJson(line) {
+        try {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion -- I am not checking each property manually
+            return JSON.parse(line);
+        }
+        catch {
+            return null;
+        }
+    }
+    static validateMessageIsCargoMessage(contents) {
+        if (contents.reason !== "compiler-message") {
+            core.debug(`Unexpected reason field, ignoring it: ${contents.reason}`);
+            return false;
+        }
+        if (contents.message?.code === undefined || contents.message.code === null) {
+            core.debug("Message code is missing, ignoring it");
+            return false;
+        }
+        return true;
     }
     static parseLevel(level) {
         switch (level) {
