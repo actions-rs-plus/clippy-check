@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 import { run } from "@/clippy";
 import type { ParsedInput } from "@/input";
 import * as report from "@/reporter";
-import type { CargoMessage } from "@/schema";
+import type { CompilerMessage } from "@/schema";
 
 vi.mock("@actions/core");
 
@@ -139,7 +139,7 @@ describe("clippy", () => {
                         return arguments_?.includes(c);
                     })
                 ) {
-                    const data: CargoMessage = {
+                    const data: CompilerMessage = {
                         reason: "compiler-message",
                         message: {
                             code: "500",
