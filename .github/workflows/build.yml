@@ -110,7 +110,7 @@ jobs:
         run: |
           if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
             PR_NUMBER="${{ github.event.pull_request.number }}"
-            BRANCH="lock-file-maintenance-${PR_NUMBER}"
+            BRANCH="dist-updated-${PR_NUMBER}"
 
             echo "Detected uncommitted changes after build. Checking in changes on branch: ${BRANCH}"
             git checkout -b ${BRANCH}
@@ -124,9 +124,9 @@ jobs:
 
             echo "Committing changes in dist/"
             git add dist/
-            git commit --message "chore: changes caused by updating lock files. See #${PR_NUMBER}"
+            git commit --message "chore: commiting changes in dist/. See #${PR_NUMBER}"
 
-            # Remove GitHub's merging the tip of lock-file-maintenance branch into main's commit
+            # Remove GitHub's merging the tip of dist-updated branch into main's commit
             # it's not needed as we require a branch to up-to-date with main
             git rebase origin/main --autosquash
 
@@ -134,7 +134,7 @@ jobs:
             git push --force --set-upstream origin HEAD
 
             echo "Creating PR"
-            gh pr create --base main --head ${BRANCH} --title "chore(deps): rebuilding because of lock file maintenance" --fill
+            gh pr create --base main --head ${BRANCH} --title "chore(deps): rebuilding because files in dist have updated" --fill
 
             exit 1
           fi
