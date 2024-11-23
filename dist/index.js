@@ -72064,6 +72064,40 @@ class OutputParser {
     get annotations() {
         return [...this._uniqueAnnotations.values()];
     }
+    static parseCargoJson(line) {
+        try {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion -- I am not checking each property manually
+            return JSON.parse(line);
+        }
+        catch {
+            return null;
+        }
+    }
+    static validateMessageIsCargoMessage(contents) {
+        if (contents.reason !== "compiler-message") {
+            core.debug(`Unexpected reason field, ignoring it: ${contents.reason}`);
+            return false;
+        }
+        if (contents.message?.code === undefined || contents.message.code === null) {
+            core.debug("Message code is missing, ignoring it");
+            return false;
+        }
+        return true;
+    }
+    static parseLevel(level) {
+        switch (level) {
+            case "help":
+            case "note": {
+                return AnnotationLevel.Notice;
+            }
+            case "warning": {
+                return AnnotationLevel.Warning;
+            }
+            default: {
+                return AnnotationLevel.Error;
+            }
+        }
+    }
     tryParseClippyLine(line) {
         const message = OutputParser.parseCargoJson(line);
         if (message === null) {
@@ -72104,40 +72138,6 @@ class OutputParser {
             }
         }
         this._uniqueAnnotations.set(key, parsedAnnotation);
-    }
-    static parseCargoJson(line) {
-        try {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion -- I am not checking each property manually
-            return JSON.parse(line);
-        }
-        catch {
-            return null;
-        }
-    }
-    static validateMessageIsCargoMessage(contents) {
-        if (contents.reason !== "compiler-message") {
-            core.debug(`Unexpected reason field, ignoring it: ${contents.reason}`);
-            return false;
-        }
-        if (contents.message?.code === undefined || contents.message.code === null) {
-            core.debug("Message code is missing, ignoring it");
-            return false;
-        }
-        return true;
-    }
-    static parseLevel(level) {
-        switch (level) {
-            case "help":
-            case "note": {
-                return AnnotationLevel.Notice;
-            }
-            case "warning": {
-                return AnnotationLevel.Warning;
-            }
-            default: {
-                return AnnotationLevel.Error;
-            }
-        }
     }
     /// Convert parsed JSON line into the GH annotation object
     ///
