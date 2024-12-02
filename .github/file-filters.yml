@@ -1,5 +1,8 @@
 code:
   - ".nvmrc"
+  - "**/*.ts"
+  - "**/*.cjs"
+  - "**/*.mjs"
   - "Dockerfile"
   - "dist/**"
   - "src/**"
