@@ -107,16 +107,13 @@ export default tseslint.config(
                 },
             },
         },
+        extends: [eslintPluginUnicorn.configs["flat/recommended"]],
         rules: {
             ...importPlugin.configs.recommended.rules,
-            ...eslintPluginUnicorn.configs.recommended.rules,
 
             ...sharedRules,
         },
     },
-    ...tseslint.configs.strictTypeChecked,
-    ...tseslint.configs.recommendedTypeChecked,
-    ...tseslint.configs.stylisticTypeChecked,
     {
         files: ["**/*.ts", "**/*.tsx"],
         ignores: ["**/*.mjs"],
@@ -138,6 +135,12 @@ export default tseslint.config(
             promise,
             perfectionist,
         },
+        extends: [
+            ...tseslint.configs.strictTypeChecked,
+            ...tseslint.configs.recommendedTypeChecked,
+            ...tseslint.configs.stylisticTypeChecked,
+            love,
+        ],
         settings: {
             "import/resolver": {
                 node: {
@@ -150,7 +153,8 @@ export default tseslint.config(
         },
         rules: {
             ...importPlugin.configs.typescript.rules,
-            ...love.rules,
+            ...importPlugin.configs.recommended.rules,
+
             ...sharedRules,
 
             "no-return-await": ["off"],
