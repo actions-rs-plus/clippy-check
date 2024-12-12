@@ -50,7 +50,7 @@
         "@vitest/coverage-v8": "2.1.8",
         "@vitest/ui": "2.1.8",
         "conventional-changelog-conventionalcommits": "8.0.0",
-        "dependency-cruiser": "16.7.0",
+        "dependency-cruiser": "16.8.0",
         "eslint": "9.16.0",
         "eslint-config-love": "101.0.0",
         "eslint-config-prettier": "9.1.0",
