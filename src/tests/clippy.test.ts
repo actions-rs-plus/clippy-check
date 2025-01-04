@@ -43,7 +43,7 @@ describe("clippy", () => {
             if (
                 (arguments_ ?? []).length > 0 &&
                 expected.every((c) => {
-                    return arguments_?.includes(c);
+                    return arguments_?.includes(c) ?? false;
                 })
             ) {
                 return Promise.resolve(101);
@@ -136,7 +136,7 @@ describe("clippy", () => {
                 if (
                     (arguments_ ?? []).length > 0 &&
                     expected.every((c) => {
-                        return arguments_?.includes(c);
+                        return arguments_?.includes(c) ?? false;
                     })
                 ) {
                     const data: CompilerMessage = {
