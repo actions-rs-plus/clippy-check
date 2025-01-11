@@ -1,6 +1,6 @@
+import * as core from "@actions/core";
 import * as exec from "@actions/exec";
-
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { run } from "@/clippy";
 import type { ParsedInput } from "@/input";
@@ -10,8 +10,15 @@ import type { CompilerMessage } from "@/schema";
 vi.mock("@actions/core");
 
 describe("clippy", () => {
+    beforeEach(() => {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function -- mock
+        vi.spyOn(core, "startGroup").mockImplementation(() => {});
+        // eslint-disable-next-line @typescript-eslint/no-empty-function -- mock
+        vi.spyOn(core, "endGroup").mockImplementation(() => {});
+    });
+
     it("runs with cargo", async () => {
-        vi.spyOn(exec, "exec").mockResolvedValue(0);
+        const execSpy = vi.spyOn(exec, "exec").mockResolvedValue(0);
 
         const actionInput: ParsedInput = {
             toolchain: "stable",
@@ -21,10 +28,13 @@ describe("clippy", () => {
         };
 
         await expect(run(actionInput)).resolves.toBeUndefined();
+        expect(execSpy).toBeCalledTimes(4);
     });
 
     it("runs with cross", async () => {
-        vi.spyOn(exec, "exec").mockResolvedValue(0);
+        // eslint-disable-next-line @typescript-eslint/no-empty-function -- mock
+        const debugSpy = vi.spyOn(core, "debug").mockImplementation((_s: string) => {});
+        const execSpy = vi.spyOn(exec, "exec").mockResolvedValue(0);
 
         const actionInput: ParsedInput = {
             toolchain: "stable",
@@ -34,6 +44,8 @@ describe("clippy", () => {
         };
 
         await expect(run(actionInput)).resolves.toBeUndefined();
+        expect(execSpy).toBeCalledTimes(5);
+        expect(debugSpy).toBeCalledTimes(1);
     });
 
     it("reports when clippy fails", async () => {
