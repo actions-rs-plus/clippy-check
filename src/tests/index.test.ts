@@ -22,7 +22,8 @@ describe("index", () => {
     it("catches Error", async () => {
         vi.spyOn(clippy, "run").mockRejectedValue(new Error("It looks like you're running a test"));
 
-        const setFailedSpy = vi.spyOn(core, "setFailed");
+        // eslint-disable-next-line @typescript-eslint/no-empty-function -- mock
+        const setFailedSpy = vi.spyOn(core, "setFailed").mockImplementation((_s: Error | string) => {});
 
         await vi.importActual("@/index");
 
@@ -34,7 +35,8 @@ describe("index", () => {
             "It looks like you're trying to write a test, would you like some assistance? [YES / NO]",
         );
 
-        const setFailedSpy = vi.spyOn(core, "setFailed");
+        // eslint-disable-next-line @typescript-eslint/no-empty-function -- mock
+        const setFailedSpy = vi.spyOn(core, "setFailed").mockImplementation((_s: Error | string) => {});
 
         await vi.importActual("@/index");
 

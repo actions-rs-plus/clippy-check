@@ -4,7 +4,7 @@ import * as core from "@actions/core";
 import * as exec from "@actions/exec";
 import { Cargo, Cross } from "@actions-rs-plus/core";
 
-import type { BaseProgram } from "@actions-rs-plus/core/dist/commands/base-program";
+import type { BaseProgram } from "@actions-rs-plus/core";
 
 import type * as input from "@/input";
 import { OutputParser } from "@/output-parser";

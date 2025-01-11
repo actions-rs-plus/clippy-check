@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import core from "@actions/core";
+import { describe, expect, it, vi } from "vitest";
 
 import { OutputParser } from "@/output-parser";
 import type { CargoMessage, CompilerMessage, Stats } from "@/schema";
@@ -33,6 +34,9 @@ describe("outputParser", () => {
     };
 
     it("ignores invalid json", () => {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function -- mock
+        vi.spyOn(core, "debug").mockImplementation(() => {});
+
         const outputParser = new OutputParser();
 
         outputParser.tryParseClippyLine("I am not valid json");
@@ -41,6 +45,9 @@ describe("outputParser", () => {
     });
 
     it("ignores non-compiler-messages", () => {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function -- mock
+        vi.spyOn(core, "debug").mockImplementation(() => {});
+
         const outputParser = new OutputParser();
 
         const output: CargoMessage = {
@@ -53,6 +60,9 @@ describe("outputParser", () => {
     });
 
     it("ignores when compiler-message doesn't have a code", () => {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function -- mock
+        vi.spyOn(core, "debug").mockImplementation(() => {});
+
         const outputParser = new OutputParser();
 
         const output: CargoMessage = {
