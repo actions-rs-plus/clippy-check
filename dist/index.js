@@ -91100,40 +91100,36 @@ class Cargo extends BaseProgram {
     }
     if (primaryKey === void 0) {
       return this.install(program, version);
-    } else {
-      const paths = [external_node_path_.join(external_node_path_.dirname(this.path), program)];
-      const versionForKey = version === void 0 ? "" : `-${version}`;
-      const programKey = `${program}${versionForKey}-${primaryKey}`;
-      const programRestoreKeys = restoreKeys.map((key) => {
-        return `${program}${versionForKey}-${key}`;
-      });
-      const cacheKey = await cache.restoreCache(paths, programKey, programRestoreKeys);
-      if (cacheKey === void 0) {
-        const result = await this.install(program, version);
-        try {
-          core.info(`Caching \`${program}\` with key ${programKey}`);
-          await cache.saveCache(paths, programKey);
-        } catch (error) {
-          if (error instanceof Error) {
-            if (error.name === cache.ValidationError.name) {
-              throw error;
-            } else if (error.name === cache.ReserveCacheError.name) {
-              core.warning(error.message);
-            }
-          } else if (typeof error === "string") {
-            core.warning(error);
-          } else {
-            throw error;
-          }
+    }
+    const paths = [external_node_path_.join(external_node_path_.dirname(this.path), program)];
+    const versionForKey = version === void 0 ? "" : `-${version}`;
+    const programKey = `${program}${versionForKey}-${primaryKey}`;
+    const programRestoreKeys = restoreKeys.map((key) => {
+      return `${program}${versionForKey}-${key}`;
+    });
+    const cacheKey = await cache.restoreCache(paths, programKey, programRestoreKeys);
+    if (cacheKey !== void 0) {
+      core.info(`Using cached \`${program}\` with version ${version ?? "installed-version"} from ${cacheKey}`);
+      return program;
+    }
+    const result = await this.install(program, version);
+    try {
+      core.info(`Caching \`${program}\` with key ${programKey}`);
+      await cache.saveCache(paths, programKey);
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.name === cache.ValidationError.name) {
+          throw error;
+        } else if (error.name === cache.ReserveCacheError.name) {
+          core.warning(error.message);
         }
-        return result;
+      } else if (typeof error === "string") {
+        core.warning(error);
       } else {
-        core.info(
-          `Using cached \`${program}\` with version ${version ?? "installed-version"} from ${cacheKey}`
-        );
-        return program;
+        throw error;
       }
     }
+    return result;
   }
   async install(program, version) {
     const arguments_ = ["install"];
@@ -91274,10 +91270,8 @@ class RustUp {
   async installToolchain(name, options) {
     const arguments_ = ["toolchain", "install", name];
     if (options !== void 0) {
-      if (options.components !== void 0 && options.components.length > 0) {
-        for (const component of options.components) {
-          arguments_.push("--component", component);
-        }
+      for (const component of options.components ?? []) {
+        arguments_.push("--component", component);
       }
       if (options.noSelfUpdate === true) {
         arguments_.push("--no-self-update");
