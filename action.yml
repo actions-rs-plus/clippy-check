@@ -1,4 +1,4 @@
-name: "rust-clippy-check"
+name: "actions-rs-plus-clippy-check"
 description: "Run clippy and annotate the diff with errors and warnings"
 author: "actions-rs team, modified by @Kristof-Mattei"
 branding:
