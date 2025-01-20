@@ -40,7 +40,7 @@
         "url": "https://github.com/actions-rs-plus/clippy-check/issues"
     },
     "devDependencies": {
-        "@codecov/vite-plugin": "1.7.0",
+        "@codecov/vite-plugin": "1.8.0",
         "@eslint/js": "9.18.0",
         "@stylistic/eslint-plugin-ts": "2.13.0",
         "@types/eslint": "9.6.1",
