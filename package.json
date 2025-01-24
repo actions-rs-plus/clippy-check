@@ -41,7 +41,7 @@
     },
     "devDependencies": {
         "@codecov/vite-plugin": "1.8.0",
-        "@eslint/js": "9.18.0",
+        "@eslint/js": "9.19.0",
         "@stylistic/eslint-plugin-ts": "2.13.0",
         "@types/eslint": "9.6.1",
         "@types/node": "20.17.16",
@@ -51,7 +51,7 @@
         "@vitest/ui": "3.0.4",
         "conventional-changelog-conventionalcommits": "8.0.0",
         "dependency-cruiser": "16.9.0",
-        "eslint": "9.18.0",
+        "eslint": "9.19.0",
         "eslint-config-love": "117.0.0",
         "eslint-config-prettier": "10.0.1",
         "eslint-import-resolver-node": "0.3.9",
