@@ -47,8 +47,8 @@
         "@types/node": "20.17.28",
         "@types/semver": "7.7.0",
         "@vercel/ncc": "0.38.3",
-        "@vitest/coverage-v8": "3.0.9",
-        "@vitest/ui": "3.0.9",
+        "@vitest/coverage-v8": "3.1.1",
+        "@vitest/ui": "3.1.1",
         "conventional-changelog-conventionalcommits": "8.0.0",
         "dependency-cruiser": "16.10.0",
         "eslint": "9.23.0",
@@ -72,7 +72,7 @@
         "vite": "6.2.4",
         "vite-plugin-checker": "0.9.1",
         "vite-tsconfig-paths": "5.1.4",
-        "vitest": "3.0.9"
+        "vitest": "3.1.1"
     },
     "lint-staged": {
         "*.{ts,tsx}": [
