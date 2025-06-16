@@ -46212,7 +46212,7 @@ function expand(str, isTop) {
   var isOptions = m.body.indexOf(',') >= 0;
   if (!isSequence && !isOptions) {
     // {a},b}
-    if (m.post.match(/,.*\}/)) {
+    if (m.post.match(/,(?!,).*\}/)) {
       str = m.pre + '{' + m.body + escClose + m.post;
       return expand(str);
     }
@@ -79863,7 +79863,7 @@ exports.buildCreatePoller = buildCreatePoller;
 // Licensed under the MIT License.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.DEFAULT_RETRY_POLICY_COUNT = exports.SDK_VERSION = void 0;
-exports.SDK_VERSION = "1.20.0";
+exports.SDK_VERSION = "1.21.0";
 exports.DEFAULT_RETRY_POLICY_COUNT = 3;
 //# sourceMappingURL=constants.js.map
 
@@ -80185,7 +80185,7 @@ async function sendAuthorizeRequest(options) {
  * A policy for external tokens to `x-ms-authorization-auxiliary` header.
  * This header will be used when creating a cross-tenant application we may need to handle authentication requests
  * for resources that are in different tenants.
- * You could see [ARM docs](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/authenticate-multi-tenant) for a rundown of how this feature works
+ * You could see [ARM docs](https://learn.microsoft.com/azure/azure-resource-manager/management/authenticate-multi-tenant) for a rundown of how this feature works
  */
 function auxiliaryAuthenticationHeaderPolicy(options) {
     const { credentials, scopes } = options;
@@ -80848,9 +80848,9 @@ exports.throttlingRetryPolicyName = policies_1.throttlingRetryPolicyName;
  * A policy that retries when the server sends a 429 response with a Retry-After header.
  *
  * To learn more, please refer to
- * https://learn.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-request-limits,
- * https://learn.microsoft.com/en-us/azure/azure-subscription-service-limits and
- * https://learn.microsoft.com/en-us/azure/virtual-machines/troubleshooting/troubleshooting-throttling-errors
+ * https://learn.microsoft.com/azure/azure-resource-manager/resource-manager-request-limits,
+ * https://learn.microsoft.com/azure/azure-subscription-service-limits and
+ * https://learn.microsoft.com/azure/virtual-machines/troubleshooting/troubleshooting-throttling-errors
  *
  * @param options - Options that configure retry logic.
  */
@@ -81116,29 +81116,8 @@ const ts_http_runtime_1 = __nccwpck_require__(1958);
 /**
  * A custom error type for failed pipeline requests.
  */
-class RestError extends Error {
-    constructor(message, options = {}) {
-        super(message);
-        // what is this??
-        // it turns out that you can return from a constructor and it causes
-        // calling `new` to return the value you return.
-        // this lets us wrap the TypeSpec RestError so that calling this constructor will give you the same type of object as calling the TypeSpec one,
-        // even though the constructor signatures (through RestErrorOptions) are slightly different.
-        return new ts_http_runtime_1.RestError(message, options);
-    }
-}
-exports.RestError = RestError;
-/**
- * Something went wrong when making the request.
- * This means the actual request failed for some reason,
- * such as a DNS issue or the connection being lost.
- */
-RestError.REQUEST_SEND_ERROR = "REQUEST_SEND_ERROR";
-/**
- * This means that parsing the response from the server failed.
- * It may have been malformed.
- */
-RestError.PARSE_ERROR = "PARSE_ERROR";
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+exports.RestError = ts_http_runtime_1.RestError;
 /**
  * Typeguard for RestError
  * @param e - Something caught by a catch clause.
@@ -84909,7 +84888,7 @@ function replaceAll(value, searchValue, replaceValue) {
 // Licensed under the MIT License.
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.DEFAULT_RETRY_POLICY_COUNT = exports.SDK_VERSION = void 0;
-exports.SDK_VERSION = "0.2.2";
+exports.SDK_VERSION = "0.2.3";
 exports.DEFAULT_RETRY_POLICY_COUNT = 3;
 //# sourceMappingURL=constants.js.map
 
@@ -85320,10 +85299,23 @@ function createLoggerContext(options) {
     clientLogger.log = (...args) => {
         debug_js_1.default.log(...args);
     };
+    function contextSetLogLevel(level) {
+        if (level && !isTypeSpecRuntimeLogLevel(level)) {
+            throw new Error(`Unknown log level '${level}'. Acceptable values: ${TYPESPEC_RUNTIME_LOG_LEVELS.join(",")}`);
+        }
+        logLevel = level;
+        const enabledNamespaces = [];
+        for (const logger of registeredLoggers) {
+            if (shouldEnable(logger)) {
+                enabledNamespaces.push(logger.namespace);
+            }
+        }
+        debug_js_1.default.enable(enabledNamespaces.join(","));
+    }
     if (logLevelFromEnv) {
         // avoid calling setLogLevel because we don't want a mis-set environment variable to crash
         if (isTypeSpecRuntimeLogLevel(logLevelFromEnv)) {
-            setLogLevel(logLevelFromEnv);
+            contextSetLogLevel(logLevelFromEnv);
         }
         else {
             console.error(`${options.logLevelEnvVarName} set to unknown log level '${logLevelFromEnv}'; logging is not enabled. Acceptable values: ${TYPESPEC_RUNTIME_LOG_LEVELS.join(", ")}.`);
@@ -85344,33 +85336,23 @@ function createLoggerContext(options) {
         registeredLoggers.add(logger);
         return logger;
     }
+    function contextGetLogLevel() {
+        return logLevel;
+    }
+    function contextCreateClientLogger(namespace) {
+        const clientRootLogger = clientLogger.extend(namespace);
+        patchLogMethod(clientLogger, clientRootLogger);
+        return {
+            error: createLogger(clientRootLogger, "error"),
+            warning: createLogger(clientRootLogger, "warning"),
+            info: createLogger(clientRootLogger, "info"),
+            verbose: createLogger(clientRootLogger, "verbose"),
+        };
+    }
     return {
-        setLogLevel(level) {
-            if (level && !isTypeSpecRuntimeLogLevel(level)) {
-                throw new Error(`Unknown log level '${level}'. Acceptable values: ${TYPESPEC_RUNTIME_LOG_LEVELS.join(",")}`);
-            }
-            logLevel = level;
-            const enabledNamespaces = [];
-            for (const logger of registeredLoggers) {
-                if (shouldEnable(logger)) {
-                    enabledNamespaces.push(logger.namespace);
-                }
-            }
-            debug_js_1.default.enable(enabledNamespaces.join(","));
-        },
-        getLogLevel() {
-            return logLevel;
-        },
-        createClientLogger(namespace) {
-            const clientRootLogger = clientLogger.extend(namespace);
-            patchLogMethod(clientLogger, clientRootLogger);
-            return {
-                error: createLogger(clientRootLogger, "error"),
-                warning: createLogger(clientRootLogger, "warning"),
-                info: createLogger(clientRootLogger, "info"),
-                verbose: createLogger(clientRootLogger, "verbose"),
-            };
-        },
+        setLogLevel: contextSetLogLevel,
+        getLogLevel: contextGetLogLevel,
+        createClientLogger: contextCreateClientLogger,
         logger: clientLogger,
     };
 }
@@ -86067,6 +86049,7 @@ class PipelineRequestImpl {
         this.allowInsecureConnection = (_f = options.allowInsecureConnection) !== null && _f !== void 0 ? _f : false;
         this.enableBrowserStreams = (_g = options.enableBrowserStreams) !== null && _g !== void 0 ? _g : false;
         this.requestOverrides = options.requestOverrides;
+        this.authSchemes = options.authSchemes;
     }
 }
 /**
@@ -87200,9 +87183,9 @@ exports.throttlingRetryPolicyName = "throttlingRetryPolicy";
  * A policy that retries when the server sends a 429 response with a Retry-After header.
  *
  * To learn more, please refer to
- * https://learn.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-request-limits,
- * https://learn.microsoft.com/en-us/azure/azure-subscription-service-limits and
- * https://learn.microsoft.com/en-us/azure/virtual-machines/troubleshooting/troubleshooting-throttling-errors
+ * https://learn.microsoft.com/azure/azure-resource-manager/resource-manager-request-limits,
+ * https://learn.microsoft.com/azure/azure-subscription-service-limits and
+ * https://learn.microsoft.com/azure/virtual-machines/troubleshooting/troubleshooting-throttling-errors
  *
  * @param options - Options that configure retry logic.
  */
