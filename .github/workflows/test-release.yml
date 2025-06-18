@@ -1,11 +1,5 @@
 name: Test Release (do a dry run)
 
-env:
-  # Use docker.io for Docker Hub if empty
-  REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
-
 on:
   workflow_dispatch: # releasing is manual as we don't want to release every time
 
@@ -13,6 +7,13 @@ permissions:
   contents: write
   issues: read
   pull-requests: read
+
+env:
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+  NPM_CONFIG_FUND: "false"
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
 
 jobs:
   release:

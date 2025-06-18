@@ -1,11 +1,5 @@
 name: Release
 
-env:
-  # Use docker.io for Docker Hub if empty
-  REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
-
 concurrency:
   group: "${{ github.workflow }}"
   cancel-in-progress: true # only last step is important, which runs or doesn't
@@ -19,6 +13,13 @@ permissions:
   issues: write
   pull-requests: write
   id-token: write # to enable use of OIDC for npm provenance
+
+env:
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+  NPM_CONFIG_FUND: "false"
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
 
 jobs:
   release:

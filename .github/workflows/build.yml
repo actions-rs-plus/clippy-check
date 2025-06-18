@@ -20,6 +20,9 @@ concurrency:
   group: "${{ github.workflow }} @ ${{ github.ref_name }}"
   cancel-in-progress: true
 
+env:
+  NPM_CONFIG_FUND: "false"
+
 jobs:
   changes:
     name: Detect changes
