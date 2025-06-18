@@ -28,6 +28,12 @@ jobs:
           node-version-file: ".nvmrc"
           cache: "npm"
           cache-dependency-path: package-lock.json
+          registry-url: https://npm.pkg.github.com
+
+      - name: Ensure latest version of npm, older versions like v8 have broken caching
+        shell: bash
+        run: |
+          npm install --location=global npm@latest
 
       - name: Install dependencies
         shell: bash
