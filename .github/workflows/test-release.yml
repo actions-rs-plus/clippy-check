@@ -1,11 +1,5 @@
 name: Test Release (do a dry run)
 
-env:
-  # Use docker.io for Docker Hub if empty
-  REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
-
 on:
   workflow_dispatch: # releasing is manual as we don't want to release every time
 
@@ -13,6 +7,13 @@ permissions:
   contents: write
   issues: read
   pull-requests: read
+
+env:
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+  NPM_CONFIG_FUND: "false"
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
 
 jobs:
   release:
@@ -36,7 +37,13 @@ jobs:
         with:
           node-version-file: ".nvmrc"
           cache: "npm"
-          cache-dependency-path: "**/package-lock.json"
+          cache-dependency-path: package-lock.json
+          registry-url: https://npm.pkg.github.com
+
+      - name: Ensure latest version of npm, older versions like v8 have broken caching
+        shell: bash
+        run: |
+          npm install --location=global npm@latest
 
       - name: Install dependencies
         shell: bash
