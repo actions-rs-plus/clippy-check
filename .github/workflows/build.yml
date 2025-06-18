@@ -90,6 +90,11 @@ jobs:
           cache: "npm"
           cache-dependency-path: package-lock.json
 
+      - name: Ensure latest version of npm, older versions like v8 have broken caching
+        shell: bash
+        run: |
+          npm install --location=global npm@latest
+
       - name: Download dependencies from cache
         shell: bash
         run: |
@@ -167,6 +172,11 @@ jobs:
           cache: "npm"
           cache-dependency-path: package-lock.json
 
+      - name: Ensure latest version of npm, older versions like v8 have broken caching
+        shell: bash
+        run: |
+          npm install --location=global npm@latest
+
       - name: Download dependencies from cache
         shell: bash
         run: |
@@ -208,6 +218,11 @@ jobs:
           node-version-file: ".nvmrc"
           cache: "npm"
           cache-dependency-path: package-lock.json
+
+      - name: Ensure latest version of npm, older versions like v8 have broken caching
+        shell: bash
+        run: |
+          npm install --location=global npm@latest
 
       - name: Download dependencies from cache
         shell: bash
@@ -262,6 +277,11 @@ jobs:
           node-version-file: ".nvmrc"
           cache: "npm"
           cache-dependency-path: package-lock.json
+
+      - name: Ensure latest version of npm, older versions like v8 have broken caching
+        shell: bash
+        run: |
+          npm install --location=global npm@latest
 
       - name: Download dependencies from cache
         shell: bash
