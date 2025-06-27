@@ -74824,15 +74824,33 @@ async function buildContext(program, toolchain) {
     ]);
     return context;
 }
+/// Copied from https://github.com/actions/toolkit/blob/683703c1149439530dcee7b8c5dbbfeec4104368/packages/exec/src/toolrunner.ts#L83
+/// & Replaced `os.EOL` by the POSIX EOL
+function _processLineBuffer(data, stringBuffer, onLine) {
+    const POSIX_EOL = "\n";
+    let s = stringBuffer + data.toString();
+    let n = s.indexOf(POSIX_EOL);
+    while (n > -1) {
+        const line = s.slice(0, Math.max(0, n));
+        onLine(line);
+        // the rest of the string ...
+        s = s.slice(Math.max(0, n + POSIX_EOL.length));
+        n = s.indexOf(POSIX_EOL);
+    }
+    return s;
+}
 async function runClippy(actionInput, program) {
     const arguments_ = buildClippyArguments(actionInput);
     const outputParser = new OutputParser();
+    let stdbuffer = "";
     const options = {
         failOnStdErr: false,
         ignoreReturnCode: true,
         listeners: {
-            stdline: (line) => {
-                outputParser.tryParseClippyLine(line);
+            stdout: (data) => {
+                stdbuffer = _processLineBuffer(data, stdbuffer, (line) => {
+                    outputParser.tryParseClippyLine(line);
+                });
             },
         },
     };

@@ -109,6 +109,7 @@ describe("clippy", () => {
 
     it("records versions", async () => {
         const reportSpy = vi.spyOn(report, "report");
+
         vi.spyOn(exec, "exec").mockImplementation(
             (commandline: string, arguments_?: string[], options?: exec.ExecOptions) => {
                 if (commandline.endsWith("cargo")) {
@@ -141,6 +142,8 @@ describe("clippy", () => {
     });
 
     it("clippy captures stdout", async () => {
+        const reportSpy = vi.spyOn(report, "report");
+
         vi.spyOn(exec, "exec").mockImplementation(
             (_commandline: string, arguments_?: string[], options?: exec.ExecOptions) => {
                 const expected = ["clippy", "--message-format=json"];
@@ -170,7 +173,7 @@ describe("clippy", () => {
                             ],
                         },
                     };
-                    options?.listeners?.stdline?.(JSON.stringify(data));
+                    options?.listeners?.stdout?.(Buffer.from(`${JSON.stringify(data)}\n`));
                 }
 
                 return Promise.resolve(0);
@@ -185,5 +188,28 @@ describe("clippy", () => {
         };
 
         await expect(run(actionInput)).resolves.toBeUndefined();
+
+        expect(reportSpy).toBeCalledWith(
+            { error: 0, help: 0, ice: 0, note: 0, warning: 1 },
+            [
+                {
+                    level: 1,
+                    message: "rendered",
+                    properties: {
+                        endColumn: 45,
+                        endLine: 12,
+                        file: "main.rs",
+                        startColumn: 30,
+                        startLine: 12,
+                        title: "message",
+                    },
+                },
+            ],
+            {
+                cargo: "",
+                clippy: "",
+                rustc: "",
+            },
+        );
     });
 });

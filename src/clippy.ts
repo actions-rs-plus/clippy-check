@@ -1,4 +1,4 @@
-import nodePath from "node:path";
+import path from "node:path";
 
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
@@ -54,22 +54,45 @@ async function buildContext(program: BaseProgram, toolchain: string | undefined)
     return context;
 }
 
+/// Copied from https://github.com/actions/toolkit/blob/683703c1149439530dcee7b8c5dbbfeec4104368/packages/exec/src/toolrunner.ts#L83
+/// & Replaced `os.EOL` by the POSIX EOL
+function _processLineBuffer(data: Buffer, stringBuffer: string, onLine: (line: string) => void): string {
+    const POSIX_EOL = "\n";
+
+    let s = stringBuffer + data.toString();
+    let n = s.indexOf(POSIX_EOL);
+
+    while (n > -1) {
+        const line = s.slice(0, Math.max(0, n));
+        onLine(line);
+
+        // the rest of the string ...
+        s = s.slice(Math.max(0, n + POSIX_EOL.length));
+        n = s.indexOf(POSIX_EOL);
+    }
+
+    return s;
+}
+
 async function runClippy(actionInput: input.ParsedInput, program: BaseProgram): Promise<ClippyResult> {
     const arguments_ = buildClippyArguments(actionInput);
     const outputParser = new OutputParser();
 
+    let stdbuffer = "";
     const options: exec.ExecOptions = {
         failOnStdErr: false,
         ignoreReturnCode: true,
         listeners: {
-            stdline: (line: string) => {
-                outputParser.tryParseClippyLine(line);
+            stdout: (data: Buffer) => {
+                stdbuffer = _processLineBuffer(data, stdbuffer, (line: string) => {
+                    outputParser.tryParseClippyLine(line);
+                });
             },
         },
     };
 
     if (actionInput.workingDirectory !== undefined && actionInput.workingDirectory !== "") {
-        options.cwd = nodePath.join(process.cwd(), actionInput.workingDirectory);
+        options.cwd = path.join(process.cwd(), actionInput.workingDirectory);
     }
 
     let exitCode = 0;
