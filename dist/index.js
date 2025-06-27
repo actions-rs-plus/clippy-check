@@ -74563,6 +74563,9 @@ var core = __nccwpck_require__(7484);
 var exec = __nccwpck_require__(5236);
 // EXTERNAL MODULE: ./node_modules/@actions-rs-plus/core/dist/core.js + 8 modules
 var dist_core = __nccwpck_require__(3109);
+// EXTERNAL MODULE: external "node:os"
+var external_node_os_ = __nccwpck_require__(8161);
+var external_node_os_default = /*#__PURE__*/__nccwpck_require__.n(external_node_os_);
 ;// CONCATENATED MODULE: ./src/schema.ts
 var AnnotationLevel;
 (function (AnnotationLevel) {
@@ -74572,6 +74575,7 @@ var AnnotationLevel;
 })(AnnotationLevel || (AnnotationLevel = {}));
 
 ;// CONCATENATED MODULE: ./src/output-parser.ts
+
 
 
 
@@ -74682,15 +74686,19 @@ class OutputParser {
         if (primarySpan === undefined) {
             throw new Error("Unable to find primary span for message");
         }
-        let path = primarySpan.file_name;
+        let pathToFile = primarySpan.file_name;
         if (this._workingDirectory !== null) {
-            path = external_node_path_default().join(this._workingDirectory, path);
+            pathToFile = external_node_path_default().join(this._workingDirectory, pathToFile);
+        }
+        if (external_node_os_default().platform() === "win32") {
+            // `.\\foo\\bar.cs` to `./foo/bar.cs`
+            pathToFile = pathToFile.split((external_node_path_default()).win32.sep).join((external_node_path_default()).posix.sep);
         }
         const annotation = {
             level: OutputParser.parseLevel(contents.message.level),
             message: contents.message.rendered,
             properties: {
-                file: path,
+                file: pathToFile,
                 startLine: primarySpan.line_start,
                 endLine: primarySpan.line_end,
                 title: contents.message.message,

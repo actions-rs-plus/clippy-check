@@ -1,3 +1,5 @@
+import os from "node:os";
+
 import core from "@actions/core";
 import { describe, expect, it, vi } from "vitest";
 
@@ -222,5 +224,53 @@ describe("outputParser", () => {
                 },
             },
         ]);
+    });
+
+    it("normalizes Windows paths", () => {
+        vi.spyOn(os, "platform").mockImplementationOnce(() => "win32");
+
+        const outputParser = new OutputParser();
+
+        outputParser.tryParseClippyLine(
+            JSON.stringify({
+                reason: defaultMessage.reason,
+                message: {
+                    ...defaultMessage.message,
+                    level: "error",
+                    spans: [
+                        {
+                            ...defaultMessage.message.spans[0],
+                            file_name: String.raw`a\windows\path\src\main.rs`,
+                        },
+                    ],
+                },
+            }),
+        );
+
+        expect(outputParser.annotations[0]?.properties.file).toEqual("a/windows/path/src/main.rs");
+    });
+
+    it("don't normalize Windows paths on Linux", () => {
+        vi.spyOn(os, "platform").mockImplementationOnce(() => "linux");
+
+        const outputParser = new OutputParser();
+
+        outputParser.tryParseClippyLine(
+            JSON.stringify({
+                reason: defaultMessage.reason,
+                message: {
+                    ...defaultMessage.message,
+                    level: "error",
+                    spans: [
+                        {
+                            ...defaultMessage.message.spans[0],
+                            file_name: String.raw`a\windows\path\src\main.rs`,
+                        },
+                    ],
+                },
+            }),
+        );
+
+        expect(outputParser.annotations[0]?.properties.file).toEqual(String.raw`a\windows\path\src\main.rs`);
     });
 });

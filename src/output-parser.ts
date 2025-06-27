@@ -1,4 +1,5 @@
-import nodePath from "node:path";
+import os from "node:os";
+import path from "node:path";
 
 import * as core from "@actions/core";
 
@@ -122,6 +123,7 @@ export class OutputParser {
 
         this._uniqueAnnotations.set(key, parsedAnnotation);
     }
+
     /// Convert parsed JSON line into the GH annotation object
     ///
     /// https://developer.github.com/v3/checks/runs/#annotations-object
@@ -135,17 +137,22 @@ export class OutputParser {
             throw new Error("Unable to find primary span for message");
         }
 
-        let path = primarySpan.file_name;
+        let pathToFile = primarySpan.file_name;
 
         if (this._workingDirectory !== null) {
-            path = nodePath.join(this._workingDirectory, path);
+            pathToFile = path.join(this._workingDirectory, pathToFile);
+        }
+
+        if (os.platform() === "win32") {
+            // `.\\foo\\bar.cs` to `./foo/bar.cs`
+            pathToFile = pathToFile.split(path.win32.sep).join(path.posix.sep);
         }
 
         const annotation: AnnotationWithMessageAndLevel = {
             level: OutputParser.parseLevel(contents.message.level),
             message: contents.message.rendered,
             properties: {
-                file: path,
+                file: pathToFile,
                 startLine: primarySpan.line_start,
                 endLine: primarySpan.line_end,
                 title: contents.message.message,
