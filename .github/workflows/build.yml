@@ -268,6 +268,42 @@ jobs:
           echo "Tests failed"
           exit 1
 
+  npm-test-windows:
+    name: Test the code on Windows
+    runs-on: windows-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          show-progress: false
+          submodules: true
+          fetch-depth: 0
+
+      - name: Set up node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+          registry-url: https://npm.pkg.github.com
+
+      - name: Ensure latest version of npm, older versions like v8 have broken caching
+        shell: pwsh
+        run: |
+          npm install --location=global npm@latest
+
+      - name: Download dependencies
+        shell: pwsh
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm ci
+
+      - name: Run tests
+        shell: pwsh
+        run: |
+          npm run test -- --reporter=default --reporter=github-actions --reporter=junit --coverage.reporter=text --coverage.reporter=lcovonly
+
   npm-dependencies:
     name: Validate dependencies
     runs-on: ubuntu-latest
