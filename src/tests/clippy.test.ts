@@ -1,5 +1,6 @@
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
+import * as io from "@actions/io";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { run } from "@/clippy";
@@ -20,6 +21,10 @@ describe("clippy", () => {
     it("runs with cargo", async () => {
         const execSpy = vi.spyOn(exec, "exec").mockResolvedValue(0);
 
+        const whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
+            return Promise.resolve(tool);
+        });
+
         const actionInput: ParsedInput = {
             toolchain: "stable",
             args: [],
@@ -28,13 +33,18 @@ describe("clippy", () => {
         };
 
         await expect(run(actionInput)).resolves.toBeUndefined();
+
+        expect(whichSpy).toBeCalledWith("cargo", true);
+
         expect(execSpy).toBeCalledTimes(4);
     });
 
     it("runs with cross", async () => {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function -- mock
-        const debugSpy = vi.spyOn(core, "debug").mockImplementation((_s: string) => {});
         const execSpy = vi.spyOn(exec, "exec").mockResolvedValue(0);
+
+        const whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
+            return Promise.resolve(tool);
+        });
 
         const actionInput: ParsedInput = {
             toolchain: "stable",
@@ -44,8 +54,10 @@ describe("clippy", () => {
         };
 
         await expect(run(actionInput)).resolves.toBeUndefined();
-        expect(execSpy).toBeCalledTimes(5);
-        expect(debugSpy).toBeCalledTimes(1);
+
+        expect(execSpy).toBeCalledTimes(4);
+
+        expect(whichSpy).toBeCalledWith("cross", true);
     });
 
     it("reports when clippy fails", async () => {
@@ -64,6 +76,10 @@ describe("clippy", () => {
             }
         });
 
+        const whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
+            return Promise.resolve(tool);
+        });
+
         const actionInput: ParsedInput = {
             toolchain: "stable",
             args: [],
@@ -72,10 +88,11 @@ describe("clippy", () => {
         };
 
         await expect(run(actionInput)).rejects.toThrow(/Clippy had exited with the (\d)+ exit code/);
+
+        expect(whichSpy).toBeCalledWith("cargo", true);
     });
 
     it("records versions with toolchain", async () => {
-        const reportSpy = vi.spyOn(report, "report");
         vi.spyOn(exec, "exec").mockImplementation(
             (commandline: string, arguments_?: string[], options?: exec.ExecOptions) => {
                 if (commandline.endsWith("cargo")) {
@@ -91,6 +108,12 @@ describe("clippy", () => {
             },
         );
 
+        const reportSpy = vi.spyOn(report, "report");
+
+        const whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
+            return Promise.resolve(tool);
+        });
+
         const actionInput: ParsedInput = {
             toolchain: "nightly",
             args: [],
@@ -105,11 +128,11 @@ describe("clippy", () => {
             clippy: "clippy version",
             rustc: "rustc version",
         });
+
+        expect(whichSpy).toBeCalledWith("cargo", true);
     });
 
     it("records versions", async () => {
-        const reportSpy = vi.spyOn(report, "report");
-
         vi.spyOn(exec, "exec").mockImplementation(
             (commandline: string, arguments_?: string[], options?: exec.ExecOptions) => {
                 if (commandline.endsWith("cargo")) {
@@ -125,6 +148,12 @@ describe("clippy", () => {
             },
         );
 
+        const reportSpy = vi.spyOn(report, "report");
+
+        const whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
+            return Promise.resolve(tool);
+        });
+
         const actionInput: ParsedInput = {
             toolchain: undefined,
             args: [],
@@ -134,6 +163,8 @@ describe("clippy", () => {
 
         await expect(run(actionInput)).resolves.toBeUndefined();
 
+        expect(whichSpy).toBeCalledWith("cargo", true);
+
         expect(reportSpy).toBeCalledWith({ error: 0, help: 0, ice: 0, note: 0, warning: 0 }, [], {
             cargo: "cargo version",
             clippy: "clippy version",
@@ -142,8 +173,6 @@ describe("clippy", () => {
     });
 
     it("clippy captures stdout", async () => {
-        const reportSpy = vi.spyOn(report, "report");
-
         vi.spyOn(exec, "exec").mockImplementation(
             (_commandline: string, arguments_?: string[], options?: exec.ExecOptions) => {
                 const expected = ["clippy", "--message-format=json"];
@@ -180,6 +209,12 @@ describe("clippy", () => {
             },
         );
 
+        const reportSpy = vi.spyOn(report, "report");
+
+        const whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
+            return Promise.resolve(tool);
+        });
+
         const actionInput: ParsedInput = {
             toolchain: "stable",
             args: [],
@@ -211,5 +246,7 @@ describe("clippy", () => {
                 rustc: "",
             },
         );
+
+        expect(whichSpy).toBeCalledWith("cargo", true);
     });
 });
