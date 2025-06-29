@@ -1,7 +1,7 @@
 # Rust `clippy-check` Action
 
 ![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)
-![GitHub Discussions](https://img.shields.io/github/discussions/actions-rs-plus/clipppy-check)
+![GitHub Discussions](https://img.shields.io/github/discussions/actions-rs-plus/clippy-check)
 ![Build](https://img.shields.io/github/actions/workflow/status/actions-rs-plus/clippy-check/build.yml?branch=main)
 
 > Clippy lints in your Pull Requests
