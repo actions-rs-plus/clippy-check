@@ -351,6 +351,7 @@ jobs:
       - npm-dependencies
       - npm-lint
       - npm-test
+      - npm-test-windows
     if: ${{ always() }}
     steps:
       - name: Fail!
