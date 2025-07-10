@@ -9,15 +9,14 @@ on:
 
 permissions:
   contents: write # to write tags
-  packages: write # to write tags to Docker registry
-  issues: write
-  pull-requests: write
   id-token: write # to enable use of OIDC for npm provenance
+  issues: write
+  packages: write # to write tags to Docker registry
+  pull-requests: write
 
 env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-  NPM_CONFIG_FUND: "false"
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
 
@@ -36,37 +35,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
+          token: ${{ secrets.TOKEN_TO_TRIGGER_SUBSEQUENT_WORKFLOWS }}
           show-progress: false
 
-      - name: Setup Node.js
+      - name: Install pnpm
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+
+      - name: Set up node
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version-file: ".nvmrc"
-          cache: "npm"
-          cache-dependency-path: package-lock.json
+          node-version-file: package.json
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
           registry-url: https://npm.pkg.github.com
 
-      - name: Ensure latest version of npm, older versions like v8 have broken caching
-        shell: bash
-        run: |
-          npm install --location=global npm@latest
-
-      - name: Install dependencies
+      - name: Download dependencies
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npm ci --ignore-scripts
-
-      - name: Build
-        shell: bash
-        run: |
-          npm run build
+          pnpm install --frozen-lockfile
 
       - name: Release
+        shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_TO_TRIGGER_SUBSEQUENT_WORKFLOWS }}
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        shell: bash
         run: |
-          npm run release
+          pnpm run release

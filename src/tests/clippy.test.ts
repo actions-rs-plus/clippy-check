@@ -3,10 +3,10 @@ import * as exec from "@actions/exec";
 import * as io from "@actions/io";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { run } from "@/clippy";
-import type { ParsedInput } from "@/input";
-import * as report from "@/reporter";
-import type { CompilerMessage } from "@/schema";
+import { run } from "@/clippy.ts";
+import type { ParsedInput } from "@/input.ts";
+import * as report from "@/reporter.ts";
+import type { CompilerMessage } from "@/schema.ts";
 
 vi.mock("@actions/core");
 

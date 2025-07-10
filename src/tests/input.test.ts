@@ -1,6 +1,6 @@
 import { afterAll, beforeEach, describe, expect, it } from "vitest";
 
-import { get } from "@/input";
+import { get } from "@/input.ts";
 
 describe("input", () => {
     const OLD_ENV = process.env;

@@ -1,8 +1,9 @@
+dist
 profiling
 reports
 target
 package.json
-package-lock.json
+pnpm-lock.yaml
 tsconfig.json
 tsconfig.dev.json
 tsconfig.build.json

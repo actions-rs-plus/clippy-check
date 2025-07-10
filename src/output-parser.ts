@@ -9,8 +9,8 @@ import type {
     CompilerMessage,
     CargoMessage as Message,
     Stats,
-} from "@/schema";
-import { AnnotationLevel } from "@/schema";
+} from "@/schema.ts";
+import { AnnotationLevel } from "@/schema.ts";
 
 export class OutputParser {
     private readonly _workingDirectory: null | string;
