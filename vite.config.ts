@@ -12,8 +12,7 @@ import { coverageConfigDefaults, defineConfig } from "vitest/config";
 export default defineConfig(({ mode }) => {
     const environment = loadEnv(mode, process.cwd(), "");
 
-    // const externals = new Set(builtinModules);
-    const depsToOnlineDuringTest: string[] = ["@actions-rs-plus/core"];
+    const depsToInlineDuringTest: string[] = ["@actions-rs-plus/core"];
 
     const config: UserConfig = {
         appType: "custom",
@@ -70,7 +69,7 @@ export default defineConfig(({ mode }) => {
             },
             server: {
                 deps: {
-                    inline: depsToOnlineDuringTest,
+                    inline: depsToInlineDuringTest,
                 },
             },
             restoreMocks: true,
