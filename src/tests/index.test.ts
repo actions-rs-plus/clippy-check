@@ -2,7 +2,7 @@ import * as core from "@actions/core";
 
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import * as clippy from "@/clippy";
+import * as clippy from "@/clippy.ts";
 
 vi.mock("@/clippy");
 
