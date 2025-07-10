@@ -3,8 +3,8 @@ import os from "node:os";
 import core from "@actions/core";
 import { describe, expect, it, vi } from "vitest";
 
-import { OutputParser } from "@/output-parser";
-import type { CargoMessage, CompilerMessage, Stats } from "@/schema";
+import { OutputParser } from "@/output-parser.ts";
+import type { CargoMessage, CompilerMessage, Stats } from "@/schema.ts";
 
 describe("outputParser", () => {
     const emptyStats: Stats = {

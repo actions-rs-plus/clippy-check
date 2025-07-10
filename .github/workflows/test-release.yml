@@ -4,14 +4,13 @@ on:
   workflow_dispatch: # releasing is manual as we don't want to release every time
 
 permissions:
-  contents: write
+  contents: read
   issues: read
   pull-requests: read
 
 env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-  NPM_CONFIG_FUND: "false"
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
 
@@ -32,25 +31,23 @@ jobs:
         with:
           show-progress: false
 
-      - name: Setup Node.js
+      - name: Install pnpm
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+
+      - name: Set up node
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version-file: ".nvmrc"
-          cache: "npm"
-          cache-dependency-path: package-lock.json
+          node-version-file: package.json
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
           registry-url: https://npm.pkg.github.com
 
-      - name: Ensure latest version of npm, older versions like v8 have broken caching
-        shell: bash
-        run: |
-          npm install --location=global npm@latest
-
-      - name: Install dependencies
+      - name: Download dependencies
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npm ci --ignore-scripts
+          pnpm install --frozen-lockfile
 
       - name: Release
         shell: bash
@@ -58,4 +55,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN_TO_TRIGGER_SUBSEQUENT_WORKFLOWS }}
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npm run release -- --dry-run
+          pnpm run release --dry-run

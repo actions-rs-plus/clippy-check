@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { report } from "@/reporter";
-import { AnnotationLevel } from "@/schema";
+import { report } from "@/reporter.ts";
+import { AnnotationLevel } from "@/schema.ts";
 
 vi.mock("@actions/core");
 
