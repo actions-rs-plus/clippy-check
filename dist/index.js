@@ -88295,15 +88295,12 @@ __nccwpck_require__.d(input_namespaceObject, {
 // EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
 var lib_github = __nccwpck_require__(3228);
 ;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/checks.js
-var __defProp = Object.defineProperty;
-var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 
 class Check {
+  client;
+  checkName;
+  checkId;
   constructor(client, checkName, checkId) {
-    __publicField(this, "client");
-    __publicField(this, "checkName");
-    __publicField(this, "checkId");
     this.client = client;
     this.checkName = checkName;
     this.checkId = checkId;
@@ -88362,13 +88359,10 @@ class Check {
 // EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
 var exec = __nccwpck_require__(5236);
 ;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/commands/base-program.js
-var base_program_defProp = Object.defineProperty;
-var base_program_defNormalProp = (obj, key, value) => key in obj ? base_program_defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var base_program_publicField = (obj, key, value) => base_program_defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 
 class BaseProgram {
+  path;
   constructor(path) {
-    base_program_publicField(this, "path");
     this.path = path;
   }
   call(arguments_, options) {
@@ -88391,7 +88385,6 @@ var lib = __nccwpck_require__(4844);
 ;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/commands/crates.js
 
 async function resolveVersion(crate) {
-  var _a;
   const url = `https://crates.io/api/v1/crates/${crate}`;
   const client = new lib.HttpClient("@actions-rs-plus (https://github.com/actions-rs-plus/)");
   const response = await client.getJson(url);
@@ -88403,7 +88396,7 @@ async function resolveVersion(crate) {
       `Unable to fetch latest crate version of "${crate}", server returned ${JSON.stringify(response.result, null, 2)}`
     );
   }
-  if (((_a = response.result.crate) == null ? void 0 : _a.newest_version) === void 0) {
+  if (response.result.crate?.newest_version === void 0) {
     throw new Error(`Unable to fetch latest crate version of "${crate}"`);
   }
   return response.result.crate.newest_version;
@@ -88568,9 +88561,6 @@ var tool_cache = __nccwpck_require__(3472);
 // EXTERNAL MODULE: ./node_modules/semver/index.js
 var node_modules_semver = __nccwpck_require__(2088);
 ;// CONCATENATED MODULE: ./node_modules/@actions-rs-plus/core/dist/commands/rustup.js
-var rustup_defProp = Object.defineProperty;
-var rustup_defNormalProp = (obj, key, value) => key in obj ? rustup_defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var rustup_publicField = (obj, key, value) => rustup_defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 
 
 
@@ -88582,8 +88572,8 @@ var rustup_publicField = (obj, key, value) => rustup_defNormalProp(obj, typeof k
 const PROFILES_MIN_VERSION = "1.20.1";
 const COMPONENTS_MIN_VERSION = "1.20.1";
 class RustUp {
+  path;
   constructor(exePath) {
-    rustup_publicField(this, "path");
     this.path = exePath;
   }
   static async getOrInstall() {
@@ -88645,10 +88635,10 @@ class RustUp {
       }
     }
     await this.call(arguments_);
-    if ((options == null ? void 0 : options.default) === true) {
+    if (options?.default === true) {
       await this.call(["default", name]);
     }
-    if ((options == null ? void 0 : options.override) === true) {
+    if (options?.override === true) {
       await this.call(["override", "set", name]);
     }
     return 0;
