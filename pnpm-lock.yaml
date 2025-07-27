@@ -88,8 +88,8 @@ importers:
         specifier: 2.32.0
         version: 2.32.0(@typescript-eslint/parser@8.38.0(eslint@9.32.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.32.0)
       eslint-plugin-n:
-        specifier: 17.21.0
-        version: 17.21.0(eslint@9.32.0)(typescript@5.8.3)
+        specifier: 17.21.1
+        version: 17.21.1(eslint@9.32.0)(typescript@5.8.3)
       eslint-plugin-perfectionist:
         specifier: 4.15.0
         version: 4.15.0(eslint@9.32.0)(typescript@5.8.3)
@@ -1686,8 +1686,8 @@ packages:
       '@typescript-eslint/parser':
         optional: true
 
-  eslint-plugin-n@17.21.0:
-    resolution: {integrity: sha512-1+iZ8We4ZlwVMtb/DcHG3y5/bZOdazIpa/4TySo22MLKdwrLcfrX0hbadnCvykSQCCmkAnWmIP8jZVb2AAq29A==}
+  eslint-plugin-n@17.21.1:
+    resolution: {integrity: sha512-Q4UBK4U3cXTUga/HjL0Ua4VFmUOI0XHF4K6gaRQ6Ly7Mwp/HcTR9cad2l93blemJbWK7JqqvF62BqzrCQ8BqmQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: '>=8.23.0'
@@ -5391,7 +5391,7 @@ snapshots:
       eslint: 9.32.0
       eslint-plugin-eslint-comments: 3.2.0(eslint@9.32.0)
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.38.0(eslint@9.32.0)(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.32.0)
-      eslint-plugin-n: 17.21.0(eslint@9.32.0)(typescript@5.8.3)
+      eslint-plugin-n: 17.21.1(eslint@9.32.0)(typescript@5.8.3)
       eslint-plugin-promise: 7.2.1(eslint@9.32.0)
       typescript: 5.8.3
       typescript-eslint: 8.38.0(eslint@9.32.0)(typescript@5.8.3)
@@ -5488,7 +5488,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-n@17.21.0(eslint@9.32.0)(typescript@5.8.3):
+  eslint-plugin-n@17.21.1(eslint@9.32.0)(typescript@5.8.3):
     dependencies:
       '@eslint-community/eslint-utils': 4.7.0(eslint@9.32.0)
       enhanced-resolve: 5.18.2
@@ -5496,6 +5496,7 @@ snapshots:
       eslint-plugin-es-x: 7.8.0(eslint@9.32.0)
       get-tsconfig: 4.10.1
       globals: 15.15.0
+      globrex: 0.1.2
       ignore: 5.3.2
       minimatch: 9.0.5
       semver: 7.7.2
