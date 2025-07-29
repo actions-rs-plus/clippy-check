@@ -124,8 +124,8 @@ importers:
         specifier: 7.0.6
         version: 7.0.6(@types/node@20.19.9)(yaml@2.8.0)
       vite-plugin-checker:
-        specifier: 0.10.1
-        version: 0.10.1(eslint@9.32.0)(meow@13.2.0)(optionator@0.9.4)(typescript@5.8.3)(vite@7.0.6(@types/node@20.19.9)(yaml@2.8.0))
+        specifier: 0.10.2
+        version: 0.10.2(eslint@9.32.0)(meow@13.2.0)(optionator@0.9.4)(typescript@5.8.3)(vite@7.0.6(@types/node@20.19.9)(yaml@2.8.0))
       vite-tsconfig-paths:
         specifier: 5.1.4
         version: 5.1.4(typescript@5.8.3)(vite@7.0.6(@types/node@20.19.9)(yaml@2.8.0))
@@ -3436,8 +3436,8 @@ packages:
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
 
-  vite-plugin-checker@0.10.1:
-    resolution: {integrity: sha512-imiBsmYTPdjQHIZiEi5BhJ7K8Z/kCjTFMn+Qa4+5ao/a4Yql4yWFcf81FDJqlMiM57iY4Q3Z7PdoEe4KydULYQ==}
+  vite-plugin-checker@0.10.2:
+    resolution: {integrity: sha512-FX9U8TnIS6AGOlqmC6O2YmkJzcZJRrjA03UF7FOhcUJ7it3HmCoxcIPMcoHliBP6EFOuNzle9K4c0JL4suRPow==}
     engines: {node: '>=14.16'}
     peerDependencies:
       '@biomejs/biome': '>=1.7'
@@ -7225,7 +7225,7 @@ snapshots:
       - tsx
       - yaml
 
-  vite-plugin-checker@0.10.1(eslint@9.32.0)(meow@13.2.0)(optionator@0.9.4)(typescript@5.8.3)(vite@7.0.6(@types/node@20.19.9)(yaml@2.8.0)):
+  vite-plugin-checker@0.10.2(eslint@9.32.0)(meow@13.2.0)(optionator@0.9.4)(typescript@5.8.3)(vite@7.0.6(@types/node@20.19.9)(yaml@2.8.0)):
     dependencies:
       '@babel/code-frame': 7.27.1
       chokidar: 4.0.3
