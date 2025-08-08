@@ -1,4 +1,3 @@
-// import { builtinModules } from "node:module";
 import nodePath from "node:path";
 
 import { codecovVitePlugin } from "@codecov/vite-plugin";
