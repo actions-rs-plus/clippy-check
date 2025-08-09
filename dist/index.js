@@ -63137,7 +63137,7 @@ function requireConfig() {
   return config;
 }
 var userAgent = {};
-const version = "4.0.3";
+const version = "4.0.5";
 const require$$0$1 = {
   version
 };
@@ -68151,6 +68151,7 @@ function requireCache() {
   const config_1 = /* @__PURE__ */ requireConfig();
   const tar_1 = /* @__PURE__ */ requireTar();
   const constants_1 = /* @__PURE__ */ requireConstants$5();
+  const http_client_1 = /* @__PURE__ */ requireLib();
   class ValidationError extends Error {
     constructor(message) {
       super(message);
@@ -68182,7 +68183,14 @@ function requireCache() {
     }
   }
   function isFeatureAvailable() {
-    return !!process.env["ACTIONS_CACHE_URL"];
+    const cacheServiceVersion = (0, config_1.getCacheServiceVersion)();
+    switch (cacheServiceVersion) {
+      case "v2":
+        return !!process.env["ACTIONS_RESULTS_URL"];
+      case "v1":
+      default:
+        return !!process.env["ACTIONS_CACHE_URL"];
+    }
   }
   cache$2.isFeatureAvailable = isFeatureAvailable;
   function restoreCache(paths, primaryKey, restoreKeys, options2, enableCrossOsArchive = false) {
@@ -68242,7 +68250,11 @@ function requireCache() {
         if (typedError.name === ValidationError.name) {
           throw error2;
         } else {
-          core2.warning(`Failed to restore: ${error2.message}`);
+          if (typedError instanceof http_client_1.HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) {
+            core2.error(`Failed to restore: ${error2.message}`);
+          } else {
+            core2.warning(`Failed to restore: ${error2.message}`);
+          }
         }
       } finally {
         try {
@@ -68281,7 +68293,12 @@ function requireCache() {
           core2.debug(`Cache not found for version ${request2.version} of keys: ${keys.join(", ")}`);
           return void 0;
         }
-        core2.info(`Cache hit for: ${request2.key}`);
+        const isRestoreKeyMatch = request2.key !== response2.matchedKey;
+        if (isRestoreKeyMatch) {
+          core2.info(`Cache hit for restore-key: ${response2.matchedKey}`);
+        } else {
+          core2.info(`Cache hit for: ${response2.matchedKey}`);
+        }
         if (options2 === null || options2 === void 0 ? void 0 : options2.lookupOnly) {
           core2.info("Lookup only - skipping download");
           return response2.matchedKey;
@@ -68303,7 +68320,11 @@ function requireCache() {
         if (typedError.name === ValidationError.name) {
           throw error2;
         } else {
-          core2.warning(`Failed to restore: ${error2.message}`);
+          if (typedError instanceof http_client_1.HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) {
+            core2.error(`Failed to restore: ${error2.message}`);
+          } else {
+            core2.warning(`Failed to restore: ${error2.message}`);
+          }
         }
       } finally {
         try {
@@ -68380,7 +68401,11 @@ function requireCache() {
         } else if (typedError.name === ReserveCacheError.name) {
           core2.info(`Failed to save: ${typedError.message}`);
         } else {
-          core2.warning(`Failed to save: ${typedError.message}`);
+          if (typedError instanceof http_client_1.HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) {
+            core2.error(`Failed to save: ${typedError.message}`);
+          } else {
+            core2.warning(`Failed to save: ${typedError.message}`);
+          }
         }
       } finally {
         try {
@@ -68455,7 +68480,11 @@ function requireCache() {
         } else if (typedError.name === ReserveCacheError.name) {
           core2.info(`Failed to save: ${typedError.message}`);
         } else {
-          core2.warning(`Failed to save: ${typedError.message}`);
+          if (typedError instanceof http_client_1.HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) {
+            core2.error(`Failed to save: ${typedError.message}`);
+          } else {
+            core2.warning(`Failed to save: ${typedError.message}`);
+          }
         }
       } finally {
         try {
