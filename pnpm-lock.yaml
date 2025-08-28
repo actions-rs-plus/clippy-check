@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@actions-rs-plus/core':
-        specifier: 0.4.1
-        version: 0.4.1
+        specifier: 0.5.1
+        version: 0.5.1
       '@actions/core':
         specifier: 1.11.1
         version: 1.11.1
@@ -138,9 +138,9 @@ importers:
 
 packages:
 
-  '@actions-rs-plus/core@0.4.1':
-    resolution: {integrity: sha512-lNoC0SZ2il9328eoyB9SwzfGLNiVIQLqE1zfDsaxqS12nGRpnqOX8ScV/ksxoe3W5ptyMWyh/tXyJsB2JXqivw==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.4.1/6341fa8424054754add8edde24df6d0c417130d4}
-    engines: {node: 20.19.4, pnpm: 10.14.0}
+  '@actions-rs-plus/core@0.5.1':
+    resolution: {integrity: sha512-yIcUX1knxa3yQrYHLL90vQ32EVrTMc/HQf34uLNLq0d0YbgK5i0UMTrV7/nW+CJa7jSrHVacXKQeQkqBzwzN/A==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.5.1/189803afe2e7e382cb362cba2b8c28865e1dc52a}
+    engines: {node: 24.7.0, pnpm: 10.15.0}
 
   '@actions/cache@4.0.5':
     resolution: {integrity: sha512-RjLz1/vvntOfp3FpkY3wB0MjVRbLq7bfQEuQG9UUTKwdtcYmFrKVmuD+9B6ADbzbkSfHM+dM4sMjdr3R4XIkFg==}
@@ -3639,7 +3639,7 @@ packages:
 
 snapshots:
 
-  '@actions-rs-plus/core@0.4.1':
+  '@actions-rs-plus/core@0.5.1':
     dependencies:
       '@actions/cache': 4.0.5
       '@actions/core': 1.11.1
