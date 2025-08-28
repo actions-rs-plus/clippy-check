@@ -39,7 +39,6 @@ export class OutputParser {
 
     public static parseCargoJson(line: string): Message | null {
         try {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion -- I am not checking each property manually
             return JSON.parse(line) as Message;
         } catch {
             return null;
