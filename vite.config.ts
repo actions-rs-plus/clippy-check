@@ -21,7 +21,7 @@ export default defineConfig(({ mode }) => {
                 fileName: "index",
                 formats: ["es"],
             },
-            target: "node20",
+            target: "node24",
             minify: false,
             emptyOutDir: true,
             sourcemap: true,
