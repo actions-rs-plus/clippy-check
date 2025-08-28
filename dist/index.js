@@ -68958,7 +68958,7 @@ async function run(actionInput) {
   const { stats, annotations, exitCode } = await runClippy(actionInput, program);
   await report(stats, annotations, context);
   if (exitCode !== 0) {
-    throw new Error(`Clippy had exited with the ${exitCode} exit code`);
+    throw new Error(`Clippy had exited with the ${String(exitCode)} exit code`);
   }
 }
 function buildToolchainArguments(toolchain, after) {
