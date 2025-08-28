@@ -129,7 +129,7 @@ export async function run(actionInput: input.ParsedInput): Promise<void> {
     await report(stats, annotations, context);
 
     if (exitCode !== 0) {
-        throw new Error(`Clippy had exited with the ${exitCode} exit code`);
+        throw new Error(`Clippy had exited with the ${String(exitCode)} exit code`);
     }
 }
 
