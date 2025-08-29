@@ -4,7 +4,7 @@ on:
   workflow_dispatch: # releasing is manual as we don't want to release every time
 
 permissions:
-  contents: read
+  contents: write # we're not actually writing, but semantic release tests write, even on dry-run
   issues: read
   pull-requests: read
 
