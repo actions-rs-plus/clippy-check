@@ -13,10 +13,10 @@
         "dist/**/*.js.map",
         "dist/**/*.d.ts"
     ],
-    "packageManager": "pnpm@10.16.0",
+    "packageManager": "pnpm@10.16.1",
     "engines": {
         "node": "24.8.0",
-        "pnpm": "10.16.0"
+        "pnpm": "10.16.1"
     },
     "scripts": {
         "build": "vite build && mkdir -p dist/.matchers && cp matchers/rust.json dist/.matchers/rust.json",
