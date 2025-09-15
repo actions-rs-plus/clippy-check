@@ -23533,9 +23533,9 @@ function requireLog$5() {
   const tslib_1 = require$$0$2;
   const node_os_1 = require$$1__default;
   const node_util_1 = tslib_1.__importDefault(require$$1$5);
-  const process2 = tslib_1.__importStar(require$$2$3);
+  const node_process_1 = tslib_1.__importDefault(require$$2$3);
   function log2(message, ...args) {
-    process2.stderr.write(`${node_util_1.default.format(message, ...args)}${node_os_1.EOL}`);
+    node_process_1.default.stderr.write(`${node_util_1.default.format(message, ...args)}${node_os_1.EOL}`);
   }
   return log$5;
 }
@@ -23565,13 +23565,12 @@ function requireDebug() {
     enabledString = namespaces;
     enabledNamespaces = [];
     skippedNamespaces = [];
-    const wildcard = /\*/g;
-    const namespaceList = namespaces.split(",").map((ns) => ns.trim().replace(wildcard, ".*?"));
+    const namespaceList = namespaces.split(",").map((ns) => ns.trim());
     for (const ns of namespaceList) {
       if (ns.startsWith("-")) {
-        skippedNamespaces.push(new RegExp(`^${ns.substr(1)}$`));
+        skippedNamespaces.push(ns.substring(1));
       } else {
-        enabledNamespaces.push(new RegExp(`^${ns}$`));
+        enabledNamespaces.push(ns);
       }
     }
     for (const instance of debuggers) {
@@ -23583,16 +23582,85 @@ function requireDebug() {
       return true;
     }
     for (const skipped of skippedNamespaces) {
-      if (skipped.test(namespace)) {
+      if (namespaceMatches(namespace, skipped)) {
         return false;
       }
     }
     for (const enabledNamespace of enabledNamespaces) {
-      if (enabledNamespace.test(namespace)) {
+      if (namespaceMatches(namespace, enabledNamespace)) {
         return true;
       }
     }
     return false;
+  }
+  function namespaceMatches(namespace, patternToMatch) {
+    if (patternToMatch.indexOf("*") === -1) {
+      return namespace === patternToMatch;
+    }
+    let pattern = patternToMatch;
+    if (patternToMatch.indexOf("**") !== -1) {
+      const patternParts = [];
+      let lastCharacter = "";
+      for (const character of patternToMatch) {
+        if (character === "*" && lastCharacter === "*") {
+          continue;
+        } else {
+          lastCharacter = character;
+          patternParts.push(character);
+        }
+      }
+      pattern = patternParts.join("");
+    }
+    let namespaceIndex = 0;
+    let patternIndex = 0;
+    const patternLength = pattern.length;
+    const namespaceLength = namespace.length;
+    let lastWildcard = -1;
+    let lastWildcardNamespace = -1;
+    while (namespaceIndex < namespaceLength && patternIndex < patternLength) {
+      if (pattern[patternIndex] === "*") {
+        lastWildcard = patternIndex;
+        patternIndex++;
+        if (patternIndex === patternLength) {
+          return true;
+        }
+        while (namespace[namespaceIndex] !== pattern[patternIndex]) {
+          namespaceIndex++;
+          if (namespaceIndex === namespaceLength) {
+            return false;
+          }
+        }
+        lastWildcardNamespace = namespaceIndex;
+        namespaceIndex++;
+        patternIndex++;
+        continue;
+      } else if (pattern[patternIndex] === namespace[namespaceIndex]) {
+        patternIndex++;
+        namespaceIndex++;
+      } else if (lastWildcard >= 0) {
+        patternIndex = lastWildcard + 1;
+        namespaceIndex = lastWildcardNamespace + 1;
+        if (namespaceIndex === namespaceLength) {
+          return false;
+        }
+        while (namespace[namespaceIndex] !== pattern[patternIndex]) {
+          namespaceIndex++;
+          if (namespaceIndex === namespaceLength) {
+            return false;
+          }
+        }
+        lastWildcardNamespace = namespaceIndex;
+        namespaceIndex++;
+        patternIndex++;
+        continue;
+      } else {
+        return false;
+      }
+    }
+    const namespaceDone = namespaceIndex === namespace.length;
+    const patternDone = patternIndex === pattern.length;
+    const trailingWildCard = patternIndex === pattern.length - 1 && pattern[patternIndex] === "*";
+    return namespaceDone && (patternDone || trailingWildCard);
   }
   function disable() {
     const result = enabledString || "";
@@ -23757,6 +23825,7 @@ function requireHttpHeaders$1() {
     }
   }
   class HttpHeadersImpl {
+    _headersMap;
     constructor(rawHeaders) {
       this._headersMap = /* @__PURE__ */ new Map();
       if (rawHeaders) {
@@ -23780,8 +23849,7 @@ function requireHttpHeaders$1() {
      * @param name - The name of the header. This value is case-insensitive.
      */
     get(name) {
-      var _a;
-      return (_a = this._headersMap.get(normalizeName(name))) === null || _a === void 0 ? void 0 : _a.value;
+      return this._headersMap.get(normalizeName(name))?.value;
     }
     /**
      * Get whether or not this header collection contains a header entry for the provided header name.
@@ -23853,11 +23921,10 @@ var hasRequiredUuidUtils;
 function requireUuidUtils() {
   if (hasRequiredUuidUtils) return uuidUtils;
   hasRequiredUuidUtils = 1;
-  var _a;
   Object.defineProperty(uuidUtils, "__esModule", { value: true });
   uuidUtils.randomUUID = randomUUID;
   const node_crypto_1 = require$$0$e;
-  const uuidFunction = typeof ((_a = globalThis === null || globalThis === void 0 ? void 0 : globalThis.crypto) === null || _a === void 0 ? void 0 : _a.randomUUID) === "function" ? globalThis.crypto.randomUUID.bind(globalThis.crypto) : node_crypto_1.randomUUID;
+  const uuidFunction = typeof globalThis?.crypto?.randomUUID === "function" ? globalThis.crypto.randomUUID.bind(globalThis.crypto) : node_crypto_1.randomUUID;
   function randomUUID() {
     return uuidFunction();
   }
@@ -23872,25 +23939,43 @@ function requirePipelineRequest$1() {
   const httpHeaders_js_1 = /* @__PURE__ */ requireHttpHeaders$1();
   const uuidUtils_js_1 = /* @__PURE__ */ requireUuidUtils();
   class PipelineRequestImpl {
+    url;
+    method;
+    headers;
+    timeout;
+    withCredentials;
+    body;
+    multipartBody;
+    formData;
+    streamResponseStatusCodes;
+    enableBrowserStreams;
+    proxySettings;
+    disableKeepAlive;
+    abortSignal;
+    requestId;
+    allowInsecureConnection;
+    onUploadProgress;
+    onDownloadProgress;
+    requestOverrides;
+    authSchemes;
     constructor(options2) {
-      var _a, _b, _c, _d, _e, _f, _g;
       this.url = options2.url;
       this.body = options2.body;
-      this.headers = (_a = options2.headers) !== null && _a !== void 0 ? _a : (0, httpHeaders_js_1.createHttpHeaders)();
-      this.method = (_b = options2.method) !== null && _b !== void 0 ? _b : "GET";
-      this.timeout = (_c = options2.timeout) !== null && _c !== void 0 ? _c : 0;
+      this.headers = options2.headers ?? (0, httpHeaders_js_1.createHttpHeaders)();
+      this.method = options2.method ?? "GET";
+      this.timeout = options2.timeout ?? 0;
       this.multipartBody = options2.multipartBody;
       this.formData = options2.formData;
-      this.disableKeepAlive = (_d = options2.disableKeepAlive) !== null && _d !== void 0 ? _d : false;
+      this.disableKeepAlive = options2.disableKeepAlive ?? false;
       this.proxySettings = options2.proxySettings;
       this.streamResponseStatusCodes = options2.streamResponseStatusCodes;
-      this.withCredentials = (_e = options2.withCredentials) !== null && _e !== void 0 ? _e : false;
+      this.withCredentials = options2.withCredentials ?? false;
       this.abortSignal = options2.abortSignal;
       this.onUploadProgress = options2.onUploadProgress;
       this.onDownloadProgress = options2.onDownloadProgress;
       this.requestId = options2.requestId || (0, uuidUtils_js_1.randomUUID)();
-      this.allowInsecureConnection = (_f = options2.allowInsecureConnection) !== null && _f !== void 0 ? _f : false;
-      this.enableBrowserStreams = (_g = options2.enableBrowserStreams) !== null && _g !== void 0 ? _g : false;
+      this.allowInsecureConnection = options2.allowInsecureConnection ?? false;
+      this.enableBrowserStreams = options2.enableBrowserStreams ?? false;
       this.requestOverrides = options2.requestOverrides;
       this.authSchemes = options2.authSchemes;
     }
@@ -23909,10 +23994,10 @@ function requirePipeline$3() {
   pipeline$1.createEmptyPipeline = createEmptyPipeline;
   const ValidPhaseNames = /* @__PURE__ */ new Set(["Deserialize", "Serialize", "Retry", "Sign"]);
   class HttpPipeline {
+    _policies = [];
+    _orderedPolicies;
     constructor(policies) {
-      var _a;
-      this._policies = [];
-      this._policies = (_a = policies === null || policies === void 0 ? void 0 : policies.slice(0)) !== null && _a !== void 0 ? _a : [];
+      this._policies = policies?.slice(0) ?? [];
       this._orderedPolicies = void 0;
     }
     addPolicy(policy, options2 = {}) {
@@ -24182,6 +24267,8 @@ function requireSanitizer() {
   ];
   const defaultAllowedQueryParameters = ["api-version"];
   class Sanitizer {
+    allowedHeaderNames;
+    allowedQueryParameters;
     constructor({ additionalAllowedHeaderNames: allowedHeaderNames = [], additionalAllowedQueryParameters: allowedQueryParameters = [] } = {}) {
       allowedHeaderNames = defaultAllowedHeaderNames.concat(allowedHeaderNames);
       allowedQueryParameters = defaultAllowedQueryParameters.concat(allowedQueryParameters);
@@ -24197,7 +24284,11 @@ function requireSanitizer() {
       const seen = /* @__PURE__ */ new Set();
       return JSON.stringify(obj, (key, value) => {
         if (value instanceof Error) {
-          return Object.assign(Object.assign({}, value), { name: value.name, message: value.message });
+          return {
+            ...value,
+            name: value.name,
+            message: value.message
+          };
         }
         if (key === "headers") {
           return this.sanitizeHeaders(value);
@@ -24281,6 +24372,39 @@ function requireRestError$2() {
   const sanitizer_js_1 = /* @__PURE__ */ requireSanitizer();
   const errorSanitizer = new sanitizer_js_1.Sanitizer();
   class RestError extends Error {
+    /**
+     * Something went wrong when making the request.
+     * This means the actual request failed for some reason,
+     * such as a DNS issue or the connection being lost.
+     */
+    static REQUEST_SEND_ERROR = "REQUEST_SEND_ERROR";
+    /**
+     * This means that parsing the response from the server failed.
+     * It may have been malformed.
+     */
+    static PARSE_ERROR = "PARSE_ERROR";
+    /**
+     * The code of the error itself (use statics on RestError if possible.)
+     */
+    code;
+    /**
+     * The HTTP status code of the request (if applicable.)
+     */
+    statusCode;
+    /**
+     * The request that was made.
+     * This property is non-enumerable.
+     */
+    request;
+    /**
+     * The response received (if any.)
+     * This property is non-enumerable.
+     */
+    response;
+    /**
+     * Bonus property set by the throw site.
+     */
+    details;
     constructor(message, options2 = {}) {
       super(message);
       this.name = "RestError";
@@ -24288,10 +24412,18 @@ function requireRestError$2() {
       this.statusCode = options2.statusCode;
       Object.defineProperty(this, "request", { value: options2.request, enumerable: false });
       Object.defineProperty(this, "response", { value: options2.response, enumerable: false });
+      const agent2 = this.request?.agent ? {
+        maxFreeSockets: this.request.agent.maxFreeSockets,
+        maxSockets: this.request.agent.maxSockets
+      } : void 0;
       Object.defineProperty(this, inspect_js_1.custom, {
         value: () => {
           return `RestError: ${this.message} 
- ${errorSanitizer.sanitize(Object.assign(Object.assign({}, this), { request: this.request, response: this.response }))}`;
+ ${errorSanitizer.sanitize({
+            ...this,
+            request: { ...this.request, agent: agent2 },
+            response: this.response
+          })}`;
         },
         enumerable: false
       });
@@ -24299,8 +24431,6 @@ function requireRestError$2() {
     }
   }
   restError$2.RestError = RestError;
-  RestError.REQUEST_SEND_ERROR = "REQUEST_SEND_ERROR";
-  RestError.PARSE_ERROR = "PARSE_ERROR";
   function isRestError(e) {
     if (e instanceof RestError) {
       return true;
@@ -24346,9 +24476,9 @@ function requireNodeHttpClient() {
   nodeHttpClient.getBodyLength = getBodyLength;
   nodeHttpClient.createNodeHttpClient = createNodeHttpClient;
   const tslib_1 = require$$0$2;
-  const http = tslib_1.__importStar(require$$1$8);
-  const https = tslib_1.__importStar(require$$2$4);
-  const zlib = tslib_1.__importStar(require$$3$1);
+  const node_http_1 = tslib_1.__importDefault(require$$1$8);
+  const node_https_1 = tslib_1.__importDefault(require$$2$4);
+  const node_zlib_1 = tslib_1.__importDefault(require$$3$1);
   const node_stream_1 = require$$0$b;
   const AbortError_js_1 = /* @__PURE__ */ requireAbortError$1();
   const httpHeaders_js_1 = /* @__PURE__ */ requireHttpHeaders$1();
@@ -24379,6 +24509,8 @@ function requireNodeHttpClient() {
     return body2 && typeof body2.byteLength === "number";
   }
   class ReportTransform extends node_stream_1.Transform {
+    loadedBytes = 0;
+    progressCallback;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
     _transform(chunk, _encoding, callback) {
       this.push(chunk);
@@ -24392,20 +24524,17 @@ function requireNodeHttpClient() {
     }
     constructor(progressCallback) {
       super();
-      this.loadedBytes = 0;
       this.progressCallback = progressCallback;
     }
   }
   class NodeHttpClient {
-    constructor() {
-      this.cachedHttpsAgents = /* @__PURE__ */ new WeakMap();
-    }
+    cachedHttpAgent;
+    cachedHttpsAgents = /* @__PURE__ */ new WeakMap();
     /**
      * Makes a request over an underlying transport layer and returns the response.
      * @param request - The request to be made.
      */
     async sendRequest(request2) {
-      var _a, _b, _c;
       const abortController = new AbortController();
       let abortListener;
       if (request2.abortSignal) {
@@ -24428,7 +24557,7 @@ function requireNodeHttpClient() {
         }, request2.timeout);
       }
       const acceptEncoding = request2.headers.get("Accept-Encoding");
-      const shouldDecompress = (acceptEncoding === null || acceptEncoding === void 0 ? void 0 : acceptEncoding.includes("gzip")) || (acceptEncoding === null || acceptEncoding === void 0 ? void 0 : acceptEncoding.includes("deflate"));
+      const shouldDecompress = acceptEncoding?.includes("gzip") || acceptEncoding?.includes("deflate");
       let body2 = typeof request2.body === "function" ? request2.body() : request2.body;
       if (body2 && !request2.headers.has("Content-Length")) {
         const bodyLength = getBodyLength(body2);
@@ -24456,7 +24585,7 @@ function requireNodeHttpClient() {
           clearTimeout(timeoutId);
         }
         const headers2 = getResponseHeaders(res);
-        const status = (_a = res.statusCode) !== null && _a !== void 0 ? _a : 0;
+        const status = res.statusCode ?? 0;
         const response2 = {
           status,
           headers: headers2,
@@ -24478,7 +24607,7 @@ function requireNodeHttpClient() {
         }
         if (
           // Value of POSITIVE_INFINITY in streamResponseStatusCodes is considered as any status code
-          ((_b = request2.streamResponseStatusCodes) === null || _b === void 0 ? void 0 : _b.has(Number.POSITIVE_INFINITY)) || ((_c = request2.streamResponseStatusCodes) === null || _c === void 0 ? void 0 : _c.has(response2.status))
+          request2.streamResponseStatusCodes?.has(Number.POSITIVE_INFINITY) || request2.streamResponseStatusCodes?.has(response2.status)
         ) {
           response2.readableStreamBody = responseStream;
         } else {
@@ -24496,9 +24625,8 @@ function requireNodeHttpClient() {
             downloadStreamDone = isStreamComplete(responseStream);
           }
           Promise.all([uploadStreamDone, downloadStreamDone]).then(() => {
-            var _a2;
             if (abortListener) {
-              (_a2 = request2.abortSignal) === null || _a2 === void 0 ? void 0 : _a2.removeEventListener("abort", abortListener);
+              request2.abortSignal?.removeEventListener("abort", abortListener);
             }
           }).catch((e) => {
             log_js_1.logger.warning("Error when cleaning up abortListener on httpRequest", e);
@@ -24507,19 +24635,25 @@ function requireNodeHttpClient() {
       }
     }
     makeRequest(request2, abortController, body2) {
-      var _a;
       const url = new URL(request2.url);
       const isInsecure = url.protocol !== "https:";
       if (isInsecure && !request2.allowInsecureConnection) {
         throw new Error(`Cannot connect to ${request2.url} while allowInsecureConnection is false.`);
       }
-      const agent2 = (_a = request2.agent) !== null && _a !== void 0 ? _a : this.getOrCreateAgent(request2, isInsecure);
-      const options2 = Object.assign({ agent: agent2, hostname: url.hostname, path: `${url.pathname}${url.search}`, port: url.port, method: request2.method, headers: request2.headers.toJSON({ preserveCase: true }) }, request2.requestOverrides);
+      const agent2 = request2.agent ?? this.getOrCreateAgent(request2, isInsecure);
+      const options2 = {
+        agent: agent2,
+        hostname: url.hostname,
+        path: `${url.pathname}${url.search}`,
+        port: url.port,
+        method: request2.method,
+        headers: request2.headers.toJSON({ preserveCase: true }),
+        ...request2.requestOverrides
+      };
       return new Promise((resolve, reject) => {
-        const req = isInsecure ? http.request(options2, resolve) : https.request(options2, resolve);
+        const req = isInsecure ? node_http_1.default.request(options2, resolve) : node_https_1.default.request(options2, resolve);
         req.once("error", (err) => {
-          var _a2;
-          reject(new restError_js_1.RestError(err.message, { code: (_a2 = err.code) !== null && _a2 !== void 0 ? _a2 : restError_js_1.RestError.REQUEST_SEND_ERROR, request: request2 }));
+          reject(new restError_js_1.RestError(err.message, { code: err.code ?? restError_js_1.RestError.REQUEST_SEND_ERROR, request: request2 }));
         });
         abortController.signal.addEventListener("abort", () => {
           const abortError = new AbortError_js_1.AbortError("The operation was aborted. Rejecting from abort signal callback while making request.");
@@ -24543,30 +24677,31 @@ function requireNodeHttpClient() {
       });
     }
     getOrCreateAgent(request2, isInsecure) {
-      var _a;
       const disableKeepAlive = request2.disableKeepAlive;
       if (isInsecure) {
         if (disableKeepAlive) {
-          return http.globalAgent;
+          return node_http_1.default.globalAgent;
         }
         if (!this.cachedHttpAgent) {
-          this.cachedHttpAgent = new http.Agent({ keepAlive: true });
+          this.cachedHttpAgent = new node_http_1.default.Agent({ keepAlive: true });
         }
         return this.cachedHttpAgent;
       } else {
         if (disableKeepAlive && !request2.tlsSettings) {
-          return https.globalAgent;
+          return node_https_1.default.globalAgent;
         }
-        const tlsSettings = (_a = request2.tlsSettings) !== null && _a !== void 0 ? _a : DEFAULT_TLS_SETTINGS;
+        const tlsSettings = request2.tlsSettings ?? DEFAULT_TLS_SETTINGS;
         let agent2 = this.cachedHttpsAgents.get(tlsSettings);
         if (agent2 && agent2.options.keepAlive === !disableKeepAlive) {
           return agent2;
         }
         log_js_1.logger.info("No cached TLS Agent exist, creating a new Agent");
-        agent2 = new https.Agent(Object.assign({
+        agent2 = new node_https_1.default.Agent({
           // keepAlive is true if disableKeepAlive is false.
-          keepAlive: !disableKeepAlive
-        }, tlsSettings));
+          keepAlive: !disableKeepAlive,
+          // Since we are spreading, if no tslSettings were provided, nothing is added to the agent options.
+          ...tlsSettings
+        });
         this.cachedHttpsAgents.set(tlsSettings, agent2);
         return agent2;
       }
@@ -24589,11 +24724,11 @@ function requireNodeHttpClient() {
   function getDecodedResponseStream(stream, headers2) {
     const contentEncoding = headers2.get("Content-Encoding");
     if (contentEncoding === "gzip") {
-      const unzip = zlib.createGunzip();
+      const unzip = node_zlib_1.default.createGunzip();
       stream.pipe(unzip);
       return unzip;
     } else if (contentEncoding === "deflate") {
-      const inflate = zlib.createInflate();
+      const inflate = node_zlib_1.default.createInflate();
       stream.pipe(inflate);
       return inflate;
     }
@@ -24613,7 +24748,7 @@ function requireNodeHttpClient() {
         resolve(Buffer.concat(buffer).toString("utf8"));
       });
       stream.on("error", (e) => {
-        if (e && (e === null || e === void 0 ? void 0 : e.name) === "AbortError") {
+        if (e && e?.name === "AbortError") {
           reject(e);
         } else {
           reject(new restError_js_1.RestError(`Error reading response as text: ${e.message}`, {
@@ -24671,8 +24806,7 @@ function requireLogPolicy$1() {
     const sanitizer_js_1 = /* @__PURE__ */ requireSanitizer();
     exports.logPolicyName = "logPolicy";
     function logPolicy2(options2 = {}) {
-      var _a;
-      const logger2 = (_a = options2.logger) !== null && _a !== void 0 ? _a : log_js_1.logger.info;
+      const logger2 = options2.logger ?? log_js_1.logger.info;
       const sanitizer2 = new sanitizer_js_1.Sanitizer({
         additionalAllowedHeaderNames: options2.additionalAllowedHeaderNames,
         additionalAllowedQueryParameters: options2.additionalAllowedQueryParameters
@@ -24746,14 +24880,14 @@ function requireUserAgentPlatform$1() {
   userAgentPlatform$1.getHeaderName = getHeaderName;
   userAgentPlatform$1.setPlatformSpecificData = setPlatformSpecificData;
   const tslib_1 = require$$0$2;
-  const os = tslib_1.__importStar(require$$1__default);
-  const process2 = tslib_1.__importStar(require$$2$3);
+  const node_os_1 = tslib_1.__importDefault(require$$1__default);
+  const node_process_1 = tslib_1.__importDefault(require$$2$3);
   function getHeaderName() {
     return "User-Agent";
   }
   async function setPlatformSpecificData(map) {
-    if (process2 && process2.versions) {
-      const versions = process2.versions;
+    if (node_process_1.default && node_process_1.default.versions) {
+      const versions = node_process_1.default.versions;
       if (versions.bun) {
         map.set("Bun", versions.bun);
       } else if (versions.deno) {
@@ -24762,7 +24896,7 @@ function requireUserAgentPlatform$1() {
         map.set("Node", versions.node);
       }
     }
-    map.set("OS", `(${os.arch()}-${os.type()}-${os.release()})`);
+    map.set("OS", `(${node_os_1.default.arch()}-${node_os_1.default.type()}-${node_os_1.default.release()})`);
   }
   return userAgentPlatform$1;
 }
@@ -24773,7 +24907,7 @@ function requireConstants$4() {
   hasRequiredConstants$4 = 1;
   Object.defineProperty(constants$4, "__esModule", { value: true });
   constants$4.DEFAULT_RETRY_POLICY_COUNT = constants$4.SDK_VERSION = void 0;
-  constants$4.SDK_VERSION = "0.3.0";
+  constants$4.SDK_VERSION = "0.3.1";
   constants$4.DEFAULT_RETRY_POLICY_COUNT = 3;
   return constants$4;
 }
@@ -24906,10 +25040,10 @@ function requireHelpers$1() {
       let timer = void 0;
       let onAborted = void 0;
       const rejectOnAbort = () => {
-        return reject(new AbortError_js_1.AbortError((options2 === null || options2 === void 0 ? void 0 : options2.abortErrorMsg) ? options2 === null || options2 === void 0 ? void 0 : options2.abortErrorMsg : StandardAbortMessage));
+        return reject(new AbortError_js_1.AbortError(options2?.abortErrorMsg ? options2?.abortErrorMsg : StandardAbortMessage));
       };
       const removeListeners = () => {
-        if ((options2 === null || options2 === void 0 ? void 0 : options2.abortSignal) && onAborted) {
+        if (options2?.abortSignal && onAborted) {
           options2.abortSignal.removeEventListener("abort", onAborted);
         }
       };
@@ -24920,14 +25054,14 @@ function requireHelpers$1() {
         removeListeners();
         return rejectOnAbort();
       };
-      if ((options2 === null || options2 === void 0 ? void 0 : options2.abortSignal) && options2.abortSignal.aborted) {
+      if (options2?.abortSignal && options2.abortSignal.aborted) {
         return rejectOnAbort();
       }
       timer = setTimeout(() => {
         removeListeners();
         resolve(value);
       }, delayInMs);
-      if (options2 === null || options2 === void 0 ? void 0 : options2.abortSignal) {
+      if (options2?.abortSignal) {
         options2.abortSignal.addEventListener("abort", onAborted);
       }
     });
@@ -24970,7 +25104,7 @@ function requireThrottlingRetryStrategy() {
       const date = Date.parse(retryAfterHeader);
       const diff = date - Date.now();
       return Number.isFinite(diff) ? Math.max(0, diff) : void 0;
-    } catch (_a) {
+    } catch {
       return void 0;
     }
   }
@@ -25006,9 +25140,8 @@ function requireExponentialRetryStrategy() {
   const DEFAULT_CLIENT_RETRY_INTERVAL = 1e3;
   const DEFAULT_CLIENT_MAX_RETRY_INTERVAL = 1e3 * 64;
   function exponentialRetryStrategy$1(options2 = {}) {
-    var _a, _b;
-    const retryInterval = (_a = options2.retryDelayInMs) !== null && _a !== void 0 ? _a : DEFAULT_CLIENT_RETRY_INTERVAL;
-    const maxRetryInterval = (_b = options2.maxRetryDelayInMs) !== null && _b !== void 0 ? _b : DEFAULT_CLIENT_MAX_RETRY_INTERVAL;
+    const retryInterval = options2.retryDelayInMs ?? DEFAULT_CLIENT_RETRY_INTERVAL;
+    const maxRetryInterval = options2.maxRetryDelayInMs ?? DEFAULT_CLIENT_MAX_RETRY_INTERVAL;
     return {
       name: "exponentialRetryStrategy",
       retry({ retryCount, response: response2, responseError }) {
@@ -25059,7 +25192,6 @@ function requireRetryPolicy$1() {
     return {
       name: retryPolicyName,
       async sendRequest(request2, next) {
-        var _a, _b;
         let response2;
         let responseError;
         let retryCount = -1;
@@ -25079,12 +25211,12 @@ function requireRetryPolicy$1() {
             }
             response2 = responseError.response;
           }
-          if ((_a = request2.abortSignal) === null || _a === void 0 ? void 0 : _a.aborted) {
+          if (request2.abortSignal?.aborted) {
             logger2.error(`Retry ${retryCount}: Request aborted.`);
             const abortError = new AbortError_js_1.AbortError();
             throw abortError;
           }
-          if (retryCount >= ((_b = options2.maxRetries) !== null && _b !== void 0 ? _b : constants_js_1.DEFAULT_RETRY_POLICY_COUNT)) {
+          if (retryCount >= (options2.maxRetries ?? constants_js_1.DEFAULT_RETRY_POLICY_COUNT)) {
             logger2.info(`Retry ${retryCount}: Maximum retries reached. Returning the last received response, or throwing the last received error.`);
             if (responseError) {
               throw responseError;
@@ -25151,11 +25283,10 @@ function requireDefaultRetryPolicy$1() {
     const constants_js_1 = /* @__PURE__ */ requireConstants$4();
     exports.defaultRetryPolicyName = "defaultRetryPolicy";
     function defaultRetryPolicy2(options2 = {}) {
-      var _a;
       return {
         name: exports.defaultRetryPolicyName,
         sendRequest: (0, retryPolicy_js_1.retryPolicy)([(0, throttlingRetryStrategy_js_1.throttlingRetryStrategy)(), (0, exponentialRetryStrategy_js_1.exponentialRetryStrategy)(options2)], {
-          maxRetries: (_a = options2.maxRetries) !== null && _a !== void 0 ? _a : constants_js_1.DEFAULT_RETRY_POLICY_COUNT
+          maxRetries: options2.maxRetries ?? constants_js_1.DEFAULT_RETRY_POLICY_COUNT
         }).sendRequest
       };
     }
@@ -25169,16 +25300,15 @@ function requireCheckEnvironment() {
   if (hasRequiredCheckEnvironment) return checkEnvironment;
   hasRequiredCheckEnvironment = 1;
   (function(exports) {
-    var _a, _b, _c, _d;
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.isReactNative = exports.isNodeRuntime = exports.isNodeLike = exports.isBun = exports.isDeno = exports.isWebWorker = exports.isBrowser = void 0;
     exports.isBrowser = typeof window !== "undefined" && typeof window.document !== "undefined";
-    exports.isWebWorker = typeof self === "object" && typeof (self === null || self === void 0 ? void 0 : self.importScripts) === "function" && (((_a = self.constructor) === null || _a === void 0 ? void 0 : _a.name) === "DedicatedWorkerGlobalScope" || ((_b = self.constructor) === null || _b === void 0 ? void 0 : _b.name) === "ServiceWorkerGlobalScope" || ((_c = self.constructor) === null || _c === void 0 ? void 0 : _c.name) === "SharedWorkerGlobalScope");
+    exports.isWebWorker = typeof self === "object" && typeof self?.importScripts === "function" && (self.constructor?.name === "DedicatedWorkerGlobalScope" || self.constructor?.name === "ServiceWorkerGlobalScope" || self.constructor?.name === "SharedWorkerGlobalScope");
     exports.isDeno = typeof Deno !== "undefined" && typeof Deno.version !== "undefined" && typeof Deno.version.deno !== "undefined";
     exports.isBun = typeof Bun !== "undefined" && typeof Bun.version !== "undefined";
-    exports.isNodeLike = typeof globalThis.process !== "undefined" && Boolean(globalThis.process.version) && Boolean((_d = globalThis.process.versions) === null || _d === void 0 ? void 0 : _d.node);
+    exports.isNodeLike = typeof globalThis.process !== "undefined" && Boolean(globalThis.process.version) && Boolean(globalThis.process.versions?.node);
     exports.isNodeRuntime = exports.isNodeLike && !exports.isBun && !exports.isDeno;
-    exports.isReactNative = typeof navigator !== "undefined" && (navigator === null || navigator === void 0 ? void 0 : navigator.product) === "ReactNative";
+    exports.isReactNative = typeof navigator !== "undefined" && navigator?.product === "ReactNative";
   })(checkEnvironment);
   return checkEnvironment;
 }
@@ -25195,10 +25325,9 @@ function requireFormDataPolicy$1() {
     const httpHeaders_js_1 = /* @__PURE__ */ requireHttpHeaders$1();
     exports.formDataPolicyName = "formDataPolicy";
     function formDataToFormDataMap(formData) {
-      var _a;
       const formDataMap = {};
       for (const [key, value] of formData.entries()) {
-        (_a = formDataMap[key]) !== null && _a !== void 0 ? _a : formDataMap[key] = [];
+        formDataMap[key] ??= [];
         formDataMap[key].push(value);
       }
       return formDataMap;
@@ -25242,7 +25371,7 @@ function requireFormDataPolicy$1() {
       if (contentType && !contentType.startsWith("multipart/form-data")) {
         return;
       }
-      request2.headers.set("Content-Type", contentType !== null && contentType !== void 0 ? contentType : "multipart/form-data");
+      request2.headers.set("Content-Type", contentType ?? "multipart/form-data");
       const parts = [];
       for (const [fieldName, values] of Object.entries(formData)) {
         for (const value of Array.isArray(values) ? values : [values]) {
@@ -26692,7 +26821,7 @@ function requireProxyPolicy$1() {
         return false;
       }
       const host = new URL(uri).hostname;
-      if (bypassedMap === null || bypassedMap === void 0 ? void 0 : bypassedMap.has(host)) {
+      if (bypassedMap?.has(host)) {
         return bypassedMap.get(host);
       }
       let isBypassedFlag = false;
@@ -26711,7 +26840,7 @@ function requireProxyPolicy$1() {
           }
         }
       }
-      bypassedMap === null || bypassedMap === void 0 ? void 0 : bypassedMap.set(host, isBypassedFlag);
+      bypassedMap?.set(host, isBypassedFlag);
       return isBypassedFlag;
     }
     function loadNoProxy() {
@@ -26746,7 +26875,7 @@ function requireProxyPolicy$1() {
       let parsedProxyUrl;
       try {
         parsedProxyUrl = new URL(settings.host);
-      } catch (_a) {
+      } catch {
         throw new Error(`Expecting a valid host string in proxy settings, but found "${settings.host}".`);
       }
       parsedProxyUrl.port = String(settings.port);
@@ -26789,8 +26918,7 @@ function requireProxyPolicy$1() {
       return {
         name: exports.proxyPolicyName,
         async sendRequest(request2, next) {
-          var _a;
-          if (!request2.proxySettings && defaultProxy && !isBypassed(request2.url, (_a = options2 === null || options2 === void 0 ? void 0 : options2.customNoProxyList) !== null && _a !== void 0 ? _a : exports.globalNoProxyList, (options2 === null || options2 === void 0 ? void 0 : options2.customNoProxyList) ? void 0 : globalBypassedMap)) {
+          if (!request2.proxySettings && defaultProxy && !isBypassed(request2.url, options2?.customNoProxyList ?? exports.globalNoProxyList, options2?.customNoProxyList ? void 0 : globalBypassedMap)) {
             setProxyAgentOnRequest(request2, cachedAgents, defaultProxy);
           } else if (request2.proxySettings) {
             setProxyAgentOnRequest(request2, cachedAgents, getUrlFromProxySettings(request2.proxySettings));
@@ -26886,24 +27014,21 @@ function requireConcat() {
   hasRequiredConcat = 1;
   Object.defineProperty(concat, "__esModule", { value: true });
   concat.concat = concat$1;
-  const tslib_1 = require$$0$2;
   const stream_1 = require$$0$9;
   const typeGuards_js_1 = /* @__PURE__ */ requireTypeGuards$1();
-  function streamAsyncIterator() {
-    return tslib_1.__asyncGenerator(this, arguments, function* streamAsyncIterator_1() {
-      const reader = this.getReader();
-      try {
-        while (true) {
-          const { done, value } = yield tslib_1.__await(reader.read());
-          if (done) {
-            return yield tslib_1.__await(void 0);
-          }
-          yield yield tslib_1.__await(value);
+  async function* streamAsyncIterator() {
+    const reader = this.getReader();
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          return;
         }
-      } finally {
-        reader.releaseLock();
+        yield value;
       }
-    });
+    } finally {
+      reader.releaseLock();
+    }
   }
   function makeAsyncIterable(webStream) {
     if (!webStream[Symbol.asyncIterator]) {
@@ -26933,28 +27058,12 @@ function requireConcat() {
   async function concat$1(sources) {
     return function() {
       const streams = sources.map((x) => typeof x === "function" ? x() : x).map(toStream);
-      return stream_1.Readable.from((function() {
-        return tslib_1.__asyncGenerator(this, arguments, function* () {
-          var _a, e_1, _b, _c;
-          for (const stream of streams) {
-            try {
-              for (var _d = true, stream_2 = (e_1 = void 0, tslib_1.__asyncValues(stream)), stream_2_1; stream_2_1 = yield tslib_1.__await(stream_2.next()), _a = stream_2_1.done, !_a; _d = true) {
-                _c = stream_2_1.value;
-                _d = false;
-                const chunk = _c;
-                yield yield tslib_1.__await(chunk);
-              }
-            } catch (e_1_1) {
-              e_1 = { error: e_1_1 };
-            } finally {
-              try {
-                if (!_d && !_a && (_b = stream_2.return)) yield tslib_1.__await(_b.call(stream_2));
-              } finally {
-                if (e_1) throw e_1.error;
-              }
-            }
+      return stream_1.Readable.from((async function* () {
+        for (const stream of streams) {
+          for await (const chunk of stream) {
+            yield chunk;
           }
-        });
+        }
       })());
     };
   }
@@ -27038,7 +27147,6 @@ function requireMultipartPolicy$1() {
       return {
         name: exports.multipartPolicyName,
         async sendRequest(request2, next) {
-          var _a;
           if (!request2.multipartBody) {
             return next(request2);
           }
@@ -27046,7 +27154,7 @@ function requireMultipartPolicy$1() {
             throw new Error("multipartBody and regular body cannot be set at the same time");
           }
           let boundary = request2.multipartBody.boundary;
-          const contentTypeHeader = (_a = request2.headers.get("Content-Type")) !== null && _a !== void 0 ? _a : "multipart/mixed";
+          const contentTypeHeader = request2.headers.get("Content-Type") ?? "multipart/mixed";
           const parsedHeader = contentTypeHeader.match(/^(multipart\/[^ ;]+)(?:; *boundary=(.+))?$/);
           if (!parsedHeader) {
             throw new Error(`Got multipart request body, but content-type header was not multipart: ${contentTypeHeader}`);
@@ -27055,7 +27163,7 @@ function requireMultipartPolicy$1() {
           if (parsedBoundary && boundary && parsedBoundary !== boundary) {
             throw new Error(`Multipart boundary was specified as ${parsedBoundary} in the header, but got ${boundary} in the request body`);
           }
-          boundary !== null && boundary !== void 0 ? boundary : boundary = parsedBoundary;
+          boundary ??= parsedBoundary;
           if (boundary) {
             assertValidBoundary(boundary);
           } else {
@@ -27184,7 +27292,7 @@ function requireCheckInsecureConnection() {
   function emitInsecureConnectionWarning() {
     const warning = "Sending token over insecure transport. Assume any token issued is compromised.";
     log_js_1.logger.warning(warning);
-    if (typeof (process === null || process === void 0 ? void 0 : process.emitWarning) === "function" && !insecureConnectionWarningEmmitted) {
+    if (typeof process?.emitWarning === "function" && !insecureConnectionWarningEmmitted) {
       insecureConnectionWarningEmmitted = true;
       process.emitWarning(warning);
     }
@@ -27214,9 +27322,8 @@ function requireApiKeyAuthenticationPolicy() {
       return {
         name: exports.apiKeyAuthenticationPolicyName,
         async sendRequest(request2, next) {
-          var _a, _b;
           (0, checkInsecureConnection_js_1.ensureSecureConnection)(request2, options2);
-          const scheme = (_b = (_a = request2.authSchemes) !== null && _a !== void 0 ? _a : options2.authSchemes) === null || _b === void 0 ? void 0 : _b.find((x) => x.kind === "apiKey");
+          const scheme = (request2.authSchemes ?? options2.authSchemes)?.find((x) => x.kind === "apiKey");
           if (!scheme) {
             return next(request2);
           }
@@ -27247,9 +27354,8 @@ function requireBasicAuthenticationPolicy() {
       return {
         name: exports.basicAuthenticationPolicyName,
         async sendRequest(request2, next) {
-          var _a, _b;
           (0, checkInsecureConnection_js_1.ensureSecureConnection)(request2, options2);
-          const scheme = (_b = (_a = request2.authSchemes) !== null && _a !== void 0 ? _a : options2.authSchemes) === null || _b === void 0 ? void 0 : _b.find((x) => x.kind === "http" && x.scheme === "basic");
+          const scheme = (request2.authSchemes ?? options2.authSchemes)?.find((x) => x.kind === "http" && x.scheme === "basic");
           if (!scheme) {
             return next(request2);
           }
@@ -27278,9 +27384,8 @@ function requireBearerAuthenticationPolicy() {
       return {
         name: exports.bearerAuthenticationPolicyName,
         async sendRequest(request2, next) {
-          var _a, _b;
           (0, checkInsecureConnection_js_1.ensureSecureConnection)(request2, options2);
-          const scheme = (_b = (_a = request2.authSchemes) !== null && _a !== void 0 ? _a : options2.authSchemes) === null || _b === void 0 ? void 0 : _b.find((x) => x.kind === "http" && x.scheme === "bearer");
+          const scheme = (request2.authSchemes ?? options2.authSchemes)?.find((x) => x.kind === "http" && x.scheme === "bearer");
           if (!scheme) {
             return next(request2);
           }
@@ -27310,9 +27415,8 @@ function requireOauth2AuthenticationPolicy() {
       return {
         name: exports.oauth2AuthenticationPolicyName,
         async sendRequest(request2, next) {
-          var _a, _b;
           (0, checkInsecureConnection_js_1.ensureSecureConnection)(request2, options2);
-          const scheme = (_b = (_a = request2.authSchemes) !== null && _a !== void 0 ? _a : options2.authSchemes) === null || _b === void 0 ? void 0 : _b.find((x) => x.kind === "oauth2");
+          const scheme = (request2.authSchemes ?? options2.authSchemes)?.find((x) => x.kind === "oauth2");
           if (!scheme) {
             return next(request2);
           }
@@ -27420,7 +27524,6 @@ function requireMultipart() {
     return JSON.stringify(value);
   }
   function getContentDisposition(descriptor) {
-    var _a;
     const contentDispositionHeader = getHeaderValue(descriptor, "content-disposition");
     if (contentDispositionHeader) {
       return contentDispositionHeader;
@@ -27428,7 +27531,7 @@ function requireMultipart() {
     if (descriptor.dispositionType === void 0 && descriptor.name === void 0 && descriptor.filename === void 0) {
       return void 0;
     }
-    const dispositionType = (_a = descriptor.dispositionType) !== null && _a !== void 0 ? _a : "form-data";
+    const dispositionType = descriptor.dispositionType ?? "form-data";
     let disposition = dispositionType;
     if (descriptor.name) {
       disposition += `; name=${escapeDispositionField(descriptor.name)}`;
@@ -27463,10 +27566,9 @@ function requireMultipart() {
     throw new restError_js_1.RestError(`Unsupported body/content-type combination: ${body2}, ${contentType}`);
   }
   function buildBodyPart(descriptor) {
-    var _a;
     const contentType = getPartContentType(descriptor);
     const contentDisposition = getContentDisposition(descriptor);
-    const headers2 = (0, httpHeaders_js_1.createHttpHeaders)((_a = descriptor.headers) !== null && _a !== void 0 ? _a : {});
+    const headers2 = (0, httpHeaders_js_1.createHttpHeaders)(descriptor.headers ?? {});
     if (contentType) {
       headers2.set("content-type", contentType);
     }
@@ -27497,17 +27599,16 @@ function requireSendRequest() {
   const typeGuards_js_1 = /* @__PURE__ */ requireTypeGuards$1();
   const multipart_js_1 = /* @__PURE__ */ requireMultipart();
   async function sendRequest$1(method, url, pipeline2, options2 = {}, customHttpClient) {
-    var _a;
-    const httpClient = customHttpClient !== null && customHttpClient !== void 0 ? customHttpClient : (0, clientHelpers_js_1.getCachedDefaultHttpsClient)();
+    const httpClient = customHttpClient ?? (0, clientHelpers_js_1.getCachedDefaultHttpsClient)();
     const request2 = buildPipelineRequest(method, url, options2);
     try {
       const response2 = await pipeline2.sendRequest(httpClient, request2);
       const headers2 = response2.headers.toJSON();
-      const stream = (_a = response2.readableStreamBody) !== null && _a !== void 0 ? _a : response2.browserStreamBody;
+      const stream = response2.readableStreamBody ?? response2.browserStreamBody;
       const parsedBody = options2.responseAsStream || stream !== void 0 ? void 0 : getResponseBody(response2);
-      const body2 = stream !== null && stream !== void 0 ? stream : parsedBody;
-      if (options2 === null || options2 === void 0 ? void 0 : options2.onResponse) {
-        options2.onResponse(Object.assign(Object.assign({}, response2), { request: request2, rawHeaders: headers2, parsedBody }));
+      const body2 = stream ?? parsedBody;
+      if (options2?.onResponse) {
+        options2.onResponse({ ...response2, request: request2, rawHeaders: headers2, parsedBody });
       }
       return {
         request: request2,
@@ -27519,14 +27620,13 @@ function requireSendRequest() {
       if ((0, restError_js_1.isRestError)(e) && e.response && options2.onResponse) {
         const { response: response2 } = e;
         const rawHeaders = response2.headers.toJSON();
-        options2 === null || options2 === void 0 ? void 0 : options2.onResponse(Object.assign(Object.assign({}, response2), { request: request2, rawHeaders }), e);
+        options2?.onResponse({ ...response2, request: request2, rawHeaders }, e);
       }
       throw e;
     }
   }
   function getRequestContentType(options2 = {}) {
-    var _a, _b, _c;
-    return (_c = (_a = options2.contentType) !== null && _a !== void 0 ? _a : (_b = options2.headers) === null || _b === void 0 ? void 0 : _b["content-type"]) !== null && _c !== void 0 ? _c : getContentType(options2.body);
+    return options2.contentType ?? options2.headers?.["content-type"] ?? getContentType(options2.body);
   }
   function getContentType(body2) {
     if (ArrayBuffer.isView(body2)) {
@@ -27543,13 +27643,16 @@ function requireSendRequest() {
     return "application/json";
   }
   function buildPipelineRequest(method, url, options2 = {}) {
-    var _a, _b, _c;
     const requestContentType = getRequestContentType(options2);
     const { body: body2, multipartBody } = getRequestBody(options2.body, requestContentType);
     const hasContent = body2 !== void 0 || multipartBody !== void 0;
-    const headers2 = (0, httpHeaders_js_1.createHttpHeaders)(Object.assign(Object.assign(Object.assign({}, options2.headers ? options2.headers : {}), { accept: (_c = (_a = options2.accept) !== null && _a !== void 0 ? _a : (_b = options2.headers) === null || _b === void 0 ? void 0 : _b.accept) !== null && _c !== void 0 ? _c : "application/json" }), hasContent && requestContentType && {
-      "content-type": requestContentType
-    }));
+    const headers2 = (0, httpHeaders_js_1.createHttpHeaders)({
+      ...options2.headers ? options2.headers : {},
+      accept: options2.accept ?? options2.headers?.accept ?? "application/json",
+      ...hasContent && requestContentType && {
+        "content-type": requestContentType
+      }
+    });
     return (0, pipelineRequest_js_1.createPipelineRequest)({
       url,
       method,
@@ -27597,10 +27700,9 @@ function requireSendRequest() {
     }
   }
   function getResponseBody(response2) {
-    var _a, _b;
-    const contentType = (_a = response2.headers.get("content-type")) !== null && _a !== void 0 ? _a : "";
+    const contentType = response2.headers.get("content-type") ?? "";
     const firstType = contentType.split(";")[0];
-    const bodyToParse = (_b = response2.bodyAsText) !== null && _b !== void 0 ? _b : "";
+    const bodyToParse = response2.bodyAsText ?? "";
     if (firstType === "text/plain") {
       return String(bodyToParse);
     }
@@ -27614,9 +27716,8 @@ function requireSendRequest() {
     }
   }
   function createParseError(response2, err) {
-    var _a;
     const msg = `Error "${err}" occurred while parsing the response body - ${response2.bodyAsText}.`;
-    const errCode = (_a = err.code) !== null && _a !== void 0 ? _a : restError_js_1.RestError.PARSE_ERROR;
+    const errCode = err.code ?? restError_js_1.RestError.PARSE_ERROR;
     return new restError_js_1.RestError(msg, {
       code: errCode,
       statusCode: response2.status,
@@ -27679,7 +27780,6 @@ function requireUrlHelpers$1() {
     return `${allowReserved ? key : encodeURIComponent(key)}=${value}`;
   }
   function appendQueryParams(url, options2 = {}) {
-    var _a, _b, _c, _d;
     if (!options2.queryParameters) {
       return url;
     }
@@ -27693,22 +27793,22 @@ function requireUrlHelpers$1() {
       }
       const hasMetadata = isQueryParameterWithOptions(param);
       const rawValue = hasMetadata ? param.value : param;
-      const explode = hasMetadata ? (_a = param.explode) !== null && _a !== void 0 ? _a : false : false;
+      const explode = hasMetadata ? param.explode ?? false : false;
       const style = hasMetadata && param.style ? param.style : "form";
       if (explode) {
         if (Array.isArray(rawValue)) {
           for (const item of rawValue) {
-            paramStrings.push(getQueryParamValue(key, (_b = options2.skipUrlEncoding) !== null && _b !== void 0 ? _b : false, style, item));
+            paramStrings.push(getQueryParamValue(key, options2.skipUrlEncoding ?? false, style, item));
           }
         } else if (typeof rawValue === "object") {
           for (const [actualKey, value] of Object.entries(rawValue)) {
-            paramStrings.push(getQueryParamValue(actualKey, (_c = options2.skipUrlEncoding) !== null && _c !== void 0 ? _c : false, style, value));
+            paramStrings.push(getQueryParamValue(actualKey, options2.skipUrlEncoding ?? false, style, value));
           }
         } else {
           throw new Error("explode can only be set to true for objects and arrays");
         }
       } else {
-        paramStrings.push(getQueryParamValue(key, (_d = options2.skipUrlEncoding) !== null && _d !== void 0 ? _d : false, style, rawValue));
+        paramStrings.push(getQueryParamValue(key, options2.skipUrlEncoding ?? false, style, rawValue));
       }
     }
     if (parsedUrl.search !== "") {
@@ -27718,7 +27818,6 @@ function requireUrlHelpers$1() {
     return parsedUrl.toString();
   }
   function buildBaseUrl(endpoint, options2) {
-    var _a;
     if (!options2.pathParameters) {
       return endpoint;
     }
@@ -27734,14 +27833,13 @@ function requireUrlHelpers$1() {
       if (!options2.skipUrlEncoding) {
         value = encodeURIComponent(param);
       }
-      endpoint = (_a = replaceAll(endpoint, `{${key}}`, value)) !== null && _a !== void 0 ? _a : "";
+      endpoint = replaceAll(endpoint, `{${key}}`, value) ?? "";
     }
     return endpoint;
   }
   function buildRoutePath(routePath, pathParameters, options2 = {}) {
-    var _a;
     for (const pathParam of pathParameters) {
-      const allowReserved = typeof pathParam === "object" && ((_a = pathParam.allowReserved) !== null && _a !== void 0 ? _a : false);
+      const allowReserved = typeof pathParam === "object" && (pathParam.allowReserved ?? false);
       let value = typeof pathParam === "object" ? pathParam.value : pathParam;
       if (!options2.skipUrlEncoding && !allowReserved) {
         value = encodeURIComponent(value);
@@ -27766,9 +27864,8 @@ function requireGetClient() {
   const urlHelpers_js_1 = /* @__PURE__ */ requireUrlHelpers$1();
   const checkEnvironment_js_1 = /* @__PURE__ */ requireCheckEnvironment();
   function getClient$1(endpoint, clientOptions = {}) {
-    var _a, _b, _c;
-    const pipeline2 = (_a = clientOptions.pipeline) !== null && _a !== void 0 ? _a : (0, clientHelpers_js_1.createDefaultPipeline)(clientOptions);
-    if ((_b = clientOptions.additionalPolicies) === null || _b === void 0 ? void 0 : _b.length) {
+    const pipeline2 = clientOptions.pipeline ?? (0, clientHelpers_js_1.createDefaultPipeline)(clientOptions);
+    if (clientOptions.additionalPolicies?.length) {
       for (const { policy, position } of clientOptions.additionalPolicies) {
         const afterPhase = position === "perRetry" ? "Sign" : void 0;
         pipeline2.addPolicy(policy, {
@@ -27777,9 +27874,9 @@ function requireGetClient() {
       }
     }
     const { allowInsecureConnection, httpClient } = clientOptions;
-    const endpointUrl = (_c = clientOptions.endpoint) !== null && _c !== void 0 ? _c : endpoint;
+    const endpointUrl = clientOptions.endpoint ?? endpoint;
     const client2 = (path2, ...args) => {
-      const getUrl = (requestOptions) => (0, urlHelpers_js_1.buildRequestUrl)(endpointUrl, path2, args, Object.assign({ allowInsecureConnection }, requestOptions));
+      const getUrl = (requestOptions) => (0, urlHelpers_js_1.buildRequestUrl)(endpointUrl, path2, args, { allowInsecureConnection, ...requestOptions });
       return {
         get: (requestOptions = {}) => {
           return buildOperation("GET", getUrl(requestOptions), pipeline2, requestOptions, allowInsecureConnection, httpClient);
@@ -27814,22 +27911,21 @@ function requireGetClient() {
     };
   }
   function buildOperation(method, url, pipeline2, options2, allowInsecureConnection, httpClient) {
-    var _a;
-    allowInsecureConnection = (_a = options2.allowInsecureConnection) !== null && _a !== void 0 ? _a : allowInsecureConnection;
+    allowInsecureConnection = options2.allowInsecureConnection ?? allowInsecureConnection;
     return {
       then: function(onFulfilled, onrejected) {
-        return (0, sendRequest_js_1.sendRequest)(method, url, pipeline2, Object.assign(Object.assign({}, options2), { allowInsecureConnection }), httpClient).then(onFulfilled, onrejected);
+        return (0, sendRequest_js_1.sendRequest)(method, url, pipeline2, { ...options2, allowInsecureConnection }, httpClient).then(onFulfilled, onrejected);
       },
       async asBrowserStream() {
         if (checkEnvironment_js_1.isNodeLike) {
           throw new Error("`asBrowserStream` is supported only in the browser environment. Use `asNodeStream` instead to obtain the response body stream. If you require a Web stream of the response in Node, consider using `Readable.toWeb` on the result of `asNodeStream`.");
         } else {
-          return (0, sendRequest_js_1.sendRequest)(method, url, pipeline2, Object.assign(Object.assign({}, options2), { allowInsecureConnection, responseAsStream: true }), httpClient);
+          return (0, sendRequest_js_1.sendRequest)(method, url, pipeline2, { ...options2, allowInsecureConnection, responseAsStream: true }, httpClient);
         }
       },
       async asNodeStream() {
         if (checkEnvironment_js_1.isNodeLike) {
-          return (0, sendRequest_js_1.sendRequest)(method, url, pipeline2, Object.assign(Object.assign({}, options2), { allowInsecureConnection, responseAsStream: true }), httpClient);
+          return (0, sendRequest_js_1.sendRequest)(method, url, pipeline2, { ...options2, allowInsecureConnection, responseAsStream: true }, httpClient);
         } else {
           throw new Error("`isNodeStream` is not supported in the browser environment. Use `asBrowserStream` to obtain the response body stream.");
         }
@@ -27846,15 +27942,14 @@ function requireOperationOptionHelpers() {
   Object.defineProperty(operationOptionHelpers, "__esModule", { value: true });
   operationOptionHelpers.operationOptionsToRequestParameters = operationOptionsToRequestParameters;
   function operationOptionsToRequestParameters(options2) {
-    var _a, _b, _c, _d, _e, _f;
     return {
-      allowInsecureConnection: (_a = options2.requestOptions) === null || _a === void 0 ? void 0 : _a.allowInsecureConnection,
-      timeout: (_b = options2.requestOptions) === null || _b === void 0 ? void 0 : _b.timeout,
-      skipUrlEncoding: (_c = options2.requestOptions) === null || _c === void 0 ? void 0 : _c.skipUrlEncoding,
+      allowInsecureConnection: options2.requestOptions?.allowInsecureConnection,
+      timeout: options2.requestOptions?.timeout,
+      skipUrlEncoding: options2.requestOptions?.skipUrlEncoding,
       abortSignal: options2.abortSignal,
-      onUploadProgress: (_d = options2.requestOptions) === null || _d === void 0 ? void 0 : _d.onUploadProgress,
-      onDownloadProgress: (_e = options2.requestOptions) === null || _e === void 0 ? void 0 : _e.onDownloadProgress,
-      headers: Object.assign({}, (_f = options2.requestOptions) === null || _f === void 0 ? void 0 : _f.headers),
+      onUploadProgress: options2.requestOptions?.onUploadProgress,
+      onDownloadProgress: options2.requestOptions?.onDownloadProgress,
+      headers: { ...options2.requestOptions?.headers },
       onResponse: options2.onResponse
     };
   }
@@ -27870,23 +27965,21 @@ function requireRestError$1() {
   const restError_js_1 = /* @__PURE__ */ requireRestError$2();
   const httpHeaders_js_1 = /* @__PURE__ */ requireHttpHeaders$1();
   function createRestError(messageOrResponse, response2) {
-    var _a, _b, _c;
     const resp = typeof messageOrResponse === "string" ? response2 : messageOrResponse;
-    const internalError = (_b = (_a = resp.body) === null || _a === void 0 ? void 0 : _a.error) !== null && _b !== void 0 ? _b : resp.body;
-    const message = typeof messageOrResponse === "string" ? messageOrResponse : (_c = internalError === null || internalError === void 0 ? void 0 : internalError.message) !== null && _c !== void 0 ? _c : `Unexpected status code: ${resp.status}`;
+    const internalError = resp.body?.error ?? resp.body;
+    const message = typeof messageOrResponse === "string" ? messageOrResponse : internalError?.message ?? `Unexpected status code: ${resp.status}`;
     return new restError_js_1.RestError(message, {
       statusCode: statusCodeToNumber(resp.status),
-      code: internalError === null || internalError === void 0 ? void 0 : internalError.code,
+      code: internalError?.code,
       request: resp.request,
       response: toPipelineResponse(resp)
     });
   }
   function toPipelineResponse(response2) {
-    var _a;
     return {
       headers: (0, httpHeaders_js_1.createHttpHeaders)(response2.headers),
       request: response2.request,
-      status: (_a = statusCodeToNumber(response2.status)) !== null && _a !== void 0 ? _a : -1
+      status: statusCodeToNumber(response2.status) ?? -1
     };
   }
   function statusCodeToNumber(statusCode) {
@@ -28048,11 +28141,13 @@ function requireExponentialRetryPolicy$1() {
   const constants_js_1 = /* @__PURE__ */ requireConstants$4();
   exponentialRetryPolicy$1.exponentialRetryPolicyName = "exponentialRetryPolicy";
   function exponentialRetryPolicy2(options2 = {}) {
-    var _a;
     return (0, retryPolicy_js_1.retryPolicy)([
-      (0, exponentialRetryStrategy_js_1.exponentialRetryStrategy)(Object.assign(Object.assign({}, options2), { ignoreSystemErrors: true }))
+      (0, exponentialRetryStrategy_js_1.exponentialRetryStrategy)({
+        ...options2,
+        ignoreSystemErrors: true
+      })
     ], {
-      maxRetries: (_a = options2.maxRetries) !== null && _a !== void 0 ? _a : constants_js_1.DEFAULT_RETRY_POLICY_COUNT
+      maxRetries: options2.maxRetries ?? constants_js_1.DEFAULT_RETRY_POLICY_COUNT
     });
   }
   return exponentialRetryPolicy$1;
@@ -28071,13 +28166,15 @@ function requireSystemErrorRetryPolicy$1() {
     const constants_js_1 = /* @__PURE__ */ requireConstants$4();
     exports.systemErrorRetryPolicyName = "systemErrorRetryPolicy";
     function systemErrorRetryPolicy2(options2 = {}) {
-      var _a;
       return {
         name: exports.systemErrorRetryPolicyName,
         sendRequest: (0, retryPolicy_js_1.retryPolicy)([
-          (0, exponentialRetryStrategy_js_1.exponentialRetryStrategy)(Object.assign(Object.assign({}, options2), { ignoreHttpStatusCodes: true }))
+          (0, exponentialRetryStrategy_js_1.exponentialRetryStrategy)({
+            ...options2,
+            ignoreHttpStatusCodes: true
+          })
         ], {
-          maxRetries: (_a = options2.maxRetries) !== null && _a !== void 0 ? _a : constants_js_1.DEFAULT_RETRY_POLICY_COUNT
+          maxRetries: options2.maxRetries ?? constants_js_1.DEFAULT_RETRY_POLICY_COUNT
         }).sendRequest
       };
     }
@@ -28098,11 +28195,10 @@ function requireThrottlingRetryPolicy$1() {
     const constants_js_1 = /* @__PURE__ */ requireConstants$4();
     exports.throttlingRetryPolicyName = "throttlingRetryPolicy";
     function throttlingRetryPolicy2(options2 = {}) {
-      var _a;
       return {
         name: exports.throttlingRetryPolicyName,
         sendRequest: (0, retryPolicy_js_1.retryPolicy)([(0, throttlingRetryStrategy_js_1.throttlingRetryStrategy)()], {
-          maxRetries: (_a = options2.maxRetries) !== null && _a !== void 0 ? _a : constants_js_1.DEFAULT_RETRY_POLICY_COUNT
+          maxRetries: options2.maxRetries ?? constants_js_1.DEFAULT_RETRY_POLICY_COUNT
         }).sendRequest
       };
     }
@@ -28228,7 +28324,10 @@ function requireLogPolicy() {
   const policies_1 = /* @__PURE__ */ requireInternal$1();
   logPolicy.logPolicyName = policies_1.logPolicyName;
   function logPolicy$12(options2 = {}) {
-    return (0, policies_1.logPolicy)(Object.assign({ logger: log_js_1.logger.info }, options2));
+    return (0, policies_1.logPolicy)({
+      logger: log_js_1.logger.info,
+      ...options2
+    });
   }
   return logPolicy;
 }
@@ -28258,14 +28357,14 @@ function requireUserAgentPlatform() {
   userAgentPlatform.getHeaderName = getHeaderName;
   userAgentPlatform.setPlatformSpecificData = setPlatformSpecificData;
   const tslib_1 = require$$0$2;
-  const os = tslib_1.__importStar(require$$1__default);
-  const process2 = tslib_1.__importStar(require$$2$3);
+  const node_os_1 = tslib_1.__importDefault(require$$1__default);
+  const node_process_1 = tslib_1.__importDefault(require$$2$3);
   function getHeaderName() {
     return "User-Agent";
   }
   async function setPlatformSpecificData(map) {
-    if (process2 && process2.versions) {
-      const versions = process2.versions;
+    if (node_process_1.default && node_process_1.default.versions) {
+      const versions = node_process_1.default.versions;
       if (versions.bun) {
         map.set("Bun", versions.bun);
       } else if (versions.deno) {
@@ -28274,7 +28373,7 @@ function requireUserAgentPlatform() {
         map.set("Node", versions.node);
       }
     }
-    map.set("OS", `(${os.arch()}-${os.type()}-${os.release()})`);
+    map.set("OS", `(${node_os_1.default.arch()}-${node_os_1.default.type()}-${node_os_1.default.release()})`);
   }
   return userAgentPlatform;
 }
@@ -28285,7 +28384,7 @@ function requireConstants$3() {
   hasRequiredConstants$3 = 1;
   Object.defineProperty(constants$3, "__esModule", { value: true });
   constants$3.DEFAULT_RETRY_POLICY_COUNT = constants$3.SDK_VERSION = void 0;
-  constants$3.SDK_VERSION = "1.22.0";
+  constants$3.SDK_VERSION = "1.22.1";
   constants$3.DEFAULT_RETRY_POLICY_COUNT = 3;
   return constants$3;
 }
@@ -28445,17 +28544,16 @@ function requireAborterUtils() {
   Object.defineProperty(aborterUtils, "__esModule", { value: true });
   aborterUtils.cancelablePromiseRace = cancelablePromiseRace;
   async function cancelablePromiseRace(abortablePromiseBuilders, options2) {
-    var _a, _b;
     const aborter = new AbortController();
     function abortHandler() {
       aborter.abort();
     }
-    (_a = options2 === null || options2 === void 0 ? void 0 : options2.abortSignal) === null || _a === void 0 ? void 0 : _a.addEventListener("abort", abortHandler);
+    options2?.abortSignal?.addEventListener("abort", abortHandler);
     try {
       return await Promise.race(abortablePromiseBuilders.map((p) => p({ abortSignal: aborter.signal })));
     } finally {
       aborter.abort();
-      (_b = options2 === null || options2 === void 0 ? void 0 : options2.abortSignal) === null || _b === void 0 ? void 0 : _b.removeEventListener("abort", abortHandler);
+      options2?.abortSignal?.removeEventListener("abort", abortHandler);
     }
   }
   return aborterUtils;
@@ -28500,20 +28598,20 @@ function requireCreateAbortablePromise() {
   createAbortablePromise.createAbortablePromise = createAbortablePromise$1;
   const abort_controller_1 = /* @__PURE__ */ requireCommonjs$a();
   function createAbortablePromise$1(buildPromise, options2) {
-    const { cleanupBeforeAbort, abortSignal: abortSignal2, abortErrorMsg } = options2 !== null && options2 !== void 0 ? options2 : {};
+    const { cleanupBeforeAbort, abortSignal: abortSignal2, abortErrorMsg } = options2 ?? {};
     return new Promise((resolve, reject) => {
       function rejectOnAbort() {
-        reject(new abort_controller_1.AbortError(abortErrorMsg !== null && abortErrorMsg !== void 0 ? abortErrorMsg : "The operation was aborted."));
+        reject(new abort_controller_1.AbortError(abortErrorMsg ?? "The operation was aborted."));
       }
       function removeListeners() {
-        abortSignal2 === null || abortSignal2 === void 0 ? void 0 : abortSignal2.removeEventListener("abort", onAbort);
+        abortSignal2?.removeEventListener("abort", onAbort);
       }
       function onAbort() {
-        cleanupBeforeAbort === null || cleanupBeforeAbort === void 0 ? void 0 : cleanupBeforeAbort();
+        cleanupBeforeAbort?.();
         removeListeners();
         rejectOnAbort();
       }
-      if (abortSignal2 === null || abortSignal2 === void 0 ? void 0 : abortSignal2.aborted) {
+      if (abortSignal2?.aborted) {
         return rejectOnAbort();
       }
       try {
@@ -28527,7 +28625,7 @@ function requireCreateAbortablePromise() {
       } catch (err) {
         reject(err);
       }
-      abortSignal2 === null || abortSignal2 === void 0 ? void 0 : abortSignal2.addEventListener("abort", onAbort);
+      abortSignal2?.addEventListener("abort", onAbort);
     });
   }
   return createAbortablePromise;
@@ -28545,13 +28643,13 @@ function requireDelay() {
   const StandardAbortMessage = "The delay was aborted.";
   function delay2(timeInMs, options2) {
     let token;
-    const { abortSignal: abortSignal2, abortErrorMsg } = options2 !== null && options2 !== void 0 ? options2 : {};
+    const { abortSignal: abortSignal2, abortErrorMsg } = options2 ?? {};
     return (0, createAbortablePromise_js_1.createAbortablePromise)((resolve) => {
       token = setTimeout(resolve, timeInMs);
     }, {
       cleanupBeforeAbort: () => clearTimeout(token),
       abortSignal: abortSignal2,
-      abortErrorMsg: abortErrorMsg !== null && abortErrorMsg !== void 0 ? abortErrorMsg : StandardAbortMessage
+      abortErrorMsg: abortErrorMsg ?? StandardAbortMessage
     });
   }
   function calculateRetryDelay(retryAttempt, config2) {
@@ -28738,19 +28836,36 @@ function requireFile() {
     }
   }
   function createFileFromStream(stream, name, options2 = {}) {
-    var _a, _b, _c, _d;
-    return Object.assign(Object.assign({}, unimplementedMethods), { type: (_a = options2.type) !== null && _a !== void 0 ? _a : "", lastModified: (_b = options2.lastModified) !== null && _b !== void 0 ? _b : (/* @__PURE__ */ new Date()).getTime(), webkitRelativePath: (_c = options2.webkitRelativePath) !== null && _c !== void 0 ? _c : "", size: (_d = options2.size) !== null && _d !== void 0 ? _d : -1, name, stream: () => {
-      const s = stream();
-      if (isNodeReadableStream(s)) {
-        throw new Error("Not supported: a Node stream was provided as input to createFileFromStream.");
-      }
-      return s;
-    }, [rawContent]: stream });
+    return {
+      ...unimplementedMethods,
+      type: options2.type ?? "",
+      lastModified: options2.lastModified ?? (/* @__PURE__ */ new Date()).getTime(),
+      webkitRelativePath: options2.webkitRelativePath ?? "",
+      size: options2.size ?? -1,
+      name,
+      stream: () => {
+        const s = stream();
+        if (isNodeReadableStream(s)) {
+          throw new Error("Not supported: a Node stream was provided as input to createFileFromStream.");
+        }
+        return s;
+      },
+      [rawContent]: stream
+    };
   }
   function createFile(content, name, options2 = {}) {
-    var _a, _b, _c;
     if (core_util_1.isNodeLike) {
-      return Object.assign(Object.assign({}, unimplementedMethods), { type: (_a = options2.type) !== null && _a !== void 0 ? _a : "", lastModified: (_b = options2.lastModified) !== null && _b !== void 0 ? _b : (/* @__PURE__ */ new Date()).getTime(), webkitRelativePath: (_c = options2.webkitRelativePath) !== null && _c !== void 0 ? _c : "", size: content.byteLength, name, arrayBuffer: async () => content.buffer, stream: () => new Blob([content]).stream(), [rawContent]: () => content });
+      return {
+        ...unimplementedMethods,
+        type: options2.type ?? "",
+        lastModified: options2.lastModified ?? (/* @__PURE__ */ new Date()).getTime(),
+        webkitRelativePath: options2.webkitRelativePath ?? "",
+        size: content.byteLength,
+        name,
+        arrayBuffer: async () => content.buffer,
+        stream: () => new Blob([content]).stream(),
+        [rawContent]: () => content
+      };
     } else {
       return new File([content], name, options2);
     }
@@ -28932,6 +29047,7 @@ function requireTracingContext() {
       return context;
     }
     class TracingContextImpl {
+      _contextMap;
       constructor(initialContext) {
         this._contextMap = initialContext instanceof TracingContextImpl ? new Map(initialContext._contextMap) : /* @__PURE__ */ new Map();
       }
@@ -29033,8 +29149,12 @@ function requireTracingClient() {
   function createTracingClient(options2) {
     const { namespace, packageName, packageVersion } = options2;
     function startSpan(name, operationOptions, spanOptions) {
-      var _a;
-      const startSpanResult = (0, instrumenter_js_1.getInstrumenter)().startSpan(name, Object.assign(Object.assign({}, spanOptions), { packageName, packageVersion, tracingContext: (_a = operationOptions === null || operationOptions === void 0 ? void 0 : operationOptions.tracingOptions) === null || _a === void 0 ? void 0 : _a.tracingContext }));
+      const startSpanResult = (0, instrumenter_js_1.getInstrumenter)().startSpan(name, {
+        ...spanOptions,
+        packageName,
+        packageVersion,
+        tracingContext: operationOptions?.tracingOptions?.tracingContext
+      });
       let tracingContext2 = startSpanResult.tracingContext;
       const span = startSpanResult.span;
       if (!tracingContext2.getValue(tracingContext_js_1.knownContextKeys.namespace)) {
@@ -29042,7 +29162,7 @@ function requireTracingClient() {
       }
       span.setAttribute("az.namespace", tracingContext2.getValue(tracingContext_js_1.knownContextKeys.namespace));
       const updatedOptions = Object.assign({}, operationOptions, {
-        tracingOptions: Object.assign(Object.assign({}, operationOptions === null || operationOptions === void 0 ? void 0 : operationOptions.tracingOptions), { tracingContext: tracingContext2 })
+        tracingOptions: { ...operationOptions?.tracingOptions, tracingContext: tracingContext2 }
       });
       return {
         span,
@@ -29139,7 +29259,6 @@ function requireTracingPolicy() {
       return {
         name: exports.tracingPolicyName,
         async sendRequest(request2, next) {
-          var _a;
           if (!tracingClient2) {
             return next(request2);
           }
@@ -29153,7 +29272,7 @@ function requireTracingPolicy() {
           if (userAgent2) {
             spanAttributes["http.user_agent"] = userAgent2;
           }
-          const { span, tracingContext: tracingContext2 } = (_a = tryCreateSpan(tracingClient2, request2, spanAttributes)) !== null && _a !== void 0 ? _a : {};
+          const { span, tracingContext: tracingContext2 } = tryCreateSpan(tracingClient2, request2, spanAttributes) ?? {};
           if (!span || !tracingContext2) {
             return next(request2);
           }
@@ -29288,7 +29407,7 @@ function requireWrapAbortSignalLikePolicy() {
           try {
             return await next(request2);
           } finally {
-            cleanup === null || cleanup === void 0 ? void 0 : cleanup();
+            cleanup?.();
           }
         }
       };
@@ -29318,7 +29437,6 @@ function requireCreatePipelineFromOptions() {
   const tracingPolicy_js_1 = /* @__PURE__ */ requireTracingPolicy();
   const wrapAbortSignalLikePolicy_js_1 = /* @__PURE__ */ requireWrapAbortSignalLikePolicy();
   function createPipelineFromOptions$12(options2) {
-    var _a;
     const pipeline2 = (0, pipeline_js_1.createEmptyPipeline)();
     if (core_util_1.isNodeLike) {
       if (options2.agent) {
@@ -29333,10 +29451,10 @@ function requireCreatePipelineFromOptions() {
     pipeline2.addPolicy((0, wrapAbortSignalLikePolicy_js_1.wrapAbortSignalLikePolicy)());
     pipeline2.addPolicy((0, formDataPolicy_js_1.formDataPolicy)(), { beforePolicies: [multipartPolicy_js_1.multipartPolicyName] });
     pipeline2.addPolicy((0, userAgentPolicy_js_1.userAgentPolicy)(options2.userAgentOptions));
-    pipeline2.addPolicy((0, setClientRequestIdPolicy_js_1.setClientRequestIdPolicy)((_a = options2.telemetryOptions) === null || _a === void 0 ? void 0 : _a.clientRequestIdHeaderName));
+    pipeline2.addPolicy((0, setClientRequestIdPolicy_js_1.setClientRequestIdPolicy)(options2.telemetryOptions?.clientRequestIdHeaderName));
     pipeline2.addPolicy((0, multipartPolicy_js_1.multipartPolicy)(), { afterPhase: "Deserialize" });
     pipeline2.addPolicy((0, defaultRetryPolicy_js_1.defaultRetryPolicy)(options2.retryOptions), { phase: "Retry" });
-    pipeline2.addPolicy((0, tracingPolicy_js_1.tracingPolicy)(Object.assign(Object.assign({}, options2.userAgentOptions), options2.loggingOptions)), {
+    pipeline2.addPolicy((0, tracingPolicy_js_1.tracingPolicy)({ ...options2.userAgentOptions, ...options2.loggingOptions }), {
       afterPhase: "Retry"
     });
     if (core_util_1.isNodeLike) {
@@ -29365,7 +29483,7 @@ function requireDefaultHttpClient() {
           request2.abortSignal = abortSignal2;
           return await client2.sendRequest(request2);
         } finally {
-          cleanup === null || cleanup === void 0 ? void 0 : cleanup();
+          cleanup?.();
         }
       }
     };
@@ -29455,7 +29573,10 @@ function requireRetryPolicy() {
   const policies_1 = /* @__PURE__ */ requireInternal$1();
   const retryPolicyLogger = (0, logger_1.createClientLogger)("core-rest-pipeline retryPolicy");
   function retryPolicy$12(strategies, options2 = { maxRetries: constants_js_1.DEFAULT_RETRY_POLICY_COUNT }) {
-    return (0, policies_1.retryPolicy)(strategies, Object.assign({ logger: retryPolicyLogger }, options2));
+    return (0, policies_1.retryPolicy)(strategies, {
+      logger: retryPolicyLogger,
+      ...options2
+    });
   }
   return retryPolicy;
 }
@@ -29483,7 +29604,7 @@ function requireTokenCycler() {
         if (Date.now() < refreshTimeout) {
           try {
             return await getAccessToken();
-          } catch (_a) {
+          } catch {
             return null;
           }
         } else {
@@ -29505,7 +29626,10 @@ function requireTokenCycler() {
       let refreshWorker = null;
       let token = null;
       let tenantId;
-      const options2 = Object.assign(Object.assign({}, exports.DEFAULT_CYCLER_OPTIONS), tokenCyclerOptions);
+      const options2 = {
+        ...exports.DEFAULT_CYCLER_OPTIONS,
+        ...tokenCyclerOptions
+      };
       const cycler = {
         /**
          * Produces true if a refresh job is currently in progress.
@@ -29518,14 +29642,13 @@ function requireTokenCycler() {
          * window and not already refreshing)
          */
         get shouldRefresh() {
-          var _a;
           if (cycler.isRefreshing) {
             return false;
           }
-          if ((token === null || token === void 0 ? void 0 : token.refreshAfterTimestamp) && token.refreshAfterTimestamp < Date.now()) {
+          if (token?.refreshAfterTimestamp && token.refreshAfterTimestamp < Date.now()) {
             return true;
           }
-          return ((_a = token === null || token === void 0 ? void 0 : token.expiresOnTimestamp) !== null && _a !== void 0 ? _a : 0) - options2.refreshWindowInMs < Date.now();
+          return (token?.expiresOnTimestamp ?? 0) - options2.refreshWindowInMs < Date.now();
         },
         /**
          * Produces true if the cycler MUST refresh (null or nearly-expired
@@ -29536,14 +29659,13 @@ function requireTokenCycler() {
         }
       };
       function refresh(scopes, getTokenOptions) {
-        var _a;
         if (!cycler.isRefreshing) {
           const tryGetAccessToken = () => credential.getToken(scopes, getTokenOptions);
           refreshWorker = beginRefresh(
             tryGetAccessToken,
             options2.retryIntervalInMs,
             // If we don't have a token, then we should timeout immediately
-            (_a = token === null || token === void 0 ? void 0 : token.expiresOnTimestamp) !== null && _a !== void 0 ? _a : Date.now()
+            token?.expiresOnTimestamp ?? Date.now()
           ).then((_token) => {
             refreshWorker = null;
             token = _token;
@@ -29617,7 +29739,6 @@ function requireBearerTokenAuthenticationPolicy() {
       return response2.status === 401 && response2.headers.has("WWW-Authenticate");
     }
     async function authorizeRequestOnCaeChallenge(onChallengeOptions, caeClaims) {
-      var _a;
       const { scopes } = onChallengeOptions;
       const accessToken = await onChallengeOptions.getAccessToken(scopes, {
         enableCae: true,
@@ -29626,16 +29747,15 @@ function requireBearerTokenAuthenticationPolicy() {
       if (!accessToken) {
         return false;
       }
-      onChallengeOptions.request.headers.set("Authorization", `${(_a = accessToken.tokenType) !== null && _a !== void 0 ? _a : "Bearer"} ${accessToken.token}`);
+      onChallengeOptions.request.headers.set("Authorization", `${accessToken.tokenType ?? "Bearer"} ${accessToken.token}`);
       return true;
     }
     function bearerTokenAuthenticationPolicy2(options2) {
-      var _a, _b, _c;
       const { credential, scopes, challengeCallbacks } = options2;
       const logger2 = options2.logger || log_js_1.logger;
       const callbacks = {
-        authorizeRequest: (_b = (_a = challengeCallbacks === null || challengeCallbacks === void 0 ? void 0 : challengeCallbacks.authorizeRequest) === null || _a === void 0 ? void 0 : _a.bind(challengeCallbacks)) !== null && _b !== void 0 ? _b : defaultAuthorizeRequest,
-        authorizeRequestOnChallenge: (_c = challengeCallbacks === null || challengeCallbacks === void 0 ? void 0 : challengeCallbacks.authorizeRequestOnChallenge) === null || _c === void 0 ? void 0 : _c.bind(challengeCallbacks)
+        authorizeRequest: challengeCallbacks?.authorizeRequest?.bind(challengeCallbacks) ?? defaultAuthorizeRequest,
+        authorizeRequestOnChallenge: challengeCallbacks?.authorizeRequestOnChallenge?.bind(challengeCallbacks)
       };
       const getAccessToken = credential ? (0, tokenCycler_js_1.createTokenCycler)(
         credential
@@ -29751,12 +29871,11 @@ function requireBearerTokenAuthenticationPolicy() {
       return parsedChallenges;
     }
     function getCaeChallengeClaims(challenges) {
-      var _a;
       if (!challenges) {
         return;
       }
       const parsedChallenges = parseChallenges(challenges);
-      return (_a = parsedChallenges.find((x) => x.scheme === "Bearer" && x.params.claims && x.params.error === "insufficient_claims")) === null || _a === void 0 ? void 0 : _a.params.claims;
+      return parsedChallenges.find((x) => x.scheme === "Bearer" && x.params.claims && x.params.error === "insufficient_claims")?.params.claims;
     }
   })(bearerTokenAuthenticationPolicy);
   return bearerTokenAuthenticationPolicy;
@@ -29802,13 +29921,12 @@ function requireAuxiliaryAuthenticationHeaderPolicy() {
     exports.auxiliaryAuthenticationHeaderPolicyName = "auxiliaryAuthenticationHeaderPolicy";
     const AUTHORIZATION_AUXILIARY_HEADER = "x-ms-authorization-auxiliary";
     async function sendAuthorizeRequest(options2) {
-      var _a, _b;
       const { scopes, getAccessToken, request: request2 } = options2;
       const getTokenOptions = {
         abortSignal: request2.abortSignal,
         tracingOptions: request2.tracingOptions
       };
-      return (_b = (_a = await getAccessToken(scopes, getTokenOptions)) === null || _a === void 0 ? void 0 : _a.token) !== null && _b !== void 0 ? _b : "";
+      return (await getAccessToken(scopes, getTokenOptions))?.token ?? "";
     }
     function auxiliaryAuthenticationHeaderPolicy2(options2) {
       const { credentials: credentials2, scopes } = options2;
@@ -30034,6 +30152,7 @@ function requireAzureKeyCredential() {
   Object.defineProperty(azureKeyCredential, "__esModule", { value: true });
   azureKeyCredential.AzureKeyCredential = void 0;
   class AzureKeyCredential {
+    _key;
     /**
      * The value of the key to be used in authentication
      */
@@ -30090,6 +30209,8 @@ function requireAzureNamedKeyCredential() {
   azureNamedKeyCredential.isNamedKeyCredential = isNamedKeyCredential;
   const core_util_1 = /* @__PURE__ */ requireCommonjs$9();
   class AzureNamedKeyCredential {
+    _key;
+    _name;
     /**
      * The value of the key to be used in authentication.
      */
@@ -30149,6 +30270,7 @@ function requireAzureSASCredential() {
   azureSASCredential.isSASCredential = isSASCredential;
   const core_util_1 = /* @__PURE__ */ requireCommonjs$9();
   class AzureSASCredential {
+    _signature;
     /**
      * The value of the shared access signature to be used in authentication
      */
@@ -30323,7 +30445,7 @@ function requireUtils$1() {
   utils$1.isValidUuid = isValidUuid;
   utils$1.flattenResponse = flattenResponse;
   function isPrimitiveBody(value, mapperTypeName) {
-    return mapperTypeName !== "Composite" && mapperTypeName !== "Dictionary" && (typeof value === "string" || typeof value === "number" || typeof value === "boolean" || (mapperTypeName === null || mapperTypeName === void 0 ? void 0 : mapperTypeName.match(/^(Date|DateTime|DateTimeRfc1123|UnixTime|ByteArray|Base64Url)$/i)) !== null || value === void 0 || value === null);
+    return mapperTypeName !== "Composite" && mapperTypeName !== "Dictionary" && (typeof value === "string" || typeof value === "number" || typeof value === "boolean" || mapperTypeName?.match(/^(Date|DateTime|DateTimeRfc1123|UnixTime|ByteArray|Base64Url)$/i) !== null || value === void 0 || value === null);
   }
   const validateISODuration = /^(-|\+)?P(?:([-+]?[0-9,.]*)Y)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)W)?(?:([-+]?[0-9,.]*)D)?(?:T(?:([-+]?[0-9,.]*)H)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)S)?)?$/;
   function isDuration(value) {
@@ -30334,32 +30456,44 @@ function requireUtils$1() {
     return validUuidRegex.test(uuid);
   }
   function handleNullableResponseAndWrappableBody(responseObject) {
-    const combinedHeadersAndBody = Object.assign(Object.assign({}, responseObject.headers), responseObject.body);
+    const combinedHeadersAndBody = {
+      ...responseObject.headers,
+      ...responseObject.body
+    };
     if (responseObject.hasNullableType && Object.getOwnPropertyNames(combinedHeadersAndBody).length === 0) {
       return responseObject.shouldWrapBody ? { body: null } : null;
     } else {
-      return responseObject.shouldWrapBody ? Object.assign(Object.assign({}, responseObject.headers), { body: responseObject.body }) : combinedHeadersAndBody;
+      return responseObject.shouldWrapBody ? {
+        ...responseObject.headers,
+        body: responseObject.body
+      } : combinedHeadersAndBody;
     }
   }
   function flattenResponse(fullResponse, responseSpec) {
-    var _a, _b;
     const parsedHeaders = fullResponse.parsedHeaders;
     if (fullResponse.request.method === "HEAD") {
-      return Object.assign(Object.assign({}, parsedHeaders), { body: fullResponse.parsedBody });
+      return {
+        ...parsedHeaders,
+        body: fullResponse.parsedBody
+      };
     }
     const bodyMapper = responseSpec && responseSpec.bodyMapper;
-    const isNullable = Boolean(bodyMapper === null || bodyMapper === void 0 ? void 0 : bodyMapper.nullable);
-    const expectedBodyTypeName = bodyMapper === null || bodyMapper === void 0 ? void 0 : bodyMapper.type.name;
+    const isNullable = Boolean(bodyMapper?.nullable);
+    const expectedBodyTypeName = bodyMapper?.type.name;
     if (expectedBodyTypeName === "Stream") {
-      return Object.assign(Object.assign({}, parsedHeaders), { blobBody: fullResponse.blobBody, readableStreamBody: fullResponse.readableStreamBody });
+      return {
+        ...parsedHeaders,
+        blobBody: fullResponse.blobBody,
+        readableStreamBody: fullResponse.readableStreamBody
+      };
     }
     const modelProperties = expectedBodyTypeName === "Composite" && bodyMapper.type.modelProperties || {};
     const isPageableResponse = Object.keys(modelProperties).some((k) => modelProperties[k].serializedName === "");
     if (expectedBodyTypeName === "Sequence" || isPageableResponse) {
-      const arrayResponse = (_a = fullResponse.parsedBody) !== null && _a !== void 0 ? _a : [];
+      const arrayResponse = fullResponse.parsedBody ?? [];
       for (const key of Object.keys(modelProperties)) {
         if (modelProperties[key].serializedName) {
-          arrayResponse[key] = (_b = fullResponse.parsedBody) === null || _b === void 0 ? void 0 : _b[key];
+          arrayResponse[key] = fullResponse.parsedBody?.[key];
         }
       }
       if (parsedHeaders) {
@@ -30390,6 +30524,8 @@ function requireSerializer() {
   const interfaces_js_1 = /* @__PURE__ */ requireInterfaces();
   const utils_js_1 = /* @__PURE__ */ requireUtils$1();
   class SerializerImpl {
+    modelMappers;
+    isXML;
     constructor(modelMappers = {}, isXML = false) {
       this.modelMappers = modelMappers;
       this.isXML = isXML;
@@ -30455,12 +30591,11 @@ function requireSerializer() {
      * @returns A valid serialized Javascript object
      */
     serialize(mapper, object2, objectName, options2 = { xml: {} }) {
-      var _a, _b, _c;
       const updatedOptions = {
         xml: {
-          rootName: (_a = options2.xml.rootName) !== null && _a !== void 0 ? _a : "",
-          includeRoot: (_b = options2.xml.includeRoot) !== null && _b !== void 0 ? _b : false,
-          xmlCharKey: (_c = options2.xml.xmlCharKey) !== null && _c !== void 0 ? _c : interfaces_js_1.XML_CHARKEY
+          rootName: options2.xml.rootName ?? "",
+          includeRoot: options2.xml.includeRoot ?? false,
+          xmlCharKey: options2.xml.xmlCharKey ?? interfaces_js_1.XML_CHARKEY
         }
       };
       let payload = {};
@@ -30524,14 +30659,13 @@ function requireSerializer() {
      * @returns A valid deserialized Javascript object
      */
     deserialize(mapper, responseBody, objectName, options2 = { xml: {} }) {
-      var _a, _b, _c, _d;
       const updatedOptions = {
         xml: {
-          rootName: (_a = options2.xml.rootName) !== null && _a !== void 0 ? _a : "",
-          includeRoot: (_b = options2.xml.includeRoot) !== null && _b !== void 0 ? _b : false,
-          xmlCharKey: (_c = options2.xml.xmlCharKey) !== null && _c !== void 0 ? _c : interfaces_js_1.XML_CHARKEY
+          rootName: options2.xml.rootName ?? "",
+          includeRoot: options2.xml.includeRoot ?? false,
+          xmlCharKey: options2.xml.xmlCharKey ?? interfaces_js_1.XML_CHARKEY
         },
-        ignoreUnknownProperties: (_d = options2.ignoreUnknownProperties) !== null && _d !== void 0 ? _d : false
+        ignoreUnknownProperties: options2.ignoreUnknownProperties ?? false
       };
       if (responseBody === void 0 || responseBody === null) {
         if (this.isXML && mapper.type.name === "Sequence" && !mapper.xmlIsWrapped) {
@@ -30747,7 +30881,6 @@ function requireSerializer() {
     return value;
   }
   function serializeSequenceType(serializer2, mapper, object2, objectName, isXml, options2) {
-    var _a;
     if (!Array.isArray(object2)) {
       throw new Error(`${objectName} must be of type Array.`);
     }
@@ -30756,7 +30889,7 @@ function requireSerializer() {
       throw new Error(`element" metadata for an Array must be defined in the mapper and it must of type "object" in ${objectName}.`);
     }
     if (elementType.type.name === "Composite" && elementType.type.className) {
-      elementType = (_a = serializer2.modelMappers[elementType.type.className]) !== null && _a !== void 0 ? _a : elementType;
+      elementType = serializer2.modelMappers[elementType.type.className] ?? elementType;
     }
     const tempArray = [];
     for (let i = 0; i < object2.length; i++) {
@@ -30764,7 +30897,7 @@ function requireSerializer() {
       if (isXml && elementType.xmlNamespace) {
         const xmlnsKey = elementType.xmlNamespacePrefix ? `xmlns:${elementType.xmlNamespacePrefix}` : "xmlns";
         if (elementType.type.name === "Composite") {
-          tempArray[i] = Object.assign({}, serializedValue);
+          tempArray[i] = { ...serializedValue };
           tempArray[i][interfaces_js_1.XML_ATTRKEY] = { [xmlnsKey]: elementType.xmlNamespace };
         } else {
           tempArray[i] = {};
@@ -30802,7 +30935,7 @@ function requireSerializer() {
     const additionalProperties = mapper.type.additionalProperties;
     if (!additionalProperties && mapper.type.className) {
       const modelMapper = resolveReferencedMapper(serializer2, mapper, objectName);
-      return modelMapper === null || modelMapper === void 0 ? void 0 : modelMapper.type.additionalProperties;
+      return modelMapper?.type.additionalProperties;
     }
     return additionalProperties;
   }
@@ -30820,7 +30953,7 @@ function requireSerializer() {
       if (!modelMapper) {
         throw new Error(`mapper() cannot be null or undefined for model "${mapper.type.className}".`);
       }
-      modelProps = modelMapper === null || modelMapper === void 0 ? void 0 : modelMapper.type.modelProperties;
+      modelProps = modelMapper?.type.modelProperties;
       if (!modelProps) {
         throw new Error(`modelProperties cannot be null or undefined in the mapper "${JSON.stringify(modelMapper)}" of type "${mapper.type.className}" for object "${objectName}".`);
       }
@@ -30861,7 +30994,10 @@ function requireSerializer() {
         if (parentObject !== void 0 && parentObject !== null) {
           if (isXml && mapper.xmlNamespace) {
             const xmlnsKey = mapper.xmlNamespacePrefix ? `xmlns:${mapper.xmlNamespacePrefix}` : "xmlns";
-            parentObject[interfaces_js_1.XML_ATTRKEY] = Object.assign(Object.assign({}, parentObject[interfaces_js_1.XML_ATTRKEY]), { [xmlnsKey]: mapper.xmlNamespace });
+            parentObject[interfaces_js_1.XML_ATTRKEY] = {
+              ...parentObject[interfaces_js_1.XML_ATTRKEY],
+              [xmlnsKey]: mapper.xmlNamespace
+            };
           }
           const propertyObjectName = propertyMapper.serializedName !== "" ? objectName + "." + propertyMapper.serializedName : objectName;
           let toSerialize = object2[key];
@@ -30907,7 +31043,7 @@ function requireSerializer() {
       if (serializedValue[interfaces_js_1.XML_ATTRKEY]) {
         return serializedValue;
       } else {
-        const result2 = Object.assign({}, serializedValue);
+        const result2 = { ...serializedValue };
         result2[interfaces_js_1.XML_ATTRKEY] = xmlNamespace;
         return result2;
       }
@@ -30921,8 +31057,7 @@ function requireSerializer() {
     return [interfaces_js_1.XML_ATTRKEY, options2.xml.xmlCharKey].includes(propertyName);
   }
   function deserializeCompositeType(serializer2, mapper, responseBody, objectName, options2) {
-    var _a, _b;
-    const xmlCharKey = (_a = options2.xml.xmlCharKey) !== null && _a !== void 0 ? _a : interfaces_js_1.XML_CHARKEY;
+    const xmlCharKey = options2.xml.xmlCharKey ?? interfaces_js_1.XML_CHARKEY;
     if (getPolymorphicDiscriminatorRecursively(serializer2, mapper)) {
       mapper = getPolymorphicMapper(serializer2, mapper, responseBody, "serializedName");
     }
@@ -30961,7 +31096,7 @@ function requireSerializer() {
           const propertyName = xmlElementName || xmlName || serializedName;
           if (propertyMapper.xmlIsWrapped) {
             const wrapped = responseBody[xmlName];
-            const elementList = (_b = wrapped === null || wrapped === void 0 ? void 0 : wrapped[xmlElementName]) !== null && _b !== void 0 ? _b : [];
+            const elementList = wrapped?.[xmlElementName] ?? [];
             instance[key] = serializer2.deserialize(propertyMapper, elementList, propertyObjectName, options2);
             handledPropertyNames.push(xmlName);
           } else {
@@ -31044,7 +31179,6 @@ function requireSerializer() {
     return responseBody;
   }
   function deserializeSequenceType(serializer2, mapper, responseBody, objectName, options2) {
-    var _a;
     let element = mapper.type.element;
     if (!element || typeof element !== "object") {
       throw new Error(`element" metadata for an Array must be defined in the mapper and it must of type "object" in ${objectName}`);
@@ -31054,7 +31188,7 @@ function requireSerializer() {
         responseBody = [responseBody];
       }
       if (element.type.name === "Composite" && element.type.className) {
-        element = (_a = serializer2.modelMappers[element.type.className]) !== null && _a !== void 0 ? _a : element;
+        element = serializer2.modelMappers[element.type.className] ?? element;
       }
       const tempArray = [];
       for (let i = 0; i < responseBody.length; i++) {
@@ -31082,7 +31216,6 @@ function requireSerializer() {
     return void 0;
   }
   function getPolymorphicMapper(serializer2, mapper, object2, polymorphicPropertyName) {
-    var _a;
     const polymorphicDiscriminator = getPolymorphicDiscriminatorRecursively(serializer2, mapper);
     if (polymorphicDiscriminator) {
       let discriminatorName = polymorphicDiscriminator[polymorphicPropertyName];
@@ -31091,7 +31224,7 @@ function requireSerializer() {
           discriminatorName = discriminatorName.replace(/\\/gi, "");
         }
         const discriminatorValue = object2[discriminatorName];
-        const typeName = (_a = mapper.type.uberParent) !== null && _a !== void 0 ? _a : mapper.type.className;
+        const typeName = mapper.type.uberParent ?? mapper.type.className;
         if (typeof discriminatorValue === "string" && typeName) {
           const polymorphicMapper = getIndexDiscriminator(serializer2.modelMappers.discriminators, discriminatorValue, typeName);
           if (polymorphicMapper) {
@@ -31246,16 +31379,15 @@ function requireDeserializationPolicy() {
     const defaultXmlContentTypes = ["application/xml", "application/atom+xml"];
     exports.deserializationPolicyName = "deserializationPolicy";
     function deserializationPolicy2(options2 = {}) {
-      var _a, _b, _c, _d, _e, _f, _g;
-      const jsonContentTypes = (_b = (_a = options2.expectedContentTypes) === null || _a === void 0 ? void 0 : _a.json) !== null && _b !== void 0 ? _b : defaultJsonContentTypes;
-      const xmlContentTypes = (_d = (_c = options2.expectedContentTypes) === null || _c === void 0 ? void 0 : _c.xml) !== null && _d !== void 0 ? _d : defaultXmlContentTypes;
+      const jsonContentTypes = options2.expectedContentTypes?.json ?? defaultJsonContentTypes;
+      const xmlContentTypes = options2.expectedContentTypes?.xml ?? defaultXmlContentTypes;
       const parseXML = options2.parseXML;
       const serializerOptions = options2.serializerOptions;
       const updatedOptions = {
         xml: {
-          rootName: (_e = serializerOptions === null || serializerOptions === void 0 ? void 0 : serializerOptions.xml.rootName) !== null && _e !== void 0 ? _e : "",
-          includeRoot: (_f = serializerOptions === null || serializerOptions === void 0 ? void 0 : serializerOptions.xml.includeRoot) !== null && _f !== void 0 ? _f : false,
-          xmlCharKey: (_g = serializerOptions === null || serializerOptions === void 0 ? void 0 : serializerOptions.xml.xmlCharKey) !== null && _g !== void 0 ? _g : interfaces_js_1.XML_CHARKEY
+          rootName: serializerOptions?.xml.rootName ?? "",
+          includeRoot: serializerOptions?.xml.includeRoot ?? false,
+          xmlCharKey: serializerOptions?.xml.xmlCharKey ?? interfaces_js_1.XML_CHARKEY
         }
       };
       return {
@@ -31270,12 +31402,12 @@ function requireDeserializationPolicy() {
       let result;
       const request2 = parsedResponse.request;
       const operationInfo = (0, operationHelpers_js_1.getOperationRequestInfo)(request2);
-      const operationSpec = operationInfo === null || operationInfo === void 0 ? void 0 : operationInfo.operationSpec;
+      const operationSpec = operationInfo?.operationSpec;
       if (operationSpec) {
-        if (!(operationInfo === null || operationInfo === void 0 ? void 0 : operationInfo.operationResponseGetter)) {
+        if (!operationInfo?.operationResponseGetter) {
           result = operationSpec.responses[parsedResponse.status];
         } else {
-          result = operationInfo === null || operationInfo === void 0 ? void 0 : operationInfo.operationResponseGetter(operationSpec, parsedResponse);
+          result = operationInfo?.operationResponseGetter(operationSpec, parsedResponse);
         }
       }
       return result;
@@ -31283,7 +31415,7 @@ function requireDeserializationPolicy() {
     function shouldDeserializeResponse(parsedResponse) {
       const request2 = parsedResponse.request;
       const operationInfo = (0, operationHelpers_js_1.getOperationRequestInfo)(request2);
-      const shouldDeserialize = operationInfo === null || operationInfo === void 0 ? void 0 : operationInfo.shouldDeserialize;
+      const shouldDeserialize = operationInfo?.shouldDeserialize;
       let result;
       if (shouldDeserialize === void 0) {
         result = true;
@@ -31300,7 +31432,7 @@ function requireDeserializationPolicy() {
         return parsedResponse;
       }
       const operationInfo = (0, operationHelpers_js_1.getOperationRequestInfo)(parsedResponse.request);
-      const operationSpec = operationInfo === null || operationInfo === void 0 ? void 0 : operationInfo.operationSpec;
+      const operationSpec = operationInfo?.operationSpec;
       if (!operationSpec || !operationSpec.responses) {
         return parsedResponse;
       }
@@ -31341,7 +31473,6 @@ function requireDeserializationPolicy() {
       return expectedStatusCodes.length === 0 || expectedStatusCodes.length === 1 && expectedStatusCodes[0] === "default";
     }
     function handleErrorResponse(parsedResponse, operationSpec, responseSpec, options2) {
-      var _a, _b, _c, _d, _e;
       const isSuccessByStatus = 200 <= parsedResponse.status && parsedResponse.status < 300;
       const isExpectedStatusCode = isOperationSpecEmpty(operationSpec) ? isSuccessByStatus : !!responseSpec;
       if (isExpectedStatusCode) {
@@ -31353,18 +31484,18 @@ function requireDeserializationPolicy() {
           return { error: null, shouldReturnResponse: false };
         }
       }
-      const errorResponseSpec = responseSpec !== null && responseSpec !== void 0 ? responseSpec : operationSpec.responses.default;
-      const initialErrorMessage = ((_a = parsedResponse.request.streamResponseStatusCodes) === null || _a === void 0 ? void 0 : _a.has(parsedResponse.status)) ? `Unexpected status code: ${parsedResponse.status}` : parsedResponse.bodyAsText;
+      const errorResponseSpec = responseSpec ?? operationSpec.responses.default;
+      const initialErrorMessage = parsedResponse.request.streamResponseStatusCodes?.has(parsedResponse.status) ? `Unexpected status code: ${parsedResponse.status}` : parsedResponse.bodyAsText;
       const error2 = new core_rest_pipeline_1.RestError(initialErrorMessage, {
         statusCode: parsedResponse.status,
         request: parsedResponse.request,
         response: parsedResponse
       });
-      if (!errorResponseSpec && !(((_c = (_b = parsedResponse.parsedBody) === null || _b === void 0 ? void 0 : _b.error) === null || _c === void 0 ? void 0 : _c.code) && ((_e = (_d = parsedResponse.parsedBody) === null || _d === void 0 ? void 0 : _d.error) === null || _e === void 0 ? void 0 : _e.message))) {
+      if (!errorResponseSpec && !(parsedResponse.parsedBody?.error?.code && parsedResponse.parsedBody?.error?.message)) {
         throw error2;
       }
-      const defaultBodyMapper = errorResponseSpec === null || errorResponseSpec === void 0 ? void 0 : errorResponseSpec.bodyMapper;
-      const defaultHeadersMapper = errorResponseSpec === null || errorResponseSpec === void 0 ? void 0 : errorResponseSpec.headersMapper;
+      const defaultBodyMapper = errorResponseSpec?.bodyMapper;
+      const defaultHeadersMapper = errorResponseSpec?.headersMapper;
       try {
         if (parsedResponse.parsedBody) {
           const parsedBody = parsedResponse.parsedBody;
@@ -31398,8 +31529,7 @@ function requireDeserializationPolicy() {
       return { error: error2, shouldReturnResponse: false };
     }
     async function parse2(jsonContentTypes, xmlContentTypes, operationResponse, opts, parseXML) {
-      var _a;
-      if (!((_a = operationResponse.request.streamResponseStatusCodes) === null || _a === void 0 ? void 0 : _a.has(operationResponse.status)) && operationResponse.bodyAsText) {
+      if (!operationResponse.request.streamResponseStatusCodes?.has(operationResponse.status) && operationResponse.bodyAsText) {
         const text = operationResponse.bodyAsText;
         const contentType = operationResponse.headers.get("Content-Type") || "";
         const contentComponents = !contentType ? [] : contentType.split(";").map((component) => component.toLowerCase());
@@ -31487,8 +31617,8 @@ function requireSerializationPolicy() {
         name: exports.serializationPolicyName,
         async sendRequest(request2, next) {
           const operationInfo = (0, operationHelpers_js_1.getOperationRequestInfo)(request2);
-          const operationSpec = operationInfo === null || operationInfo === void 0 ? void 0 : operationInfo.operationSpec;
-          const operationArguments = operationInfo === null || operationInfo === void 0 ? void 0 : operationInfo.operationArguments;
+          const operationSpec = operationInfo?.operationSpec;
+          const operationArguments = operationInfo?.operationArguments;
           if (operationSpec && operationArguments) {
             serializeHeaders(request2, operationArguments, operationSpec);
             serializeRequestBody(request2, operationArguments, operationSpec, stringifyXML);
@@ -31498,7 +31628,6 @@ function requireSerializationPolicy() {
       };
     }
     function serializeHeaders(request2, operationArguments, operationSpec) {
-      var _a, _b;
       if (operationSpec.headerParameters) {
         for (const headerParameter of operationSpec.headerParameters) {
           let headerValue = (0, operationHelpers_js_1.getOperationArgumentValueFromParameter)(operationArguments, headerParameter);
@@ -31515,7 +31644,7 @@ function requireSerializationPolicy() {
           }
         }
       }
-      const customHeaders = (_b = (_a = operationArguments.options) === null || _a === void 0 ? void 0 : _a.requestOptions) === null || _b === void 0 ? void 0 : _b.customHeaders;
+      const customHeaders = operationArguments.options?.requestOptions?.customHeaders;
       if (customHeaders) {
         for (const customHeaderName of Object.keys(customHeaders)) {
           request2.headers.set(customHeaderName, customHeaders[customHeaderName]);
@@ -31525,13 +31654,12 @@ function requireSerializationPolicy() {
     function serializeRequestBody(request2, operationArguments, operationSpec, stringifyXML = function() {
       throw new Error("XML serialization unsupported!");
     }) {
-      var _a, _b, _c, _d, _e;
-      const serializerOptions = (_a = operationArguments.options) === null || _a === void 0 ? void 0 : _a.serializerOptions;
+      const serializerOptions = operationArguments.options?.serializerOptions;
       const updatedOptions = {
         xml: {
-          rootName: (_b = serializerOptions === null || serializerOptions === void 0 ? void 0 : serializerOptions.xml.rootName) !== null && _b !== void 0 ? _b : "",
-          includeRoot: (_c = serializerOptions === null || serializerOptions === void 0 ? void 0 : serializerOptions.xml.includeRoot) !== null && _c !== void 0 ? _c : false,
-          xmlCharKey: (_d = serializerOptions === null || serializerOptions === void 0 ? void 0 : serializerOptions.xml.xmlCharKey) !== null && _d !== void 0 ? _d : interfaces_js_1.XML_CHARKEY
+          rootName: serializerOptions?.xml.rootName ?? "",
+          includeRoot: serializerOptions?.xml.includeRoot ?? false,
+          xmlCharKey: serializerOptions?.xml.xmlCharKey ?? interfaces_js_1.XML_CHARKEY
         }
       };
       const xmlCharKey = updatedOptions.xml.xmlCharKey;
@@ -31556,7 +31684,7 @@ function requireSerializationPolicy() {
                   xmlCharKey
                 });
               }
-            } else if (typeName === serializer_js_1.MapperTypeNames.String && (((_e = operationSpec.contentType) === null || _e === void 0 ? void 0 : _e.match("text/plain")) || operationSpec.mediaType === "text")) {
+            } else if (typeName === serializer_js_1.MapperTypeNames.String && (operationSpec.contentType?.match("text/plain") || operationSpec.mediaType === "text")) {
               return;
             } else if (!isStream) {
               request2.body = JSON.stringify(request2.body);
@@ -31609,7 +31737,7 @@ function requirePipeline$1() {
   const core_rest_pipeline_1 = /* @__PURE__ */ requireCommonjs$7();
   const serializationPolicy_js_1 = /* @__PURE__ */ requireSerializationPolicy();
   function createClientPipeline(options2 = {}) {
-    const pipeline2 = (0, core_rest_pipeline_1.createPipelineFromOptions)(options2 !== null && options2 !== void 0 ? options2 : {});
+    const pipeline2 = (0, core_rest_pipeline_1.createPipelineFromOptions)(options2 ?? {});
     if (options2.credentialOptions) {
       pipeline2.addPolicy((0, core_rest_pipeline_1.bearerTokenAuthenticationPolicy)({
         credential: options2.credentialOptions.credential,
@@ -31686,9 +31814,8 @@ function requireUrlHelpers() {
     return result;
   }
   function calculateUrlReplacements(operationSpec, operationArguments, fallbackObject) {
-    var _a;
     const result = /* @__PURE__ */ new Map();
-    if ((_a = operationSpec.urlParameters) === null || _a === void 0 ? void 0 : _a.length) {
+    if (operationSpec.urlParameters?.length) {
       for (const urlParameter of operationSpec.urlParameters) {
         let urlParameterValue = (0, operationHelpers_js_1.getOperationArgumentValueFromParameter)(operationArguments, urlParameter, fallbackObject);
         const parameterPathString = (0, interfaceHelpers_js_1.getPathStringFromParameter)(urlParameter);
@@ -31731,10 +31858,9 @@ function requireUrlHelpers() {
     return parsedUrl.toString();
   }
   function calculateQueryParameters(operationSpec, operationArguments, fallbackObject) {
-    var _a;
     const result = /* @__PURE__ */ new Map();
     const sequenceParams = /* @__PURE__ */ new Set();
-    if ((_a = operationSpec.queryParameters) === null || _a === void 0 ? void 0 : _a.length) {
+    if (operationSpec.queryParameters?.length) {
       for (const queryParameter of operationSpec.queryParameters) {
         if (queryParameter.mapper.type.name === "Sequence" && queryParameter.mapper.serializedName) {
           sequenceParams.add(queryParameter.mapper.serializedName);
@@ -31872,20 +31998,41 @@ function requireServiceClient() {
   const log_js_1 = /* @__PURE__ */ requireLog$2();
   class ServiceClient {
     /**
+     * If specified, this is the base URI that requests will be made against for this ServiceClient.
+     * If it is not specified, then all OperationSpecs must contain a baseUrl property.
+     */
+    _endpoint;
+    /**
+     * The default request content type for the service.
+     * Used if no requestContentType is present on an OperationSpec.
+     */
+    _requestContentType;
+    /**
+     * Set to true if the request is sent over HTTP instead of HTTPS
+     */
+    _allowInsecureConnection;
+    /**
+     * The HTTP client that will be used to send requests.
+     */
+    _httpClient;
+    /**
+     * The pipeline used by this client to make requests
+     */
+    pipeline;
+    /**
      * The ServiceClient constructor
      * @param options - The service client options that govern the behavior of the client.
      */
     constructor(options2 = {}) {
-      var _a, _b;
       this._requestContentType = options2.requestContentType;
-      this._endpoint = (_a = options2.endpoint) !== null && _a !== void 0 ? _a : options2.baseUri;
+      this._endpoint = options2.endpoint ?? options2.baseUri;
       if (options2.baseUri) {
         log_js_1.logger.warning("The baseUri option for SDK Clients has been deprecated, please use endpoint instead.");
       }
       this._allowInsecureConnection = options2.allowInsecureConnection;
       this._httpClient = options2.httpClient || (0, httpClientCache_js_1.getCachedDefaultHttpClient)();
       this.pipeline = options2.pipeline || createDefaultPipeline(options2);
-      if ((_b = options2.additionalPolicies) === null || _b === void 0 ? void 0 : _b.length) {
+      if (options2.additionalPolicies?.length) {
         for (const { policy, position } of options2.additionalPolicies) {
           const afterPhase = position === "perRetry" ? "Sign" : void 0;
           this.pipeline.addPolicy(policy, {
@@ -31959,16 +32106,16 @@ function requireServiceClient() {
       try {
         const rawResponse = await this.sendRequest(request2);
         const flatResponse = (0, utils_js_1.flattenResponse)(rawResponse, operationSpec.responses[rawResponse.status]);
-        if (options2 === null || options2 === void 0 ? void 0 : options2.onResponse) {
+        if (options2?.onResponse) {
           options2.onResponse(rawResponse, flatResponse);
         }
         return flatResponse;
       } catch (error2) {
-        if (typeof error2 === "object" && (error2 === null || error2 === void 0 ? void 0 : error2.response)) {
+        if (typeof error2 === "object" && error2?.response) {
           const rawResponse = error2.response;
           const flatResponse = (0, utils_js_1.flattenResponse)(rawResponse, operationSpec.responses[error2.statusCode] || operationSpec.responses["default"]);
           error2.details = flatResponse;
-          if (options2 === null || options2 === void 0 ? void 0 : options2.onResponse) {
+          if (options2?.onResponse) {
             options2.onResponse(rawResponse, flatResponse, error2);
           }
         }
@@ -31980,7 +32127,10 @@ function requireServiceClient() {
   function createDefaultPipeline(options2) {
     const credentialScopes = getCredentialScopes(options2);
     const credentialOptions = options2.credential && credentialScopes ? { credentialScopes, credential: options2.credential } : void 0;
-    return (0, pipeline_js_1.createClientPipeline)(Object.assign(Object.assign({}, options2), { credentialOptions }));
+    return (0, pipeline_js_1.createClientPipeline)({
+      ...options2,
+      credentialOptions
+    });
   }
   function getCredentialScopes(options2) {
     if (options2.credentialScopes) {
@@ -32014,11 +32164,10 @@ function requireAuthorizeRequestOnClaimChallenge() {
     return bearerChallenges.map((challenge) => {
       const challengeParts = `${challenge.trim()}, `.split('", ').filter((x) => x);
       const keyValuePairs = challengeParts.map((keyValue) => (([key, value]) => ({ [key]: value }))(keyValue.trim().split('="')));
-      return keyValuePairs.reduce((a, b) => Object.assign(Object.assign({}, a), b), {});
+      return keyValuePairs.reduce((a, b) => ({ ...a, ...b }), {});
     });
   }
   async function authorizeRequestOnClaimChallenge$1(onChallengeOptions) {
-    var _a;
     const { scopes, response: response2 } = onChallengeOptions;
     const logger2 = onChallengeOptions.logger || log_js_1.logger;
     const challenge = response2.headers.get("WWW-Authenticate");
@@ -32038,7 +32187,7 @@ function requireAuthorizeRequestOnClaimChallenge() {
     if (!accessToken) {
       return false;
     }
-    onChallengeOptions.request.headers.set("Authorization", `${(_a = accessToken.tokenType) !== null && _a !== void 0 ? _a : "Bearer"} ${accessToken.token}`);
+    onChallengeOptions.request.headers.set("Authorization", `${accessToken.tokenType ?? "Bearer"} ${accessToken.token}`);
     return true;
   }
   return authorizeRequestOnClaimChallenge;
@@ -32066,7 +32215,6 @@ function requireAuthorizeRequestOnTenantChallenge() {
     return /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/.test(text);
   }
   const authorizeRequestOnTenantChallenge$1 = async (challengeOptions) => {
-    var _a;
     const requestOptions = requestToOptions(challengeOptions.request);
     const challenge = getChallenge(challengeOptions.response);
     if (challenge) {
@@ -32076,11 +32224,14 @@ function requireAuthorizeRequestOnTenantChallenge() {
       if (!tenantId) {
         return false;
       }
-      const accessToken = await challengeOptions.getAccessToken(challengeScopes, Object.assign(Object.assign({}, requestOptions), { tenantId }));
+      const accessToken = await challengeOptions.getAccessToken(challengeScopes, {
+        ...requestOptions,
+        tenantId
+      });
       if (!accessToken) {
         return false;
       }
-      challengeOptions.request.headers.set(Constants.HeaderConstants.AUTHORIZATION, `${(_a = accessToken.tokenType) !== null && _a !== void 0 ? _a : "Bearer"} ${accessToken.token}`);
+      challengeOptions.request.headers.set(Constants.HeaderConstants.AUTHORIZATION, `${accessToken.tokenType ?? "Bearer"} ${accessToken.token}`);
       return true;
     }
     return false;
@@ -32118,7 +32269,7 @@ function requireAuthorizeRequestOnTenantChallenge() {
     const bearerChallenge = challenge.slice("Bearer ".length);
     const challengeParts = `${bearerChallenge.trim()} `.split(" ").filter((x) => x);
     const keyValuePairs = challengeParts.map((keyValue) => (([key, value]) => ({ [key]: value }))(keyValue.trim().split("=")));
-    return keyValuePairs.reduce((a, b) => Object.assign(Object.assign({}, a), b), {});
+    return keyValuePairs.reduce((a, b) => ({ ...a, ...b }), {});
   }
   function requestToOptions(request2) {
     return {
@@ -32232,8 +32383,7 @@ function requireUtil$1() {
     }
   }
   function toWebResourceLike(request2, options2) {
-    var _a;
-    const originalRequest = (_a = options2 === null || options2 === void 0 ? void 0 : options2.originalRequest) !== null && _a !== void 0 ? _a : request2;
+    const originalRequest = options2?.originalRequest ?? request2;
     const webResource = {
       url: request2.url,
       method: request2.method,
@@ -32260,7 +32410,7 @@ function requireUtil$1() {
       validateRequestProperties() {
       }
     };
-    if (options2 === null || options2 === void 0 ? void 0 : options2.createProxy) {
+    if (options2?.createProxy) {
       return new Proxy(webResource, {
         get(target, prop, receiver2) {
           if (prop === originalRequestSymbol) {
@@ -32312,6 +32462,7 @@ function requireUtil$1() {
     return headerName.toLowerCase();
   }
   class HttpHeaders {
+    _headersMap;
     constructor(rawHeaders) {
       this._headersMap = {};
       if (rawHeaders) {
@@ -32447,7 +32598,7 @@ function requireResponse() {
   function toCompatResponse(response2, options2) {
     let request2 = (0, util_js_1.toWebResourceLike)(response2.request);
     let headers2 = (0, util_js_1.toHttpHeadersLike)(response2.headers);
-    if (options2 === null || options2 === void 0 ? void 0 : options2.createProxy) {
+    if (options2?.createProxy) {
       return new Proxy(response2, {
         get(target, prop, receiver2) {
           if (prop === "headers") {
@@ -32469,10 +32620,11 @@ function requireResponse() {
         }
       });
     } else {
-      return Object.assign(Object.assign({}, response2), {
+      return {
+        ...response2,
         request: request2,
         headers: headers2
-      });
+      };
     }
   }
   function toPipelineResponse(compatResponse) {
@@ -32483,7 +32635,11 @@ function requireResponse() {
       response2.headers = headers2;
       return response2;
     } else {
-      return Object.assign(Object.assign({}, compatResponse), { headers: headers2, request: (0, util_js_1.toPipelineRequest)(compatResponse.request) });
+      return {
+        ...compatResponse,
+        headers: headers2,
+        request: (0, util_js_1.toPipelineRequest)(compatResponse.request)
+      };
     }
   }
   return response;
@@ -32500,12 +32656,11 @@ function requireExtendedClient() {
   const response_js_1 = /* @__PURE__ */ requireResponse();
   class ExtendedServiceClient extends core_client_1.ServiceClient {
     constructor(options2) {
-      var _a, _b;
       super(options2);
-      if (((_a = options2.keepAliveOptions) === null || _a === void 0 ? void 0 : _a.enable) === false && !(0, disableKeepAlivePolicy_js_1.pipelineContainsDisableKeepAlivePolicy)(this.pipeline)) {
+      if (options2.keepAliveOptions?.enable === false && !(0, disableKeepAlivePolicy_js_1.pipelineContainsDisableKeepAlivePolicy)(this.pipeline)) {
         this.pipeline.addPolicy((0, disableKeepAlivePolicy_js_1.createDisableKeepAlivePolicy)());
       }
-      if (((_b = options2.redirectOptions) === null || _b === void 0 ? void 0 : _b.handleRedirects) === false) {
+      if (options2.redirectOptions?.handleRedirects === false) {
         this.pipeline.removePolicy({
           name: core_rest_pipeline_1.redirectPolicyName
         });
@@ -32519,8 +32674,7 @@ function requireExtendedClient() {
      * @returns
      */
     async sendOperationRequest(operationArguments, operationSpec) {
-      var _a;
-      const userProvidedCallBack = (_a = operationArguments === null || operationArguments === void 0 ? void 0 : operationArguments.options) === null || _a === void 0 ? void 0 : _a.onResponse;
+      const userProvidedCallBack = operationArguments?.options?.onResponse;
       let lastResponse;
       function onResponse(rawResponse, flatResponse, error2) {
         lastResponse = rawResponse;
@@ -32528,7 +32682,10 @@ function requireExtendedClient() {
           userProvidedCallBack(rawResponse, flatResponse, error2);
         }
       }
-      operationArguments.options = Object.assign(Object.assign({}, operationArguments.options), { onResponse });
+      operationArguments.options = {
+        ...operationArguments.options,
+        onResponse
+      };
       const result = await super.sendOperationRequest(operationArguments, operationSpec);
       if (lastResponse) {
         Object.defineProperty(result, "_response", {
