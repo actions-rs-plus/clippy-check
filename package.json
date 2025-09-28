@@ -80,7 +80,7 @@
         "eslint-plugin-promise": "7.2.1",
         "eslint-plugin-unicorn": "61.0.2",
         "husky": "9.1.7",
-        "lint-staged": "16.2.2",
+        "lint-staged": "16.2.3",
         "prettier": "3.6.2",
         "semantic-release": "24.2.9",
         "typescript": "5.9.2",
