@@ -86,7 +86,7 @@
         "typescript": "5.9.2",
         "typescript-eslint": "8.44.1",
         "vite": "7.1.7",
-        "vite-plugin-checker": "0.10.3",
+        "vite-plugin-checker": "0.11.0",
         "vite-tsconfig-paths": "5.1.4",
         "vitest": "3.2.4"
     },
