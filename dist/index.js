@@ -63294,7 +63294,7 @@ function requireConfig() {
   return config;
 }
 var userAgent = {};
-const version = "4.0.5";
+const version = "4.1.0";
 const require$$0$1 = {
   version
 };
@@ -67357,11 +67357,18 @@ function requireCache$1() {
             kind: "scalar",
             T: 9
             /*ScalarType.STRING*/
+          },
+          {
+            no: 3,
+            name: "message",
+            kind: "scalar",
+            T: 9
+            /*ScalarType.STRING*/
           }
         ]);
       }
       create(value) {
-        const message = { ok: false, signedUploadUrl: "" };
+        const message = { ok: false, signedUploadUrl: "", message: "" };
         globalThis.Object.defineProperty(message, runtime_4.MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== void 0)
           (0, runtime_3.reflectionMergePartial)(this, message, value);
@@ -67380,6 +67387,10 @@ function requireCache$1() {
             2:
               message.signedUploadUrl = reader.string();
               break;
+            case /* string message */
+            3:
+              message.message = reader.string();
+              break;
             default:
               let u = options2.readUnknownField;
               if (u === "throw")
@@ -67396,6 +67407,8 @@ function requireCache$1() {
           writer.tag(1, runtime_1.WireType.Varint).bool(message.ok);
         if (message.signedUploadUrl !== "")
           writer.tag(2, runtime_1.WireType.LengthDelimited).string(message.signedUploadUrl);
+        if (message.message !== "")
+          writer.tag(3, runtime_1.WireType.LengthDelimited).string(message.message);
         let u = options2.writeUnknownFields;
         if (u !== false)
           (u == true ? runtime_2.UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -67501,11 +67514,18 @@ function requireCache$1() {
             kind: "scalar",
             T: 3
             /*ScalarType.INT64*/
+          },
+          {
+            no: 3,
+            name: "message",
+            kind: "scalar",
+            T: 9
+            /*ScalarType.STRING*/
           }
         ]);
       }
       create(value) {
-        const message = { ok: false, entryId: "0" };
+        const message = { ok: false, entryId: "0", message: "" };
         globalThis.Object.defineProperty(message, runtime_4.MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== void 0)
           (0, runtime_3.reflectionMergePartial)(this, message, value);
@@ -67524,6 +67544,10 @@ function requireCache$1() {
             2:
               message.entryId = reader.int64().toString();
               break;
+            case /* string message */
+            3:
+              message.message = reader.string();
+              break;
             default:
               let u = options2.readUnknownField;
               if (u === "throw")
@@ -67540,6 +67564,8 @@ function requireCache$1() {
           writer.tag(1, runtime_1.WireType.Varint).bool(message.ok);
         if (message.entryId !== "0")
           writer.tag(2, runtime_1.WireType.Varint).int64(message.entryId);
+        if (message.message !== "")
+          writer.tag(3, runtime_1.WireType.LengthDelimited).string(message.message);
         let u = options2.writeUnknownFields;
         if (u !== false)
           (u == true ? runtime_2.UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -68299,7 +68325,7 @@ function requireCache() {
     });
   };
   Object.defineProperty(cache$2, "__esModule", { value: true });
-  cache$2.saveCache = cache$2.restoreCache = cache$2.isFeatureAvailable = cache$2.ReserveCacheError = cache$2.ValidationError = void 0;
+  cache$2.saveCache = cache$2.restoreCache = cache$2.isFeatureAvailable = cache$2.FinalizeCacheError = cache$2.ReserveCacheError = cache$2.ValidationError = void 0;
   const core2 = __importStar2(/* @__PURE__ */ requireCore());
   const path2 = __importStar2(require$$1$7);
   const utils2 = __importStar2(/* @__PURE__ */ requireCacheUtils());
@@ -68307,7 +68333,6 @@ function requireCache() {
   const cacheTwirpClient2 = __importStar2(/* @__PURE__ */ requireCacheTwirpClient());
   const config_1 = /* @__PURE__ */ requireConfig();
   const tar_1 = /* @__PURE__ */ requireTar();
-  const constants_1 = /* @__PURE__ */ requireConstants$5();
   const http_client_1 = /* @__PURE__ */ requireLib();
   class ValidationError extends Error {
     constructor(message) {
@@ -68325,6 +68350,14 @@ function requireCache() {
     }
   }
   cache$2.ReserveCacheError = ReserveCacheError;
+  class FinalizeCacheError extends Error {
+    constructor(message) {
+      super(message);
+      this.name = "FinalizeCacheError";
+      Object.setPrototypeOf(this, FinalizeCacheError.prototype);
+    }
+  }
+  cache$2.FinalizeCacheError = FinalizeCacheError;
   function checkPaths(paths) {
     if (!paths || paths.length === 0) {
       throw new ValidationError(`Path Validation Error: At least one directory or file path is required`);
@@ -68596,9 +68629,6 @@ function requireCache() {
         }
         const archiveFileSize = utils2.getArchiveFileSizeInBytes(archivePath);
         core2.debug(`File Size: ${archiveFileSize}`);
-        if (archiveFileSize > constants_1.CacheFileSizeLimit && !(0, config_1.isGhes)()) {
-          throw new Error(`Cache size of ~${Math.round(archiveFileSize / (1024 * 1024))} MB (${archiveFileSize} B) is over the 10GB limit, not saving cache.`);
-        }
         options2.archiveSizeBytes = archiveFileSize;
         core2.debug("Reserving Cache");
         const version2 = utils2.getCacheVersion(paths, compressionMethod, enableCrossOsArchive);
@@ -68610,7 +68640,10 @@ function requireCache() {
         try {
           const response2 = yield twirpClient.CreateCacheEntry(request2);
           if (!response2.ok) {
-            throw new Error("Response was not ok");
+            if (response2.message) {
+              core2.warning(`Cache reservation failed: ${response2.message}`);
+            }
+            throw new Error(response2.message || "Response was not ok");
           }
           signedUploadUrl = response2.signedUploadUrl;
         } catch (error2) {
@@ -68627,6 +68660,9 @@ function requireCache() {
         const finalizeResponse = yield twirpClient.FinalizeCacheEntryUpload(finalizeRequest);
         core2.debug(`FinalizeCacheEntryUploadResponse: ${finalizeResponse.ok}`);
         if (!finalizeResponse.ok) {
+          if (finalizeResponse.message) {
+            throw new FinalizeCacheError(finalizeResponse.message);
+          }
           throw new Error(`Unable to finalize cache with key ${key}, another job may be finalizing this cache.`);
         }
         cacheId = parseInt(finalizeResponse.entryId);
@@ -68636,6 +68672,8 @@ function requireCache() {
           throw error2;
         } else if (typedError.name === ReserveCacheError.name) {
           core2.info(`Failed to save: ${typedError.message}`);
+        } else if (typedError.name === FinalizeCacheError.name) {
+          core2.warning(typedError.message);
         } else {
           if (typedError instanceof http_client_1.HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) {
             core2.error(`Failed to save: ${typedError.message}`);
