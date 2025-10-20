@@ -33779,8 +33779,8 @@ function requireConstants$2() {
   (function(exports) {
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.PathStylePorts = exports.BlobDoesNotUseCustomerSpecifiedEncryption = exports.BlobUsesCustomerSpecifiedEncryptionMsg = exports.StorageBlobLoggingAllowedQueryParameters = exports.StorageBlobLoggingAllowedHeaderNames = exports.DevelopmentConnectionString = exports.EncryptionAlgorithmAES25 = exports.HTTP_VERSION_1_1 = exports.HTTP_LINE_ENDING = exports.BATCH_MAX_PAYLOAD_IN_BYTES = exports.BATCH_MAX_REQUEST = exports.SIZE_1_MB = exports.ETagAny = exports.ETagNone = exports.HeaderConstants = exports.HTTPURLConnection = exports.URLConstants = exports.StorageOAuthScopes = exports.REQUEST_TIMEOUT = exports.DEFAULT_MAX_DOWNLOAD_RETRY_REQUESTS = exports.DEFAULT_BLOB_DOWNLOAD_BLOCK_BYTES = exports.DEFAULT_BLOCK_BUFFER_SIZE_BYTES = exports.BLOCK_BLOB_MAX_BLOCKS = exports.BLOCK_BLOB_MAX_STAGE_BLOCK_BYTES = exports.BLOCK_BLOB_MAX_UPLOAD_BLOB_BYTES = exports.SERVICE_VERSION = exports.SDK_VERSION = void 0;
-    exports.SDK_VERSION = "12.28.0";
-    exports.SERVICE_VERSION = "2025-07-05";
+    exports.SDK_VERSION = "12.29.1";
+    exports.SERVICE_VERSION = "2025-11-05";
     exports.BLOCK_BLOB_MAX_UPLOAD_BLOB_BYTES = 256 * 1024 * 1024;
     exports.BLOCK_BLOB_MAX_STAGE_BLOCK_BYTES = 4e3 * 1024 * 1024;
     exports.BLOCK_BLOB_MAX_BLOCKS = 5e4;
@@ -34705,6 +34705,19 @@ function requireStorageRetryPolicy$1() {
         if (statusCode === 503 || statusCode === 500) {
           log_js_1.logger.info(`RetryPolicy: Will retry for status code ${statusCode}.`);
           return true;
+        }
+      }
+      if (response2) {
+        if (response2?.status >= 400) {
+          const copySourceError = response2.headers.get(constants_js_1.HeaderConstants.X_MS_CopySourceErrorCode);
+          if (copySourceError !== void 0) {
+            switch (copySourceError) {
+              case "InternalError":
+              case "OperationTimedOut":
+              case "ServerBusy":
+                return true;
+            }
+          }
         }
       }
       if (err?.code === "PARSE_ERROR" && err?.message.startsWith(`Error "Error: Unclosed root tag`)) {
@@ -37350,6 +37363,19 @@ function requireStorageRetryPolicy() {
           return true;
         }
       }
+      if (response2) {
+        if (response2?.status >= 400) {
+          const copySourceError = response2.headers.get(constants_js_1.HeaderConstants.X_MS_CopySourceErrorCode);
+          if (copySourceError !== void 0) {
+            switch (copySourceError) {
+              case "InternalError":
+              case "OperationTimedOut":
+              case "ServerBusy":
+                return true;
+            }
+          }
+        }
+      }
       if (err?.code === "PARSE_ERROR" && err?.message.startsWith(`Error "Error: Unclosed root tag`)) {
         log_js_1.logger.info("RetryPolicy: Incomplete XML response likely due to service timeout, will retry.");
         return true;
@@ -37555,6 +37581,19 @@ function requireStorageRetryPolicyV2$1() {
             return true;
           }
         }
+        if (response2) {
+          if (response2?.status >= 400) {
+            const copySourceError = response2.headers.get(constants_js_1.HeaderConstants.X_MS_CopySourceErrorCode);
+            if (copySourceError !== void 0) {
+              switch (copySourceError) {
+                case "InternalError":
+                case "OperationTimedOut":
+                case "ServerBusy":
+                  return true;
+              }
+            }
+          }
+        }
         return false;
       }
       function calculateDelay(isPrimaryRetry, attempt) {
@@ -37725,6 +37764,37 @@ ${key}:${decodeURIComponent(lowercaseQueries[key])}`;
   })(StorageSharedKeyCredentialPolicyV2$1);
   return StorageSharedKeyCredentialPolicyV2$1;
 }
+var StorageRequestFailureDetailsParserPolicy = {};
+var hasRequiredStorageRequestFailureDetailsParserPolicy;
+function requireStorageRequestFailureDetailsParserPolicy() {
+  if (hasRequiredStorageRequestFailureDetailsParserPolicy) return StorageRequestFailureDetailsParserPolicy;
+  hasRequiredStorageRequestFailureDetailsParserPolicy = 1;
+  (function(exports) {
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.storageRequestFailureDetailsParserPolicyName = void 0;
+    exports.storageRequestFailureDetailsParserPolicy = storageRequestFailureDetailsParserPolicy;
+    exports.storageRequestFailureDetailsParserPolicyName = "storageRequestFailureDetailsParserPolicy";
+    function storageRequestFailureDetailsParserPolicy() {
+      return {
+        name: exports.storageRequestFailureDetailsParserPolicyName,
+        async sendRequest(request2, next) {
+          try {
+            const response2 = await next(request2);
+            return response2;
+          } catch (err) {
+            if (typeof err === "object" && err !== null && err.response && err.response.parsedBody) {
+              if (err.response.parsedBody.code === "InvalidHeaderValue" && err.response.parsedBody.HeaderName === "x-ms-version") {
+                err.message = "The provided service version is not enabled on this storage account. Please see https://learn.microsoft.com/rest/api/storageservices/versioning-for-the-azure-storage-services for additional information.\n";
+              }
+            }
+            throw err;
+          }
+        }
+      };
+    }
+  })(StorageRequestFailureDetailsParserPolicy);
+  return StorageRequestFailureDetailsParserPolicy;
+}
 var hasRequiredCommonjs$2;
 function requireCommonjs$2() {
   if (hasRequiredCommonjs$2) return commonjs$1;
@@ -37758,6 +37828,7 @@ function requireCommonjs$2() {
     tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredentialPolicy(), exports);
     tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredentialPolicyV2$1(), exports);
     tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyFactory(), exports);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRequestFailureDetailsParserPolicy(), exports);
   })(commonjs$1);
   return commonjs$1;
 }
@@ -37864,6 +37935,19 @@ function requireStorageRetryPolicyV2() {
           if (statusCode === 503 || statusCode === 500) {
             log_js_1.logger.info(`RetryPolicy: Will retry for status code ${statusCode}.`);
             return true;
+          }
+        }
+        if (response2) {
+          if (response2?.status >= 400) {
+            const copySourceError = response2.headers.get(constants_js_1.HeaderConstants.X_MS_CopySourceErrorCode);
+            if (copySourceError !== void 0) {
+              switch (copySourceError) {
+                case "InternalError":
+                case "OperationTimedOut":
+                case "ServerBusy":
+                  return true;
+              }
+            }
           }
         }
         return false;
@@ -38281,6 +38365,7 @@ function requirePipeline() {
         corePipeline.removePolicy({ name: core_rest_pipeline_1.decompressResponsePolicyName });
         corePipeline.addPolicy((0, StorageCorrectContentLengthPolicy_js_1.storageCorrectContentLengthPolicy)());
         corePipeline.addPolicy((0, StorageRetryPolicyV2_js_1.storageRetryPolicy)(restOptions.retryOptions), { phase: "Retry" });
+        corePipeline.addPolicy((0, storage_common_1.storageRequestFailureDetailsParserPolicy)());
         corePipeline.addPolicy((0, StorageBrowserPolicyV2_js_1.storageBrowserPolicy)());
         const downlevelResults = processDownlevelPipeline(pipeline2);
         if (downlevelResults) {
@@ -38834,6 +38919,27 @@ function requireMappers() {
         message: {
           serializedName: "Message",
           xmlName: "Message",
+          type: {
+            name: "String"
+          }
+        },
+        copySourceStatusCode: {
+          serializedName: "CopySourceStatusCode",
+          xmlName: "CopySourceStatusCode",
+          type: {
+            name: "Number"
+          }
+        },
+        copySourceErrorCode: {
+          serializedName: "CopySourceErrorCode",
+          xmlName: "CopySourceErrorCode",
+          type: {
+            name: "String"
+          }
+        },
+        copySourceErrorMessage: {
+          serializedName: "CopySourceErrorMessage",
+          xmlName: "CopySourceErrorMessage",
           type: {
             name: "String"
           }
@@ -44171,6 +44277,20 @@ function requireMappers() {
           type: {
             name: "String"
           }
+        },
+        copySourceErrorCode: {
+          serializedName: "x-ms-copy-source-error-code",
+          xmlName: "x-ms-copy-source-error-code",
+          type: {
+            name: "String"
+          }
+        },
+        copySourceStatusCode: {
+          serializedName: "x-ms-copy-source-status-code",
+          xmlName: "x-ms-copy-source-status-code",
+          type: {
+            name: "Number"
+          }
         }
       }
     }
@@ -44287,6 +44407,20 @@ function requireMappers() {
           xmlName: "x-ms-error-code",
           type: {
             name: "String"
+          }
+        },
+        copySourceErrorCode: {
+          serializedName: "x-ms-copy-source-error-code",
+          xmlName: "x-ms-copy-source-error-code",
+          type: {
+            name: "String"
+          }
+        },
+        copySourceStatusCode: {
+          serializedName: "x-ms-copy-source-status-code",
+          xmlName: "x-ms-copy-source-status-code",
+          type: {
+            name: "Number"
           }
         }
       }
@@ -45314,6 +45448,20 @@ function requireMappers() {
           type: {
             name: "String"
           }
+        },
+        copySourceErrorCode: {
+          serializedName: "x-ms-copy-source-error-code",
+          xmlName: "x-ms-copy-source-error-code",
+          type: {
+            name: "String"
+          }
+        },
+        copySourceStatusCode: {
+          serializedName: "x-ms-copy-source-status-code",
+          xmlName: "x-ms-copy-source-status-code",
+          type: {
+            name: "Number"
+          }
         }
       }
     }
@@ -46075,6 +46223,20 @@ function requireMappers() {
           type: {
             name: "String"
           }
+        },
+        copySourceErrorCode: {
+          serializedName: "x-ms-copy-source-error-code",
+          xmlName: "x-ms-copy-source-error-code",
+          type: {
+            name: "String"
+          }
+        },
+        copySourceStatusCode: {
+          serializedName: "x-ms-copy-source-status-code",
+          xmlName: "x-ms-copy-source-status-code",
+          type: {
+            name: "Number"
+          }
         }
       }
     }
@@ -46367,6 +46529,20 @@ function requireMappers() {
           type: {
             name: "String"
           }
+        },
+        copySourceErrorCode: {
+          serializedName: "x-ms-copy-source-error-code",
+          xmlName: "x-ms-copy-source-error-code",
+          type: {
+            name: "String"
+          }
+        },
+        copySourceStatusCode: {
+          serializedName: "x-ms-copy-source-status-code",
+          xmlName: "x-ms-copy-source-status-code",
+          type: {
+            name: "Number"
+          }
         }
       }
     }
@@ -46556,6 +46732,20 @@ function requireMappers() {
           xmlName: "x-ms-error-code",
           type: {
             name: "String"
+          }
+        },
+        copySourceErrorCode: {
+          serializedName: "x-ms-copy-source-error-code",
+          xmlName: "x-ms-copy-source-error-code",
+          type: {
+            name: "String"
+          }
+        },
+        copySourceStatusCode: {
+          serializedName: "x-ms-copy-source-status-code",
+          xmlName: "x-ms-copy-source-status-code",
+          type: {
+            name: "Number"
           }
         }
       }
@@ -46853,7 +47043,7 @@ function requireParameters() {
   parameters.version = {
     parameterPath: "version",
     mapper: {
-      defaultValue: "2025-07-05",
+      defaultValue: "2025-11-05",
       isConstant: true,
       serializedName: "x-ms-version",
       type: {
@@ -51572,7 +51762,7 @@ function requireStorageClient$1() {
       const defaults = {
         requestContentType: "application/json; charset=utf-8"
       };
-      const packageDetails = `azsdk-js-azure-storage-blob/12.28.0`;
+      const packageDetails = `azsdk-js-azure-storage-blob/12.29.1`;
       const userAgentPrefix = options2.userAgentOptions && options2.userAgentOptions.userAgentPrefix ? `${options2.userAgentOptions.userAgentPrefix} ${packageDetails}` : `${packageDetails}`;
       const optionsWithDefaults = {
         ...defaults,
@@ -51584,7 +51774,7 @@ function requireStorageClient$1() {
       };
       super(optionsWithDefaults);
       this.url = url;
-      this.version = options2.version || "2025-07-05";
+      this.version = options2.version || "2025-11-05";
       this.service = new index_js_1.ServiceImpl(this);
       this.container = new index_js_1.ContainerImpl(this);
       this.blob = new index_js_1.BlobImpl(this);
