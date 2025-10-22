@@ -19,9 +19,9 @@ describe("clippy", () => {
     });
 
     it("runs with cargo", async () => {
-        const execSpy = vi.spyOn(exec, "exec").mockResolvedValue(0);
+        using execSpy = vi.spyOn(exec, "exec").mockResolvedValue(0);
 
-        const whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
+        using whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
             return Promise.resolve(tool);
         });
 
@@ -40,9 +40,9 @@ describe("clippy", () => {
     });
 
     it("runs with cross", async () => {
-        const execSpy = vi.spyOn(exec, "exec").mockResolvedValue(0);
+        using execSpy = vi.spyOn(exec, "exec").mockResolvedValue(0);
 
-        const whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
+        using whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
             return Promise.resolve(tool);
         });
 
@@ -76,7 +76,7 @@ describe("clippy", () => {
             }
         });
 
-        const whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
+        using whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
             return Promise.resolve(tool);
         });
 
@@ -108,9 +108,9 @@ describe("clippy", () => {
             },
         );
 
-        const reportSpy = vi.spyOn(report, "report");
+        using reportSpy = vi.spyOn(report, "report");
 
-        const whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
+        using whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
             return Promise.resolve(tool);
         });
 
@@ -148,9 +148,9 @@ describe("clippy", () => {
             },
         );
 
-        const reportSpy = vi.spyOn(report, "report");
+        using reportSpy = vi.spyOn(report, "report");
 
-        const whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
+        using whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
             return Promise.resolve(tool);
         });
 
@@ -209,9 +209,9 @@ describe("clippy", () => {
             },
         );
 
-        const reportSpy = vi.spyOn(report, "report");
+        using reportSpy = vi.spyOn(report, "report");
 
-        const whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
+        using whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
             return Promise.resolve(tool);
         });
 
