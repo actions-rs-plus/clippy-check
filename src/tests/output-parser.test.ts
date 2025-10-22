@@ -146,6 +146,42 @@ describe("outputParser", () => {
         }).toThrow(/Unable to find primary span for message/);
     });
 
+    it("parses annotations into AnnotationWithMessageAndLevel different `line_start` and `line_end`", () => {
+        const outputParser = new OutputParser("./my/sources/are/here");
+
+        outputParser.tryParseClippyLine(
+            JSON.stringify({
+                reason: defaultMessage.reason,
+                message: {
+                    ...defaultMessage.message,
+                    spans: [
+                        {
+                            is_primary: true,
+                            column_start: 10,
+                            column_end: 15,
+                            line_start: 25,
+                            line_end: 30,
+                            file_name: "main.rs",
+                        },
+                    ],
+                },
+            }),
+        );
+
+        expect(outputParser.annotations).toEqual([
+            {
+                level: 1,
+                message: "rendered",
+                properties: {
+                    endLine: 30,
+                    file: "my/sources/are/here/main.rs",
+                    startLine: 25,
+                    title: "message",
+                },
+            },
+        ]);
+    });
+
     it("parses annotations into AnnotationWithMessageAndLevel", () => {
         const outputParser = new OutputParser("./my/sources/are/here");
 
@@ -175,7 +211,7 @@ describe("outputParser", () => {
         ]);
     });
 
-    it("parses annotations into AnnotationWithMessageAndLevel", () => {
+    it("parses multiple annotations into AnnotationWithMessageAndLevel", () => {
         const outputParser = new OutputParser();
 
         outputParser.tryParseClippyLine(
