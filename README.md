@@ -1,12 +1,13 @@
 # Rust `clippy-check` Action
 
 ![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)
-[![Gitter](https://badges.gitter.im/actions-rs/community.svg)](https://gitter.im/actions-rs/community)
+![GitHub Discussions](https://img.shields.io/github/discussions/actions-rs-plus/clippy-check)
+![Build](https://img.shields.io/github/actions/workflow/status/actions-rs-plus/clippy-check/build.yml?branch=main)
 
 > Clippy lints in your Pull Requests
 
 This GitHub Action executes [`clippy`](https://github.com/rust-lang/rust-clippy)
-and posts all lints as annotations for the pushed commit, as in the live example [here](https://github.com/actions-rs/example/pull/2/files).
+and posts all lints as annotations for the pushed commit, as in the live example [here](https://github.com/actions-rs-plus/clippy-check-test/blob/292ad2e8d118959a973005b91615b46a774f95c1/.github/workflows/build.yml#L58-L61).
 
 ![Screenshot](./.github/screenshot.png)
 
@@ -22,15 +23,14 @@ jobs:
     clippy_check:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v1
+            - uses: actions/checkout@v4.2.2
             - uses: actions-rs/toolchain@v1
               with:
                   toolchain: nightly
                   components: clippy
                   override: true
-            - uses: actions-rs/clippy-check@v1
+            - uses: actions-rs-plus/clippy-check@v2.3.0
               with:
-                  token: ${{ secrets.GITHUB_TOKEN }}
                   args: --all-features
 ```
 
@@ -43,9 +43,9 @@ jobs:
     clippy_check:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v1
+            - uses: actions/checkout@v4.2.2
             - run: rustup component add clippy
-            - uses: actions-rs/clippy-check@v1
+            - uses: actions-rs-plus/clippy-check@v2.3.0
               with:
                   args: --all-features
 ```

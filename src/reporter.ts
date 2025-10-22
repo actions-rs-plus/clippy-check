@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
 
-import type { AnnotationWithMessageAndLevel, Context, Stats } from "@/schema";
-import { AnnotationLevel } from "@/schema";
+import type { AnnotationWithMessageAndLevel, Context, Stats } from "@/schema.ts";
+import { AnnotationLevel } from "@/schema.ts";
 
 export async function report(
     stats: Stats,

@@ -4,14 +4,13 @@ on:
   workflow_dispatch: # releasing is manual as we don't want to release every time
 
 permissions:
-  contents: write
+  contents: write # we're not actually writing, but semantic release tests write, even on dry-run
   issues: read
   pull-requests: read
 
 env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-  NPM_CONFIG_FUND: "false"
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
 
@@ -28,29 +27,27 @@ jobs:
           exit 1
 
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           show-progress: false
 
-      - name: Setup Node.js
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - name: Install pnpm
+        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
+
+      - name: Set up node
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6
         with:
-          node-version-file: ".nvmrc"
-          cache: "npm"
-          cache-dependency-path: package-lock.json
+          node-version-file: package.json
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
           registry-url: https://npm.pkg.github.com
 
-      - name: Ensure latest version of npm, older versions like v8 have broken caching
-        shell: bash
-        run: |
-          npm install --location=global npm@latest
-
-      - name: Install dependencies
+      - name: Download dependencies
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npm ci --ignore-scripts
+          pnpm install --frozen-lockfile
 
       - name: Release
         shell: bash
@@ -58,4 +55,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN_TO_TRIGGER_SUBSEQUENT_WORKFLOWS }}
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npm run release -- --dry-run
+          pnpm run release --dry-run

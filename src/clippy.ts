@@ -6,10 +6,10 @@ import { Cargo, Cross } from "@actions-rs-plus/core";
 
 import type { BaseProgram } from "@actions-rs-plus/core";
 
-import type * as input from "@/input";
-import { OutputParser } from "@/output-parser";
-import { report } from "@/reporter";
-import type { AnnotationWithMessageAndLevel, Context, Stats } from "@/schema";
+import type * as input from "@/input.ts";
+import { OutputParser } from "@/output-parser.ts";
+import { report } from "@/reporter.ts";
+import type { AnnotationWithMessageAndLevel, Context, Stats } from "@/schema.ts";
 
 interface ClippyResult {
     stats: Stats;

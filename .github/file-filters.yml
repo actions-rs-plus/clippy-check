@@ -1,12 +1,8 @@
 code:
-  - ".nvmrc"
   - "**/*.ts"
-  - "**/*.cjs"
   - "**/*.mjs"
-  - "Dockerfile"
   - "dist/**"
   - "src/**"
   - "package.json"
-  - "package-lock.json"
+  - pnpm-lock.yaml
   - ".github/**"
-  - ".codeclimate.yml"
