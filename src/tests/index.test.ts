@@ -1,10 +1,4 @@
-import * as core from "@actions/core";
-
 import { afterEach, describe, expect, it, vi } from "vitest";
-
-import * as clippy from "@/clippy.ts";
-
-vi.mock("@/clippy");
 
 describe("index", () => {
     afterEach(() => {
@@ -12,7 +6,9 @@ describe("index", () => {
     });
 
     it("works", async () => {
-        using runSpy = vi.spyOn(clippy, "run");
+        const clippy = await vi.importActual<typeof import("@/clippy")>("@/clippy");
+
+        using runSpy = vi.spyOn(clippy, "run").mockResolvedValue();
 
         await vi.importActual("@/index");
 
@@ -20,6 +16,9 @@ describe("index", () => {
     });
 
     it("catches Error", async () => {
+        const core = await vi.importActual<typeof import("@actions/core")>("@actions/core");
+        const clippy = await vi.importActual<typeof import("@/clippy")>("@/clippy");
+
         vi.spyOn(clippy, "run").mockRejectedValue(new Error("It looks like you're running a test"));
 
         // eslint-disable-next-line @typescript-eslint/no-empty-function -- mock
@@ -31,6 +30,9 @@ describe("index", () => {
     });
 
     it("catches not-error", async () => {
+        const core = await vi.importActual<typeof import("@actions/core")>("@actions/core");
+        const clippy = await vi.importActual<typeof import("@/clippy")>("@/clippy");
+
         vi.spyOn(clippy, "run").mockRejectedValue(
             "It looks like you're trying to write a test, would you like some assistance? [YES / NO]",
         );
