@@ -55,7 +55,7 @@ export default defineConfig(({ mode }) => {
             coverage: {
                 exclude: [...coverageConfigDefaults.exclude, "./dependency-cruiser.config.mjs"],
                 reporter: ["json", "html", "text"],
-                provider: "v8",
+                provider: "istanbul",
                 reportsDirectory: "coverage",
             },
             environment: "node",
