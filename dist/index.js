@@ -253,14 +253,14 @@ function requireFileCommand() {
   return fileCommand;
 }
 var oidcUtils = {};
-var lib = {};
-var proxy = {};
-var hasRequiredProxy;
-function requireProxy() {
-  if (hasRequiredProxy) return proxy;
-  hasRequiredProxy = 1;
-  Object.defineProperty(proxy, "__esModule", { value: true });
-  proxy.checkBypass = proxy.getProxyUrl = void 0;
+var lib$1 = {};
+var proxy$1 = {};
+var hasRequiredProxy$1;
+function requireProxy$1() {
+  if (hasRequiredProxy$1) return proxy$1;
+  hasRequiredProxy$1 = 1;
+  Object.defineProperty(proxy$1, "__esModule", { value: true });
+  proxy$1.checkBypass = proxy$1.getProxyUrl = void 0;
   function getProxyUrl(reqUrl) {
     const usingSsl = reqUrl.protocol === "https:";
     if (checkBypass(reqUrl)) {
@@ -284,7 +284,7 @@ function requireProxy() {
       return void 0;
     }
   }
-  proxy.getProxyUrl = getProxyUrl;
+  proxy$1.getProxyUrl = getProxyUrl;
   function checkBypass(reqUrl) {
     if (!reqUrl.hostname) {
       return false;
@@ -316,7 +316,7 @@ function requireProxy() {
     }
     return false;
   }
-  proxy.checkBypass = checkBypass;
+  proxy$1.checkBypass = checkBypass;
   function isLoopbackAddress(host) {
     const hostLower = host.toLowerCase();
     return hostLower === "localhost" || hostLower.startsWith("127.") || hostLower.startsWith("[::1]") || hostLower.startsWith("[0:0:0:0:0:0:0:1]");
@@ -334,7 +334,7 @@ function requireProxy() {
       return this._decodedPassword;
     }
   }
-  return proxy;
+  return proxy$1;
 }
 var tunnel$1 = {};
 var hasRequiredTunnel$1;
@@ -17307,11 +17307,11 @@ function requireUndici() {
   undici.mockErrors = mockErrors2;
   return undici;
 }
-var hasRequiredLib;
-function requireLib() {
-  if (hasRequiredLib) return lib;
-  hasRequiredLib = 1;
-  var __createBinding2 = lib && lib.__createBinding || (Object.create ? (function(o, m, k, k2) {
+var hasRequiredLib$1;
+function requireLib$1() {
+  if (hasRequiredLib$1) return lib$1;
+  hasRequiredLib$1 = 1;
+  var __createBinding2 = lib$1 && lib$1.__createBinding || (Object.create ? (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
     if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -17324,12 +17324,12 @@ function requireLib() {
     if (k2 === void 0) k2 = k;
     o[k2] = m[k];
   }));
-  var __setModuleDefault2 = lib && lib.__setModuleDefault || (Object.create ? (function(o, v) {
+  var __setModuleDefault2 = lib$1 && lib$1.__setModuleDefault || (Object.create ? (function(o, v) {
     Object.defineProperty(o, "default", { enumerable: true, value: v });
   }) : function(o, v) {
     o["default"] = v;
   });
-  var __importStar2 = lib && lib.__importStar || function(mod) {
+  var __importStar2 = lib$1 && lib$1.__importStar || function(mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) {
@@ -17338,7 +17338,7 @@ function requireLib() {
     __setModuleDefault2(result, mod);
     return result;
   };
-  var __awaiter2 = lib && lib.__awaiter || function(thisArg, _arguments, P, generator) {
+  var __awaiter2 = lib$1 && lib$1.__awaiter || function(thisArg, _arguments, P, generator) {
     function adopt(value) {
       return value instanceof P ? value : new P(function(resolve) {
         resolve(value);
@@ -17365,11 +17365,11 @@ function requireLib() {
       step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
   };
-  Object.defineProperty(lib, "__esModule", { value: true });
-  lib.HttpClient = lib.isHttps = lib.HttpClientResponse = lib.HttpClientError = lib.getProxyUrl = lib.MediaTypes = lib.Headers = lib.HttpCodes = void 0;
+  Object.defineProperty(lib$1, "__esModule", { value: true });
+  lib$1.HttpClient = lib$1.isHttps = lib$1.HttpClientResponse = lib$1.HttpClientError = lib$1.getProxyUrl = lib$1.MediaTypes = lib$1.Headers = lib$1.HttpCodes = void 0;
   const http = __importStar2(require$$2);
   const https = __importStar2(require$$1$3);
-  const pm = __importStar2(/* @__PURE__ */ requireProxy());
+  const pm = __importStar2(/* @__PURE__ */ requireProxy$1());
   const tunnel2 = __importStar2(/* @__PURE__ */ requireTunnel());
   const undici_1 = /* @__PURE__ */ requireUndici();
   var HttpCodes;
@@ -17401,21 +17401,21 @@ function requireLib() {
     HttpCodes2[HttpCodes2["BadGateway"] = 502] = "BadGateway";
     HttpCodes2[HttpCodes2["ServiceUnavailable"] = 503] = "ServiceUnavailable";
     HttpCodes2[HttpCodes2["GatewayTimeout"] = 504] = "GatewayTimeout";
-  })(HttpCodes || (lib.HttpCodes = HttpCodes = {}));
+  })(HttpCodes || (lib$1.HttpCodes = HttpCodes = {}));
   var Headers;
   (function(Headers2) {
     Headers2["Accept"] = "accept";
     Headers2["ContentType"] = "content-type";
-  })(Headers || (lib.Headers = Headers = {}));
+  })(Headers || (lib$1.Headers = Headers = {}));
   var MediaTypes;
   (function(MediaTypes2) {
     MediaTypes2["ApplicationJson"] = "application/json";
-  })(MediaTypes || (lib.MediaTypes = MediaTypes = {}));
+  })(MediaTypes || (lib$1.MediaTypes = MediaTypes = {}));
   function getProxyUrl(serverUrl) {
     const proxyUrl = pm.getProxyUrl(new URL(serverUrl));
     return proxyUrl ? proxyUrl.href : "";
   }
-  lib.getProxyUrl = getProxyUrl;
+  lib$1.getProxyUrl = getProxyUrl;
   const HttpRedirectCodes = [
     HttpCodes.MovedPermanently,
     HttpCodes.ResourceMoved,
@@ -17439,7 +17439,7 @@ function requireLib() {
       Object.setPrototypeOf(this, HttpClientError.prototype);
     }
   }
-  lib.HttpClientError = HttpClientError;
+  lib$1.HttpClientError = HttpClientError;
   class HttpClientResponse {
     constructor(message) {
       this.message = message;
@@ -17471,12 +17471,12 @@ function requireLib() {
       });
     }
   }
-  lib.HttpClientResponse = HttpClientResponse;
+  lib$1.HttpClientResponse = HttpClientResponse;
   function isHttps(requestUrl) {
     const parsedUrl = new URL(requestUrl);
     return parsedUrl.protocol === "https:";
   }
-  lib.isHttps = isHttps;
+  lib$1.isHttps = isHttps;
   class HttpClient {
     constructor(userAgent2, handlers, requestOptions) {
       this._ignoreSslError = false;
@@ -17921,9 +17921,9 @@ function requireLib() {
       });
     }
   }
-  lib.HttpClient = HttpClient;
+  lib$1.HttpClient = HttpClient;
   const lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => (c[k.toLowerCase()] = obj[k], c), {});
-  return lib;
+  return lib$1;
 }
 var auth = {};
 var hasRequiredAuth;
@@ -18062,7 +18062,7 @@ function requireOidcUtils() {
   };
   Object.defineProperty(oidcUtils, "__esModule", { value: true });
   oidcUtils.OidcClient = void 0;
-  const http_client_1 = /* @__PURE__ */ requireLib();
+  const http_client_1 = /* @__PURE__ */ requireLib$1();
   const auth_1 = /* @__PURE__ */ requireAuth();
   const core_1 = /* @__PURE__ */ requireCore();
   class OidcClient {
@@ -18474,14 +18474,14 @@ function requirePathUtils() {
 var platform = {};
 var exec = {};
 var toolrunner = {};
-var io = {};
-var ioUtil = {};
-var hasRequiredIoUtil;
-function requireIoUtil() {
-  if (hasRequiredIoUtil) return ioUtil;
-  hasRequiredIoUtil = 1;
+var io$1 = {};
+var ioUtil$1 = {};
+var hasRequiredIoUtil$1;
+function requireIoUtil$1() {
+  if (hasRequiredIoUtil$1) return ioUtil$1;
+  hasRequiredIoUtil$1 = 1;
   (function(exports) {
-    var __createBinding2 = ioUtil && ioUtil.__createBinding || (Object.create ? (function(o, m, k, k2) {
+    var __createBinding2 = ioUtil$1 && ioUtil$1.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       Object.defineProperty(o, k2, { enumerable: true, get: function() {
         return m[k];
@@ -18490,12 +18490,12 @@ function requireIoUtil() {
       if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     }));
-    var __setModuleDefault2 = ioUtil && ioUtil.__setModuleDefault || (Object.create ? (function(o, v) {
+    var __setModuleDefault2 = ioUtil$1 && ioUtil$1.__setModuleDefault || (Object.create ? (function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
     }) : function(o, v) {
       o["default"] = v;
     });
-    var __importStar2 = ioUtil && ioUtil.__importStar || function(mod) {
+    var __importStar2 = ioUtil$1 && ioUtil$1.__importStar || function(mod) {
       if (mod && mod.__esModule) return mod;
       var result = {};
       if (mod != null) {
@@ -18504,7 +18504,7 @@ function requireIoUtil() {
       __setModuleDefault2(result, mod);
       return result;
     };
-    var __awaiter2 = ioUtil && ioUtil.__awaiter || function(thisArg, _arguments, P, generator) {
+    var __awaiter2 = ioUtil$1 && ioUtil$1.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
         return value instanceof P ? value : new P(function(resolve) {
           resolve(value);
@@ -18647,14 +18647,14 @@ function requireIoUtil() {
       return (_a2 = process.env["COMSPEC"]) !== null && _a2 !== void 0 ? _a2 : `cmd.exe`;
     }
     exports.getCmdPath = getCmdPath;
-  })(ioUtil);
-  return ioUtil;
+  })(ioUtil$1);
+  return ioUtil$1;
 }
-var hasRequiredIo;
-function requireIo() {
-  if (hasRequiredIo) return io;
-  hasRequiredIo = 1;
-  var __createBinding2 = io && io.__createBinding || (Object.create ? (function(o, m, k, k2) {
+var hasRequiredIo$1;
+function requireIo$1() {
+  if (hasRequiredIo$1) return io$1;
+  hasRequiredIo$1 = 1;
+  var __createBinding2 = io$1 && io$1.__createBinding || (Object.create ? (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
     Object.defineProperty(o, k2, { enumerable: true, get: function() {
       return m[k];
@@ -18663,12 +18663,12 @@ function requireIo() {
     if (k2 === void 0) k2 = k;
     o[k2] = m[k];
   }));
-  var __setModuleDefault2 = io && io.__setModuleDefault || (Object.create ? (function(o, v) {
+  var __setModuleDefault2 = io$1 && io$1.__setModuleDefault || (Object.create ? (function(o, v) {
     Object.defineProperty(o, "default", { enumerable: true, value: v });
   }) : function(o, v) {
     o["default"] = v;
   });
-  var __importStar2 = io && io.__importStar || function(mod) {
+  var __importStar2 = io$1 && io$1.__importStar || function(mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) {
@@ -18677,7 +18677,7 @@ function requireIo() {
     __setModuleDefault2(result, mod);
     return result;
   };
-  var __awaiter2 = io && io.__awaiter || function(thisArg, _arguments, P, generator) {
+  var __awaiter2 = io$1 && io$1.__awaiter || function(thisArg, _arguments, P, generator) {
     function adopt(value) {
       return value instanceof P ? value : new P(function(resolve) {
         resolve(value);
@@ -18704,11 +18704,11 @@ function requireIo() {
       step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
   };
-  Object.defineProperty(io, "__esModule", { value: true });
-  io.findInPath = io.which = io.mkdirP = io.rmRF = io.mv = io.cp = void 0;
+  Object.defineProperty(io$1, "__esModule", { value: true });
+  io$1.findInPath = io$1.which = io$1.mkdirP = io$1.rmRF = io$1.mv = io$1.cp = void 0;
   const assert_1 = require$$0$7;
   const path2 = __importStar2(require$$1$7);
-  const ioUtil2 = __importStar2(/* @__PURE__ */ requireIoUtil());
+  const ioUtil2 = __importStar2(/* @__PURE__ */ requireIoUtil$1());
   function cp(source, dest, options2 = {}) {
     return __awaiter2(this, void 0, void 0, function* () {
       const { force, recursive, copySourceDirectory } = readCopyOptions(options2);
@@ -18735,7 +18735,7 @@ function requireIo() {
       }
     });
   }
-  io.cp = cp;
+  io$1.cp = cp;
   function mv(source, dest, options2 = {}) {
     return __awaiter2(this, void 0, void 0, function* () {
       if (yield ioUtil2.exists(dest)) {
@@ -18756,7 +18756,7 @@ function requireIo() {
       yield ioUtil2.rename(source, dest);
     });
   }
-  io.mv = mv;
+  io$1.mv = mv;
   function rmRF(inputPath) {
     return __awaiter2(this, void 0, void 0, function* () {
       if (ioUtil2.IS_WINDOWS) {
@@ -18776,14 +18776,14 @@ function requireIo() {
       }
     });
   }
-  io.rmRF = rmRF;
+  io$1.rmRF = rmRF;
   function mkdirP(fsPath) {
     return __awaiter2(this, void 0, void 0, function* () {
       assert_1.ok(fsPath, "a path argument must be provided");
       yield ioUtil2.mkdir(fsPath, { recursive: true });
     });
   }
-  io.mkdirP = mkdirP;
+  io$1.mkdirP = mkdirP;
   function which(tool, check) {
     return __awaiter2(this, void 0, void 0, function* () {
       if (!tool) {
@@ -18807,7 +18807,7 @@ function requireIo() {
       return "";
     });
   }
-  io.which = which;
+  io$1.which = which;
   function findInPath(tool) {
     return __awaiter2(this, void 0, void 0, function* () {
       if (!tool) {
@@ -18849,7 +18849,7 @@ function requireIo() {
       return matches;
     });
   }
-  io.findInPath = findInPath;
+  io$1.findInPath = findInPath;
   function readCopyOptions(options2) {
     const force = options2.force == null ? true : options2.force;
     const recursive = Boolean(options2.recursive);
@@ -18895,7 +18895,7 @@ function requireIo() {
       }
     });
   }
-  return io;
+  return io$1;
 }
 var hasRequiredToolrunner;
 function requireToolrunner() {
@@ -18957,8 +18957,8 @@ function requireToolrunner() {
   const events2 = __importStar2(require$$0$6);
   const child = __importStar2(require$$2$2);
   const path2 = __importStar2(require$$1$7);
-  const io2 = __importStar2(/* @__PURE__ */ requireIo());
-  const ioUtil2 = __importStar2(/* @__PURE__ */ requireIoUtil());
+  const io2 = __importStar2(/* @__PURE__ */ requireIo$1());
+  const ioUtil2 = __importStar2(/* @__PURE__ */ requireIoUtil$1());
   const timers_1 = require$$6$1;
   const IS_WINDOWS = process.platform === "win32";
   class ToolRunner extends events2.EventEmitter {
@@ -22824,7 +22824,7 @@ function requireCacheUtils() {
   const core2 = __importStar2(/* @__PURE__ */ requireCore());
   const exec2 = __importStar2(/* @__PURE__ */ requireExec());
   const glob2 = __importStar2(/* @__PURE__ */ requireGlob());
-  const io2 = __importStar2(/* @__PURE__ */ requireIo());
+  const io2 = __importStar2(/* @__PURE__ */ requireIo$1());
   const crypto = __importStar2(require$$0$4);
   const fs = __importStar2(require$$1$2);
   const path2 = __importStar2(require$$1$7);
@@ -62773,7 +62773,7 @@ function requireRequestUtils() {
   Object.defineProperty(requestUtils, "__esModule", { value: true });
   requestUtils.retryHttpClientResponse = requestUtils.retryTypedResponse = requestUtils.retry = requestUtils.isRetryableStatusCode = requestUtils.isServerErrorStatusCode = requestUtils.isSuccessStatusCode = void 0;
   const core2 = __importStar2(/* @__PURE__ */ requireCore());
-  const http_client_1 = /* @__PURE__ */ requireLib();
+  const http_client_1 = /* @__PURE__ */ requireLib$1();
   const constants_1 = /* @__PURE__ */ requireConstants$5();
   function isSuccessStatusCode(statusCode) {
     if (!statusCode) {
@@ -63080,7 +63080,7 @@ function requireDownloadUtils() {
   Object.defineProperty(downloadUtils, "__esModule", { value: true });
   downloadUtils.downloadCacheStorageSDK = downloadUtils.downloadCacheHttpClientConcurrent = downloadUtils.downloadCacheHttpClient = downloadUtils.DownloadProgress = void 0;
   const core2 = __importStar2(/* @__PURE__ */ requireCore());
-  const http_client_1 = /* @__PURE__ */ requireLib();
+  const http_client_1 = /* @__PURE__ */ requireLib$1();
   const storage_blob_1 = /* @__PURE__ */ requireCommonjs();
   const buffer = __importStar2(require$$7);
   const fs = __importStar2(require$$1$2);
@@ -63597,7 +63597,7 @@ function requireCacheHttpClient() {
   Object.defineProperty(cacheHttpClient, "__esModule", { value: true });
   cacheHttpClient.saveCache = cacheHttpClient.reserveCache = cacheHttpClient.downloadCache = cacheHttpClient.getCacheEntry = void 0;
   const core2 = __importStar2(/* @__PURE__ */ requireCore());
-  const http_client_1 = /* @__PURE__ */ requireLib();
+  const http_client_1 = /* @__PURE__ */ requireLib$1();
   const auth_1 = /* @__PURE__ */ requireAuth();
   const fs = __importStar2(require$$1$2);
   const url_1 = require$$5$1;
@@ -68113,7 +68113,7 @@ function requireCacheTwirpClient() {
   const config_1 = /* @__PURE__ */ requireConfig();
   const cacheUtils_1 = /* @__PURE__ */ requireCacheUtils();
   const auth_1 = /* @__PURE__ */ requireAuth();
-  const http_client_1 = /* @__PURE__ */ requireLib();
+  const http_client_1 = /* @__PURE__ */ requireLib$1();
   const cache_twirp_client_1 = /* @__PURE__ */ requireCache_twirpClient();
   const util_1 = /* @__PURE__ */ requireUtil();
   class CacheServiceClient {
@@ -68312,7 +68312,7 @@ function requireTar() {
   Object.defineProperty(tar, "__esModule", { value: true });
   tar.createTar = tar.extractTar = tar.listTar = void 0;
   const exec_1 = /* @__PURE__ */ requireExec();
-  const io2 = __importStar2(/* @__PURE__ */ requireIo());
+  const io2 = __importStar2(/* @__PURE__ */ requireIo$1());
   const fs_1 = require$$1$2;
   const path2 = __importStar2(require$$1$7);
   const utils2 = __importStar2(/* @__PURE__ */ requireCacheUtils());
@@ -68558,7 +68558,7 @@ function requireCache() {
   const cacheTwirpClient2 = __importStar2(/* @__PURE__ */ requireCacheTwirpClient());
   const config_1 = /* @__PURE__ */ requireConfig();
   const tar_1 = /* @__PURE__ */ requireTar();
-  const http_client_1 = /* @__PURE__ */ requireLib();
+  const http_client_1 = /* @__PURE__ */ requireLib$1();
   class ValidationError extends Error {
     constructor(message) {
       super(message);
@@ -68919,7 +68919,1230 @@ function requireCache() {
   return cache$2;
 }
 var cacheExports = /* @__PURE__ */ requireCache();
+var io = {};
+var ioUtil = {};
+var hasRequiredIoUtil;
+function requireIoUtil() {
+  if (hasRequiredIoUtil) return ioUtil;
+  hasRequiredIoUtil = 1;
+  (function(exports) {
+    var __createBinding2 = ioUtil && ioUtil.__createBinding || (Object.create ? (function(o, m, k, k2) {
+      if (k2 === void 0) k2 = k;
+      var desc = Object.getOwnPropertyDescriptor(m, k);
+      if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+        desc = { enumerable: true, get: function() {
+          return m[k];
+        } };
+      }
+      Object.defineProperty(o, k2, desc);
+    }) : (function(o, m, k, k2) {
+      if (k2 === void 0) k2 = k;
+      o[k2] = m[k];
+    }));
+    var __setModuleDefault2 = ioUtil && ioUtil.__setModuleDefault || (Object.create ? (function(o, v) {
+      Object.defineProperty(o, "default", { enumerable: true, value: v });
+    }) : function(o, v) {
+      o["default"] = v;
+    });
+    var __importStar2 = ioUtil && ioUtil.__importStar || /* @__PURE__ */ (function() {
+      var ownKeys2 = function(o) {
+        ownKeys2 = Object.getOwnPropertyNames || function(o2) {
+          var ar = [];
+          for (var k in o2) if (Object.prototype.hasOwnProperty.call(o2, k)) ar[ar.length] = k;
+          return ar;
+        };
+        return ownKeys2(o);
+      };
+      return function(mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) {
+          for (var k = ownKeys2(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding2(result, mod, k[i]);
+        }
+        __setModuleDefault2(result, mod);
+        return result;
+      };
+    })();
+    var __awaiter2 = ioUtil && ioUtil.__awaiter || function(thisArg, _arguments, P, generator) {
+      function adopt(value) {
+        return value instanceof P ? value : new P(function(resolve) {
+          resolve(value);
+        });
+      }
+      return new (P || (P = Promise))(function(resolve, reject) {
+        function fulfilled(value) {
+          try {
+            step(generator.next(value));
+          } catch (e) {
+            reject(e);
+          }
+        }
+        function rejected(value) {
+          try {
+            step(generator["throw"](value));
+          } catch (e) {
+            reject(e);
+          }
+        }
+        function step(result) {
+          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+        }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+      });
+    };
+    var _a;
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.READONLY = exports.UV_FS_O_EXLOCK = exports.IS_WINDOWS = exports.unlink = exports.symlink = exports.stat = exports.rmdir = exports.rm = exports.rename = exports.readdir = exports.open = exports.mkdir = exports.lstat = exports.copyFile = exports.chmod = void 0;
+    exports.readlink = readlink;
+    exports.exists = exists;
+    exports.isDirectory = isDirectory;
+    exports.isRooted = isRooted;
+    exports.tryGetExecutablePath = tryGetExecutablePath;
+    exports.getCmdPath = getCmdPath;
+    const fs = __importStar2(require$$1$2);
+    const path2 = __importStar2(require$$1$7);
+    _a = fs.promises, exports.chmod = _a.chmod, exports.copyFile = _a.copyFile, exports.lstat = _a.lstat, exports.mkdir = _a.mkdir, exports.open = _a.open, exports.readdir = _a.readdir, exports.rename = _a.rename, exports.rm = _a.rm, exports.rmdir = _a.rmdir, exports.stat = _a.stat, exports.symlink = _a.symlink, exports.unlink = _a.unlink;
+    exports.IS_WINDOWS = process.platform === "win32";
+    function readlink(fsPath) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        const result = yield fs.promises.readlink(fsPath);
+        if (exports.IS_WINDOWS && !result.endsWith("\\")) {
+          return `${result}\\`;
+        }
+        return result;
+      });
+    }
+    exports.UV_FS_O_EXLOCK = 268435456;
+    exports.READONLY = fs.constants.O_RDONLY;
+    function exists(fsPath) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        try {
+          yield (0, exports.stat)(fsPath);
+        } catch (err) {
+          if (err.code === "ENOENT") {
+            return false;
+          }
+          throw err;
+        }
+        return true;
+      });
+    }
+    function isDirectory(fsPath_1) {
+      return __awaiter2(this, arguments, void 0, function* (fsPath, useStat = false) {
+        const stats = useStat ? yield (0, exports.stat)(fsPath) : yield (0, exports.lstat)(fsPath);
+        return stats.isDirectory();
+      });
+    }
+    function isRooted(p) {
+      p = normalizeSeparators(p);
+      if (!p) {
+        throw new Error('isRooted() parameter "p" cannot be empty');
+      }
+      if (exports.IS_WINDOWS) {
+        return p.startsWith("\\") || /^[A-Z]:/i.test(p);
+      }
+      return p.startsWith("/");
+    }
+    function tryGetExecutablePath(filePath, extensions) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        let stats = void 0;
+        try {
+          stats = yield (0, exports.stat)(filePath);
+        } catch (err) {
+          if (err.code !== "ENOENT") {
+            console.log(`Unexpected error attempting to determine if executable file exists '${filePath}': ${err}`);
+          }
+        }
+        if (stats && stats.isFile()) {
+          if (exports.IS_WINDOWS) {
+            const upperExt = path2.extname(filePath).toUpperCase();
+            if (extensions.some((validExt) => validExt.toUpperCase() === upperExt)) {
+              return filePath;
+            }
+          } else {
+            if (isUnixExecutable(stats)) {
+              return filePath;
+            }
+          }
+        }
+        const originalFilePath = filePath;
+        for (const extension of extensions) {
+          filePath = originalFilePath + extension;
+          stats = void 0;
+          try {
+            stats = yield (0, exports.stat)(filePath);
+          } catch (err) {
+            if (err.code !== "ENOENT") {
+              console.log(`Unexpected error attempting to determine if executable file exists '${filePath}': ${err}`);
+            }
+          }
+          if (stats && stats.isFile()) {
+            if (exports.IS_WINDOWS) {
+              try {
+                const directory = path2.dirname(filePath);
+                const upperName = path2.basename(filePath).toUpperCase();
+                for (const actualName of yield (0, exports.readdir)(directory)) {
+                  if (upperName === actualName.toUpperCase()) {
+                    filePath = path2.join(directory, actualName);
+                    break;
+                  }
+                }
+              } catch (err) {
+                console.log(`Unexpected error attempting to determine the actual case of the file '${filePath}': ${err}`);
+              }
+              return filePath;
+            } else {
+              if (isUnixExecutable(stats)) {
+                return filePath;
+              }
+            }
+          }
+        }
+        return "";
+      });
+    }
+    function normalizeSeparators(p) {
+      p = p || "";
+      if (exports.IS_WINDOWS) {
+        p = p.replace(/\//g, "\\");
+        return p.replace(/\\\\+/g, "\\");
+      }
+      return p.replace(/\/\/+/g, "/");
+    }
+    function isUnixExecutable(stats) {
+      return (stats.mode & 1) > 0 || (stats.mode & 8) > 0 && process.getgid !== void 0 && stats.gid === process.getgid() || (stats.mode & 64) > 0 && process.getuid !== void 0 && stats.uid === process.getuid();
+    }
+    function getCmdPath() {
+      var _a2;
+      return (_a2 = process.env["COMSPEC"]) !== null && _a2 !== void 0 ? _a2 : `cmd.exe`;
+    }
+  })(ioUtil);
+  return ioUtil;
+}
+var hasRequiredIo;
+function requireIo() {
+  if (hasRequiredIo) return io;
+  hasRequiredIo = 1;
+  var __createBinding2 = io && io.__createBinding || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === void 0) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() {
+        return m[k];
+      } };
+    }
+    Object.defineProperty(o, k2, desc);
+  }) : (function(o, m, k, k2) {
+    if (k2 === void 0) k2 = k;
+    o[k2] = m[k];
+  }));
+  var __setModuleDefault2 = io && io.__setModuleDefault || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+  }) : function(o, v) {
+    o["default"] = v;
+  });
+  var __importStar2 = io && io.__importStar || /* @__PURE__ */ (function() {
+    var ownKeys2 = function(o) {
+      ownKeys2 = Object.getOwnPropertyNames || function(o2) {
+        var ar = [];
+        for (var k in o2) if (Object.prototype.hasOwnProperty.call(o2, k)) ar[ar.length] = k;
+        return ar;
+      };
+      return ownKeys2(o);
+    };
+    return function(mod) {
+      if (mod && mod.__esModule) return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k = ownKeys2(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding2(result, mod, k[i]);
+      }
+      __setModuleDefault2(result, mod);
+      return result;
+    };
+  })();
+  var __awaiter2 = io && io.__awaiter || function(thisArg, _arguments, P, generator) {
+    function adopt(value) {
+      return value instanceof P ? value : new P(function(resolve) {
+        resolve(value);
+      });
+    }
+    return new (P || (P = Promise))(function(resolve, reject) {
+      function fulfilled(value) {
+        try {
+          step(generator.next(value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function rejected(value) {
+        try {
+          step(generator["throw"](value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function step(result) {
+        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+      }
+      step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+  };
+  Object.defineProperty(io, "__esModule", { value: true });
+  io.cp = cp;
+  io.mv = mv;
+  io.rmRF = rmRF;
+  io.mkdirP = mkdirP;
+  io.which = which;
+  io.findInPath = findInPath;
+  const assert_1 = require$$0$7;
+  const path2 = __importStar2(require$$1$7);
+  const ioUtil2 = __importStar2(/* @__PURE__ */ requireIoUtil());
+  function cp(source_1, dest_1) {
+    return __awaiter2(this, arguments, void 0, function* (source, dest, options2 = {}) {
+      const { force, recursive, copySourceDirectory } = readCopyOptions(options2);
+      const destStat = (yield ioUtil2.exists(dest)) ? yield ioUtil2.stat(dest) : null;
+      if (destStat && destStat.isFile() && !force) {
+        return;
+      }
+      const newDest = destStat && destStat.isDirectory() && copySourceDirectory ? path2.join(dest, path2.basename(source)) : dest;
+      if (!(yield ioUtil2.exists(source))) {
+        throw new Error(`no such file or directory: ${source}`);
+      }
+      const sourceStat = yield ioUtil2.stat(source);
+      if (sourceStat.isDirectory()) {
+        if (!recursive) {
+          throw new Error(`Failed to copy. ${source} is a directory, but tried to copy without recursive flag.`);
+        } else {
+          yield cpDirRecursive(source, newDest, 0, force);
+        }
+      } else {
+        if (path2.relative(source, newDest) === "") {
+          throw new Error(`'${newDest}' and '${source}' are the same file`);
+        }
+        yield copyFile(source, newDest, force);
+      }
+    });
+  }
+  function mv(source_1, dest_1) {
+    return __awaiter2(this, arguments, void 0, function* (source, dest, options2 = {}) {
+      if (yield ioUtil2.exists(dest)) {
+        let destExists = true;
+        if (yield ioUtil2.isDirectory(dest)) {
+          dest = path2.join(dest, path2.basename(source));
+          destExists = yield ioUtil2.exists(dest);
+        }
+        if (destExists) {
+          if (options2.force == null || options2.force) {
+            yield rmRF(dest);
+          } else {
+            throw new Error("Destination already exists");
+          }
+        }
+      }
+      yield mkdirP(path2.dirname(dest));
+      yield ioUtil2.rename(source, dest);
+    });
+  }
+  function rmRF(inputPath) {
+    return __awaiter2(this, void 0, void 0, function* () {
+      if (ioUtil2.IS_WINDOWS) {
+        if (/[*"<>|]/.test(inputPath)) {
+          throw new Error('File path must not contain `*`, `"`, `<`, `>` or `|` on Windows');
+        }
+      }
+      try {
+        yield ioUtil2.rm(inputPath, {
+          force: true,
+          maxRetries: 3,
+          recursive: true,
+          retryDelay: 300
+        });
+      } catch (err) {
+        throw new Error(`File was unable to be removed ${err}`);
+      }
+    });
+  }
+  function mkdirP(fsPath) {
+    return __awaiter2(this, void 0, void 0, function* () {
+      (0, assert_1.ok)(fsPath, "a path argument must be provided");
+      yield ioUtil2.mkdir(fsPath, { recursive: true });
+    });
+  }
+  function which(tool, check) {
+    return __awaiter2(this, void 0, void 0, function* () {
+      if (!tool) {
+        throw new Error("parameter 'tool' is required");
+      }
+      if (check) {
+        const result = yield which(tool, false);
+        if (!result) {
+          if (ioUtil2.IS_WINDOWS) {
+            throw new Error(`Unable to locate executable file: ${tool}. Please verify either the file path exists or the file can be found within a directory specified by the PATH environment variable. Also verify the file has a valid extension for an executable file.`);
+          } else {
+            throw new Error(`Unable to locate executable file: ${tool}. Please verify either the file path exists or the file can be found within a directory specified by the PATH environment variable. Also check the file mode to verify the file is executable.`);
+          }
+        }
+        return result;
+      }
+      const matches = yield findInPath(tool);
+      if (matches && matches.length > 0) {
+        return matches[0];
+      }
+      return "";
+    });
+  }
+  function findInPath(tool) {
+    return __awaiter2(this, void 0, void 0, function* () {
+      if (!tool) {
+        throw new Error("parameter 'tool' is required");
+      }
+      const extensions = [];
+      if (ioUtil2.IS_WINDOWS && process.env["PATHEXT"]) {
+        for (const extension of process.env["PATHEXT"].split(path2.delimiter)) {
+          if (extension) {
+            extensions.push(extension);
+          }
+        }
+      }
+      if (ioUtil2.isRooted(tool)) {
+        const filePath = yield ioUtil2.tryGetExecutablePath(tool, extensions);
+        if (filePath) {
+          return [filePath];
+        }
+        return [];
+      }
+      if (tool.includes(path2.sep)) {
+        return [];
+      }
+      const directories = [];
+      if (process.env.PATH) {
+        for (const p of process.env.PATH.split(path2.delimiter)) {
+          if (p) {
+            directories.push(p);
+          }
+        }
+      }
+      const matches = [];
+      for (const directory of directories) {
+        const filePath = yield ioUtil2.tryGetExecutablePath(path2.join(directory, tool), extensions);
+        if (filePath) {
+          matches.push(filePath);
+        }
+      }
+      return matches;
+    });
+  }
+  function readCopyOptions(options2) {
+    const force = options2.force == null ? true : options2.force;
+    const recursive = Boolean(options2.recursive);
+    const copySourceDirectory = options2.copySourceDirectory == null ? true : Boolean(options2.copySourceDirectory);
+    return { force, recursive, copySourceDirectory };
+  }
+  function cpDirRecursive(sourceDir, destDir, currentDepth, force) {
+    return __awaiter2(this, void 0, void 0, function* () {
+      if (currentDepth >= 255)
+        return;
+      currentDepth++;
+      yield mkdirP(destDir);
+      const files = yield ioUtil2.readdir(sourceDir);
+      for (const fileName of files) {
+        const srcFile = `${sourceDir}/${fileName}`;
+        const destFile = `${destDir}/${fileName}`;
+        const srcFileStat = yield ioUtil2.lstat(srcFile);
+        if (srcFileStat.isDirectory()) {
+          yield cpDirRecursive(srcFile, destFile, currentDepth, force);
+        } else {
+          yield copyFile(srcFile, destFile, force);
+        }
+      }
+      yield ioUtil2.chmod(destDir, (yield ioUtil2.stat(sourceDir)).mode);
+    });
+  }
+  function copyFile(srcFile, destFile, force) {
+    return __awaiter2(this, void 0, void 0, function* () {
+      if ((yield ioUtil2.lstat(srcFile)).isSymbolicLink()) {
+        try {
+          yield ioUtil2.lstat(destFile);
+          yield ioUtil2.unlink(destFile);
+        } catch (e) {
+          if (e.code === "EPERM") {
+            yield ioUtil2.chmod(destFile, "0666");
+            yield ioUtil2.unlink(destFile);
+          }
+        }
+        const symlinkFull = yield ioUtil2.readlink(srcFile);
+        yield ioUtil2.symlink(symlinkFull, destFile, ioUtil2.IS_WINDOWS ? "junction" : null);
+      } else if (!(yield ioUtil2.exists(destFile)) || force) {
+        yield ioUtil2.copyFile(srcFile, destFile);
+      }
+    });
+  }
+  return io;
+}
 var ioExports = /* @__PURE__ */ requireIo();
+var lib = {};
+var proxy = {};
+var hasRequiredProxy;
+function requireProxy() {
+  if (hasRequiredProxy) return proxy;
+  hasRequiredProxy = 1;
+  Object.defineProperty(proxy, "__esModule", { value: true });
+  proxy.getProxyUrl = getProxyUrl;
+  proxy.checkBypass = checkBypass;
+  function getProxyUrl(reqUrl) {
+    const usingSsl = reqUrl.protocol === "https:";
+    if (checkBypass(reqUrl)) {
+      return void 0;
+    }
+    const proxyVar = (() => {
+      if (usingSsl) {
+        return process.env["https_proxy"] || process.env["HTTPS_PROXY"];
+      } else {
+        return process.env["http_proxy"] || process.env["HTTP_PROXY"];
+      }
+    })();
+    if (proxyVar) {
+      try {
+        return new DecodedURL(proxyVar);
+      } catch (_a) {
+        if (!proxyVar.startsWith("http://") && !proxyVar.startsWith("https://"))
+          return new DecodedURL(`http://${proxyVar}`);
+      }
+    } else {
+      return void 0;
+    }
+  }
+  function checkBypass(reqUrl) {
+    if (!reqUrl.hostname) {
+      return false;
+    }
+    const reqHost = reqUrl.hostname;
+    if (isLoopbackAddress(reqHost)) {
+      return true;
+    }
+    const noProxy = process.env["no_proxy"] || process.env["NO_PROXY"] || "";
+    if (!noProxy) {
+      return false;
+    }
+    let reqPort;
+    if (reqUrl.port) {
+      reqPort = Number(reqUrl.port);
+    } else if (reqUrl.protocol === "http:") {
+      reqPort = 80;
+    } else if (reqUrl.protocol === "https:") {
+      reqPort = 443;
+    }
+    const upperReqHosts = [reqUrl.hostname.toUpperCase()];
+    if (typeof reqPort === "number") {
+      upperReqHosts.push(`${upperReqHosts[0]}:${reqPort}`);
+    }
+    for (const upperNoProxyItem of noProxy.split(",").map((x) => x.trim().toUpperCase()).filter((x) => x)) {
+      if (upperNoProxyItem === "*" || upperReqHosts.some((x) => x === upperNoProxyItem || x.endsWith(`.${upperNoProxyItem}`) || upperNoProxyItem.startsWith(".") && x.endsWith(`${upperNoProxyItem}`))) {
+        return true;
+      }
+    }
+    return false;
+  }
+  function isLoopbackAddress(host) {
+    const hostLower = host.toLowerCase();
+    return hostLower === "localhost" || hostLower.startsWith("127.") || hostLower.startsWith("[::1]") || hostLower.startsWith("[0:0:0:0:0:0:0:1]");
+  }
+  class DecodedURL extends URL {
+    constructor(url, base) {
+      super(url, base);
+      this._decodedUsername = decodeURIComponent(super.username);
+      this._decodedPassword = decodeURIComponent(super.password);
+    }
+    get username() {
+      return this._decodedUsername;
+    }
+    get password() {
+      return this._decodedPassword;
+    }
+  }
+  return proxy;
+}
+var hasRequiredLib;
+function requireLib() {
+  if (hasRequiredLib) return lib;
+  hasRequiredLib = 1;
+  var __createBinding2 = lib && lib.__createBinding || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === void 0) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() {
+        return m[k];
+      } };
+    }
+    Object.defineProperty(o, k2, desc);
+  }) : (function(o, m, k, k2) {
+    if (k2 === void 0) k2 = k;
+    o[k2] = m[k];
+  }));
+  var __setModuleDefault2 = lib && lib.__setModuleDefault || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+  }) : function(o, v) {
+    o["default"] = v;
+  });
+  var __importStar2 = lib && lib.__importStar || /* @__PURE__ */ (function() {
+    var ownKeys2 = function(o) {
+      ownKeys2 = Object.getOwnPropertyNames || function(o2) {
+        var ar = [];
+        for (var k in o2) if (Object.prototype.hasOwnProperty.call(o2, k)) ar[ar.length] = k;
+        return ar;
+      };
+      return ownKeys2(o);
+    };
+    return function(mod) {
+      if (mod && mod.__esModule) return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k = ownKeys2(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding2(result, mod, k[i]);
+      }
+      __setModuleDefault2(result, mod);
+      return result;
+    };
+  })();
+  var __awaiter2 = lib && lib.__awaiter || function(thisArg, _arguments, P, generator) {
+    function adopt(value) {
+      return value instanceof P ? value : new P(function(resolve) {
+        resolve(value);
+      });
+    }
+    return new (P || (P = Promise))(function(resolve, reject) {
+      function fulfilled(value) {
+        try {
+          step(generator.next(value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function rejected(value) {
+        try {
+          step(generator["throw"](value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function step(result) {
+        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+      }
+      step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+  };
+  Object.defineProperty(lib, "__esModule", { value: true });
+  lib.HttpClient = lib.HttpClientResponse = lib.HttpClientError = lib.MediaTypes = lib.Headers = lib.HttpCodes = void 0;
+  lib.getProxyUrl = getProxyUrl;
+  lib.isHttps = isHttps;
+  const http = __importStar2(require$$2);
+  const https = __importStar2(require$$1$3);
+  const pm = __importStar2(/* @__PURE__ */ requireProxy());
+  const tunnel2 = __importStar2(/* @__PURE__ */ requireTunnel());
+  const undici_1 = /* @__PURE__ */ requireUndici();
+  var HttpCodes;
+  (function(HttpCodes2) {
+    HttpCodes2[HttpCodes2["OK"] = 200] = "OK";
+    HttpCodes2[HttpCodes2["MultipleChoices"] = 300] = "MultipleChoices";
+    HttpCodes2[HttpCodes2["MovedPermanently"] = 301] = "MovedPermanently";
+    HttpCodes2[HttpCodes2["ResourceMoved"] = 302] = "ResourceMoved";
+    HttpCodes2[HttpCodes2["SeeOther"] = 303] = "SeeOther";
+    HttpCodes2[HttpCodes2["NotModified"] = 304] = "NotModified";
+    HttpCodes2[HttpCodes2["UseProxy"] = 305] = "UseProxy";
+    HttpCodes2[HttpCodes2["SwitchProxy"] = 306] = "SwitchProxy";
+    HttpCodes2[HttpCodes2["TemporaryRedirect"] = 307] = "TemporaryRedirect";
+    HttpCodes2[HttpCodes2["PermanentRedirect"] = 308] = "PermanentRedirect";
+    HttpCodes2[HttpCodes2["BadRequest"] = 400] = "BadRequest";
+    HttpCodes2[HttpCodes2["Unauthorized"] = 401] = "Unauthorized";
+    HttpCodes2[HttpCodes2["PaymentRequired"] = 402] = "PaymentRequired";
+    HttpCodes2[HttpCodes2["Forbidden"] = 403] = "Forbidden";
+    HttpCodes2[HttpCodes2["NotFound"] = 404] = "NotFound";
+    HttpCodes2[HttpCodes2["MethodNotAllowed"] = 405] = "MethodNotAllowed";
+    HttpCodes2[HttpCodes2["NotAcceptable"] = 406] = "NotAcceptable";
+    HttpCodes2[HttpCodes2["ProxyAuthenticationRequired"] = 407] = "ProxyAuthenticationRequired";
+    HttpCodes2[HttpCodes2["RequestTimeout"] = 408] = "RequestTimeout";
+    HttpCodes2[HttpCodes2["Conflict"] = 409] = "Conflict";
+    HttpCodes2[HttpCodes2["Gone"] = 410] = "Gone";
+    HttpCodes2[HttpCodes2["TooManyRequests"] = 429] = "TooManyRequests";
+    HttpCodes2[HttpCodes2["InternalServerError"] = 500] = "InternalServerError";
+    HttpCodes2[HttpCodes2["NotImplemented"] = 501] = "NotImplemented";
+    HttpCodes2[HttpCodes2["BadGateway"] = 502] = "BadGateway";
+    HttpCodes2[HttpCodes2["ServiceUnavailable"] = 503] = "ServiceUnavailable";
+    HttpCodes2[HttpCodes2["GatewayTimeout"] = 504] = "GatewayTimeout";
+  })(HttpCodes || (lib.HttpCodes = HttpCodes = {}));
+  var Headers;
+  (function(Headers2) {
+    Headers2["Accept"] = "accept";
+    Headers2["ContentType"] = "content-type";
+  })(Headers || (lib.Headers = Headers = {}));
+  var MediaTypes;
+  (function(MediaTypes2) {
+    MediaTypes2["ApplicationJson"] = "application/json";
+  })(MediaTypes || (lib.MediaTypes = MediaTypes = {}));
+  function getProxyUrl(serverUrl) {
+    const proxyUrl = pm.getProxyUrl(new URL(serverUrl));
+    return proxyUrl ? proxyUrl.href : "";
+  }
+  const HttpRedirectCodes = [
+    HttpCodes.MovedPermanently,
+    HttpCodes.ResourceMoved,
+    HttpCodes.SeeOther,
+    HttpCodes.TemporaryRedirect,
+    HttpCodes.PermanentRedirect
+  ];
+  const HttpResponseRetryCodes = [
+    HttpCodes.BadGateway,
+    HttpCodes.ServiceUnavailable,
+    HttpCodes.GatewayTimeout
+  ];
+  const RetryableHttpVerbs = ["OPTIONS", "GET", "DELETE", "HEAD"];
+  const ExponentialBackoffCeiling = 10;
+  const ExponentialBackoffTimeSlice = 5;
+  class HttpClientError extends Error {
+    constructor(message, statusCode) {
+      super(message);
+      this.name = "HttpClientError";
+      this.statusCode = statusCode;
+      Object.setPrototypeOf(this, HttpClientError.prototype);
+    }
+  }
+  lib.HttpClientError = HttpClientError;
+  class HttpClientResponse {
+    constructor(message) {
+      this.message = message;
+    }
+    readBody() {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return new Promise((resolve) => __awaiter2(this, void 0, void 0, function* () {
+          let output = Buffer.alloc(0);
+          this.message.on("data", (chunk) => {
+            output = Buffer.concat([output, chunk]);
+          });
+          this.message.on("end", () => {
+            resolve(output.toString());
+          });
+        }));
+      });
+    }
+    readBodyBuffer() {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return new Promise((resolve) => __awaiter2(this, void 0, void 0, function* () {
+          const chunks = [];
+          this.message.on("data", (chunk) => {
+            chunks.push(chunk);
+          });
+          this.message.on("end", () => {
+            resolve(Buffer.concat(chunks));
+          });
+        }));
+      });
+    }
+  }
+  lib.HttpClientResponse = HttpClientResponse;
+  function isHttps(requestUrl) {
+    const parsedUrl = new URL(requestUrl);
+    return parsedUrl.protocol === "https:";
+  }
+  class HttpClient {
+    constructor(userAgent2, handlers, requestOptions) {
+      this._ignoreSslError = false;
+      this._allowRedirects = true;
+      this._allowRedirectDowngrade = false;
+      this._maxRedirects = 50;
+      this._allowRetries = false;
+      this._maxRetries = 1;
+      this._keepAlive = false;
+      this._disposed = false;
+      this.userAgent = userAgent2;
+      this.handlers = handlers || [];
+      this.requestOptions = requestOptions;
+      if (requestOptions) {
+        if (requestOptions.ignoreSslError != null) {
+          this._ignoreSslError = requestOptions.ignoreSslError;
+        }
+        this._socketTimeout = requestOptions.socketTimeout;
+        if (requestOptions.allowRedirects != null) {
+          this._allowRedirects = requestOptions.allowRedirects;
+        }
+        if (requestOptions.allowRedirectDowngrade != null) {
+          this._allowRedirectDowngrade = requestOptions.allowRedirectDowngrade;
+        }
+        if (requestOptions.maxRedirects != null) {
+          this._maxRedirects = Math.max(requestOptions.maxRedirects, 0);
+        }
+        if (requestOptions.keepAlive != null) {
+          this._keepAlive = requestOptions.keepAlive;
+        }
+        if (requestOptions.allowRetries != null) {
+          this._allowRetries = requestOptions.allowRetries;
+        }
+        if (requestOptions.maxRetries != null) {
+          this._maxRetries = requestOptions.maxRetries;
+        }
+      }
+    }
+    options(requestUrl, additionalHeaders) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return this.request("OPTIONS", requestUrl, null, additionalHeaders || {});
+      });
+    }
+    get(requestUrl, additionalHeaders) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return this.request("GET", requestUrl, null, additionalHeaders || {});
+      });
+    }
+    del(requestUrl, additionalHeaders) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return this.request("DELETE", requestUrl, null, additionalHeaders || {});
+      });
+    }
+    post(requestUrl, data, additionalHeaders) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return this.request("POST", requestUrl, data, additionalHeaders || {});
+      });
+    }
+    patch(requestUrl, data, additionalHeaders) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return this.request("PATCH", requestUrl, data, additionalHeaders || {});
+      });
+    }
+    put(requestUrl, data, additionalHeaders) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return this.request("PUT", requestUrl, data, additionalHeaders || {});
+      });
+    }
+    head(requestUrl, additionalHeaders) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return this.request("HEAD", requestUrl, null, additionalHeaders || {});
+      });
+    }
+    sendStream(verb, requestUrl, stream, additionalHeaders) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return this.request(verb, requestUrl, stream, additionalHeaders);
+      });
+    }
+    /**
+     * Gets a typed object from an endpoint
+     * Be aware that not found returns a null.  Other errors (4xx, 5xx) reject the promise
+     */
+    getJson(requestUrl_1) {
+      return __awaiter2(this, arguments, void 0, function* (requestUrl, additionalHeaders = {}) {
+        additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
+        const res = yield this.get(requestUrl, additionalHeaders);
+        return this._processResponse(res, this.requestOptions);
+      });
+    }
+    postJson(requestUrl_1, obj_1) {
+      return __awaiter2(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
+        const data = JSON.stringify(obj, null, 2);
+        additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
+        additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
+        const res = yield this.post(requestUrl, data, additionalHeaders);
+        return this._processResponse(res, this.requestOptions);
+      });
+    }
+    putJson(requestUrl_1, obj_1) {
+      return __awaiter2(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
+        const data = JSON.stringify(obj, null, 2);
+        additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
+        additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
+        const res = yield this.put(requestUrl, data, additionalHeaders);
+        return this._processResponse(res, this.requestOptions);
+      });
+    }
+    patchJson(requestUrl_1, obj_1) {
+      return __awaiter2(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
+        const data = JSON.stringify(obj, null, 2);
+        additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
+        additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
+        const res = yield this.patch(requestUrl, data, additionalHeaders);
+        return this._processResponse(res, this.requestOptions);
+      });
+    }
+    /**
+     * Makes a raw http request.
+     * All other methods such as get, post, patch, and request ultimately call this.
+     * Prefer get, del, post and patch
+     */
+    request(verb, requestUrl, data, headers2) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        if (this._disposed) {
+          throw new Error("Client has already been disposed.");
+        }
+        const parsedUrl = new URL(requestUrl);
+        let info = this._prepareRequest(verb, parsedUrl, headers2);
+        const maxTries = this._allowRetries && RetryableHttpVerbs.includes(verb) ? this._maxRetries + 1 : 1;
+        let numTries = 0;
+        let response2;
+        do {
+          response2 = yield this.requestRaw(info, data);
+          if (response2 && response2.message && response2.message.statusCode === HttpCodes.Unauthorized) {
+            let authenticationHandler;
+            for (const handler of this.handlers) {
+              if (handler.canHandleAuthentication(response2)) {
+                authenticationHandler = handler;
+                break;
+              }
+            }
+            if (authenticationHandler) {
+              return authenticationHandler.handleAuthentication(this, info, data);
+            } else {
+              return response2;
+            }
+          }
+          let redirectsRemaining = this._maxRedirects;
+          while (response2.message.statusCode && HttpRedirectCodes.includes(response2.message.statusCode) && this._allowRedirects && redirectsRemaining > 0) {
+            const redirectUrl = response2.message.headers["location"];
+            if (!redirectUrl) {
+              break;
+            }
+            const parsedRedirectUrl = new URL(redirectUrl);
+            if (parsedUrl.protocol === "https:" && parsedUrl.protocol !== parsedRedirectUrl.protocol && !this._allowRedirectDowngrade) {
+              throw new Error("Redirect from HTTPS to HTTP protocol. This downgrade is not allowed for security reasons. If you want to allow this behavior, set the allowRedirectDowngrade option to true.");
+            }
+            yield response2.readBody();
+            if (parsedRedirectUrl.hostname !== parsedUrl.hostname) {
+              for (const header in headers2) {
+                if (header.toLowerCase() === "authorization") {
+                  delete headers2[header];
+                }
+              }
+            }
+            info = this._prepareRequest(verb, parsedRedirectUrl, headers2);
+            response2 = yield this.requestRaw(info, data);
+            redirectsRemaining--;
+          }
+          if (!response2.message.statusCode || !HttpResponseRetryCodes.includes(response2.message.statusCode)) {
+            return response2;
+          }
+          numTries += 1;
+          if (numTries < maxTries) {
+            yield response2.readBody();
+            yield this._performExponentialBackoff(numTries);
+          }
+        } while (numTries < maxTries);
+        return response2;
+      });
+    }
+    /**
+     * Needs to be called if keepAlive is set to true in request options.
+     */
+    dispose() {
+      if (this._agent) {
+        this._agent.destroy();
+      }
+      this._disposed = true;
+    }
+    /**
+     * Raw request.
+     * @param info
+     * @param data
+     */
+    requestRaw(info, data) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return new Promise((resolve, reject) => {
+          function callbackForResult(err, res) {
+            if (err) {
+              reject(err);
+            } else if (!res) {
+              reject(new Error("Unknown error"));
+            } else {
+              resolve(res);
+            }
+          }
+          this.requestRawWithCallback(info, data, callbackForResult);
+        });
+      });
+    }
+    /**
+     * Raw request with callback.
+     * @param info
+     * @param data
+     * @param onResult
+     */
+    requestRawWithCallback(info, data, onResult) {
+      if (typeof data === "string") {
+        if (!info.options.headers) {
+          info.options.headers = {};
+        }
+        info.options.headers["Content-Length"] = Buffer.byteLength(data, "utf8");
+      }
+      let callbackCalled = false;
+      function handleResult(err, res) {
+        if (!callbackCalled) {
+          callbackCalled = true;
+          onResult(err, res);
+        }
+      }
+      const req = info.httpModule.request(info.options, (msg) => {
+        const res = new HttpClientResponse(msg);
+        handleResult(void 0, res);
+      });
+      let socket;
+      req.on("socket", (sock) => {
+        socket = sock;
+      });
+      req.setTimeout(this._socketTimeout || 3 * 6e4, () => {
+        if (socket) {
+          socket.end();
+        }
+        handleResult(new Error(`Request timeout: ${info.options.path}`));
+      });
+      req.on("error", function(err) {
+        handleResult(err);
+      });
+      if (data && typeof data === "string") {
+        req.write(data, "utf8");
+      }
+      if (data && typeof data !== "string") {
+        data.on("close", function() {
+          req.end();
+        });
+        data.pipe(req);
+      } else {
+        req.end();
+      }
+    }
+    /**
+     * Gets an http agent. This function is useful when you need an http agent that handles
+     * routing through a proxy server - depending upon the url and proxy environment variables.
+     * @param serverUrl  The server URL where the request will be sent. For example, https://api.github.com
+     */
+    getAgent(serverUrl) {
+      const parsedUrl = new URL(serverUrl);
+      return this._getAgent(parsedUrl);
+    }
+    getAgentDispatcher(serverUrl) {
+      const parsedUrl = new URL(serverUrl);
+      const proxyUrl = pm.getProxyUrl(parsedUrl);
+      const useProxy = proxyUrl && proxyUrl.hostname;
+      if (!useProxy) {
+        return;
+      }
+      return this._getProxyAgentDispatcher(parsedUrl, proxyUrl);
+    }
+    _prepareRequest(method, requestUrl, headers2) {
+      const info = {};
+      info.parsedUrl = requestUrl;
+      const usingSsl = info.parsedUrl.protocol === "https:";
+      info.httpModule = usingSsl ? https : http;
+      const defaultPort = usingSsl ? 443 : 80;
+      info.options = {};
+      info.options.host = info.parsedUrl.hostname;
+      info.options.port = info.parsedUrl.port ? parseInt(info.parsedUrl.port) : defaultPort;
+      info.options.path = (info.parsedUrl.pathname || "") + (info.parsedUrl.search || "");
+      info.options.method = method;
+      info.options.headers = this._mergeHeaders(headers2);
+      if (this.userAgent != null) {
+        info.options.headers["user-agent"] = this.userAgent;
+      }
+      info.options.agent = this._getAgent(info.parsedUrl);
+      if (this.handlers) {
+        for (const handler of this.handlers) {
+          handler.prepareRequest(info.options);
+        }
+      }
+      return info;
+    }
+    _mergeHeaders(headers2) {
+      if (this.requestOptions && this.requestOptions.headers) {
+        return Object.assign({}, lowercaseKeys(this.requestOptions.headers), lowercaseKeys(headers2 || {}));
+      }
+      return lowercaseKeys(headers2 || {});
+    }
+    /**
+     * Gets an existing header value or returns a default.
+     * Handles converting number header values to strings since HTTP headers must be strings.
+     * Note: This returns string | string[] since some headers can have multiple values.
+     * For headers that must always be a single string (like Content-Type), use the
+     * specialized _getExistingOrDefaultContentTypeHeader method instead.
+     */
+    _getExistingOrDefaultHeader(additionalHeaders, header, _default) {
+      let clientHeader;
+      if (this.requestOptions && this.requestOptions.headers) {
+        const headerValue = lowercaseKeys(this.requestOptions.headers)[header];
+        if (headerValue) {
+          clientHeader = typeof headerValue === "number" ? headerValue.toString() : headerValue;
+        }
+      }
+      const additionalValue = additionalHeaders[header];
+      if (additionalValue !== void 0) {
+        return typeof additionalValue === "number" ? additionalValue.toString() : additionalValue;
+      }
+      if (clientHeader !== void 0) {
+        return clientHeader;
+      }
+      return _default;
+    }
+    /**
+     * Specialized version of _getExistingOrDefaultHeader for Content-Type header.
+     * Always returns a single string (not an array) since Content-Type should be a single value.
+     * Converts arrays to comma-separated strings and numbers to strings to ensure type safety.
+     * This was split from _getExistingOrDefaultHeader to provide stricter typing for callers
+     * that assign the result to places expecting a string (e.g., additionalHeaders[Headers.ContentType]).
+     */
+    _getExistingOrDefaultContentTypeHeader(additionalHeaders, _default) {
+      let clientHeader;
+      if (this.requestOptions && this.requestOptions.headers) {
+        const headerValue = lowercaseKeys(this.requestOptions.headers)[Headers.ContentType];
+        if (headerValue) {
+          if (typeof headerValue === "number") {
+            clientHeader = String(headerValue);
+          } else if (Array.isArray(headerValue)) {
+            clientHeader = headerValue.join(", ");
+          } else {
+            clientHeader = headerValue;
+          }
+        }
+      }
+      const additionalValue = additionalHeaders[Headers.ContentType];
+      if (additionalValue !== void 0) {
+        if (typeof additionalValue === "number") {
+          return String(additionalValue);
+        } else if (Array.isArray(additionalValue)) {
+          return additionalValue.join(", ");
+        } else {
+          return additionalValue;
+        }
+      }
+      if (clientHeader !== void 0) {
+        return clientHeader;
+      }
+      return _default;
+    }
+    _getAgent(parsedUrl) {
+      let agent2;
+      const proxyUrl = pm.getProxyUrl(parsedUrl);
+      const useProxy = proxyUrl && proxyUrl.hostname;
+      if (this._keepAlive && useProxy) {
+        agent2 = this._proxyAgent;
+      }
+      if (!useProxy) {
+        agent2 = this._agent;
+      }
+      if (agent2) {
+        return agent2;
+      }
+      const usingSsl = parsedUrl.protocol === "https:";
+      let maxSockets = 100;
+      if (this.requestOptions) {
+        maxSockets = this.requestOptions.maxSockets || http.globalAgent.maxSockets;
+      }
+      if (proxyUrl && proxyUrl.hostname) {
+        const agentOptions = {
+          maxSockets,
+          keepAlive: this._keepAlive,
+          proxy: Object.assign(Object.assign({}, (proxyUrl.username || proxyUrl.password) && {
+            proxyAuth: `${proxyUrl.username}:${proxyUrl.password}`
+          }), { host: proxyUrl.hostname, port: proxyUrl.port })
+        };
+        let tunnelAgent;
+        const overHttps = proxyUrl.protocol === "https:";
+        if (usingSsl) {
+          tunnelAgent = overHttps ? tunnel2.httpsOverHttps : tunnel2.httpsOverHttp;
+        } else {
+          tunnelAgent = overHttps ? tunnel2.httpOverHttps : tunnel2.httpOverHttp;
+        }
+        agent2 = tunnelAgent(agentOptions);
+        this._proxyAgent = agent2;
+      }
+      if (!agent2) {
+        const options2 = { keepAlive: this._keepAlive, maxSockets };
+        agent2 = usingSsl ? new https.Agent(options2) : new http.Agent(options2);
+        this._agent = agent2;
+      }
+      if (usingSsl && this._ignoreSslError) {
+        agent2.options = Object.assign(agent2.options || {}, {
+          rejectUnauthorized: false
+        });
+      }
+      return agent2;
+    }
+    _getProxyAgentDispatcher(parsedUrl, proxyUrl) {
+      let proxyAgent2;
+      if (this._keepAlive) {
+        proxyAgent2 = this._proxyAgentDispatcher;
+      }
+      if (proxyAgent2) {
+        return proxyAgent2;
+      }
+      const usingSsl = parsedUrl.protocol === "https:";
+      proxyAgent2 = new undici_1.ProxyAgent(Object.assign({ uri: proxyUrl.href, pipelining: !this._keepAlive ? 0 : 1 }, (proxyUrl.username || proxyUrl.password) && {
+        token: `Basic ${Buffer.from(`${proxyUrl.username}:${proxyUrl.password}`).toString("base64")}`
+      }));
+      this._proxyAgentDispatcher = proxyAgent2;
+      if (usingSsl && this._ignoreSslError) {
+        proxyAgent2.options = Object.assign(proxyAgent2.options.requestTls || {}, {
+          rejectUnauthorized: false
+        });
+      }
+      return proxyAgent2;
+    }
+    _performExponentialBackoff(retryNumber) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        retryNumber = Math.min(ExponentialBackoffCeiling, retryNumber);
+        const ms2 = ExponentialBackoffTimeSlice * Math.pow(2, retryNumber);
+        return new Promise((resolve) => setTimeout(() => resolve(), ms2));
+      });
+    }
+    _processResponse(res, options2) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return new Promise((resolve, reject) => __awaiter2(this, void 0, void 0, function* () {
+          const statusCode = res.message.statusCode || 0;
+          const response2 = {
+            statusCode,
+            result: null,
+            headers: {}
+          };
+          if (statusCode === HttpCodes.NotFound) {
+            resolve(response2);
+          }
+          function dateTimeDeserializer(key, value) {
+            if (typeof value === "string") {
+              const a = new Date(value);
+              if (!isNaN(a.valueOf())) {
+                return a;
+              }
+            }
+            return value;
+          }
+          let obj;
+          let contents;
+          try {
+            contents = yield res.readBody();
+            if (contents && contents.length > 0) {
+              if (options2 && options2.deserializeDates) {
+                obj = JSON.parse(contents, dateTimeDeserializer);
+              } else {
+                obj = JSON.parse(contents);
+              }
+              response2.result = obj;
+            }
+            response2.headers = res.message.headers;
+          } catch (err) {
+          }
+          if (statusCode > 299) {
+            let msg;
+            if (obj && obj.message) {
+              msg = obj.message;
+            } else if (contents && contents.length > 0) {
+              msg = contents;
+            } else {
+              msg = `Failed request: (${statusCode})`;
+            }
+            const err = new HttpClientError(msg, statusCode);
+            err.result = response2.result;
+            reject(err);
+          } else {
+            resolve(response2);
+          }
+        }));
+      });
+    }
+  }
+  lib.HttpClient = HttpClient;
+  const lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => (c[k.toLowerCase()] = obj[k], c), {});
+  return lib;
+}
 var libExports = /* @__PURE__ */ requireLib();
 async function resolveVersion(crate) {
   const url = `https://crates.io/api/v1/crates/${crate}`;
