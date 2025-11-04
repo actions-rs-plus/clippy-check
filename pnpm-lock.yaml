@@ -117,6 +117,9 @@ importers:
       semantic-release:
         specifier: 25.0.1
         version: 25.0.1(typescript@5.9.3)
+      semver:
+        specifier: 7.7.3
+        version: 7.7.3
       typescript:
         specifier: 5.9.3
         version: 5.9.3
