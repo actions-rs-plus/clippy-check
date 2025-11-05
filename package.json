@@ -86,7 +86,7 @@
         "semver": "7.7.3",
         "typescript": "5.9.3",
         "typescript-eslint": "8.46.3",
-        "vite": "7.1.12",
+        "vite": "7.2.0",
         "vite-plugin-checker": "0.11.0",
         "vite-tsconfig-paths": "5.1.4",
         "vitest": "4.0.7"
