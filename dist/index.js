@@ -5369,7 +5369,6 @@ function requireBody() {
       const boundary = `----formdata-undici-0${`${random2(1e11)}`.padStart(11, "0")}`;
       const prefix = `--${boundary}\r
 Content-Disposition: form-data`;
-      /*! formdata-polyfill. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
       const escape = (str) => str.replace(/\n/g, "%0A").replace(/\r/g, "%0D").replace(/"/g, "%22");
       const normalizeLinefeeds = (value) => value.replace(/\r?\n|\r/g, "\r\n");
       const blobParts = [];
@@ -16504,7 +16503,6 @@ function requireFrame() {
       buffer[0] = buffer[1] = 0;
       buffer[0] |= 128;
       buffer[0] = (buffer[0] & 240) + opcode;
-      /*! ws. MIT License. Einar Otto Stangvik <einaros@gmail.com> */
       buffer[offset - 4] = this.maskKey[0];
       buffer[offset - 3] = this.maskKey[1];
       buffer[offset - 2] = this.maskKey[2];
