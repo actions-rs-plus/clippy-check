@@ -31,11 +31,11 @@ import path from "node:path";
 import * as require$$1$1 from "node:os";
 import require$$1__default from "node:os";
 import require$$2$3 from "node:process";
-import require$$0$e from "node:crypto";
 import require$$1$8 from "node:http";
 import require$$2$4 from "node:https";
 import require$$3$1 from "node:zlib";
 import require$$1$9 from "tty";
+import require$$0$e from "node:crypto";
 import require$$2$5 from "node:buffer";
 import require$$1$a from "node:fs";
 var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
@@ -221,7 +221,7 @@ function requireFileCommand() {
   };
   Object.defineProperty(fileCommand, "__esModule", { value: true });
   fileCommand.prepareKeyValueMessage = fileCommand.issueFileCommand = void 0;
-  const crypto = __importStar2(require$$0$4);
+  const crypto2 = __importStar2(require$$0$4);
   const fs = __importStar2(require$$1$2);
   const os = __importStar2(require$$0$3);
   const utils_1 = /* @__PURE__ */ requireUtils$3();
@@ -239,7 +239,7 @@ function requireFileCommand() {
   }
   fileCommand.issueFileCommand = issueFileCommand;
   function prepareKeyValueMessage(key, value) {
-    const delimiter = `ghadelimiter_${crypto.randomUUID()}`;
+    const delimiter = `ghadelimiter_${crypto2.randomUUID()}`;
     const convertedValue = (0, utils_1.toCommandValue)(value);
     if (key.includes(delimiter)) {
       throw new Error(`Unexpected input: name should not contain the delimiter "${delimiter}"`);
@@ -3677,11 +3677,11 @@ function requireUtil$7() {
   const assert2 = require$$0$7;
   const { isUint8Array } = require$$5;
   let supportedHashes = [];
-  let crypto;
+  let crypto2;
   try {
-    crypto = require("crypto");
+    crypto2 = require("crypto");
     const possibleRelevantHashes = ["sha256", "sha384", "sha512"];
-    supportedHashes = crypto.getHashes().filter((hash) => possibleRelevantHashes.includes(hash));
+    supportedHashes = crypto2.getHashes().filter((hash) => possibleRelevantHashes.includes(hash));
   } catch {
   }
   function responseURL(response2) {
@@ -3957,7 +3957,7 @@ function requireUtil$7() {
     }
   }
   function bytesMatch(bytes, metadataList) {
-    if (crypto === void 0) {
+    if (crypto2 === void 0) {
       return true;
     }
     const parsedMetadata = parseMetadata(metadataList);
@@ -3972,7 +3972,7 @@ function requireUtil$7() {
     for (const item of metadata) {
       const algorithm = item.algo;
       const expectedValue = item.hash;
-      let actualValue = crypto.createHash(algorithm).update(bytes).digest("base64");
+      let actualValue = crypto2.createHash(algorithm).update(bytes).digest("base64");
       if (actualValue[actualValue.length - 1] === "=") {
         if (actualValue[actualValue.length - 2] === "=") {
           actualValue = actualValue.slice(0, -2);
@@ -5319,8 +5319,8 @@ function requireBody() {
   const { parseMIMEType, serializeAMimeType } = /* @__PURE__ */ requireDataURL();
   let random2;
   try {
-    const crypto = require("node:crypto");
-    random2 = (max) => crypto.randomInt(0, max);
+    const crypto2 = require("node:crypto");
+    random2 = (max) => crypto2.randomInt(0, max);
   } catch {
     random2 = (max) => Math.floor(Math.random(max));
   }
@@ -5369,7 +5369,6 @@ function requireBody() {
       const boundary = `----formdata-undici-0${`${random2(1e11)}`.padStart(11, "0")}`;
       const prefix = `--${boundary}\r
 Content-Disposition: form-data`;
-      /*! formdata-polyfill. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
       const escape = (str) => str.replace(/\n/g, "%0A").replace(/\r/g, "%0D").replace(/"/g, "%22");
       const normalizeLinefeeds = (value) => value.replace(/\r?\n|\r/g, "\r\n");
       const blobParts = [];
@@ -6404,9 +6403,9 @@ var hasRequiredConstants$8;
 function requireConstants$8() {
   if (hasRequiredConstants$8) return constants$8;
   hasRequiredConstants$8 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.SPECIAL_HEADERS = exports.HEADER_STATE = exports.MINOR = exports.MAJOR = exports.CONNECTION_TOKEN_CHARS = exports.HEADER_CHARS = exports.TOKEN = exports.STRICT_TOKEN = exports.HEX = exports.URL_CHAR = exports.STRICT_URL_CHAR = exports.USERINFO_CHARS = exports.MARK = exports.ALPHANUM = exports.NUM = exports.HEX_MAP = exports.NUM_MAP = exports.ALPHA = exports.FINISH = exports.H_METHOD_MAP = exports.METHOD_MAP = exports.METHODS_RTSP = exports.METHODS_ICE = exports.METHODS_HTTP = exports.METHODS = exports.LENIENT_FLAGS = exports.FLAGS = exports.TYPE = exports.ERROR = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.SPECIAL_HEADERS = exports$1.HEADER_STATE = exports$1.MINOR = exports$1.MAJOR = exports$1.CONNECTION_TOKEN_CHARS = exports$1.HEADER_CHARS = exports$1.TOKEN = exports$1.STRICT_TOKEN = exports$1.HEX = exports$1.URL_CHAR = exports$1.STRICT_URL_CHAR = exports$1.USERINFO_CHARS = exports$1.MARK = exports$1.ALPHANUM = exports$1.NUM = exports$1.HEX_MAP = exports$1.NUM_MAP = exports$1.ALPHA = exports$1.FINISH = exports$1.H_METHOD_MAP = exports$1.METHOD_MAP = exports$1.METHODS_RTSP = exports$1.METHODS_ICE = exports$1.METHODS_HTTP = exports$1.METHODS = exports$1.LENIENT_FLAGS = exports$1.FLAGS = exports$1.TYPE = exports$1.ERROR = void 0;
     const utils_1 = /* @__PURE__ */ requireUtils$2();
     (function(ERROR) {
       ERROR[ERROR["OK"] = 0] = "OK";
@@ -6434,12 +6433,12 @@ function requireConstants$8() {
       ERROR[ERROR["PAUSED_UPGRADE"] = 22] = "PAUSED_UPGRADE";
       ERROR[ERROR["PAUSED_H2_UPGRADE"] = 23] = "PAUSED_H2_UPGRADE";
       ERROR[ERROR["USER"] = 24] = "USER";
-    })(exports.ERROR || (exports.ERROR = {}));
+    })(exports$1.ERROR || (exports$1.ERROR = {}));
     (function(TYPE) {
       TYPE[TYPE["BOTH"] = 0] = "BOTH";
       TYPE[TYPE["REQUEST"] = 1] = "REQUEST";
       TYPE[TYPE["RESPONSE"] = 2] = "RESPONSE";
-    })(exports.TYPE || (exports.TYPE = {}));
+    })(exports$1.TYPE || (exports$1.TYPE = {}));
     (function(FLAGS) {
       FLAGS[FLAGS["CONNECTION_KEEP_ALIVE"] = 1] = "CONNECTION_KEEP_ALIVE";
       FLAGS[FLAGS["CONNECTION_CLOSE"] = 2] = "CONNECTION_CLOSE";
@@ -6450,12 +6449,12 @@ function requireConstants$8() {
       FLAGS[FLAGS["SKIPBODY"] = 64] = "SKIPBODY";
       FLAGS[FLAGS["TRAILING"] = 128] = "TRAILING";
       FLAGS[FLAGS["TRANSFER_ENCODING"] = 512] = "TRANSFER_ENCODING";
-    })(exports.FLAGS || (exports.FLAGS = {}));
+    })(exports$1.FLAGS || (exports$1.FLAGS = {}));
     (function(LENIENT_FLAGS) {
       LENIENT_FLAGS[LENIENT_FLAGS["HEADERS"] = 1] = "HEADERS";
       LENIENT_FLAGS[LENIENT_FLAGS["CHUNKED_LENGTH"] = 2] = "CHUNKED_LENGTH";
       LENIENT_FLAGS[LENIENT_FLAGS["KEEP_ALIVE"] = 4] = "KEEP_ALIVE";
-    })(exports.LENIENT_FLAGS || (exports.LENIENT_FLAGS = {}));
+    })(exports$1.LENIENT_FLAGS || (exports$1.LENIENT_FLAGS = {}));
     var METHODS;
     (function(METHODS2) {
       METHODS2[METHODS2["DELETE"] = 0] = "DELETE";
@@ -6504,8 +6503,8 @@ function requireConstants$8() {
       METHODS2[METHODS2["REDIRECT"] = 43] = "REDIRECT";
       METHODS2[METHODS2["RECORD"] = 44] = "RECORD";
       METHODS2[METHODS2["FLUSH"] = 45] = "FLUSH";
-    })(METHODS = exports.METHODS || (exports.METHODS = {}));
-    exports.METHODS_HTTP = [
+    })(METHODS = exports$1.METHODS || (exports$1.METHODS = {}));
+    exports$1.METHODS_HTTP = [
       METHODS.DELETE,
       METHODS.GET,
       METHODS.HEAD,
@@ -6543,10 +6542,10 @@ function requireConstants$8() {
       // TODO(indutny): should we allow it with HTTP?
       METHODS.SOURCE
     ];
-    exports.METHODS_ICE = [
+    exports$1.METHODS_ICE = [
       METHODS.SOURCE
     ];
-    exports.METHODS_RTSP = [
+    exports$1.METHODS_RTSP = [
       METHODS.OPTIONS,
       METHODS.DESCRIBE,
       METHODS.ANNOUNCE,
@@ -6563,24 +6562,24 @@ function requireConstants$8() {
       METHODS.GET,
       METHODS.POST
     ];
-    exports.METHOD_MAP = utils_1.enumToMap(METHODS);
-    exports.H_METHOD_MAP = {};
-    Object.keys(exports.METHOD_MAP).forEach((key) => {
+    exports$1.METHOD_MAP = utils_1.enumToMap(METHODS);
+    exports$1.H_METHOD_MAP = {};
+    Object.keys(exports$1.METHOD_MAP).forEach((key) => {
       if (/^H/.test(key)) {
-        exports.H_METHOD_MAP[key] = exports.METHOD_MAP[key];
+        exports$1.H_METHOD_MAP[key] = exports$1.METHOD_MAP[key];
       }
     });
     (function(FINISH) {
       FINISH[FINISH["SAFE"] = 0] = "SAFE";
       FINISH[FINISH["SAFE_WITH_CB"] = 1] = "SAFE_WITH_CB";
       FINISH[FINISH["UNSAFE"] = 2] = "UNSAFE";
-    })(exports.FINISH || (exports.FINISH = {}));
-    exports.ALPHA = [];
+    })(exports$1.FINISH || (exports$1.FINISH = {}));
+    exports$1.ALPHA = [];
     for (let i = "A".charCodeAt(0); i <= "Z".charCodeAt(0); i++) {
-      exports.ALPHA.push(String.fromCharCode(i));
-      exports.ALPHA.push(String.fromCharCode(i + 32));
+      exports$1.ALPHA.push(String.fromCharCode(i));
+      exports$1.ALPHA.push(String.fromCharCode(i + 32));
     }
-    exports.NUM_MAP = {
+    exports$1.NUM_MAP = {
       0: 0,
       1: 1,
       2: 2,
@@ -6592,7 +6591,7 @@ function requireConstants$8() {
       8: 8,
       9: 9
     };
-    exports.HEX_MAP = {
+    exports$1.HEX_MAP = {
       0: 0,
       1: 1,
       2: 2,
@@ -6616,7 +6615,7 @@ function requireConstants$8() {
       e: 14,
       f: 15
     };
-    exports.NUM = [
+    exports$1.NUM = [
       "0",
       "1",
       "2",
@@ -6628,10 +6627,10 @@ function requireConstants$8() {
       "8",
       "9"
     ];
-    exports.ALPHANUM = exports.ALPHA.concat(exports.NUM);
-    exports.MARK = ["-", "_", ".", "!", "~", "*", "'", "(", ")"];
-    exports.USERINFO_CHARS = exports.ALPHANUM.concat(exports.MARK).concat(["%", ";", ":", "&", "=", "+", "$", ","]);
-    exports.STRICT_URL_CHAR = [
+    exports$1.ALPHANUM = exports$1.ALPHA.concat(exports$1.NUM);
+    exports$1.MARK = ["-", "_", ".", "!", "~", "*", "'", "(", ")"];
+    exports$1.USERINFO_CHARS = exports$1.ALPHANUM.concat(exports$1.MARK).concat(["%", ";", ":", "&", "=", "+", "$", ","]);
+    exports$1.STRICT_URL_CHAR = [
       "!",
       '"',
       "$",
@@ -6662,13 +6661,13 @@ function requireConstants$8() {
       "|",
       "}",
       "~"
-    ].concat(exports.ALPHANUM);
-    exports.URL_CHAR = exports.STRICT_URL_CHAR.concat(["	", "\f"]);
+    ].concat(exports$1.ALPHANUM);
+    exports$1.URL_CHAR = exports$1.STRICT_URL_CHAR.concat(["	", "\f"]);
     for (let i = 128; i <= 255; i++) {
-      exports.URL_CHAR.push(i);
+      exports$1.URL_CHAR.push(i);
     }
-    exports.HEX = exports.NUM.concat(["a", "b", "c", "d", "e", "f", "A", "B", "C", "D", "E", "F"]);
-    exports.STRICT_TOKEN = [
+    exports$1.HEX = exports$1.NUM.concat(["a", "b", "c", "d", "e", "f", "A", "B", "C", "D", "E", "F"]);
+    exports$1.STRICT_TOKEN = [
       "!",
       "#",
       "$",
@@ -6684,17 +6683,17 @@ function requireConstants$8() {
       "`",
       "|",
       "~"
-    ].concat(exports.ALPHANUM);
-    exports.TOKEN = exports.STRICT_TOKEN.concat([" "]);
-    exports.HEADER_CHARS = ["	"];
+    ].concat(exports$1.ALPHANUM);
+    exports$1.TOKEN = exports$1.STRICT_TOKEN.concat([" "]);
+    exports$1.HEADER_CHARS = ["	"];
     for (let i = 32; i <= 255; i++) {
       if (i !== 127) {
-        exports.HEADER_CHARS.push(i);
+        exports$1.HEADER_CHARS.push(i);
       }
     }
-    exports.CONNECTION_TOKEN_CHARS = exports.HEADER_CHARS.filter((c) => c !== 44);
-    exports.MAJOR = exports.NUM_MAP;
-    exports.MINOR = exports.MAJOR;
+    exports$1.CONNECTION_TOKEN_CHARS = exports$1.HEADER_CHARS.filter((c) => c !== 44);
+    exports$1.MAJOR = exports$1.NUM_MAP;
+    exports$1.MINOR = exports$1.MAJOR;
     var HEADER_STATE;
     (function(HEADER_STATE2) {
       HEADER_STATE2[HEADER_STATE2["GENERAL"] = 0] = "GENERAL";
@@ -6706,8 +6705,8 @@ function requireConstants$8() {
       HEADER_STATE2[HEADER_STATE2["CONNECTION_CLOSE"] = 6] = "CONNECTION_CLOSE";
       HEADER_STATE2[HEADER_STATE2["CONNECTION_UPGRADE"] = 7] = "CONNECTION_UPGRADE";
       HEADER_STATE2[HEADER_STATE2["TRANSFER_ENCODING_CHUNKED"] = 8] = "TRANSFER_ENCODING_CHUNKED";
-    })(HEADER_STATE = exports.HEADER_STATE || (exports.HEADER_STATE = {}));
-    exports.SPECIAL_HEADERS = {
+    })(HEADER_STATE = exports$1.HEADER_STATE || (exports$1.HEADER_STATE = {}));
+    exports$1.SPECIAL_HEADERS = {
       "connection": HEADER_STATE.CONNECTION,
       "content-length": HEADER_STATE.CONTENT_LENGTH,
       "proxy-connection": HEADER_STATE.CONNECTION,
@@ -7354,9 +7353,9 @@ function requireClient() {
   const TIMEOUT_BODY = 2;
   const TIMEOUT_IDLE = 3;
   class Parser {
-    constructor(client2, socket, { exports }) {
+    constructor(client2, socket, { exports: exports$1 }) {
       assert2(Number.isFinite(client2[kMaxHeadersSize]) && client2[kMaxHeadersSize] > 0);
-      this.llhttp = exports;
+      this.llhttp = exports$1;
       this.ptr = this.llhttp.llhttp_alloc(constants2.TYPE.RESPONSE);
       this.client = client2;
       this.socket = socket;
@@ -16346,9 +16345,9 @@ function requireConnection() {
   channels.open = diagnosticsChannel.channel("undici:websocket:open");
   channels.close = diagnosticsChannel.channel("undici:websocket:close");
   channels.socketError = diagnosticsChannel.channel("undici:websocket:socket_error");
-  let crypto;
+  let crypto2;
   try {
-    crypto = require("crypto");
+    crypto2 = require("crypto");
   } catch {
   }
   function establishWebSocketConnection(url, protocols, ws, onEstablish, options2) {
@@ -16367,7 +16366,7 @@ function requireConnection() {
       const headersList = new Headers(options2.headers)[kHeadersList];
       request2.headersList = headersList;
     }
-    const keyValue = crypto.randomBytes(16).toString("base64");
+    const keyValue = crypto2.randomBytes(16).toString("base64");
     request2.headersList.append("sec-websocket-key", keyValue);
     request2.headersList.append("sec-websocket-version", "13");
     for (const protocol of protocols) {
@@ -16396,7 +16395,7 @@ function requireConnection() {
           return;
         }
         const secWSAccept = response2.headersList.get("Sec-WebSocket-Accept");
-        const digest = crypto.createHash("sha1").update(keyValue + uid).digest("base64");
+        const digest = crypto2.createHash("sha1").update(keyValue + uid).digest("base64");
         if (secWSAccept !== digest) {
           failWebsocketConnection(ws, "Incorrect hash received in Sec-WebSocket-Accept header.");
           return;
@@ -16476,9 +16475,9 @@ function requireFrame() {
   if (hasRequiredFrame) return frame;
   hasRequiredFrame = 1;
   const { maxUnsigned16Bit } = /* @__PURE__ */ requireConstants$6();
-  let crypto;
+  let crypto2;
   try {
-    crypto = require("crypto");
+    crypto2 = require("crypto");
   } catch {
   }
   class WebsocketFrameSend {
@@ -16487,7 +16486,7 @@ function requireFrame() {
      */
     constructor(data) {
       this.frameData = data;
-      this.maskKey = crypto.randomBytes(4);
+      this.maskKey = crypto2.randomBytes(4);
     }
     createFrame(opcode) {
       const bodyLength = this.frameData?.byteLength ?? 0;
@@ -16504,7 +16503,6 @@ function requireFrame() {
       buffer[0] = buffer[1] = 0;
       buffer[0] |= 128;
       buffer[0] = (buffer[0] & 240) + opcode;
-      /*! ws. MIT License. Einar Otto Stangvik <einaros@gmail.com> */
       buffer[offset - 4] = this.maskKey[0];
       buffer[offset - 3] = this.maskKey[1];
       buffer[offset - 2] = this.maskKey[2];
@@ -18131,7 +18129,7 @@ var hasRequiredSummary;
 function requireSummary() {
   if (hasRequiredSummary) return summary;
   hasRequiredSummary = 1;
-  (function(exports) {
+  (function(exports$1) {
     var __awaiter2 = summary && summary.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
         return value instanceof P ? value : new P(function(resolve) {
@@ -18159,13 +18157,13 @@ function requireSummary() {
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
     };
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.summary = exports.markdownSummary = exports.SUMMARY_DOCS_URL = exports.SUMMARY_ENV_VAR = void 0;
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.summary = exports$1.markdownSummary = exports$1.SUMMARY_DOCS_URL = exports$1.SUMMARY_ENV_VAR = void 0;
     const os_1 = require$$0$3;
     const fs_1 = require$$1$2;
     const { access, appendFile, writeFile } = fs_1.promises;
-    exports.SUMMARY_ENV_VAR = "GITHUB_STEP_SUMMARY";
-    exports.SUMMARY_DOCS_URL = "https://docs.github.com/actions/using-workflows/workflow-commands-for-github-actions#adding-a-job-summary";
+    exports$1.SUMMARY_ENV_VAR = "GITHUB_STEP_SUMMARY";
+    exports$1.SUMMARY_DOCS_URL = "https://docs.github.com/actions/using-workflows/workflow-commands-for-github-actions#adding-a-job-summary";
     class Summary {
       constructor() {
         this._buffer = "";
@@ -18181,9 +18179,9 @@ function requireSummary() {
           if (this._filePath) {
             return this._filePath;
           }
-          const pathFromEnv = process.env[exports.SUMMARY_ENV_VAR];
+          const pathFromEnv = process.env[exports$1.SUMMARY_ENV_VAR];
           if (!pathFromEnv) {
-            throw new Error(`Unable to find environment variable for $${exports.SUMMARY_ENV_VAR}. Check if your runtime environment supports job summaries.`);
+            throw new Error(`Unable to find environment variable for $${exports$1.SUMMARY_ENV_VAR}. Check if your runtime environment supports job summaries.`);
           }
           try {
             yield access(pathFromEnv, fs_1.constants.R_OK | fs_1.constants.W_OK);
@@ -18417,8 +18415,8 @@ function requireSummary() {
       }
     }
     const _summary = new Summary();
-    exports.markdownSummary = _summary;
-    exports.summary = _summary;
+    exports$1.markdownSummary = _summary;
+    exports$1.summary = _summary;
   })(summary);
   return summary;
 }
@@ -18480,7 +18478,7 @@ var hasRequiredIoUtil$1;
 function requireIoUtil$1() {
   if (hasRequiredIoUtil$1) return ioUtil$1;
   hasRequiredIoUtil$1 = 1;
-  (function(exports) {
+  (function(exports$1) {
     var __createBinding2 = ioUtil$1 && ioUtil$1.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       Object.defineProperty(o, k2, { enumerable: true, get: function() {
@@ -18532,18 +18530,18 @@ function requireIoUtil$1() {
       });
     };
     var _a;
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getCmdPath = exports.tryGetExecutablePath = exports.isRooted = exports.isDirectory = exports.exists = exports.READONLY = exports.UV_FS_O_EXLOCK = exports.IS_WINDOWS = exports.unlink = exports.symlink = exports.stat = exports.rmdir = exports.rm = exports.rename = exports.readlink = exports.readdir = exports.open = exports.mkdir = exports.lstat = exports.copyFile = exports.chmod = void 0;
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.getCmdPath = exports$1.tryGetExecutablePath = exports$1.isRooted = exports$1.isDirectory = exports$1.exists = exports$1.READONLY = exports$1.UV_FS_O_EXLOCK = exports$1.IS_WINDOWS = exports$1.unlink = exports$1.symlink = exports$1.stat = exports$1.rmdir = exports$1.rm = exports$1.rename = exports$1.readlink = exports$1.readdir = exports$1.open = exports$1.mkdir = exports$1.lstat = exports$1.copyFile = exports$1.chmod = void 0;
     const fs = __importStar2(require$$1$2);
     const path2 = __importStar2(require$$1$7);
-    _a = fs.promises, exports.chmod = _a.chmod, exports.copyFile = _a.copyFile, exports.lstat = _a.lstat, exports.mkdir = _a.mkdir, exports.open = _a.open, exports.readdir = _a.readdir, exports.readlink = _a.readlink, exports.rename = _a.rename, exports.rm = _a.rm, exports.rmdir = _a.rmdir, exports.stat = _a.stat, exports.symlink = _a.symlink, exports.unlink = _a.unlink;
-    exports.IS_WINDOWS = process.platform === "win32";
-    exports.UV_FS_O_EXLOCK = 268435456;
-    exports.READONLY = fs.constants.O_RDONLY;
+    _a = fs.promises, exports$1.chmod = _a.chmod, exports$1.copyFile = _a.copyFile, exports$1.lstat = _a.lstat, exports$1.mkdir = _a.mkdir, exports$1.open = _a.open, exports$1.readdir = _a.readdir, exports$1.readlink = _a.readlink, exports$1.rename = _a.rename, exports$1.rm = _a.rm, exports$1.rmdir = _a.rmdir, exports$1.stat = _a.stat, exports$1.symlink = _a.symlink, exports$1.unlink = _a.unlink;
+    exports$1.IS_WINDOWS = process.platform === "win32";
+    exports$1.UV_FS_O_EXLOCK = 268435456;
+    exports$1.READONLY = fs.constants.O_RDONLY;
     function exists(fsPath) {
       return __awaiter2(this, void 0, void 0, function* () {
         try {
-          yield exports.stat(fsPath);
+          yield exports$1.stat(fsPath);
         } catch (err) {
           if (err.code === "ENOENT") {
             return false;
@@ -18553,37 +18551,37 @@ function requireIoUtil$1() {
         return true;
       });
     }
-    exports.exists = exists;
+    exports$1.exists = exists;
     function isDirectory(fsPath, useStat = false) {
       return __awaiter2(this, void 0, void 0, function* () {
-        const stats = useStat ? yield exports.stat(fsPath) : yield exports.lstat(fsPath);
+        const stats = useStat ? yield exports$1.stat(fsPath) : yield exports$1.lstat(fsPath);
         return stats.isDirectory();
       });
     }
-    exports.isDirectory = isDirectory;
+    exports$1.isDirectory = isDirectory;
     function isRooted(p) {
       p = normalizeSeparators(p);
       if (!p) {
         throw new Error('isRooted() parameter "p" cannot be empty');
       }
-      if (exports.IS_WINDOWS) {
+      if (exports$1.IS_WINDOWS) {
         return p.startsWith("\\") || /^[A-Z]:/i.test(p);
       }
       return p.startsWith("/");
     }
-    exports.isRooted = isRooted;
+    exports$1.isRooted = isRooted;
     function tryGetExecutablePath(filePath, extensions) {
       return __awaiter2(this, void 0, void 0, function* () {
         let stats = void 0;
         try {
-          stats = yield exports.stat(filePath);
+          stats = yield exports$1.stat(filePath);
         } catch (err) {
           if (err.code !== "ENOENT") {
             console.log(`Unexpected error attempting to determine if executable file exists '${filePath}': ${err}`);
           }
         }
         if (stats && stats.isFile()) {
-          if (exports.IS_WINDOWS) {
+          if (exports$1.IS_WINDOWS) {
             const upperExt = path2.extname(filePath).toUpperCase();
             if (extensions.some((validExt) => validExt.toUpperCase() === upperExt)) {
               return filePath;
@@ -18599,18 +18597,18 @@ function requireIoUtil$1() {
           filePath = originalFilePath + extension;
           stats = void 0;
           try {
-            stats = yield exports.stat(filePath);
+            stats = yield exports$1.stat(filePath);
           } catch (err) {
             if (err.code !== "ENOENT") {
               console.log(`Unexpected error attempting to determine if executable file exists '${filePath}': ${err}`);
             }
           }
           if (stats && stats.isFile()) {
-            if (exports.IS_WINDOWS) {
+            if (exports$1.IS_WINDOWS) {
               try {
                 const directory = path2.dirname(filePath);
                 const upperName = path2.basename(filePath).toUpperCase();
-                for (const actualName of yield exports.readdir(directory)) {
+                for (const actualName of yield exports$1.readdir(directory)) {
                   if (upperName === actualName.toUpperCase()) {
                     filePath = path2.join(directory, actualName);
                     break;
@@ -18630,10 +18628,10 @@ function requireIoUtil$1() {
         return "";
       });
     }
-    exports.tryGetExecutablePath = tryGetExecutablePath;
+    exports$1.tryGetExecutablePath = tryGetExecutablePath;
     function normalizeSeparators(p) {
       p = p || "";
-      if (exports.IS_WINDOWS) {
+      if (exports$1.IS_WINDOWS) {
         p = p.replace(/\//g, "\\");
         return p.replace(/\\\\+/g, "\\");
       }
@@ -18646,7 +18644,7 @@ function requireIoUtil$1() {
       var _a2;
       return (_a2 = process.env["COMSPEC"]) !== null && _a2 !== void 0 ? _a2 : `cmd.exe`;
     }
-    exports.getCmdPath = getCmdPath;
+    exports$1.getCmdPath = getCmdPath;
   })(ioUtil$1);
   return ioUtil$1;
 }
@@ -19490,7 +19488,7 @@ var hasRequiredPlatform;
 function requirePlatform() {
   if (hasRequiredPlatform) return platform;
   hasRequiredPlatform = 1;
-  (function(exports) {
+  (function(exports$1) {
     var __createBinding2 = platform && platform.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -19548,8 +19546,8 @@ function requirePlatform() {
     var __importDefault2 = platform && platform.__importDefault || function(mod) {
       return mod && mod.__esModule ? mod : { "default": mod };
     };
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getDetails = exports.isLinux = exports.isMacOS = exports.isWindows = exports.arch = exports.platform = void 0;
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.getDetails = exports$1.isLinux = exports$1.isMacOS = exports$1.isWindows = exports$1.arch = exports$1.platform = void 0;
     const os_1 = __importDefault2(require$$0$3);
     const exec2 = __importStar2(/* @__PURE__ */ requireExec());
     const getWindowsInfo = () => __awaiter2(void 0, void 0, void 0, function* () {
@@ -19586,23 +19584,23 @@ function requirePlatform() {
         version: version2
       };
     });
-    exports.platform = os_1.default.platform();
-    exports.arch = os_1.default.arch();
-    exports.isWindows = exports.platform === "win32";
-    exports.isMacOS = exports.platform === "darwin";
-    exports.isLinux = exports.platform === "linux";
+    exports$1.platform = os_1.default.platform();
+    exports$1.arch = os_1.default.arch();
+    exports$1.isWindows = exports$1.platform === "win32";
+    exports$1.isMacOS = exports$1.platform === "darwin";
+    exports$1.isLinux = exports$1.platform === "linux";
     function getDetails() {
       return __awaiter2(this, void 0, void 0, function* () {
-        return Object.assign(Object.assign({}, yield exports.isWindows ? getWindowsInfo() : exports.isMacOS ? getMacOsInfo() : getLinuxInfo()), {
-          platform: exports.platform,
-          arch: exports.arch,
-          isWindows: exports.isWindows,
-          isMacOS: exports.isMacOS,
-          isLinux: exports.isLinux
+        return Object.assign(Object.assign({}, yield exports$1.isWindows ? getWindowsInfo() : exports$1.isMacOS ? getMacOsInfo() : getLinuxInfo()), {
+          platform: exports$1.platform,
+          arch: exports$1.arch,
+          isWindows: exports$1.isWindows,
+          isMacOS: exports$1.isMacOS,
+          isLinux: exports$1.isLinux
         });
       });
     }
-    exports.getDetails = getDetails;
+    exports$1.getDetails = getDetails;
   })(platform);
   return platform;
 }
@@ -19610,7 +19608,7 @@ var hasRequiredCore;
 function requireCore() {
   if (hasRequiredCore) return core;
   hasRequiredCore = 1;
-  (function(exports) {
+  (function(exports$1) {
     var __createBinding2 = core && core.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -19665,8 +19663,8 @@ function requireCore() {
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
     };
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.platform = exports.toPlatformPath = exports.toWin32Path = exports.toPosixPath = exports.markdownSummary = exports.summary = exports.getIDToken = exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.notice = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.platform = exports$1.toPlatformPath = exports$1.toWin32Path = exports$1.toPosixPath = exports$1.markdownSummary = exports$1.summary = exports$1.getIDToken = exports$1.getState = exports$1.saveState = exports$1.group = exports$1.endGroup = exports$1.startGroup = exports$1.info = exports$1.notice = exports$1.warning = exports$1.error = exports$1.debug = exports$1.isDebug = exports$1.setFailed = exports$1.setCommandEcho = exports$1.setOutput = exports$1.getBooleanInput = exports$1.getMultilineInput = exports$1.getInput = exports$1.addPath = exports$1.setSecret = exports$1.exportVariable = exports$1.ExitCode = void 0;
     const command_1 = /* @__PURE__ */ requireCommand();
     const file_command_1 = /* @__PURE__ */ requireFileCommand();
     const utils_1 = /* @__PURE__ */ requireUtils$3();
@@ -19677,7 +19675,7 @@ function requireCore() {
     (function(ExitCode2) {
       ExitCode2[ExitCode2["Success"] = 0] = "Success";
       ExitCode2[ExitCode2["Failure"] = 1] = "Failure";
-    })(ExitCode || (exports.ExitCode = ExitCode = {}));
+    })(ExitCode || (exports$1.ExitCode = ExitCode = {}));
     function exportVariable(name, val) {
       const convertedVal = (0, utils_1.toCommandValue)(val);
       process.env[name] = convertedVal;
@@ -19687,11 +19685,11 @@ function requireCore() {
       }
       (0, command_1.issueCommand)("set-env", { name }, convertedVal);
     }
-    exports.exportVariable = exportVariable;
+    exports$1.exportVariable = exportVariable;
     function setSecret(secret) {
       (0, command_1.issueCommand)("add-mask", {}, secret);
     }
-    exports.setSecret = setSecret;
+    exports$1.setSecret = setSecret;
     function addPath(inputPath) {
       const filePath = process.env["GITHUB_PATH"] || "";
       if (filePath) {
@@ -19701,7 +19699,7 @@ function requireCore() {
       }
       process.env["PATH"] = `${inputPath}${path2.delimiter}${process.env["PATH"]}`;
     }
-    exports.addPath = addPath;
+    exports$1.addPath = addPath;
     function getInput2(name, options2) {
       const val = process.env[`INPUT_${name.replace(/ /g, "_").toUpperCase()}`] || "";
       if (options2 && options2.required && !val) {
@@ -19712,7 +19710,7 @@ function requireCore() {
       }
       return val.trim();
     }
-    exports.getInput = getInput2;
+    exports$1.getInput = getInput2;
     function getMultilineInput(name, options2) {
       const inputs = getInput2(name, options2).split("\n").filter((x) => x !== "");
       if (options2 && options2.trimWhitespace === false) {
@@ -19720,7 +19718,7 @@ function requireCore() {
       }
       return inputs.map((input) => input.trim());
     }
-    exports.getMultilineInput = getMultilineInput;
+    exports$1.getMultilineInput = getMultilineInput;
     function getBooleanInput(name, options2) {
       const trueValue = ["true", "True", "TRUE"];
       const falseValue = ["false", "False", "FALSE"];
@@ -19732,7 +19730,7 @@ function requireCore() {
       throw new TypeError(`Input does not meet YAML 1.2 "Core Schema" specification: ${name}
 Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
     }
-    exports.getBooleanInput = getBooleanInput;
+    exports$1.getBooleanInput = getBooleanInput;
     function setOutput(name, value) {
       const filePath = process.env["GITHUB_OUTPUT"] || "";
       if (filePath) {
@@ -19741,48 +19739,48 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       process.stdout.write(os.EOL);
       (0, command_1.issueCommand)("set-output", { name }, (0, utils_1.toCommandValue)(value));
     }
-    exports.setOutput = setOutput;
+    exports$1.setOutput = setOutput;
     function setCommandEcho(enabled) {
       (0, command_1.issue)("echo", enabled ? "on" : "off");
     }
-    exports.setCommandEcho = setCommandEcho;
+    exports$1.setCommandEcho = setCommandEcho;
     function setFailed(message) {
       process.exitCode = ExitCode.Failure;
       error2(message);
     }
-    exports.setFailed = setFailed;
+    exports$1.setFailed = setFailed;
     function isDebug() {
       return process.env["RUNNER_DEBUG"] === "1";
     }
-    exports.isDebug = isDebug;
+    exports$1.isDebug = isDebug;
     function debug2(message) {
       (0, command_1.issueCommand)("debug", {}, message);
     }
-    exports.debug = debug2;
+    exports$1.debug = debug2;
     function error2(message, properties = {}) {
       (0, command_1.issueCommand)("error", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
     }
-    exports.error = error2;
+    exports$1.error = error2;
     function warning(message, properties = {}) {
       (0, command_1.issueCommand)("warning", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
     }
-    exports.warning = warning;
+    exports$1.warning = warning;
     function notice(message, properties = {}) {
       (0, command_1.issueCommand)("notice", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
     }
-    exports.notice = notice;
+    exports$1.notice = notice;
     function info(message) {
       process.stdout.write(message + os.EOL);
     }
-    exports.info = info;
+    exports$1.info = info;
     function startGroup(name) {
       (0, command_1.issue)("group", name);
     }
-    exports.startGroup = startGroup;
+    exports$1.startGroup = startGroup;
     function endGroup() {
       (0, command_1.issue)("endgroup");
     }
-    exports.endGroup = endGroup;
+    exports$1.endGroup = endGroup;
     function group(name, fn) {
       return __awaiter2(this, void 0, void 0, function* () {
         startGroup(name);
@@ -19795,7 +19793,7 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
         return result;
       });
     }
-    exports.group = group;
+    exports$1.group = group;
     function saveState(name, value) {
       const filePath = process.env["GITHUB_STATE"] || "";
       if (filePath) {
@@ -19803,36 +19801,36 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       }
       (0, command_1.issueCommand)("save-state", { name }, (0, utils_1.toCommandValue)(value));
     }
-    exports.saveState = saveState;
+    exports$1.saveState = saveState;
     function getState(name) {
       return process.env[`STATE_${name}`] || "";
     }
-    exports.getState = getState;
+    exports$1.getState = getState;
     function getIDToken(aud) {
       return __awaiter2(this, void 0, void 0, function* () {
         return yield oidc_utils_1.OidcClient.getIDToken(aud);
       });
     }
-    exports.getIDToken = getIDToken;
+    exports$1.getIDToken = getIDToken;
     var summary_1 = /* @__PURE__ */ requireSummary();
-    Object.defineProperty(exports, "summary", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "summary", { enumerable: true, get: function() {
       return summary_1.summary;
     } });
     var summary_2 = /* @__PURE__ */ requireSummary();
-    Object.defineProperty(exports, "markdownSummary", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "markdownSummary", { enumerable: true, get: function() {
       return summary_2.markdownSummary;
     } });
     var path_utils_1 = /* @__PURE__ */ requirePathUtils();
-    Object.defineProperty(exports, "toPosixPath", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "toPosixPath", { enumerable: true, get: function() {
       return path_utils_1.toPosixPath;
     } });
-    Object.defineProperty(exports, "toWin32Path", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "toWin32Path", { enumerable: true, get: function() {
       return path_utils_1.toWin32Path;
     } });
-    Object.defineProperty(exports, "toPlatformPath", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "toPlatformPath", { enumerable: true, get: function() {
       return path_utils_1.toPlatformPath;
     } });
-    exports.platform = __importStar2(/* @__PURE__ */ requirePlatform());
+    exports$1.platform = __importStar2(/* @__PURE__ */ requirePlatform());
   })(core);
   return core;
 }
@@ -20044,15 +20042,15 @@ var hasRequiredInternalMatchKind;
 function requireInternalMatchKind() {
   if (hasRequiredInternalMatchKind) return internalMatchKind;
   hasRequiredInternalMatchKind = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.MatchKind = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.MatchKind = void 0;
     (function(MatchKind) {
       MatchKind[MatchKind["None"] = 0] = "None";
       MatchKind[MatchKind["Directory"] = 1] = "Directory";
       MatchKind[MatchKind["File"] = 2] = "File";
       MatchKind[MatchKind["All"] = 3] = "All";
-    })(exports.MatchKind || (exports.MatchKind = {}));
+    })(exports$1.MatchKind || (exports$1.MatchKind = {}));
   })(internalMatchKind);
   return internalMatchKind;
 }
@@ -21556,8 +21554,8 @@ var hasRequiredSemver;
 function requireSemver() {
   if (hasRequiredSemver) return semver.exports;
   hasRequiredSemver = 1;
-  (function(module, exports) {
-    exports = module.exports = SemVer;
+  (function(module, exports$1) {
+    exports$1 = module.exports = SemVer;
     var debug2;
     if (typeof process === "object" && process.env && process.env.NODE_DEBUG && /\bsemver\b/i.test(process.env.NODE_DEBUG)) {
       debug2 = function() {
@@ -21569,16 +21567,16 @@ function requireSemver() {
       debug2 = function() {
       };
     }
-    exports.SEMVER_SPEC_VERSION = "2.0.0";
+    exports$1.SEMVER_SPEC_VERSION = "2.0.0";
     var MAX_LENGTH = 256;
     var MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || /* istanbul ignore next */
     9007199254740991;
     var MAX_SAFE_COMPONENT_LENGTH = 16;
     var MAX_SAFE_BUILD_LENGTH = MAX_LENGTH - 6;
-    var re = exports.re = [];
-    var safeRe = exports.safeRe = [];
-    var src2 = exports.src = [];
-    var t = exports.tokens = {};
+    var re = exports$1.re = [];
+    var safeRe = exports$1.safeRe = [];
+    var src2 = exports$1.src = [];
+    var t = exports$1.tokens = {};
     var R = 0;
     function tok(n) {
       t[n] = R++;
@@ -21690,7 +21688,7 @@ function requireSemver() {
         safeRe[i] = new RegExp(makeSafeRe(src2[i]));
       }
     }
-    exports.parse = parse2;
+    exports$1.parse = parse2;
     function parse2(version2, options2) {
       if (!options2 || typeof options2 !== "object") {
         options2 = {
@@ -21717,17 +21715,17 @@ function requireSemver() {
         return null;
       }
     }
-    exports.valid = valid;
+    exports$1.valid = valid;
     function valid(version2, options2) {
       var v = parse2(version2, options2);
       return v ? v.version : null;
     }
-    exports.clean = clean;
+    exports$1.clean = clean;
     function clean(version2, options2) {
       var s = parse2(version2.trim().replace(/^[=v]+/, ""), options2);
       return s ? s.version : null;
     }
-    exports.SemVer = SemVer;
+    exports$1.SemVer = SemVer;
     function SemVer(version2, options2) {
       if (!options2 || typeof options2 !== "object") {
         options2 = {
@@ -21943,7 +21941,7 @@ function requireSemver() {
       this.raw = this.version;
       return this;
     };
-    exports.inc = inc;
+    exports$1.inc = inc;
     function inc(version2, release, loose, identifier) {
       if (typeof loose === "string") {
         identifier = loose;
@@ -21955,7 +21953,7 @@ function requireSemver() {
         return null;
       }
     }
-    exports.diff = diff;
+    exports$1.diff = diff;
     function diff(version1, version2) {
       if (eq(version1, version2)) {
         return null;
@@ -21977,7 +21975,7 @@ function requireSemver() {
         return defaultResult;
       }
     }
-    exports.compareIdentifiers = compareIdentifiers;
+    exports$1.compareIdentifiers = compareIdentifiers;
     var numeric = /^[0-9]+$/;
     function compareIdentifiers(a, b) {
       var anum = numeric.test(a);
@@ -21988,77 +21986,77 @@ function requireSemver() {
       }
       return a === b ? 0 : anum && !bnum ? -1 : bnum && !anum ? 1 : a < b ? -1 : 1;
     }
-    exports.rcompareIdentifiers = rcompareIdentifiers;
+    exports$1.rcompareIdentifiers = rcompareIdentifiers;
     function rcompareIdentifiers(a, b) {
       return compareIdentifiers(b, a);
     }
-    exports.major = major;
+    exports$1.major = major;
     function major(a, loose) {
       return new SemVer(a, loose).major;
     }
-    exports.minor = minor;
+    exports$1.minor = minor;
     function minor(a, loose) {
       return new SemVer(a, loose).minor;
     }
-    exports.patch = patch;
+    exports$1.patch = patch;
     function patch(a, loose) {
       return new SemVer(a, loose).patch;
     }
-    exports.compare = compare;
+    exports$1.compare = compare;
     function compare(a, b, loose) {
       return new SemVer(a, loose).compare(new SemVer(b, loose));
     }
-    exports.compareLoose = compareLoose;
+    exports$1.compareLoose = compareLoose;
     function compareLoose(a, b) {
       return compare(a, b, true);
     }
-    exports.compareBuild = compareBuild;
+    exports$1.compareBuild = compareBuild;
     function compareBuild(a, b, loose) {
       var versionA = new SemVer(a, loose);
       var versionB = new SemVer(b, loose);
       return versionA.compare(versionB) || versionA.compareBuild(versionB);
     }
-    exports.rcompare = rcompare;
+    exports$1.rcompare = rcompare;
     function rcompare(a, b, loose) {
       return compare(b, a, loose);
     }
-    exports.sort = sort;
+    exports$1.sort = sort;
     function sort(list, loose) {
       return list.sort(function(a, b) {
-        return exports.compareBuild(a, b, loose);
+        return exports$1.compareBuild(a, b, loose);
       });
     }
-    exports.rsort = rsort;
+    exports$1.rsort = rsort;
     function rsort(list, loose) {
       return list.sort(function(a, b) {
-        return exports.compareBuild(b, a, loose);
+        return exports$1.compareBuild(b, a, loose);
       });
     }
-    exports.gt = gt;
+    exports$1.gt = gt;
     function gt(a, b, loose) {
       return compare(a, b, loose) > 0;
     }
-    exports.lt = lt;
+    exports$1.lt = lt;
     function lt(a, b, loose) {
       return compare(a, b, loose) < 0;
     }
-    exports.eq = eq;
+    exports$1.eq = eq;
     function eq(a, b, loose) {
       return compare(a, b, loose) === 0;
     }
-    exports.neq = neq;
+    exports$1.neq = neq;
     function neq(a, b, loose) {
       return compare(a, b, loose) !== 0;
     }
-    exports.gte = gte;
+    exports$1.gte = gte;
     function gte(a, b, loose) {
       return compare(a, b, loose) >= 0;
     }
-    exports.lte = lte;
+    exports$1.lte = lte;
     function lte(a, b, loose) {
       return compare(a, b, loose) <= 0;
     }
-    exports.cmp = cmp;
+    exports$1.cmp = cmp;
     function cmp(a, op, b, loose) {
       switch (op) {
         case "===":
@@ -22091,7 +22089,7 @@ function requireSemver() {
           throw new TypeError("Invalid operator: " + op);
       }
     }
-    exports.Comparator = Comparator;
+    exports$1.Comparator = Comparator;
     function Comparator(comp, options2) {
       if (!options2 || typeof options2 !== "object") {
         options2 = {
@@ -22187,7 +22185,7 @@ function requireSemver() {
       var oppositeDirectionsGreaterThan = cmp(this.semver, ">", comp.semver, options2) && ((this.operator === "<=" || this.operator === "<") && (comp.operator === ">=" || comp.operator === ">"));
       return sameDirectionIncreasing || sameDirectionDecreasing || sameSemVer && differentDirectionsInclusive || oppositeDirectionsLessThan || oppositeDirectionsGreaterThan;
     };
-    exports.Range = Range2;
+    exports$1.Range = Range2;
     function Range2(range, options2) {
       if (!options2 || typeof options2 !== "object") {
         options2 = {
@@ -22281,7 +22279,7 @@ function requireSemver() {
       }
       return result;
     }
-    exports.toComparators = toComparators;
+    exports$1.toComparators = toComparators;
     function toComparators(range, options2) {
       return new Range2(range, options2).set.map(function(comp) {
         return comp.map(function(c) {
@@ -22504,7 +22502,7 @@ function requireSemver() {
       }
       return true;
     }
-    exports.satisfies = satisfies;
+    exports$1.satisfies = satisfies;
     function satisfies(version2, range, options2) {
       try {
         range = new Range2(range, options2);
@@ -22513,7 +22511,7 @@ function requireSemver() {
       }
       return range.test(version2);
     }
-    exports.maxSatisfying = maxSatisfying;
+    exports$1.maxSatisfying = maxSatisfying;
     function maxSatisfying(versions, range, options2) {
       var max = null;
       var maxSV = null;
@@ -22532,7 +22530,7 @@ function requireSemver() {
       });
       return max;
     }
-    exports.minSatisfying = minSatisfying;
+    exports$1.minSatisfying = minSatisfying;
     function minSatisfying(versions, range, options2) {
       var min = null;
       var minSV = null;
@@ -22551,7 +22549,7 @@ function requireSemver() {
       });
       return min;
     }
-    exports.minVersion = minVersion;
+    exports$1.minVersion = minVersion;
     function minVersion(range, loose) {
       range = new Range2(range, loose);
       var minver = new SemVer("0.0.0");
@@ -22596,7 +22594,7 @@ function requireSemver() {
       }
       return null;
     }
-    exports.validRange = validRange;
+    exports$1.validRange = validRange;
     function validRange(range, options2) {
       try {
         return new Range2(range, options2).range || "*";
@@ -22604,15 +22602,15 @@ function requireSemver() {
         return null;
       }
     }
-    exports.ltr = ltr;
+    exports$1.ltr = ltr;
     function ltr(version2, range, options2) {
       return outside(version2, range, "<", options2);
     }
-    exports.gtr = gtr;
+    exports$1.gtr = gtr;
     function gtr(version2, range, options2) {
       return outside(version2, range, ">", options2);
     }
-    exports.outside = outside;
+    exports$1.outside = outside;
     function outside(version2, range, hilo, options2) {
       version2 = new SemVer(version2, options2);
       range = new Range2(range, options2);
@@ -22665,18 +22663,18 @@ function requireSemver() {
       }
       return true;
     }
-    exports.prerelease = prerelease;
+    exports$1.prerelease = prerelease;
     function prerelease(version2, options2) {
       var parsed = parse2(version2, options2);
       return parsed && parsed.prerelease.length ? parsed.prerelease : null;
     }
-    exports.intersects = intersects;
+    exports$1.intersects = intersects;
     function intersects(r1, r2, options2) {
       r1 = new Range2(r1, options2);
       r2 = new Range2(r2, options2);
       return r1.intersects(r2);
     }
-    exports.coerce = coerce;
+    exports$1.coerce = coerce;
     function coerce(version2, options2) {
       if (version2 instanceof SemVer) {
         return version2;
@@ -22825,7 +22823,7 @@ function requireCacheUtils() {
   const exec2 = __importStar2(/* @__PURE__ */ requireExec());
   const glob2 = __importStar2(/* @__PURE__ */ requireGlob());
   const io2 = __importStar2(/* @__PURE__ */ requireIo$1());
-  const crypto = __importStar2(require$$0$4);
+  const crypto2 = __importStar2(require$$0$4);
   const fs = __importStar2(require$$1$2);
   const path2 = __importStar2(require$$1$7);
   const semver2 = __importStar2(/* @__PURE__ */ requireSemver());
@@ -22849,7 +22847,7 @@ function requireCacheUtils() {
         }
         tempDirectory = path2.join(baseLocation, "actions", "temp");
       }
-      const dest = path2.join(tempDirectory, crypto.randomUUID());
+      const dest = path2.join(tempDirectory, crypto2.randomUUID());
       yield io2.mkdirP(dest);
       return dest;
     });
@@ -22965,7 +22963,7 @@ function requireCacheUtils() {
       components.push("windows-only");
     }
     components.push(versionSalt);
-    return crypto.createHash("sha256").update(components.join("|")).digest("hex");
+    return crypto2.createHash("sha256").update(components.join("|")).digest("hex");
   }
   cacheUtils.getCacheVersion = getCacheVersion;
   function getRuntimeToken() {
@@ -23923,10 +23921,8 @@ function requireUuidUtils() {
   hasRequiredUuidUtils = 1;
   Object.defineProperty(uuidUtils, "__esModule", { value: true });
   uuidUtils.randomUUID = randomUUID;
-  const node_crypto_1 = require$$0$e;
-  const uuidFunction = typeof globalThis?.crypto?.randomUUID === "function" ? globalThis.crypto.randomUUID.bind(globalThis.crypto) : node_crypto_1.randomUUID;
   function randomUUID() {
-    return uuidFunction();
+    return crypto.randomUUID();
   }
   return uuidUtils;
 }
@@ -24798,13 +24794,13 @@ var hasRequiredLogPolicy$1;
 function requireLogPolicy$1() {
   if (hasRequiredLogPolicy$1) return logPolicy$1;
   hasRequiredLogPolicy$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.logPolicyName = void 0;
-    exports.logPolicy = logPolicy2;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.logPolicyName = void 0;
+    exports$1.logPolicy = logPolicy2;
     const log_js_1 = /* @__PURE__ */ requireLog$4();
     const sanitizer_js_1 = /* @__PURE__ */ requireSanitizer();
-    exports.logPolicyName = "logPolicy";
+    exports$1.logPolicyName = "logPolicy";
     function logPolicy2(options2 = {}) {
       const logger2 = options2.logger ?? log_js_1.logger.info;
       const sanitizer2 = new sanitizer_js_1.Sanitizer({
@@ -24812,7 +24808,7 @@ function requireLogPolicy$1() {
         additionalAllowedQueryParameters: options2.additionalAllowedQueryParameters
       });
       return {
-        name: exports.logPolicyName,
+        name: exports$1.logPolicyName,
         async sendRequest(request2, next) {
           if (!logger2.enabled) {
             return next(request2);
@@ -24833,16 +24829,16 @@ var hasRequiredRedirectPolicy$1;
 function requireRedirectPolicy$1() {
   if (hasRequiredRedirectPolicy$1) return redirectPolicy$1;
   hasRequiredRedirectPolicy$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.redirectPolicyName = void 0;
-    exports.redirectPolicy = redirectPolicy2;
-    exports.redirectPolicyName = "redirectPolicy";
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.redirectPolicyName = void 0;
+    exports$1.redirectPolicy = redirectPolicy2;
+    exports$1.redirectPolicyName = "redirectPolicy";
     const allowedRedirect = ["GET", "HEAD"];
     function redirectPolicy2(options2 = {}) {
       const { maxRetries = 20 } = options2;
       return {
-        name: exports.redirectPolicyName,
+        name: exports$1.redirectPolicyName,
         async sendRequest(request2, next) {
           const response2 = await next(request2);
           return handleRedirect(next, response2, maxRetries);
@@ -24887,16 +24883,16 @@ function requireUserAgentPlatform$1() {
   }
   async function setPlatformSpecificData(map) {
     if (node_process_1.default && node_process_1.default.versions) {
+      const osInfo = `${node_os_1.default.type()} ${node_os_1.default.release()}; ${node_os_1.default.arch()}`;
       const versions = node_process_1.default.versions;
       if (versions.bun) {
-        map.set("Bun", versions.bun);
+        map.set("Bun", `${versions.bun} (${osInfo})`);
       } else if (versions.deno) {
-        map.set("Deno", versions.deno);
+        map.set("Deno", `${versions.deno} (${osInfo})`);
       } else if (versions.node) {
-        map.set("Node", versions.node);
+        map.set("Node", `${versions.node} (${osInfo})`);
       }
     }
-    map.set("OS", `(${node_os_1.default.arch()}-${node_os_1.default.type()}-${node_os_1.default.release()})`);
   }
   return userAgentPlatform$1;
 }
@@ -24907,7 +24903,7 @@ function requireConstants$4() {
   hasRequiredConstants$4 = 1;
   Object.defineProperty(constants$4, "__esModule", { value: true });
   constants$4.DEFAULT_RETRY_POLICY_COUNT = constants$4.SDK_VERSION = void 0;
-  constants$4.SDK_VERSION = "0.3.1";
+  constants$4.SDK_VERSION = "0.3.2";
   constants$4.DEFAULT_RETRY_POLICY_COUNT = 3;
   return constants$4;
 }
@@ -24945,17 +24941,17 @@ var hasRequiredUserAgentPolicy$1;
 function requireUserAgentPolicy$1() {
   if (hasRequiredUserAgentPolicy$1) return userAgentPolicy$1;
   hasRequiredUserAgentPolicy$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.userAgentPolicyName = void 0;
-    exports.userAgentPolicy = userAgentPolicy2;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.userAgentPolicyName = void 0;
+    exports$1.userAgentPolicy = userAgentPolicy2;
     const userAgent_js_1 = /* @__PURE__ */ requireUserAgent$2();
     const UserAgentHeaderName = (0, userAgent_js_1.getUserAgentHeaderName)();
-    exports.userAgentPolicyName = "userAgentPolicy";
+    exports$1.userAgentPolicyName = "userAgentPolicy";
     function userAgentPolicy2(options2 = {}) {
       const userAgentValue = (0, userAgent_js_1.getUserAgentValue)(options2.userAgentPrefix);
       return {
-        name: exports.userAgentPolicyName,
+        name: exports$1.userAgentPolicyName,
         async sendRequest(request2, next) {
           if (!request2.headers.has(UserAgentHeaderName)) {
             request2.headers.set(UserAgentHeaderName, await userAgentValue);
@@ -24972,14 +24968,14 @@ var hasRequiredDecompressResponsePolicy$1;
 function requireDecompressResponsePolicy$1() {
   if (hasRequiredDecompressResponsePolicy$1) return decompressResponsePolicy$1;
   hasRequiredDecompressResponsePolicy$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.decompressResponsePolicyName = void 0;
-    exports.decompressResponsePolicy = decompressResponsePolicy2;
-    exports.decompressResponsePolicyName = "decompressResponsePolicy";
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.decompressResponsePolicyName = void 0;
+    exports$1.decompressResponsePolicy = decompressResponsePolicy2;
+    exports$1.decompressResponsePolicyName = "decompressResponsePolicy";
     function decompressResponsePolicy2() {
       return {
-        name: exports.decompressResponsePolicyName,
+        name: exports$1.decompressResponsePolicyName,
         async sendRequest(request2, next) {
           if (request2.method !== "HEAD") {
             request2.headers.set("Accept-Encoding", "gzip,deflate");
@@ -25273,18 +25269,18 @@ var hasRequiredDefaultRetryPolicy$1;
 function requireDefaultRetryPolicy$1() {
   if (hasRequiredDefaultRetryPolicy$1) return defaultRetryPolicy$1;
   hasRequiredDefaultRetryPolicy$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.defaultRetryPolicyName = void 0;
-    exports.defaultRetryPolicy = defaultRetryPolicy2;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.defaultRetryPolicyName = void 0;
+    exports$1.defaultRetryPolicy = defaultRetryPolicy2;
     const exponentialRetryStrategy_js_1 = /* @__PURE__ */ requireExponentialRetryStrategy();
     const throttlingRetryStrategy_js_1 = /* @__PURE__ */ requireThrottlingRetryStrategy();
     const retryPolicy_js_1 = /* @__PURE__ */ requireRetryPolicy$1();
     const constants_js_1 = /* @__PURE__ */ requireConstants$4();
-    exports.defaultRetryPolicyName = "defaultRetryPolicy";
+    exports$1.defaultRetryPolicyName = "defaultRetryPolicy";
     function defaultRetryPolicy2(options2 = {}) {
       return {
-        name: exports.defaultRetryPolicyName,
+        name: exports$1.defaultRetryPolicyName,
         sendRequest: (0, retryPolicy_js_1.retryPolicy)([(0, throttlingRetryStrategy_js_1.throttlingRetryStrategy)(), (0, exponentialRetryStrategy_js_1.exponentialRetryStrategy)(options2)], {
           maxRetries: options2.maxRetries ?? constants_js_1.DEFAULT_RETRY_POLICY_COUNT
         }).sendRequest
@@ -25299,16 +25295,16 @@ var hasRequiredCheckEnvironment;
 function requireCheckEnvironment() {
   if (hasRequiredCheckEnvironment) return checkEnvironment;
   hasRequiredCheckEnvironment = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.isReactNative = exports.isNodeRuntime = exports.isNodeLike = exports.isBun = exports.isDeno = exports.isWebWorker = exports.isBrowser = void 0;
-    exports.isBrowser = typeof window !== "undefined" && typeof window.document !== "undefined";
-    exports.isWebWorker = typeof self === "object" && typeof self?.importScripts === "function" && (self.constructor?.name === "DedicatedWorkerGlobalScope" || self.constructor?.name === "ServiceWorkerGlobalScope" || self.constructor?.name === "SharedWorkerGlobalScope");
-    exports.isDeno = typeof Deno !== "undefined" && typeof Deno.version !== "undefined" && typeof Deno.version.deno !== "undefined";
-    exports.isBun = typeof Bun !== "undefined" && typeof Bun.version !== "undefined";
-    exports.isNodeLike = typeof globalThis.process !== "undefined" && Boolean(globalThis.process.version) && Boolean(globalThis.process.versions?.node);
-    exports.isNodeRuntime = exports.isNodeLike && !exports.isBun && !exports.isDeno;
-    exports.isReactNative = typeof navigator !== "undefined" && navigator?.product === "ReactNative";
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.isReactNative = exports$1.isNodeRuntime = exports$1.isNodeLike = exports$1.isBun = exports$1.isDeno = exports$1.isWebWorker = exports$1.isBrowser = void 0;
+    exports$1.isBrowser = typeof window !== "undefined" && typeof window.document !== "undefined";
+    exports$1.isWebWorker = typeof self === "object" && typeof self?.importScripts === "function" && (self.constructor?.name === "DedicatedWorkerGlobalScope" || self.constructor?.name === "ServiceWorkerGlobalScope" || self.constructor?.name === "SharedWorkerGlobalScope");
+    exports$1.isDeno = typeof Deno !== "undefined" && typeof Deno.version !== "undefined" && typeof Deno.version.deno !== "undefined";
+    exports$1.isBun = typeof Bun !== "undefined" && typeof Bun.version !== "undefined";
+    exports$1.isNodeLike = typeof globalThis.process !== "undefined" && Boolean(globalThis.process.version) && Boolean(globalThis.process.versions?.node);
+    exports$1.isNodeRuntime = exports$1.isNodeLike && !exports$1.isBun && !exports$1.isDeno;
+    exports$1.isReactNative = typeof navigator !== "undefined" && navigator?.product === "ReactNative";
   })(checkEnvironment);
   return checkEnvironment;
 }
@@ -25316,14 +25312,14 @@ var hasRequiredFormDataPolicy$1;
 function requireFormDataPolicy$1() {
   if (hasRequiredFormDataPolicy$1) return formDataPolicy$1;
   hasRequiredFormDataPolicy$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.formDataPolicyName = void 0;
-    exports.formDataPolicy = formDataPolicy2;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.formDataPolicyName = void 0;
+    exports$1.formDataPolicy = formDataPolicy2;
     const bytesEncoding_js_1 = /* @__PURE__ */ requireBytesEncoding();
     const checkEnvironment_js_1 = /* @__PURE__ */ requireCheckEnvironment();
     const httpHeaders_js_1 = /* @__PURE__ */ requireHttpHeaders$1();
-    exports.formDataPolicyName = "formDataPolicy";
+    exports$1.formDataPolicyName = "formDataPolicy";
     function formDataToFormDataMap(formData) {
       const formDataMap = {};
       for (const [key, value] of formData.entries()) {
@@ -25334,7 +25330,7 @@ function requireFormDataPolicy$1() {
     }
     function formDataPolicy2() {
       return {
-        name: exports.formDataPolicyName,
+        name: exports$1.formDataPolicyName,
         async sendRequest(request2, next) {
           if (checkEnvironment_js_1.isNodeLike && typeof FormData !== "undefined" && request2.body instanceof FormData) {
             request2.formData = formDataToFormDataMap(request2.body);
@@ -25704,13 +25700,13 @@ var hasRequiredBrowser;
 function requireBrowser() {
   if (hasRequiredBrowser) return browser.exports;
   hasRequiredBrowser = 1;
-  (function(module, exports) {
-    exports.formatArgs = formatArgs;
-    exports.save = save;
-    exports.load = load;
-    exports.useColors = useColors;
-    exports.storage = localstorage();
-    exports.destroy = /* @__PURE__ */ (() => {
+  (function(module, exports$1) {
+    exports$1.formatArgs = formatArgs;
+    exports$1.save = save;
+    exports$1.load = load;
+    exports$1.useColors = useColors;
+    exports$1.storage = localstorage();
+    exports$1.destroy = /* @__PURE__ */ (() => {
       let warned = false;
       return () => {
         if (!warned) {
@@ -25719,7 +25715,7 @@ function requireBrowser() {
         }
       };
     })();
-    exports.colors = [
+    exports$1.colors = [
       "#0000CC",
       "#0000FF",
       "#0033CC",
@@ -25831,14 +25827,14 @@ function requireBrowser() {
       });
       args.splice(lastC, 0, c);
     }
-    exports.log = console.debug || console.log || (() => {
+    exports$1.log = console.debug || console.log || (() => {
     });
     function save(namespaces) {
       try {
         if (namespaces) {
-          exports.storage.setItem("debug", namespaces);
+          exports$1.storage.setItem("debug", namespaces);
         } else {
-          exports.storage.removeItem("debug");
+          exports$1.storage.removeItem("debug");
         }
       } catch (error2) {
       }
@@ -25846,7 +25842,7 @@ function requireBrowser() {
     function load() {
       let r;
       try {
-        r = exports.storage.getItem("debug") || exports.storage.getItem("DEBUG");
+        r = exports$1.storage.getItem("debug") || exports$1.storage.getItem("DEBUG");
       } catch (error2) {
       }
       if (!r && typeof process !== "undefined" && "env" in process) {
@@ -25860,7 +25856,7 @@ function requireBrowser() {
       } catch (error2) {
       }
     }
-    module.exports = /* @__PURE__ */ requireCommon()(exports);
+    module.exports = /* @__PURE__ */ requireCommon()(exports$1);
     const { formatters } = module.exports;
     formatters.j = function(v) {
       try {
@@ -25992,25 +25988,25 @@ var hasRequiredNode;
 function requireNode() {
   if (hasRequiredNode) return node.exports;
   hasRequiredNode = 1;
-  (function(module, exports) {
+  (function(module, exports$1) {
     const tty = require$$1$9;
     const util2 = require$$0$5;
-    exports.init = init;
-    exports.log = log2;
-    exports.formatArgs = formatArgs;
-    exports.save = save;
-    exports.load = load;
-    exports.useColors = useColors;
-    exports.destroy = util2.deprecate(
+    exports$1.init = init;
+    exports$1.log = log2;
+    exports$1.formatArgs = formatArgs;
+    exports$1.save = save;
+    exports$1.load = load;
+    exports$1.useColors = useColors;
+    exports$1.destroy = util2.deprecate(
       () => {
       },
       "Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`."
     );
-    exports.colors = [6, 2, 3, 4, 5, 1];
+    exports$1.colors = [6, 2, 3, 4, 5, 1];
     try {
       const supportsColor = /* @__PURE__ */ requireSupportsColor();
       if (supportsColor && (supportsColor.stderr || supportsColor).level >= 2) {
-        exports.colors = [
+        exports$1.colors = [
           20,
           21,
           26,
@@ -26091,7 +26087,7 @@ function requireNode() {
       }
     } catch (error2) {
     }
-    exports.inspectOpts = Object.keys(process.env).filter((key) => {
+    exports$1.inspectOpts = Object.keys(process.env).filter((key) => {
       return /^debug_/i.test(key);
     }).reduce((obj, key) => {
       const prop = key.substring(6).toLowerCase().replace(/_([a-z])/g, (_, k) => {
@@ -26111,7 +26107,7 @@ function requireNode() {
       return obj;
     }, {});
     function useColors() {
-      return "colors" in exports.inspectOpts ? Boolean(exports.inspectOpts.colors) : tty.isatty(process.stderr.fd);
+      return "colors" in exports$1.inspectOpts ? Boolean(exports$1.inspectOpts.colors) : tty.isatty(process.stderr.fd);
     }
     function formatArgs(args) {
       const { namespace: name, useColors: useColors2 } = this;
@@ -26126,13 +26122,13 @@ function requireNode() {
       }
     }
     function getDate() {
-      if (exports.inspectOpts.hideDate) {
+      if (exports$1.inspectOpts.hideDate) {
         return "";
       }
       return (/* @__PURE__ */ new Date()).toISOString() + " ";
     }
     function log2(...args) {
-      return process.stderr.write(util2.formatWithOptions(exports.inspectOpts, ...args) + "\n");
+      return process.stderr.write(util2.formatWithOptions(exports$1.inspectOpts, ...args) + "\n");
     }
     function save(namespaces) {
       if (namespaces) {
@@ -26146,12 +26142,12 @@ function requireNode() {
     }
     function init(debug2) {
       debug2.inspectOpts = {};
-      const keys = Object.keys(exports.inspectOpts);
+      const keys = Object.keys(exports$1.inspectOpts);
       for (let i = 0; i < keys.length; i++) {
-        debug2.inspectOpts[keys[i]] = exports.inspectOpts[keys[i]];
+        debug2.inspectOpts[keys[i]] = exports$1.inspectOpts[keys[i]];
       }
     }
-    module.exports = /* @__PURE__ */ requireCommon()(exports);
+    module.exports = /* @__PURE__ */ requireCommon()(exports$1);
     const { formatters } = module.exports;
     formatters.o = function(v) {
       this.inspectOpts.colors = this.useColors;
@@ -26250,7 +26246,7 @@ var hasRequiredDist$2;
 function requireDist$2() {
   if (hasRequiredDist$2) return dist$1;
   hasRequiredDist$2 = 1;
-  (function(exports) {
+  (function(exports$1) {
     var __createBinding2 = dist$1 && dist$1.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -26278,15 +26274,15 @@ function requireDist$2() {
       __setModuleDefault2(result, mod);
       return result;
     };
-    var __exportStar2 = dist$1 && dist$1.__exportStar || function(m, exports2) {
-      for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports2, p)) __createBinding2(exports2, m, p);
+    var __exportStar2 = dist$1 && dist$1.__exportStar || function(m, exports$12) {
+      for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports$12, p)) __createBinding2(exports$12, m, p);
     };
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Agent = void 0;
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.Agent = void 0;
     const net = __importStar2(require$$0$8);
     const http = __importStar2(require$$2);
     const https_1 = require$$1$3;
-    __exportStar2(/* @__PURE__ */ requireHelpers(), exports);
+    __exportStar2(/* @__PURE__ */ requireHelpers(), exports$1);
     const INTERNAL = Symbol("AgentBaseInternalState");
     class Agent extends http.Agent {
       constructor(opts) {
@@ -26399,7 +26395,7 @@ function requireDist$2() {
         }
       }
     }
-    exports.Agent = Agent;
+    exports$1.Agent = Agent;
   })(dist$1);
   return dist$1;
 }
@@ -26782,12 +26778,12 @@ var hasRequiredProxyPolicy$1;
 function requireProxyPolicy$1() {
   if (hasRequiredProxyPolicy$1) return proxyPolicy$1;
   hasRequiredProxyPolicy$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.globalNoProxyList = exports.proxyPolicyName = void 0;
-    exports.loadNoProxy = loadNoProxy;
-    exports.getDefaultProxySettings = getDefaultProxySettings;
-    exports.proxyPolicy = proxyPolicy2;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.globalNoProxyList = exports$1.proxyPolicyName = void 0;
+    exports$1.loadNoProxy = loadNoProxy;
+    exports$1.getDefaultProxySettings = getDefaultProxySettings;
+    exports$1.proxyPolicy = proxyPolicy2;
     const https_proxy_agent_1 = /* @__PURE__ */ requireDist$1();
     const http_proxy_agent_1 = /* @__PURE__ */ requireDist();
     const log_js_1 = /* @__PURE__ */ requireLog$4();
@@ -26795,8 +26791,8 @@ function requireProxyPolicy$1() {
     const HTTP_PROXY = "HTTP_PROXY";
     const ALL_PROXY = "ALL_PROXY";
     const NO_PROXY = "NO_PROXY";
-    exports.proxyPolicyName = "proxyPolicy";
-    exports.globalNoProxyList = [];
+    exports$1.proxyPolicyName = "proxyPolicy";
+    exports$1.globalNoProxyList = [];
     let noProxyListLoaded = false;
     const globalBypassedMap = /* @__PURE__ */ new Map();
     function getEnvironmentValue(name) {
@@ -26911,14 +26907,14 @@ function requireProxyPolicy$1() {
     }
     function proxyPolicy2(proxySettings, options2) {
       if (!noProxyListLoaded) {
-        exports.globalNoProxyList.push(...loadNoProxy());
+        exports$1.globalNoProxyList.push(...loadNoProxy());
       }
       const defaultProxy = proxySettings ? getUrlFromProxySettings(proxySettings) : getDefaultProxySettingsInternal();
       const cachedAgents = {};
       return {
-        name: exports.proxyPolicyName,
+        name: exports$1.proxyPolicyName,
         async sendRequest(request2, next) {
-          if (!request2.proxySettings && defaultProxy && !isBypassed(request2.url, options2?.customNoProxyList ?? exports.globalNoProxyList, options2?.customNoProxyList ? void 0 : globalBypassedMap)) {
+          if (!request2.proxySettings && defaultProxy && !isBypassed(request2.url, options2?.customNoProxyList ?? exports$1.globalNoProxyList, options2?.customNoProxyList ? void 0 : globalBypassedMap)) {
             setProxyAgentOnRequest(request2, cachedAgents, defaultProxy);
           } else if (request2.proxySettings) {
             setProxyAgentOnRequest(request2, cachedAgents, getUrlFromProxySettings(request2.proxySettings));
@@ -26935,14 +26931,14 @@ var hasRequiredAgentPolicy$1;
 function requireAgentPolicy$1() {
   if (hasRequiredAgentPolicy$1) return agentPolicy$1;
   hasRequiredAgentPolicy$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.agentPolicyName = void 0;
-    exports.agentPolicy = agentPolicy2;
-    exports.agentPolicyName = "agentPolicy";
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.agentPolicyName = void 0;
+    exports$1.agentPolicy = agentPolicy2;
+    exports$1.agentPolicyName = "agentPolicy";
     function agentPolicy2(agent2) {
       return {
-        name: exports.agentPolicyName,
+        name: exports$1.agentPolicyName,
         sendRequest: async (req, next) => {
           if (!req.agent) {
             req.agent = agent2;
@@ -26959,14 +26955,14 @@ var hasRequiredTlsPolicy$1;
 function requireTlsPolicy$1() {
   if (hasRequiredTlsPolicy$1) return tlsPolicy$1;
   hasRequiredTlsPolicy$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.tlsPolicyName = void 0;
-    exports.tlsPolicy = tlsPolicy2;
-    exports.tlsPolicyName = "tlsPolicy";
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.tlsPolicyName = void 0;
+    exports$1.tlsPolicy = tlsPolicy2;
+    exports$1.tlsPolicyName = "tlsPolicy";
     function tlsPolicy2(tlsSettings) {
       return {
-        name: exports.tlsPolicyName,
+        name: exports$1.tlsPolicyName,
         sendRequest: async (req, next) => {
           if (!req.tlsSettings) {
             req.tlsSettings = tlsSettings;
@@ -27073,10 +27069,10 @@ var hasRequiredMultipartPolicy$1;
 function requireMultipartPolicy$1() {
   if (hasRequiredMultipartPolicy$1) return multipartPolicy$1;
   hasRequiredMultipartPolicy$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.multipartPolicyName = void 0;
-    exports.multipartPolicy = multipartPolicy2;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.multipartPolicyName = void 0;
+    exports$1.multipartPolicy = multipartPolicy2;
     const bytesEncoding_js_1 = /* @__PURE__ */ requireBytesEncoding();
     const typeGuards_js_1 = /* @__PURE__ */ requireTypeGuards$1();
     const uuidUtils_js_1 = /* @__PURE__ */ requireUuidUtils();
@@ -27132,7 +27128,7 @@ function requireMultipartPolicy$1() {
       }
       request2.body = await (0, concat_js_1.concat)(sources);
     }
-    exports.multipartPolicyName = "multipartPolicy";
+    exports$1.multipartPolicyName = "multipartPolicy";
     const maxBoundaryLength = 70;
     const validBoundaryCharacters = new Set(`abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'()+,-./:=?`);
     function assertValidBoundary(boundary) {
@@ -27145,7 +27141,7 @@ function requireMultipartPolicy$1() {
     }
     function multipartPolicy2() {
       return {
-        name: exports.multipartPolicyName,
+        name: exports$1.multipartPolicyName,
         async sendRequest(request2, next) {
           if (!request2.multipartBody) {
             return next(request2);
@@ -27226,14 +27222,14 @@ var hasRequiredApiVersionPolicy;
 function requireApiVersionPolicy() {
   if (hasRequiredApiVersionPolicy) return apiVersionPolicy;
   hasRequiredApiVersionPolicy = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.apiVersionPolicyName = void 0;
-    exports.apiVersionPolicy = apiVersionPolicy2;
-    exports.apiVersionPolicyName = "ApiVersionPolicy";
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.apiVersionPolicyName = void 0;
+    exports$1.apiVersionPolicy = apiVersionPolicy2;
+    exports$1.apiVersionPolicyName = "ApiVersionPolicy";
     function apiVersionPolicy2(options2) {
       return {
-        name: exports.apiVersionPolicyName,
+        name: exports$1.apiVersionPolicyName,
         sendRequest: (req, next) => {
           const url = new URL(req.url);
           if (!url.searchParams.get("api-version") && options2.apiVersion) {
@@ -27312,15 +27308,15 @@ var hasRequiredApiKeyAuthenticationPolicy;
 function requireApiKeyAuthenticationPolicy() {
   if (hasRequiredApiKeyAuthenticationPolicy) return apiKeyAuthenticationPolicy;
   hasRequiredApiKeyAuthenticationPolicy = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.apiKeyAuthenticationPolicyName = void 0;
-    exports.apiKeyAuthenticationPolicy = apiKeyAuthenticationPolicy2;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.apiKeyAuthenticationPolicyName = void 0;
+    exports$1.apiKeyAuthenticationPolicy = apiKeyAuthenticationPolicy2;
     const checkInsecureConnection_js_1 = /* @__PURE__ */ requireCheckInsecureConnection();
-    exports.apiKeyAuthenticationPolicyName = "apiKeyAuthenticationPolicy";
+    exports$1.apiKeyAuthenticationPolicyName = "apiKeyAuthenticationPolicy";
     function apiKeyAuthenticationPolicy2(options2) {
       return {
-        name: exports.apiKeyAuthenticationPolicyName,
+        name: exports$1.apiKeyAuthenticationPolicyName,
         async sendRequest(request2, next) {
           (0, checkInsecureConnection_js_1.ensureSecureConnection)(request2, options2);
           const scheme = (request2.authSchemes ?? options2.authSchemes)?.find((x) => x.kind === "apiKey");
@@ -27343,16 +27339,16 @@ var hasRequiredBasicAuthenticationPolicy;
 function requireBasicAuthenticationPolicy() {
   if (hasRequiredBasicAuthenticationPolicy) return basicAuthenticationPolicy;
   hasRequiredBasicAuthenticationPolicy = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.basicAuthenticationPolicyName = void 0;
-    exports.basicAuthenticationPolicy = basicAuthenticationPolicy2;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.basicAuthenticationPolicyName = void 0;
+    exports$1.basicAuthenticationPolicy = basicAuthenticationPolicy2;
     const bytesEncoding_js_1 = /* @__PURE__ */ requireBytesEncoding();
     const checkInsecureConnection_js_1 = /* @__PURE__ */ requireCheckInsecureConnection();
-    exports.basicAuthenticationPolicyName = "bearerAuthenticationPolicy";
+    exports$1.basicAuthenticationPolicyName = "bearerAuthenticationPolicy";
     function basicAuthenticationPolicy2(options2) {
       return {
-        name: exports.basicAuthenticationPolicyName,
+        name: exports$1.basicAuthenticationPolicyName,
         async sendRequest(request2, next) {
           (0, checkInsecureConnection_js_1.ensureSecureConnection)(request2, options2);
           const scheme = (request2.authSchemes ?? options2.authSchemes)?.find((x) => x.kind === "http" && x.scheme === "basic");
@@ -27374,15 +27370,15 @@ var hasRequiredBearerAuthenticationPolicy;
 function requireBearerAuthenticationPolicy() {
   if (hasRequiredBearerAuthenticationPolicy) return bearerAuthenticationPolicy;
   hasRequiredBearerAuthenticationPolicy = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.bearerAuthenticationPolicyName = void 0;
-    exports.bearerAuthenticationPolicy = bearerAuthenticationPolicy2;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.bearerAuthenticationPolicyName = void 0;
+    exports$1.bearerAuthenticationPolicy = bearerAuthenticationPolicy2;
     const checkInsecureConnection_js_1 = /* @__PURE__ */ requireCheckInsecureConnection();
-    exports.bearerAuthenticationPolicyName = "bearerAuthenticationPolicy";
+    exports$1.bearerAuthenticationPolicyName = "bearerAuthenticationPolicy";
     function bearerAuthenticationPolicy2(options2) {
       return {
-        name: exports.bearerAuthenticationPolicyName,
+        name: exports$1.bearerAuthenticationPolicyName,
         async sendRequest(request2, next) {
           (0, checkInsecureConnection_js_1.ensureSecureConnection)(request2, options2);
           const scheme = (request2.authSchemes ?? options2.authSchemes)?.find((x) => x.kind === "http" && x.scheme === "bearer");
@@ -27405,15 +27401,15 @@ var hasRequiredOauth2AuthenticationPolicy;
 function requireOauth2AuthenticationPolicy() {
   if (hasRequiredOauth2AuthenticationPolicy) return oauth2AuthenticationPolicy;
   hasRequiredOauth2AuthenticationPolicy = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.oauth2AuthenticationPolicyName = void 0;
-    exports.oauth2AuthenticationPolicy = oauth2AuthenticationPolicy2;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.oauth2AuthenticationPolicyName = void 0;
+    exports$1.oauth2AuthenticationPolicy = oauth2AuthenticationPolicy2;
     const checkInsecureConnection_js_1 = /* @__PURE__ */ requireCheckInsecureConnection();
-    exports.oauth2AuthenticationPolicyName = "oauth2AuthenticationPolicy";
+    exports$1.oauth2AuthenticationPolicyName = "oauth2AuthenticationPolicy";
     function oauth2AuthenticationPolicy2(options2) {
       return {
-        name: exports.oauth2AuthenticationPolicyName,
+        name: exports$1.oauth2AuthenticationPolicyName,
         async sendRequest(request2, next) {
           (0, checkInsecureConnection_js_1.ensureSecureConnection)(request2, options2);
           const scheme = (request2.authSchemes ?? options2.authSchemes)?.find((x) => x.kind === "oauth2");
@@ -27992,69 +27988,69 @@ var hasRequiredCommonjs$c;
 function requireCommonjs$c() {
   if (hasRequiredCommonjs$c) return commonjs$a;
   hasRequiredCommonjs$c = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.createRestError = exports.operationOptionsToRequestParameters = exports.getClient = exports.createDefaultHttpClient = exports.uint8ArrayToString = exports.stringToUint8Array = exports.isRestError = exports.RestError = exports.createEmptyPipeline = exports.createPipelineRequest = exports.createHttpHeaders = exports.TypeSpecRuntimeLogger = exports.setLogLevel = exports.getLogLevel = exports.createClientLogger = exports.AbortError = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.createRestError = exports$1.operationOptionsToRequestParameters = exports$1.getClient = exports$1.createDefaultHttpClient = exports$1.uint8ArrayToString = exports$1.stringToUint8Array = exports$1.isRestError = exports$1.RestError = exports$1.createEmptyPipeline = exports$1.createPipelineRequest = exports$1.createHttpHeaders = exports$1.TypeSpecRuntimeLogger = exports$1.setLogLevel = exports$1.getLogLevel = exports$1.createClientLogger = exports$1.AbortError = void 0;
     const tslib_1 = require$$0$2;
     var AbortError_js_1 = /* @__PURE__ */ requireAbortError$1();
-    Object.defineProperty(exports, "AbortError", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "AbortError", { enumerable: true, get: function() {
       return AbortError_js_1.AbortError;
     } });
     var logger_js_1 = /* @__PURE__ */ requireLogger$1();
-    Object.defineProperty(exports, "createClientLogger", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createClientLogger", { enumerable: true, get: function() {
       return logger_js_1.createClientLogger;
     } });
-    Object.defineProperty(exports, "getLogLevel", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "getLogLevel", { enumerable: true, get: function() {
       return logger_js_1.getLogLevel;
     } });
-    Object.defineProperty(exports, "setLogLevel", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "setLogLevel", { enumerable: true, get: function() {
       return logger_js_1.setLogLevel;
     } });
-    Object.defineProperty(exports, "TypeSpecRuntimeLogger", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "TypeSpecRuntimeLogger", { enumerable: true, get: function() {
       return logger_js_1.TypeSpecRuntimeLogger;
     } });
     var httpHeaders_js_1 = /* @__PURE__ */ requireHttpHeaders$1();
-    Object.defineProperty(exports, "createHttpHeaders", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createHttpHeaders", { enumerable: true, get: function() {
       return httpHeaders_js_1.createHttpHeaders;
     } });
-    tslib_1.__exportStar(/* @__PURE__ */ requireSchemes(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireOauth2Flows(), exports);
+    tslib_1.__exportStar(/* @__PURE__ */ requireSchemes(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireOauth2Flows(), exports$1);
     var pipelineRequest_js_1 = /* @__PURE__ */ requirePipelineRequest$1();
-    Object.defineProperty(exports, "createPipelineRequest", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createPipelineRequest", { enumerable: true, get: function() {
       return pipelineRequest_js_1.createPipelineRequest;
     } });
     var pipeline_js_1 = /* @__PURE__ */ requirePipeline$3();
-    Object.defineProperty(exports, "createEmptyPipeline", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createEmptyPipeline", { enumerable: true, get: function() {
       return pipeline_js_1.createEmptyPipeline;
     } });
     var restError_js_1 = /* @__PURE__ */ requireRestError$2();
-    Object.defineProperty(exports, "RestError", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "RestError", { enumerable: true, get: function() {
       return restError_js_1.RestError;
     } });
-    Object.defineProperty(exports, "isRestError", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "isRestError", { enumerable: true, get: function() {
       return restError_js_1.isRestError;
     } });
     var bytesEncoding_js_1 = /* @__PURE__ */ requireBytesEncoding();
-    Object.defineProperty(exports, "stringToUint8Array", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "stringToUint8Array", { enumerable: true, get: function() {
       return bytesEncoding_js_1.stringToUint8Array;
     } });
-    Object.defineProperty(exports, "uint8ArrayToString", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "uint8ArrayToString", { enumerable: true, get: function() {
       return bytesEncoding_js_1.uint8ArrayToString;
     } });
     var defaultHttpClient_js_1 = /* @__PURE__ */ requireDefaultHttpClient$1();
-    Object.defineProperty(exports, "createDefaultHttpClient", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createDefaultHttpClient", { enumerable: true, get: function() {
       return defaultHttpClient_js_1.createDefaultHttpClient;
     } });
     var getClient_js_1 = /* @__PURE__ */ requireGetClient();
-    Object.defineProperty(exports, "getClient", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "getClient", { enumerable: true, get: function() {
       return getClient_js_1.getClient;
     } });
     var operationOptionHelpers_js_1 = /* @__PURE__ */ requireOperationOptionHelpers();
-    Object.defineProperty(exports, "operationOptionsToRequestParameters", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "operationOptionsToRequestParameters", { enumerable: true, get: function() {
       return operationOptionHelpers_js_1.operationOptionsToRequestParameters;
     } });
     var restError_js_2 = /* @__PURE__ */ requireRestError$1();
-    Object.defineProperty(exports, "createRestError", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createRestError", { enumerable: true, get: function() {
       return restError_js_2.createRestError;
     } });
   })(commonjs$a);
@@ -28081,11 +28077,11 @@ var hasRequiredInternal$2;
 function requireInternal$2() {
   if (hasRequiredInternal$2) return internal$2;
   hasRequiredInternal$2 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.createLoggerContext = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.createLoggerContext = void 0;
     var logger_js_1 = /* @__PURE__ */ requireLogger$1();
-    Object.defineProperty(exports, "createLoggerContext", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createLoggerContext", { enumerable: true, get: function() {
       return logger_js_1.createLoggerContext;
     } });
   })(internal$2);
@@ -28157,17 +28153,17 @@ var hasRequiredSystemErrorRetryPolicy$1;
 function requireSystemErrorRetryPolicy$1() {
   if (hasRequiredSystemErrorRetryPolicy$1) return systemErrorRetryPolicy$1;
   hasRequiredSystemErrorRetryPolicy$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.systemErrorRetryPolicyName = void 0;
-    exports.systemErrorRetryPolicy = systemErrorRetryPolicy2;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.systemErrorRetryPolicyName = void 0;
+    exports$1.systemErrorRetryPolicy = systemErrorRetryPolicy2;
     const exponentialRetryStrategy_js_1 = /* @__PURE__ */ requireExponentialRetryStrategy();
     const retryPolicy_js_1 = /* @__PURE__ */ requireRetryPolicy$1();
     const constants_js_1 = /* @__PURE__ */ requireConstants$4();
-    exports.systemErrorRetryPolicyName = "systemErrorRetryPolicy";
+    exports$1.systemErrorRetryPolicyName = "systemErrorRetryPolicy";
     function systemErrorRetryPolicy2(options2 = {}) {
       return {
-        name: exports.systemErrorRetryPolicyName,
+        name: exports$1.systemErrorRetryPolicyName,
         sendRequest: (0, retryPolicy_js_1.retryPolicy)([
           (0, exponentialRetryStrategy_js_1.exponentialRetryStrategy)({
             ...options2,
@@ -28186,17 +28182,17 @@ var hasRequiredThrottlingRetryPolicy$1;
 function requireThrottlingRetryPolicy$1() {
   if (hasRequiredThrottlingRetryPolicy$1) return throttlingRetryPolicy$1;
   hasRequiredThrottlingRetryPolicy$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.throttlingRetryPolicyName = void 0;
-    exports.throttlingRetryPolicy = throttlingRetryPolicy2;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.throttlingRetryPolicyName = void 0;
+    exports$1.throttlingRetryPolicy = throttlingRetryPolicy2;
     const throttlingRetryStrategy_js_1 = /* @__PURE__ */ requireThrottlingRetryStrategy();
     const retryPolicy_js_1 = /* @__PURE__ */ requireRetryPolicy$1();
     const constants_js_1 = /* @__PURE__ */ requireConstants$4();
-    exports.throttlingRetryPolicyName = "throttlingRetryPolicy";
+    exports$1.throttlingRetryPolicyName = "throttlingRetryPolicy";
     function throttlingRetryPolicy2(options2 = {}) {
       return {
-        name: exports.throttlingRetryPolicyName,
+        name: exports$1.throttlingRetryPolicyName,
         sendRequest: (0, retryPolicy_js_1.retryPolicy)([(0, throttlingRetryStrategy_js_1.throttlingRetryStrategy)()], {
           maxRetries: options2.maxRetries ?? constants_js_1.DEFAULT_RETRY_POLICY_COUNT
         }).sendRequest
@@ -28209,105 +28205,105 @@ var hasRequiredInternal$1;
 function requireInternal$1() {
   if (hasRequiredInternal$1) return internal$1;
   hasRequiredInternal$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.userAgentPolicyName = exports.userAgentPolicy = exports.tlsPolicyName = exports.tlsPolicy = exports.redirectPolicyName = exports.redirectPolicy = exports.getDefaultProxySettings = exports.proxyPolicyName = exports.proxyPolicy = exports.multipartPolicyName = exports.multipartPolicy = exports.logPolicyName = exports.logPolicy = exports.formDataPolicyName = exports.formDataPolicy = exports.throttlingRetryPolicyName = exports.throttlingRetryPolicy = exports.systemErrorRetryPolicyName = exports.systemErrorRetryPolicy = exports.retryPolicy = exports.exponentialRetryPolicyName = exports.exponentialRetryPolicy = exports.defaultRetryPolicyName = exports.defaultRetryPolicy = exports.decompressResponsePolicyName = exports.decompressResponsePolicy = exports.agentPolicyName = exports.agentPolicy = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.userAgentPolicyName = exports$1.userAgentPolicy = exports$1.tlsPolicyName = exports$1.tlsPolicy = exports$1.redirectPolicyName = exports$1.redirectPolicy = exports$1.getDefaultProxySettings = exports$1.proxyPolicyName = exports$1.proxyPolicy = exports$1.multipartPolicyName = exports$1.multipartPolicy = exports$1.logPolicyName = exports$1.logPolicy = exports$1.formDataPolicyName = exports$1.formDataPolicy = exports$1.throttlingRetryPolicyName = exports$1.throttlingRetryPolicy = exports$1.systemErrorRetryPolicyName = exports$1.systemErrorRetryPolicy = exports$1.retryPolicy = exports$1.exponentialRetryPolicyName = exports$1.exponentialRetryPolicy = exports$1.defaultRetryPolicyName = exports$1.defaultRetryPolicy = exports$1.decompressResponsePolicyName = exports$1.decompressResponsePolicy = exports$1.agentPolicyName = exports$1.agentPolicy = void 0;
     var agentPolicy_js_1 = /* @__PURE__ */ requireAgentPolicy$1();
-    Object.defineProperty(exports, "agentPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "agentPolicy", { enumerable: true, get: function() {
       return agentPolicy_js_1.agentPolicy;
     } });
-    Object.defineProperty(exports, "agentPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "agentPolicyName", { enumerable: true, get: function() {
       return agentPolicy_js_1.agentPolicyName;
     } });
     var decompressResponsePolicy_js_1 = /* @__PURE__ */ requireDecompressResponsePolicy$1();
-    Object.defineProperty(exports, "decompressResponsePolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "decompressResponsePolicy", { enumerable: true, get: function() {
       return decompressResponsePolicy_js_1.decompressResponsePolicy;
     } });
-    Object.defineProperty(exports, "decompressResponsePolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "decompressResponsePolicyName", { enumerable: true, get: function() {
       return decompressResponsePolicy_js_1.decompressResponsePolicyName;
     } });
     var defaultRetryPolicy_js_1 = /* @__PURE__ */ requireDefaultRetryPolicy$1();
-    Object.defineProperty(exports, "defaultRetryPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "defaultRetryPolicy", { enumerable: true, get: function() {
       return defaultRetryPolicy_js_1.defaultRetryPolicy;
     } });
-    Object.defineProperty(exports, "defaultRetryPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "defaultRetryPolicyName", { enumerable: true, get: function() {
       return defaultRetryPolicy_js_1.defaultRetryPolicyName;
     } });
     var exponentialRetryPolicy_js_1 = /* @__PURE__ */ requireExponentialRetryPolicy$1();
-    Object.defineProperty(exports, "exponentialRetryPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "exponentialRetryPolicy", { enumerable: true, get: function() {
       return exponentialRetryPolicy_js_1.exponentialRetryPolicy;
     } });
-    Object.defineProperty(exports, "exponentialRetryPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "exponentialRetryPolicyName", { enumerable: true, get: function() {
       return exponentialRetryPolicy_js_1.exponentialRetryPolicyName;
     } });
     var retryPolicy_js_1 = /* @__PURE__ */ requireRetryPolicy$1();
-    Object.defineProperty(exports, "retryPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "retryPolicy", { enumerable: true, get: function() {
       return retryPolicy_js_1.retryPolicy;
     } });
     var systemErrorRetryPolicy_js_1 = /* @__PURE__ */ requireSystemErrorRetryPolicy$1();
-    Object.defineProperty(exports, "systemErrorRetryPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "systemErrorRetryPolicy", { enumerable: true, get: function() {
       return systemErrorRetryPolicy_js_1.systemErrorRetryPolicy;
     } });
-    Object.defineProperty(exports, "systemErrorRetryPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "systemErrorRetryPolicyName", { enumerable: true, get: function() {
       return systemErrorRetryPolicy_js_1.systemErrorRetryPolicyName;
     } });
     var throttlingRetryPolicy_js_1 = /* @__PURE__ */ requireThrottlingRetryPolicy$1();
-    Object.defineProperty(exports, "throttlingRetryPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "throttlingRetryPolicy", { enumerable: true, get: function() {
       return throttlingRetryPolicy_js_1.throttlingRetryPolicy;
     } });
-    Object.defineProperty(exports, "throttlingRetryPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "throttlingRetryPolicyName", { enumerable: true, get: function() {
       return throttlingRetryPolicy_js_1.throttlingRetryPolicyName;
     } });
     var formDataPolicy_js_1 = /* @__PURE__ */ requireFormDataPolicy$1();
-    Object.defineProperty(exports, "formDataPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "formDataPolicy", { enumerable: true, get: function() {
       return formDataPolicy_js_1.formDataPolicy;
     } });
-    Object.defineProperty(exports, "formDataPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "formDataPolicyName", { enumerable: true, get: function() {
       return formDataPolicy_js_1.formDataPolicyName;
     } });
     var logPolicy_js_1 = /* @__PURE__ */ requireLogPolicy$1();
-    Object.defineProperty(exports, "logPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "logPolicy", { enumerable: true, get: function() {
       return logPolicy_js_1.logPolicy;
     } });
-    Object.defineProperty(exports, "logPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "logPolicyName", { enumerable: true, get: function() {
       return logPolicy_js_1.logPolicyName;
     } });
     var multipartPolicy_js_1 = /* @__PURE__ */ requireMultipartPolicy$1();
-    Object.defineProperty(exports, "multipartPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "multipartPolicy", { enumerable: true, get: function() {
       return multipartPolicy_js_1.multipartPolicy;
     } });
-    Object.defineProperty(exports, "multipartPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "multipartPolicyName", { enumerable: true, get: function() {
       return multipartPolicy_js_1.multipartPolicyName;
     } });
     var proxyPolicy_js_1 = /* @__PURE__ */ requireProxyPolicy$1();
-    Object.defineProperty(exports, "proxyPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "proxyPolicy", { enumerable: true, get: function() {
       return proxyPolicy_js_1.proxyPolicy;
     } });
-    Object.defineProperty(exports, "proxyPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "proxyPolicyName", { enumerable: true, get: function() {
       return proxyPolicy_js_1.proxyPolicyName;
     } });
-    Object.defineProperty(exports, "getDefaultProxySettings", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "getDefaultProxySettings", { enumerable: true, get: function() {
       return proxyPolicy_js_1.getDefaultProxySettings;
     } });
     var redirectPolicy_js_1 = /* @__PURE__ */ requireRedirectPolicy$1();
-    Object.defineProperty(exports, "redirectPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "redirectPolicy", { enumerable: true, get: function() {
       return redirectPolicy_js_1.redirectPolicy;
     } });
-    Object.defineProperty(exports, "redirectPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "redirectPolicyName", { enumerable: true, get: function() {
       return redirectPolicy_js_1.redirectPolicyName;
     } });
     var tlsPolicy_js_1 = /* @__PURE__ */ requireTlsPolicy$1();
-    Object.defineProperty(exports, "tlsPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "tlsPolicy", { enumerable: true, get: function() {
       return tlsPolicy_js_1.tlsPolicy;
     } });
-    Object.defineProperty(exports, "tlsPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "tlsPolicyName", { enumerable: true, get: function() {
       return tlsPolicy_js_1.tlsPolicyName;
     } });
     var userAgentPolicy_js_1 = /* @__PURE__ */ requireUserAgentPolicy$1();
-    Object.defineProperty(exports, "userAgentPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "userAgentPolicy", { enumerable: true, get: function() {
       return userAgentPolicy_js_1.userAgentPolicy;
     } });
-    Object.defineProperty(exports, "userAgentPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "userAgentPolicyName", { enumerable: true, get: function() {
       return userAgentPolicy_js_1.userAgentPolicyName;
     } });
   })(internal$1);
@@ -28364,16 +28360,16 @@ function requireUserAgentPlatform() {
   }
   async function setPlatformSpecificData(map) {
     if (node_process_1.default && node_process_1.default.versions) {
+      const osInfo = `${node_os_1.default.type()} ${node_os_1.default.release()}; ${node_os_1.default.arch()}`;
       const versions = node_process_1.default.versions;
       if (versions.bun) {
-        map.set("Bun", versions.bun);
+        map.set("Bun", `${versions.bun} (${osInfo})`);
       } else if (versions.deno) {
-        map.set("Deno", versions.deno);
+        map.set("Deno", `${versions.deno} (${osInfo})`);
       } else if (versions.node) {
-        map.set("Node", versions.node);
+        map.set("Node", `${versions.node} (${osInfo})`);
       }
     }
-    map.set("OS", `(${node_os_1.default.arch()}-${node_os_1.default.type()}-${node_os_1.default.release()})`);
   }
   return userAgentPlatform;
 }
@@ -28384,7 +28380,7 @@ function requireConstants$3() {
   hasRequiredConstants$3 = 1;
   Object.defineProperty(constants$3, "__esModule", { value: true });
   constants$3.DEFAULT_RETRY_POLICY_COUNT = constants$3.SDK_VERSION = void 0;
-  constants$3.SDK_VERSION = "1.22.1";
+  constants$3.SDK_VERSION = "1.22.2";
   constants$3.DEFAULT_RETRY_POLICY_COUNT = 3;
   return constants$3;
 }
@@ -28422,17 +28418,17 @@ var hasRequiredUserAgentPolicy;
 function requireUserAgentPolicy() {
   if (hasRequiredUserAgentPolicy) return userAgentPolicy;
   hasRequiredUserAgentPolicy = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.userAgentPolicyName = void 0;
-    exports.userAgentPolicy = userAgentPolicy2;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.userAgentPolicyName = void 0;
+    exports$1.userAgentPolicy = userAgentPolicy2;
     const userAgent_js_1 = /* @__PURE__ */ requireUserAgent$1();
     const UserAgentHeaderName = (0, userAgent_js_1.getUserAgentHeaderName)();
-    exports.userAgentPolicyName = "userAgentPolicy";
+    exports$1.userAgentPolicyName = "userAgentPolicy";
     function userAgentPolicy2(options2 = {}) {
       const userAgentValue = (0, userAgent_js_1.getUserAgentValue)(options2.userAgentPrefix);
       return {
-        name: exports.userAgentPolicyName,
+        name: exports$1.userAgentPolicyName,
         async sendRequest(request2, next) {
           if (!request2.headers.has(UserAgentHeaderName)) {
             request2.headers.set(UserAgentHeaderName, await userAgentValue);
@@ -28470,67 +28466,67 @@ var hasRequiredInternal;
 function requireInternal() {
   if (hasRequiredInternal) return internal;
   hasRequiredInternal = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Sanitizer = exports.uint8ArrayToString = exports.stringToUint8Array = exports.isWebWorker = exports.isReactNative = exports.isDeno = exports.isNodeRuntime = exports.isNodeLike = exports.isBun = exports.isBrowser = exports.randomUUID = exports.computeSha256Hmac = exports.computeSha256Hash = exports.isError = exports.isObject = exports.getRandomIntegerInclusive = exports.calculateRetryDelay = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.Sanitizer = exports$1.uint8ArrayToString = exports$1.stringToUint8Array = exports$1.isWebWorker = exports$1.isReactNative = exports$1.isDeno = exports$1.isNodeRuntime = exports$1.isNodeLike = exports$1.isBun = exports$1.isBrowser = exports$1.randomUUID = exports$1.computeSha256Hmac = exports$1.computeSha256Hash = exports$1.isError = exports$1.isObject = exports$1.getRandomIntegerInclusive = exports$1.calculateRetryDelay = void 0;
     var delay_js_1 = /* @__PURE__ */ requireDelay$1();
-    Object.defineProperty(exports, "calculateRetryDelay", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "calculateRetryDelay", { enumerable: true, get: function() {
       return delay_js_1.calculateRetryDelay;
     } });
     var random_js_1 = /* @__PURE__ */ requireRandom();
-    Object.defineProperty(exports, "getRandomIntegerInclusive", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "getRandomIntegerInclusive", { enumerable: true, get: function() {
       return random_js_1.getRandomIntegerInclusive;
     } });
     var object_js_1 = /* @__PURE__ */ requireObject();
-    Object.defineProperty(exports, "isObject", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "isObject", { enumerable: true, get: function() {
       return object_js_1.isObject;
     } });
     var error_js_1 = /* @__PURE__ */ requireError$1();
-    Object.defineProperty(exports, "isError", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "isError", { enumerable: true, get: function() {
       return error_js_1.isError;
     } });
     var sha256_js_1 = /* @__PURE__ */ requireSha256();
-    Object.defineProperty(exports, "computeSha256Hash", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "computeSha256Hash", { enumerable: true, get: function() {
       return sha256_js_1.computeSha256Hash;
     } });
-    Object.defineProperty(exports, "computeSha256Hmac", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "computeSha256Hmac", { enumerable: true, get: function() {
       return sha256_js_1.computeSha256Hmac;
     } });
     var uuidUtils_js_1 = /* @__PURE__ */ requireUuidUtils();
-    Object.defineProperty(exports, "randomUUID", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "randomUUID", { enumerable: true, get: function() {
       return uuidUtils_js_1.randomUUID;
     } });
     var checkEnvironment_js_1 = /* @__PURE__ */ requireCheckEnvironment();
-    Object.defineProperty(exports, "isBrowser", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "isBrowser", { enumerable: true, get: function() {
       return checkEnvironment_js_1.isBrowser;
     } });
-    Object.defineProperty(exports, "isBun", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "isBun", { enumerable: true, get: function() {
       return checkEnvironment_js_1.isBun;
     } });
-    Object.defineProperty(exports, "isNodeLike", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "isNodeLike", { enumerable: true, get: function() {
       return checkEnvironment_js_1.isNodeLike;
     } });
-    Object.defineProperty(exports, "isNodeRuntime", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "isNodeRuntime", { enumerable: true, get: function() {
       return checkEnvironment_js_1.isNodeRuntime;
     } });
-    Object.defineProperty(exports, "isDeno", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "isDeno", { enumerable: true, get: function() {
       return checkEnvironment_js_1.isDeno;
     } });
-    Object.defineProperty(exports, "isReactNative", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "isReactNative", { enumerable: true, get: function() {
       return checkEnvironment_js_1.isReactNative;
     } });
-    Object.defineProperty(exports, "isWebWorker", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "isWebWorker", { enumerable: true, get: function() {
       return checkEnvironment_js_1.isWebWorker;
     } });
     var bytesEncoding_js_1 = /* @__PURE__ */ requireBytesEncoding();
-    Object.defineProperty(exports, "stringToUint8Array", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "stringToUint8Array", { enumerable: true, get: function() {
       return bytesEncoding_js_1.stringToUint8Array;
     } });
-    Object.defineProperty(exports, "uint8ArrayToString", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "uint8ArrayToString", { enumerable: true, get: function() {
       return bytesEncoding_js_1.uint8ArrayToString;
     } });
     var sanitizer_js_1 = /* @__PURE__ */ requireSanitizer();
-    Object.defineProperty(exports, "Sanitizer", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "Sanitizer", { enumerable: true, get: function() {
       return sanitizer_js_1.Sanitizer;
     } });
   })(internal);
@@ -28580,11 +28576,11 @@ var hasRequiredCommonjs$a;
 function requireCommonjs$a() {
   if (hasRequiredCommonjs$a) return commonjs$7;
   hasRequiredCommonjs$a = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.AbortError = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.AbortError = void 0;
     var AbortError_js_1 = /* @__PURE__ */ requireAbortError();
-    Object.defineProperty(exports, "AbortError", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "AbortError", { enumerable: true, get: function() {
       return AbortError_js_1.AbortError;
     } });
   })(commonjs$7);
@@ -28719,44 +28715,44 @@ var hasRequiredCommonjs$9;
 function requireCommonjs$9() {
   if (hasRequiredCommonjs$9) return commonjs$8;
   hasRequiredCommonjs$9 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.isWebWorker = exports.isReactNative = exports.isNodeRuntime = exports.isNodeLike = exports.isNode = exports.isDeno = exports.isBun = exports.isBrowser = exports.objectHasProperty = exports.isObjectWithProperties = exports.isDefined = exports.getErrorMessage = exports.delay = exports.createAbortablePromise = exports.cancelablePromiseRace = void 0;
-    exports.calculateRetryDelay = calculateRetryDelay;
-    exports.computeSha256Hash = computeSha256Hash;
-    exports.computeSha256Hmac = computeSha256Hmac;
-    exports.getRandomIntegerInclusive = getRandomIntegerInclusive;
-    exports.isError = isError;
-    exports.isObject = isObject;
-    exports.randomUUID = randomUUID;
-    exports.uint8ArrayToString = uint8ArrayToString;
-    exports.stringToUint8Array = stringToUint8Array;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.isWebWorker = exports$1.isReactNative = exports$1.isNodeRuntime = exports$1.isNodeLike = exports$1.isNode = exports$1.isDeno = exports$1.isBun = exports$1.isBrowser = exports$1.objectHasProperty = exports$1.isObjectWithProperties = exports$1.isDefined = exports$1.getErrorMessage = exports$1.delay = exports$1.createAbortablePromise = exports$1.cancelablePromiseRace = void 0;
+    exports$1.calculateRetryDelay = calculateRetryDelay;
+    exports$1.computeSha256Hash = computeSha256Hash;
+    exports$1.computeSha256Hmac = computeSha256Hmac;
+    exports$1.getRandomIntegerInclusive = getRandomIntegerInclusive;
+    exports$1.isError = isError;
+    exports$1.isObject = isObject;
+    exports$1.randomUUID = randomUUID;
+    exports$1.uint8ArrayToString = uint8ArrayToString;
+    exports$1.stringToUint8Array = stringToUint8Array;
     const tslib_1 = require$$0$2;
     const tspRuntime = tslib_1.__importStar(/* @__PURE__ */ requireInternal());
     var aborterUtils_js_1 = /* @__PURE__ */ requireAborterUtils();
-    Object.defineProperty(exports, "cancelablePromiseRace", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "cancelablePromiseRace", { enumerable: true, get: function() {
       return aborterUtils_js_1.cancelablePromiseRace;
     } });
     var createAbortablePromise_js_1 = /* @__PURE__ */ requireCreateAbortablePromise();
-    Object.defineProperty(exports, "createAbortablePromise", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createAbortablePromise", { enumerable: true, get: function() {
       return createAbortablePromise_js_1.createAbortablePromise;
     } });
     var delay_js_1 = /* @__PURE__ */ requireDelay();
-    Object.defineProperty(exports, "delay", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "delay", { enumerable: true, get: function() {
       return delay_js_1.delay;
     } });
     var error_js_1 = /* @__PURE__ */ requireError();
-    Object.defineProperty(exports, "getErrorMessage", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "getErrorMessage", { enumerable: true, get: function() {
       return error_js_1.getErrorMessage;
     } });
     var typeGuards_js_1 = /* @__PURE__ */ requireTypeGuards();
-    Object.defineProperty(exports, "isDefined", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "isDefined", { enumerable: true, get: function() {
       return typeGuards_js_1.isDefined;
     } });
-    Object.defineProperty(exports, "isObjectWithProperties", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "isObjectWithProperties", { enumerable: true, get: function() {
       return typeGuards_js_1.isObjectWithProperties;
     } });
-    Object.defineProperty(exports, "objectHasProperty", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "objectHasProperty", { enumerable: true, get: function() {
       return typeGuards_js_1.objectHasProperty;
     } });
     function calculateRetryDelay(retryAttempt, config2) {
@@ -28780,14 +28776,14 @@ function requireCommonjs$9() {
     function randomUUID() {
       return tspRuntime.randomUUID();
     }
-    exports.isBrowser = tspRuntime.isBrowser;
-    exports.isBun = tspRuntime.isBun;
-    exports.isDeno = tspRuntime.isDeno;
-    exports.isNode = tspRuntime.isNodeLike;
-    exports.isNodeLike = tspRuntime.isNodeLike;
-    exports.isNodeRuntime = tspRuntime.isNodeRuntime;
-    exports.isReactNative = tspRuntime.isReactNative;
-    exports.isWebWorker = tspRuntime.isWebWorker;
+    exports$1.isBrowser = tspRuntime.isBrowser;
+    exports$1.isBun = tspRuntime.isBun;
+    exports$1.isDeno = tspRuntime.isDeno;
+    exports$1.isNode = tspRuntime.isNodeLike;
+    exports$1.isNodeLike = tspRuntime.isNodeLike;
+    exports$1.isNodeRuntime = tspRuntime.isNodeRuntime;
+    exports$1.isReactNative = tspRuntime.isReactNative;
+    exports$1.isWebWorker = tspRuntime.isWebWorker;
     function uint8ArrayToString(bytes, format) {
       return tspRuntime.uint8ArrayToString(bytes, format);
     }
@@ -28863,12 +28859,18 @@ function requireFile() {
         size: content.byteLength,
         name,
         arrayBuffer: async () => content.buffer,
-        stream: () => new Blob([content]).stream(),
+        stream: () => new Blob([toArrayBuffer(content)]).stream(),
         [rawContent]: () => content
       };
     } else {
-      return new File([content], name, options2);
+      return new File([toArrayBuffer(content)], name, options2);
     }
+  }
+  function toArrayBuffer(source) {
+    if ("resize" in source.buffer) {
+      return source;
+    }
+    return source.map((x) => x);
   }
   return file;
 }
@@ -28876,17 +28878,17 @@ var hasRequiredMultipartPolicy;
 function requireMultipartPolicy() {
   if (hasRequiredMultipartPolicy) return multipartPolicy;
   hasRequiredMultipartPolicy = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.multipartPolicyName = void 0;
-    exports.multipartPolicy = multipartPolicy2;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.multipartPolicyName = void 0;
+    exports$1.multipartPolicy = multipartPolicy2;
     const policies_1 = /* @__PURE__ */ requireInternal$1();
     const file_js_1 = /* @__PURE__ */ requireFile();
-    exports.multipartPolicyName = policies_1.multipartPolicyName;
+    exports$1.multipartPolicyName = policies_1.multipartPolicyName;
     function multipartPolicy2() {
       const tspPolicy = (0, policies_1.multipartPolicy)();
       return {
-        name: exports.multipartPolicyName,
+        name: exports$1.multipartPolicyName,
         sendRequest: async (request2, next) => {
           if (request2.multipartBody) {
             for (const part of request2.multipartBody.parts) {
@@ -28971,14 +28973,14 @@ var hasRequiredSetClientRequestIdPolicy;
 function requireSetClientRequestIdPolicy() {
   if (hasRequiredSetClientRequestIdPolicy) return setClientRequestIdPolicy;
   hasRequiredSetClientRequestIdPolicy = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.setClientRequestIdPolicyName = void 0;
-    exports.setClientRequestIdPolicy = setClientRequestIdPolicy2;
-    exports.setClientRequestIdPolicyName = "setClientRequestIdPolicy";
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.setClientRequestIdPolicyName = void 0;
+    exports$1.setClientRequestIdPolicy = setClientRequestIdPolicy2;
+    exports$1.setClientRequestIdPolicyName = "setClientRequestIdPolicy";
     function setClientRequestIdPolicy2(requestIdHeaderName = "x-ms-client-request-id") {
       return {
-        name: exports.setClientRequestIdPolicyName,
+        name: exports$1.setClientRequestIdPolicyName,
         async sendRequest(request2, next) {
           if (!request2.headers.has(requestIdHeaderName)) {
             request2.headers.set(requestIdHeaderName, request2.requestId);
@@ -29028,21 +29030,21 @@ var hasRequiredTracingContext;
 function requireTracingContext() {
   if (hasRequiredTracingContext) return tracingContext;
   hasRequiredTracingContext = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.TracingContextImpl = exports.knownContextKeys = void 0;
-    exports.createTracingContext = createTracingContext;
-    exports.knownContextKeys = {
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.TracingContextImpl = exports$1.knownContextKeys = void 0;
+    exports$1.createTracingContext = createTracingContext;
+    exports$1.knownContextKeys = {
       span: Symbol.for("@azure/core-tracing span"),
       namespace: Symbol.for("@azure/core-tracing namespace")
     };
     function createTracingContext(options2 = {}) {
       let context = new TracingContextImpl(options2.parentContext);
       if (options2.span) {
-        context = context.setValue(exports.knownContextKeys.span, options2.span);
+        context = context.setValue(exports$1.knownContextKeys.span, options2.span);
       }
       if (options2.namespace) {
-        context = context.setValue(exports.knownContextKeys.namespace, options2.namespace);
+        context = context.setValue(exports$1.knownContextKeys.namespace, options2.namespace);
       }
       return context;
     }
@@ -29065,7 +29067,7 @@ function requireTracingContext() {
         return newContext;
       }
     }
-    exports.TracingContextImpl = TracingContextImpl;
+    exports$1.TracingContextImpl = TracingContextImpl;
   })(tracingContext);
   return tracingContext;
 }
@@ -29205,15 +29207,15 @@ var hasRequiredCommonjs$8;
 function requireCommonjs$8() {
   if (hasRequiredCommonjs$8) return commonjs$6;
   hasRequiredCommonjs$8 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.createTracingClient = exports.useInstrumenter = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.createTracingClient = exports$1.useInstrumenter = void 0;
     var instrumenter_js_1 = /* @__PURE__ */ requireInstrumenter();
-    Object.defineProperty(exports, "useInstrumenter", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "useInstrumenter", { enumerable: true, get: function() {
       return instrumenter_js_1.useInstrumenter;
     } });
     var tracingClient_js_1 = /* @__PURE__ */ requireTracingClient();
-    Object.defineProperty(exports, "createTracingClient", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createTracingClient", { enumerable: true, get: function() {
       return tracingClient_js_1.createTracingClient;
     } });
   })(commonjs$6);
@@ -29238,10 +29240,10 @@ var hasRequiredTracingPolicy;
 function requireTracingPolicy() {
   if (hasRequiredTracingPolicy) return tracingPolicy;
   hasRequiredTracingPolicy = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.tracingPolicyName = void 0;
-    exports.tracingPolicy = tracingPolicy2;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.tracingPolicyName = void 0;
+    exports$1.tracingPolicy = tracingPolicy2;
     const core_tracing_1 = /* @__PURE__ */ requireCommonjs$8();
     const constants_js_1 = /* @__PURE__ */ requireConstants$3();
     const userAgent_js_1 = /* @__PURE__ */ requireUserAgent$1();
@@ -29249,7 +29251,7 @@ function requireTracingPolicy() {
     const core_util_1 = /* @__PURE__ */ requireCommonjs$9();
     const restError_js_1 = /* @__PURE__ */ requireRestError();
     const util_1 = /* @__PURE__ */ requireInternal();
-    exports.tracingPolicyName = "tracingPolicy";
+    exports$1.tracingPolicyName = "tracingPolicy";
     function tracingPolicy2(options2 = {}) {
       const userAgentPromise = (0, userAgent_js_1.getUserAgentValue)(options2.userAgentPrefix);
       const sanitizer2 = new util_1.Sanitizer({
@@ -29257,7 +29259,7 @@ function requireTracingPolicy() {
       });
       const tracingClient2 = tryCreateTracingClient();
       return {
-        name: exports.tracingPolicyName,
+        name: exports$1.tracingPolicyName,
         async sendRequest(request2, next) {
           if (!tracingClient2) {
             return next(request2);
@@ -29389,15 +29391,15 @@ var hasRequiredWrapAbortSignalLikePolicy;
 function requireWrapAbortSignalLikePolicy() {
   if (hasRequiredWrapAbortSignalLikePolicy) return wrapAbortSignalLikePolicy;
   hasRequiredWrapAbortSignalLikePolicy = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.wrapAbortSignalLikePolicyName = void 0;
-    exports.wrapAbortSignalLikePolicy = wrapAbortSignalLikePolicy2;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.wrapAbortSignalLikePolicyName = void 0;
+    exports$1.wrapAbortSignalLikePolicy = wrapAbortSignalLikePolicy2;
     const wrapAbortSignal_js_1 = /* @__PURE__ */ requireWrapAbortSignal();
-    exports.wrapAbortSignalLikePolicyName = "wrapAbortSignalLikePolicy";
+    exports$1.wrapAbortSignalLikePolicyName = "wrapAbortSignalLikePolicy";
     function wrapAbortSignalLikePolicy2() {
       return {
-        name: exports.wrapAbortSignalLikePolicyName,
+        name: exports$1.wrapAbortSignalLikePolicyName,
         sendRequest: async (request2, next) => {
           if (!request2.abortSignal) {
             return next(request2);
@@ -29586,12 +29588,12 @@ var hasRequiredTokenCycler;
 function requireTokenCycler() {
   if (hasRequiredTokenCycler) return tokenCycler;
   hasRequiredTokenCycler = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.DEFAULT_CYCLER_OPTIONS = void 0;
-    exports.createTokenCycler = createTokenCycler;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.DEFAULT_CYCLER_OPTIONS = void 0;
+    exports$1.createTokenCycler = createTokenCycler;
     const core_util_1 = /* @__PURE__ */ requireCommonjs$9();
-    exports.DEFAULT_CYCLER_OPTIONS = {
+    exports$1.DEFAULT_CYCLER_OPTIONS = {
       forcedRefreshWindowInMs: 1e3,
       // Force waiting for a refresh 1s before the token expires
       retryIntervalInMs: 3e3,
@@ -29627,7 +29629,7 @@ function requireTokenCycler() {
       let token = null;
       let tenantId;
       const options2 = {
-        ...exports.DEFAULT_CYCLER_OPTIONS,
+        ...exports$1.DEFAULT_CYCLER_OPTIONS,
         ...tokenCyclerOptions
       };
       const cycler = {
@@ -29703,15 +29705,15 @@ var hasRequiredBearerTokenAuthenticationPolicy;
 function requireBearerTokenAuthenticationPolicy() {
   if (hasRequiredBearerTokenAuthenticationPolicy) return bearerTokenAuthenticationPolicy;
   hasRequiredBearerTokenAuthenticationPolicy = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.bearerTokenAuthenticationPolicyName = void 0;
-    exports.bearerTokenAuthenticationPolicy = bearerTokenAuthenticationPolicy2;
-    exports.parseChallenges = parseChallenges;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.bearerTokenAuthenticationPolicyName = void 0;
+    exports$1.bearerTokenAuthenticationPolicy = bearerTokenAuthenticationPolicy2;
+    exports$1.parseChallenges = parseChallenges;
     const tokenCycler_js_1 = /* @__PURE__ */ requireTokenCycler();
     const log_js_1 = /* @__PURE__ */ requireLog$3();
     const restError_js_1 = /* @__PURE__ */ requireRestError();
-    exports.bearerTokenAuthenticationPolicyName = "bearerTokenAuthenticationPolicy";
+    exports$1.bearerTokenAuthenticationPolicyName = "bearerTokenAuthenticationPolicy";
     async function trySendRequest(request2, next) {
       try {
         return [await next(request2), void 0];
@@ -29762,7 +29764,7 @@ function requireBearerTokenAuthenticationPolicy() {
         /* , options */
       ) : () => Promise.resolve(null);
       return {
-        name: exports.bearerTokenAuthenticationPolicyName,
+        name: exports$1.bearerTokenAuthenticationPolicyName,
         /**
          * If there's no challenge parameter:
          * - It will try to retrieve the token using the cache, or the credential's getToken.
@@ -29885,14 +29887,14 @@ var hasRequiredNdJsonPolicy;
 function requireNdJsonPolicy() {
   if (hasRequiredNdJsonPolicy) return ndJsonPolicy;
   hasRequiredNdJsonPolicy = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.ndJsonPolicyName = void 0;
-    exports.ndJsonPolicy = ndJsonPolicy2;
-    exports.ndJsonPolicyName = "ndJsonPolicy";
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.ndJsonPolicyName = void 0;
+    exports$1.ndJsonPolicy = ndJsonPolicy2;
+    exports$1.ndJsonPolicyName = "ndJsonPolicy";
     function ndJsonPolicy2() {
       return {
-        name: exports.ndJsonPolicyName,
+        name: exports$1.ndJsonPolicyName,
         async sendRequest(request2, next) {
           if (typeof request2.body === "string" && request2.body.startsWith("[")) {
             const body2 = JSON.parse(request2.body);
@@ -29912,13 +29914,13 @@ var hasRequiredAuxiliaryAuthenticationHeaderPolicy;
 function requireAuxiliaryAuthenticationHeaderPolicy() {
   if (hasRequiredAuxiliaryAuthenticationHeaderPolicy) return auxiliaryAuthenticationHeaderPolicy;
   hasRequiredAuxiliaryAuthenticationHeaderPolicy = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.auxiliaryAuthenticationHeaderPolicyName = void 0;
-    exports.auxiliaryAuthenticationHeaderPolicy = auxiliaryAuthenticationHeaderPolicy2;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.auxiliaryAuthenticationHeaderPolicyName = void 0;
+    exports$1.auxiliaryAuthenticationHeaderPolicy = auxiliaryAuthenticationHeaderPolicy2;
     const tokenCycler_js_1 = /* @__PURE__ */ requireTokenCycler();
     const log_js_1 = /* @__PURE__ */ requireLog$3();
-    exports.auxiliaryAuthenticationHeaderPolicyName = "auxiliaryAuthenticationHeaderPolicy";
+    exports$1.auxiliaryAuthenticationHeaderPolicyName = "auxiliaryAuthenticationHeaderPolicy";
     const AUTHORIZATION_AUXILIARY_HEADER = "x-ms-authorization-auxiliary";
     async function sendAuthorizeRequest(options2) {
       const { scopes, getAccessToken, request: request2 } = options2;
@@ -29933,13 +29935,13 @@ function requireAuxiliaryAuthenticationHeaderPolicy() {
       const logger2 = options2.logger || log_js_1.logger;
       const tokenCyclerMap = /* @__PURE__ */ new WeakMap();
       return {
-        name: exports.auxiliaryAuthenticationHeaderPolicyName,
+        name: exports$1.auxiliaryAuthenticationHeaderPolicyName,
         async sendRequest(request2, next) {
           if (!request2.url.toLowerCase().startsWith("https://")) {
             throw new Error("Bearer token authentication for auxiliary header is not permitted for non-TLS protected (non-https) URLs.");
           }
           if (!credentials2 || credentials2.length === 0) {
-            logger2.info(`${exports.auxiliaryAuthenticationHeaderPolicyName} header will not be set due to empty credentials.`);
+            logger2.info(`${exports$1.auxiliaryAuthenticationHeaderPolicyName} header will not be set due to empty credentials.`);
             return next(request2);
           }
           const tokenPromises = [];
@@ -29972,171 +29974,171 @@ var hasRequiredCommonjs$7;
 function requireCommonjs$7() {
   if (hasRequiredCommonjs$7) return commonjs$b;
   hasRequiredCommonjs$7 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.createFileFromStream = exports.createFile = exports.agentPolicyName = exports.agentPolicy = exports.auxiliaryAuthenticationHeaderPolicyName = exports.auxiliaryAuthenticationHeaderPolicy = exports.ndJsonPolicyName = exports.ndJsonPolicy = exports.bearerTokenAuthenticationPolicyName = exports.bearerTokenAuthenticationPolicy = exports.formDataPolicyName = exports.formDataPolicy = exports.tlsPolicyName = exports.tlsPolicy = exports.userAgentPolicyName = exports.userAgentPolicy = exports.defaultRetryPolicy = exports.tracingPolicyName = exports.tracingPolicy = exports.retryPolicy = exports.throttlingRetryPolicyName = exports.throttlingRetryPolicy = exports.systemErrorRetryPolicyName = exports.systemErrorRetryPolicy = exports.redirectPolicyName = exports.redirectPolicy = exports.getDefaultProxySettings = exports.proxyPolicyName = exports.proxyPolicy = exports.multipartPolicyName = exports.multipartPolicy = exports.logPolicyName = exports.logPolicy = exports.setClientRequestIdPolicyName = exports.setClientRequestIdPolicy = exports.exponentialRetryPolicyName = exports.exponentialRetryPolicy = exports.decompressResponsePolicyName = exports.decompressResponsePolicy = exports.isRestError = exports.RestError = exports.createPipelineRequest = exports.createHttpHeaders = exports.createDefaultHttpClient = exports.createPipelineFromOptions = exports.createEmptyPipeline = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.createFileFromStream = exports$1.createFile = exports$1.agentPolicyName = exports$1.agentPolicy = exports$1.auxiliaryAuthenticationHeaderPolicyName = exports$1.auxiliaryAuthenticationHeaderPolicy = exports$1.ndJsonPolicyName = exports$1.ndJsonPolicy = exports$1.bearerTokenAuthenticationPolicyName = exports$1.bearerTokenAuthenticationPolicy = exports$1.formDataPolicyName = exports$1.formDataPolicy = exports$1.tlsPolicyName = exports$1.tlsPolicy = exports$1.userAgentPolicyName = exports$1.userAgentPolicy = exports$1.defaultRetryPolicy = exports$1.tracingPolicyName = exports$1.tracingPolicy = exports$1.retryPolicy = exports$1.throttlingRetryPolicyName = exports$1.throttlingRetryPolicy = exports$1.systemErrorRetryPolicyName = exports$1.systemErrorRetryPolicy = exports$1.redirectPolicyName = exports$1.redirectPolicy = exports$1.getDefaultProxySettings = exports$1.proxyPolicyName = exports$1.proxyPolicy = exports$1.multipartPolicyName = exports$1.multipartPolicy = exports$1.logPolicyName = exports$1.logPolicy = exports$1.setClientRequestIdPolicyName = exports$1.setClientRequestIdPolicy = exports$1.exponentialRetryPolicyName = exports$1.exponentialRetryPolicy = exports$1.decompressResponsePolicyName = exports$1.decompressResponsePolicy = exports$1.isRestError = exports$1.RestError = exports$1.createPipelineRequest = exports$1.createHttpHeaders = exports$1.createDefaultHttpClient = exports$1.createPipelineFromOptions = exports$1.createEmptyPipeline = void 0;
     var pipeline_js_1 = /* @__PURE__ */ requirePipeline$2();
-    Object.defineProperty(exports, "createEmptyPipeline", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createEmptyPipeline", { enumerable: true, get: function() {
       return pipeline_js_1.createEmptyPipeline;
     } });
     var createPipelineFromOptions_js_1 = /* @__PURE__ */ requireCreatePipelineFromOptions();
-    Object.defineProperty(exports, "createPipelineFromOptions", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createPipelineFromOptions", { enumerable: true, get: function() {
       return createPipelineFromOptions_js_1.createPipelineFromOptions;
     } });
     var defaultHttpClient_js_1 = /* @__PURE__ */ requireDefaultHttpClient();
-    Object.defineProperty(exports, "createDefaultHttpClient", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createDefaultHttpClient", { enumerable: true, get: function() {
       return defaultHttpClient_js_1.createDefaultHttpClient;
     } });
     var httpHeaders_js_1 = /* @__PURE__ */ requireHttpHeaders();
-    Object.defineProperty(exports, "createHttpHeaders", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createHttpHeaders", { enumerable: true, get: function() {
       return httpHeaders_js_1.createHttpHeaders;
     } });
     var pipelineRequest_js_1 = /* @__PURE__ */ requirePipelineRequest();
-    Object.defineProperty(exports, "createPipelineRequest", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createPipelineRequest", { enumerable: true, get: function() {
       return pipelineRequest_js_1.createPipelineRequest;
     } });
     var restError_js_1 = /* @__PURE__ */ requireRestError();
-    Object.defineProperty(exports, "RestError", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "RestError", { enumerable: true, get: function() {
       return restError_js_1.RestError;
     } });
-    Object.defineProperty(exports, "isRestError", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "isRestError", { enumerable: true, get: function() {
       return restError_js_1.isRestError;
     } });
     var decompressResponsePolicy_js_1 = /* @__PURE__ */ requireDecompressResponsePolicy();
-    Object.defineProperty(exports, "decompressResponsePolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "decompressResponsePolicy", { enumerable: true, get: function() {
       return decompressResponsePolicy_js_1.decompressResponsePolicy;
     } });
-    Object.defineProperty(exports, "decompressResponsePolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "decompressResponsePolicyName", { enumerable: true, get: function() {
       return decompressResponsePolicy_js_1.decompressResponsePolicyName;
     } });
     var exponentialRetryPolicy_js_1 = /* @__PURE__ */ requireExponentialRetryPolicy();
-    Object.defineProperty(exports, "exponentialRetryPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "exponentialRetryPolicy", { enumerable: true, get: function() {
       return exponentialRetryPolicy_js_1.exponentialRetryPolicy;
     } });
-    Object.defineProperty(exports, "exponentialRetryPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "exponentialRetryPolicyName", { enumerable: true, get: function() {
       return exponentialRetryPolicy_js_1.exponentialRetryPolicyName;
     } });
     var setClientRequestIdPolicy_js_1 = /* @__PURE__ */ requireSetClientRequestIdPolicy();
-    Object.defineProperty(exports, "setClientRequestIdPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "setClientRequestIdPolicy", { enumerable: true, get: function() {
       return setClientRequestIdPolicy_js_1.setClientRequestIdPolicy;
     } });
-    Object.defineProperty(exports, "setClientRequestIdPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "setClientRequestIdPolicyName", { enumerable: true, get: function() {
       return setClientRequestIdPolicy_js_1.setClientRequestIdPolicyName;
     } });
     var logPolicy_js_1 = /* @__PURE__ */ requireLogPolicy();
-    Object.defineProperty(exports, "logPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "logPolicy", { enumerable: true, get: function() {
       return logPolicy_js_1.logPolicy;
     } });
-    Object.defineProperty(exports, "logPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "logPolicyName", { enumerable: true, get: function() {
       return logPolicy_js_1.logPolicyName;
     } });
     var multipartPolicy_js_1 = /* @__PURE__ */ requireMultipartPolicy();
-    Object.defineProperty(exports, "multipartPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "multipartPolicy", { enumerable: true, get: function() {
       return multipartPolicy_js_1.multipartPolicy;
     } });
-    Object.defineProperty(exports, "multipartPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "multipartPolicyName", { enumerable: true, get: function() {
       return multipartPolicy_js_1.multipartPolicyName;
     } });
     var proxyPolicy_js_1 = /* @__PURE__ */ requireProxyPolicy();
-    Object.defineProperty(exports, "proxyPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "proxyPolicy", { enumerable: true, get: function() {
       return proxyPolicy_js_1.proxyPolicy;
     } });
-    Object.defineProperty(exports, "proxyPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "proxyPolicyName", { enumerable: true, get: function() {
       return proxyPolicy_js_1.proxyPolicyName;
     } });
-    Object.defineProperty(exports, "getDefaultProxySettings", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "getDefaultProxySettings", { enumerable: true, get: function() {
       return proxyPolicy_js_1.getDefaultProxySettings;
     } });
     var redirectPolicy_js_1 = /* @__PURE__ */ requireRedirectPolicy();
-    Object.defineProperty(exports, "redirectPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "redirectPolicy", { enumerable: true, get: function() {
       return redirectPolicy_js_1.redirectPolicy;
     } });
-    Object.defineProperty(exports, "redirectPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "redirectPolicyName", { enumerable: true, get: function() {
       return redirectPolicy_js_1.redirectPolicyName;
     } });
     var systemErrorRetryPolicy_js_1 = /* @__PURE__ */ requireSystemErrorRetryPolicy();
-    Object.defineProperty(exports, "systemErrorRetryPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "systemErrorRetryPolicy", { enumerable: true, get: function() {
       return systemErrorRetryPolicy_js_1.systemErrorRetryPolicy;
     } });
-    Object.defineProperty(exports, "systemErrorRetryPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "systemErrorRetryPolicyName", { enumerable: true, get: function() {
       return systemErrorRetryPolicy_js_1.systemErrorRetryPolicyName;
     } });
     var throttlingRetryPolicy_js_1 = /* @__PURE__ */ requireThrottlingRetryPolicy();
-    Object.defineProperty(exports, "throttlingRetryPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "throttlingRetryPolicy", { enumerable: true, get: function() {
       return throttlingRetryPolicy_js_1.throttlingRetryPolicy;
     } });
-    Object.defineProperty(exports, "throttlingRetryPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "throttlingRetryPolicyName", { enumerable: true, get: function() {
       return throttlingRetryPolicy_js_1.throttlingRetryPolicyName;
     } });
     var retryPolicy_js_1 = /* @__PURE__ */ requireRetryPolicy();
-    Object.defineProperty(exports, "retryPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "retryPolicy", { enumerable: true, get: function() {
       return retryPolicy_js_1.retryPolicy;
     } });
     var tracingPolicy_js_1 = /* @__PURE__ */ requireTracingPolicy();
-    Object.defineProperty(exports, "tracingPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "tracingPolicy", { enumerable: true, get: function() {
       return tracingPolicy_js_1.tracingPolicy;
     } });
-    Object.defineProperty(exports, "tracingPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "tracingPolicyName", { enumerable: true, get: function() {
       return tracingPolicy_js_1.tracingPolicyName;
     } });
     var defaultRetryPolicy_js_1 = /* @__PURE__ */ requireDefaultRetryPolicy();
-    Object.defineProperty(exports, "defaultRetryPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "defaultRetryPolicy", { enumerable: true, get: function() {
       return defaultRetryPolicy_js_1.defaultRetryPolicy;
     } });
     var userAgentPolicy_js_1 = /* @__PURE__ */ requireUserAgentPolicy();
-    Object.defineProperty(exports, "userAgentPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "userAgentPolicy", { enumerable: true, get: function() {
       return userAgentPolicy_js_1.userAgentPolicy;
     } });
-    Object.defineProperty(exports, "userAgentPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "userAgentPolicyName", { enumerable: true, get: function() {
       return userAgentPolicy_js_1.userAgentPolicyName;
     } });
     var tlsPolicy_js_1 = /* @__PURE__ */ requireTlsPolicy();
-    Object.defineProperty(exports, "tlsPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "tlsPolicy", { enumerable: true, get: function() {
       return tlsPolicy_js_1.tlsPolicy;
     } });
-    Object.defineProperty(exports, "tlsPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "tlsPolicyName", { enumerable: true, get: function() {
       return tlsPolicy_js_1.tlsPolicyName;
     } });
     var formDataPolicy_js_1 = /* @__PURE__ */ requireFormDataPolicy();
-    Object.defineProperty(exports, "formDataPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "formDataPolicy", { enumerable: true, get: function() {
       return formDataPolicy_js_1.formDataPolicy;
     } });
-    Object.defineProperty(exports, "formDataPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "formDataPolicyName", { enumerable: true, get: function() {
       return formDataPolicy_js_1.formDataPolicyName;
     } });
     var bearerTokenAuthenticationPolicy_js_1 = /* @__PURE__ */ requireBearerTokenAuthenticationPolicy();
-    Object.defineProperty(exports, "bearerTokenAuthenticationPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "bearerTokenAuthenticationPolicy", { enumerable: true, get: function() {
       return bearerTokenAuthenticationPolicy_js_1.bearerTokenAuthenticationPolicy;
     } });
-    Object.defineProperty(exports, "bearerTokenAuthenticationPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "bearerTokenAuthenticationPolicyName", { enumerable: true, get: function() {
       return bearerTokenAuthenticationPolicy_js_1.bearerTokenAuthenticationPolicyName;
     } });
     var ndJsonPolicy_js_1 = /* @__PURE__ */ requireNdJsonPolicy();
-    Object.defineProperty(exports, "ndJsonPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "ndJsonPolicy", { enumerable: true, get: function() {
       return ndJsonPolicy_js_1.ndJsonPolicy;
     } });
-    Object.defineProperty(exports, "ndJsonPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "ndJsonPolicyName", { enumerable: true, get: function() {
       return ndJsonPolicy_js_1.ndJsonPolicyName;
     } });
     var auxiliaryAuthenticationHeaderPolicy_js_1 = /* @__PURE__ */ requireAuxiliaryAuthenticationHeaderPolicy();
-    Object.defineProperty(exports, "auxiliaryAuthenticationHeaderPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "auxiliaryAuthenticationHeaderPolicy", { enumerable: true, get: function() {
       return auxiliaryAuthenticationHeaderPolicy_js_1.auxiliaryAuthenticationHeaderPolicy;
     } });
-    Object.defineProperty(exports, "auxiliaryAuthenticationHeaderPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "auxiliaryAuthenticationHeaderPolicyName", { enumerable: true, get: function() {
       return auxiliaryAuthenticationHeaderPolicy_js_1.auxiliaryAuthenticationHeaderPolicyName;
     } });
     var agentPolicy_js_1 = /* @__PURE__ */ requireAgentPolicy();
-    Object.defineProperty(exports, "agentPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "agentPolicy", { enumerable: true, get: function() {
       return agentPolicy_js_1.agentPolicy;
     } });
-    Object.defineProperty(exports, "agentPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "agentPolicyName", { enumerable: true, get: function() {
       return agentPolicy_js_1.agentPolicyName;
     } });
     var file_js_1 = /* @__PURE__ */ requireFile();
-    Object.defineProperty(exports, "createFile", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createFile", { enumerable: true, get: function() {
       return file_js_1.createFile;
     } });
-    Object.defineProperty(exports, "createFileFromStream", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createFileFromStream", { enumerable: true, get: function() {
       return file_js_1.createFileFromStream;
     } });
   })(commonjs$b);
@@ -30335,33 +30337,33 @@ var hasRequiredCommonjs$6;
 function requireCommonjs$6() {
   if (hasRequiredCommonjs$6) return commonjs$5;
   hasRequiredCommonjs$6 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.isTokenCredential = exports.isSASCredential = exports.AzureSASCredential = exports.isNamedKeyCredential = exports.AzureNamedKeyCredential = exports.isKeyCredential = exports.AzureKeyCredential = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.isTokenCredential = exports$1.isSASCredential = exports$1.AzureSASCredential = exports$1.isNamedKeyCredential = exports$1.AzureNamedKeyCredential = exports$1.isKeyCredential = exports$1.AzureKeyCredential = void 0;
     var azureKeyCredential_js_1 = /* @__PURE__ */ requireAzureKeyCredential();
-    Object.defineProperty(exports, "AzureKeyCredential", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "AzureKeyCredential", { enumerable: true, get: function() {
       return azureKeyCredential_js_1.AzureKeyCredential;
     } });
     var keyCredential_js_1 = /* @__PURE__ */ requireKeyCredential();
-    Object.defineProperty(exports, "isKeyCredential", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "isKeyCredential", { enumerable: true, get: function() {
       return keyCredential_js_1.isKeyCredential;
     } });
     var azureNamedKeyCredential_js_1 = /* @__PURE__ */ requireAzureNamedKeyCredential();
-    Object.defineProperty(exports, "AzureNamedKeyCredential", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "AzureNamedKeyCredential", { enumerable: true, get: function() {
       return azureNamedKeyCredential_js_1.AzureNamedKeyCredential;
     } });
-    Object.defineProperty(exports, "isNamedKeyCredential", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "isNamedKeyCredential", { enumerable: true, get: function() {
       return azureNamedKeyCredential_js_1.isNamedKeyCredential;
     } });
     var azureSASCredential_js_1 = /* @__PURE__ */ requireAzureSASCredential();
-    Object.defineProperty(exports, "AzureSASCredential", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "AzureSASCredential", { enumerable: true, get: function() {
       return azureSASCredential_js_1.AzureSASCredential;
     } });
-    Object.defineProperty(exports, "isSASCredential", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "isSASCredential", { enumerable: true, get: function() {
       return azureSASCredential_js_1.isSASCredential;
     } });
     var tokenCredential_js_1 = /* @__PURE__ */ requireTokenCredential();
-    Object.defineProperty(exports, "isTokenCredential", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "isTokenCredential", { enumerable: true, get: function() {
       return tokenCredential_js_1.isTokenCredential;
     } });
   })(commonjs$5);
@@ -30375,15 +30377,15 @@ var hasRequiredDisableKeepAlivePolicy;
 function requireDisableKeepAlivePolicy() {
   if (hasRequiredDisableKeepAlivePolicy) return disableKeepAlivePolicy;
   hasRequiredDisableKeepAlivePolicy = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.disableKeepAlivePolicyName = void 0;
-    exports.createDisableKeepAlivePolicy = createDisableKeepAlivePolicy;
-    exports.pipelineContainsDisableKeepAlivePolicy = pipelineContainsDisableKeepAlivePolicy;
-    exports.disableKeepAlivePolicyName = "DisableKeepAlivePolicy";
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.disableKeepAlivePolicyName = void 0;
+    exports$1.createDisableKeepAlivePolicy = createDisableKeepAlivePolicy;
+    exports$1.pipelineContainsDisableKeepAlivePolicy = pipelineContainsDisableKeepAlivePolicy;
+    exports$1.disableKeepAlivePolicyName = "DisableKeepAlivePolicy";
     function createDisableKeepAlivePolicy() {
       return {
-        name: exports.disableKeepAlivePolicyName,
+        name: exports$1.disableKeepAlivePolicyName,
         async sendRequest(request2, next) {
           request2.disableKeepAlive = true;
           return next(request2);
@@ -30391,7 +30393,7 @@ function requireDisableKeepAlivePolicy() {
       };
     }
     function pipelineContainsDisableKeepAlivePolicy(pipeline2) {
-      return pipeline2.getOrderedPolicies().some((policy) => policy.name === exports.disableKeepAlivePolicyName);
+      return pipeline2.getOrderedPolicies().some((policy) => policy.name === exports$1.disableKeepAlivePolicyName);
     }
   })(disableKeepAlivePolicy);
   return disableKeepAlivePolicy;
@@ -31367,17 +31369,17 @@ var hasRequiredDeserializationPolicy;
 function requireDeserializationPolicy() {
   if (hasRequiredDeserializationPolicy) return deserializationPolicy;
   hasRequiredDeserializationPolicy = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.deserializationPolicyName = void 0;
-    exports.deserializationPolicy = deserializationPolicy2;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.deserializationPolicyName = void 0;
+    exports$1.deserializationPolicy = deserializationPolicy2;
     const interfaces_js_1 = /* @__PURE__ */ requireInterfaces();
     const core_rest_pipeline_1 = /* @__PURE__ */ requireCommonjs$7();
     const serializer_js_1 = /* @__PURE__ */ requireSerializer();
     const operationHelpers_js_1 = /* @__PURE__ */ requireOperationHelpers();
     const defaultJsonContentTypes = ["application/json", "text/json"];
     const defaultXmlContentTypes = ["application/xml", "application/atom+xml"];
-    exports.deserializationPolicyName = "deserializationPolicy";
+    exports$1.deserializationPolicyName = "deserializationPolicy";
     function deserializationPolicy2(options2 = {}) {
       const jsonContentTypes = options2.expectedContentTypes?.json ?? defaultJsonContentTypes;
       const xmlContentTypes = options2.expectedContentTypes?.xml ?? defaultXmlContentTypes;
@@ -31391,7 +31393,7 @@ function requireDeserializationPolicy() {
         }
       };
       return {
-        name: exports.deserializationPolicyName,
+        name: exports$1.deserializationPolicyName,
         async sendRequest(request2, next) {
           const response2 = await next(request2);
           return deserializeResponseBody(jsonContentTypes, xmlContentTypes, response2, updatedOptions, parseXML);
@@ -31600,21 +31602,21 @@ var hasRequiredSerializationPolicy;
 function requireSerializationPolicy() {
   if (hasRequiredSerializationPolicy) return serializationPolicy;
   hasRequiredSerializationPolicy = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.serializationPolicyName = void 0;
-    exports.serializationPolicy = serializationPolicy2;
-    exports.serializeHeaders = serializeHeaders;
-    exports.serializeRequestBody = serializeRequestBody;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.serializationPolicyName = void 0;
+    exports$1.serializationPolicy = serializationPolicy2;
+    exports$1.serializeHeaders = serializeHeaders;
+    exports$1.serializeRequestBody = serializeRequestBody;
     const interfaces_js_1 = /* @__PURE__ */ requireInterfaces();
     const operationHelpers_js_1 = /* @__PURE__ */ requireOperationHelpers();
     const serializer_js_1 = /* @__PURE__ */ requireSerializer();
     const interfaceHelpers_js_1 = /* @__PURE__ */ requireInterfaceHelpers();
-    exports.serializationPolicyName = "serializationPolicy";
+    exports$1.serializationPolicyName = "serializationPolicy";
     function serializationPolicy2(options2 = {}) {
       const stringifyXML = options2.stringifyXML;
       return {
-        name: exports.serializationPolicyName,
+        name: exports$1.serializationPolicyName,
         async sendRequest(request2, next) {
           const operationInfo = (0, operationHelpers_js_1.getOperationRequestInfo)(request2);
           const operationSpec = operationInfo?.operationSpec;
@@ -32286,51 +32288,51 @@ var hasRequiredCommonjs$5;
 function requireCommonjs$5() {
   if (hasRequiredCommonjs$5) return commonjs$3;
   hasRequiredCommonjs$5 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.authorizeRequestOnTenantChallenge = exports.authorizeRequestOnClaimChallenge = exports.serializationPolicyName = exports.serializationPolicy = exports.deserializationPolicyName = exports.deserializationPolicy = exports.XML_CHARKEY = exports.XML_ATTRKEY = exports.createClientPipeline = exports.ServiceClient = exports.MapperTypeNames = exports.createSerializer = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.authorizeRequestOnTenantChallenge = exports$1.authorizeRequestOnClaimChallenge = exports$1.serializationPolicyName = exports$1.serializationPolicy = exports$1.deserializationPolicyName = exports$1.deserializationPolicy = exports$1.XML_CHARKEY = exports$1.XML_ATTRKEY = exports$1.createClientPipeline = exports$1.ServiceClient = exports$1.MapperTypeNames = exports$1.createSerializer = void 0;
     var serializer_js_1 = /* @__PURE__ */ requireSerializer();
-    Object.defineProperty(exports, "createSerializer", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createSerializer", { enumerable: true, get: function() {
       return serializer_js_1.createSerializer;
     } });
-    Object.defineProperty(exports, "MapperTypeNames", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "MapperTypeNames", { enumerable: true, get: function() {
       return serializer_js_1.MapperTypeNames;
     } });
     var serviceClient_js_1 = /* @__PURE__ */ requireServiceClient();
-    Object.defineProperty(exports, "ServiceClient", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "ServiceClient", { enumerable: true, get: function() {
       return serviceClient_js_1.ServiceClient;
     } });
     var pipeline_js_1 = /* @__PURE__ */ requirePipeline$1();
-    Object.defineProperty(exports, "createClientPipeline", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createClientPipeline", { enumerable: true, get: function() {
       return pipeline_js_1.createClientPipeline;
     } });
     var interfaces_js_1 = /* @__PURE__ */ requireInterfaces();
-    Object.defineProperty(exports, "XML_ATTRKEY", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "XML_ATTRKEY", { enumerable: true, get: function() {
       return interfaces_js_1.XML_ATTRKEY;
     } });
-    Object.defineProperty(exports, "XML_CHARKEY", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "XML_CHARKEY", { enumerable: true, get: function() {
       return interfaces_js_1.XML_CHARKEY;
     } });
     var deserializationPolicy_js_1 = /* @__PURE__ */ requireDeserializationPolicy();
-    Object.defineProperty(exports, "deserializationPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "deserializationPolicy", { enumerable: true, get: function() {
       return deserializationPolicy_js_1.deserializationPolicy;
     } });
-    Object.defineProperty(exports, "deserializationPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "deserializationPolicyName", { enumerable: true, get: function() {
       return deserializationPolicy_js_1.deserializationPolicyName;
     } });
     var serializationPolicy_js_1 = /* @__PURE__ */ requireSerializationPolicy();
-    Object.defineProperty(exports, "serializationPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "serializationPolicy", { enumerable: true, get: function() {
       return serializationPolicy_js_1.serializationPolicy;
     } });
-    Object.defineProperty(exports, "serializationPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "serializationPolicyName", { enumerable: true, get: function() {
       return serializationPolicy_js_1.serializationPolicyName;
     } });
     var authorizeRequestOnClaimChallenge_js_1 = /* @__PURE__ */ requireAuthorizeRequestOnClaimChallenge();
-    Object.defineProperty(exports, "authorizeRequestOnClaimChallenge", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "authorizeRequestOnClaimChallenge", { enumerable: true, get: function() {
       return authorizeRequestOnClaimChallenge_js_1.authorizeRequestOnClaimChallenge;
     } });
     var authorizeRequestOnTenantChallenge_js_1 = /* @__PURE__ */ requireAuthorizeRequestOnTenantChallenge();
-    Object.defineProperty(exports, "authorizeRequestOnTenantChallenge", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "authorizeRequestOnTenantChallenge", { enumerable: true, get: function() {
       return authorizeRequestOnTenantChallenge_js_1.authorizeRequestOnTenantChallenge;
     } });
   })(commonjs$3);
@@ -32703,10 +32705,10 @@ var hasRequiredRequestPolicyFactoryPolicy;
 function requireRequestPolicyFactoryPolicy() {
   if (hasRequiredRequestPolicyFactoryPolicy) return requestPolicyFactoryPolicy;
   hasRequiredRequestPolicyFactoryPolicy = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.requestPolicyFactoryPolicyName = exports.HttpPipelineLogLevel = void 0;
-    exports.createRequestPolicyFactoryPolicy = createRequestPolicyFactoryPolicy;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.requestPolicyFactoryPolicyName = exports$1.HttpPipelineLogLevel = void 0;
+    exports$1.createRequestPolicyFactoryPolicy = createRequestPolicyFactoryPolicy;
     const util_js_1 = /* @__PURE__ */ requireUtil$1();
     const response_js_1 = /* @__PURE__ */ requireResponse();
     var HttpPipelineLogLevel;
@@ -32715,7 +32717,7 @@ function requireRequestPolicyFactoryPolicy() {
       HttpPipelineLogLevel2[HttpPipelineLogLevel2["INFO"] = 3] = "INFO";
       HttpPipelineLogLevel2[HttpPipelineLogLevel2["OFF"] = 0] = "OFF";
       HttpPipelineLogLevel2[HttpPipelineLogLevel2["WARNING"] = 2] = "WARNING";
-    })(HttpPipelineLogLevel || (exports.HttpPipelineLogLevel = HttpPipelineLogLevel = {}));
+    })(HttpPipelineLogLevel || (exports$1.HttpPipelineLogLevel = HttpPipelineLogLevel = {}));
     const mockRequestPolicyOptions = {
       log(_logLevel, _message) {
       },
@@ -32723,11 +32725,11 @@ function requireRequestPolicyFactoryPolicy() {
         return false;
       }
     };
-    exports.requestPolicyFactoryPolicyName = "RequestPolicyFactoryPolicy";
+    exports$1.requestPolicyFactoryPolicyName = "RequestPolicyFactoryPolicy";
     function createRequestPolicyFactoryPolicy(factories) {
       const orderedFactories = factories.slice().reverse();
       return {
-        name: exports.requestPolicyFactoryPolicyName,
+        name: exports$1.requestPolicyFactoryPolicyName,
         async sendRequest(request2, next) {
           let httpPipeline = {
             async sendRequest(httpRequest) {
@@ -32770,33 +32772,33 @@ var hasRequiredCommonjs$4;
 function requireCommonjs$4() {
   if (hasRequiredCommonjs$4) return commonjs$4;
   hasRequiredCommonjs$4 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.toHttpHeadersLike = exports.convertHttpClient = exports.disableKeepAlivePolicyName = exports.HttpPipelineLogLevel = exports.createRequestPolicyFactoryPolicy = exports.requestPolicyFactoryPolicyName = exports.ExtendedServiceClient = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.toHttpHeadersLike = exports$1.convertHttpClient = exports$1.disableKeepAlivePolicyName = exports$1.HttpPipelineLogLevel = exports$1.createRequestPolicyFactoryPolicy = exports$1.requestPolicyFactoryPolicyName = exports$1.ExtendedServiceClient = void 0;
     var extendedClient_js_1 = /* @__PURE__ */ requireExtendedClient();
-    Object.defineProperty(exports, "ExtendedServiceClient", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "ExtendedServiceClient", { enumerable: true, get: function() {
       return extendedClient_js_1.ExtendedServiceClient;
     } });
     var requestPolicyFactoryPolicy_js_1 = /* @__PURE__ */ requireRequestPolicyFactoryPolicy();
-    Object.defineProperty(exports, "requestPolicyFactoryPolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "requestPolicyFactoryPolicyName", { enumerable: true, get: function() {
       return requestPolicyFactoryPolicy_js_1.requestPolicyFactoryPolicyName;
     } });
-    Object.defineProperty(exports, "createRequestPolicyFactoryPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createRequestPolicyFactoryPolicy", { enumerable: true, get: function() {
       return requestPolicyFactoryPolicy_js_1.createRequestPolicyFactoryPolicy;
     } });
-    Object.defineProperty(exports, "HttpPipelineLogLevel", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "HttpPipelineLogLevel", { enumerable: true, get: function() {
       return requestPolicyFactoryPolicy_js_1.HttpPipelineLogLevel;
     } });
     var disableKeepAlivePolicy_js_1 = /* @__PURE__ */ requireDisableKeepAlivePolicy();
-    Object.defineProperty(exports, "disableKeepAlivePolicyName", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "disableKeepAlivePolicyName", { enumerable: true, get: function() {
       return disableKeepAlivePolicy_js_1.disableKeepAlivePolicyName;
     } });
     var httpClientAdapter_js_1 = /* @__PURE__ */ requireHttpClientAdapter();
-    Object.defineProperty(exports, "convertHttpClient", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "convertHttpClient", { enumerable: true, get: function() {
       return httpClientAdapter_js_1.convertHttpClient;
     } });
     var util_js_1 = /* @__PURE__ */ requireUtil$1();
-    Object.defineProperty(exports, "toHttpHeadersLike", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "toHttpHeadersLike", { enumerable: true, get: function() {
       return util_js_1.toHttpHeadersLike;
     } });
   })(commonjs$4);
@@ -33701,21 +33703,21 @@ var hasRequiredCommonjs$3;
 function requireCommonjs$3() {
   if (hasRequiredCommonjs$3) return commonjs$2;
   hasRequiredCommonjs$3 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.XML_CHARKEY = exports.XML_ATTRKEY = exports.parseXML = exports.stringifyXML = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.XML_CHARKEY = exports$1.XML_ATTRKEY = exports$1.parseXML = exports$1.stringifyXML = void 0;
     var xml_js_1 = /* @__PURE__ */ requireXml();
-    Object.defineProperty(exports, "stringifyXML", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "stringifyXML", { enumerable: true, get: function() {
       return xml_js_1.stringifyXML;
     } });
-    Object.defineProperty(exports, "parseXML", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "parseXML", { enumerable: true, get: function() {
       return xml_js_1.parseXML;
     } });
     var xml_common_js_1 = /* @__PURE__ */ requireXml_common();
-    Object.defineProperty(exports, "XML_ATTRKEY", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "XML_ATTRKEY", { enumerable: true, get: function() {
       return xml_common_js_1.XML_ATTRKEY;
     } });
-    Object.defineProperty(exports, "XML_CHARKEY", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "XML_CHARKEY", { enumerable: true, get: function() {
       return xml_common_js_1.XML_CHARKEY;
     } });
   })(commonjs$2);
@@ -33777,20 +33779,20 @@ var hasRequiredConstants$2;
 function requireConstants$2() {
   if (hasRequiredConstants$2) return constants$2;
   hasRequiredConstants$2 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.PathStylePorts = exports.BlobDoesNotUseCustomerSpecifiedEncryption = exports.BlobUsesCustomerSpecifiedEncryptionMsg = exports.StorageBlobLoggingAllowedQueryParameters = exports.StorageBlobLoggingAllowedHeaderNames = exports.DevelopmentConnectionString = exports.EncryptionAlgorithmAES25 = exports.HTTP_VERSION_1_1 = exports.HTTP_LINE_ENDING = exports.BATCH_MAX_PAYLOAD_IN_BYTES = exports.BATCH_MAX_REQUEST = exports.SIZE_1_MB = exports.ETagAny = exports.ETagNone = exports.HeaderConstants = exports.HTTPURLConnection = exports.URLConstants = exports.StorageOAuthScopes = exports.REQUEST_TIMEOUT = exports.DEFAULT_MAX_DOWNLOAD_RETRY_REQUESTS = exports.DEFAULT_BLOB_DOWNLOAD_BLOCK_BYTES = exports.DEFAULT_BLOCK_BUFFER_SIZE_BYTES = exports.BLOCK_BLOB_MAX_BLOCKS = exports.BLOCK_BLOB_MAX_STAGE_BLOCK_BYTES = exports.BLOCK_BLOB_MAX_UPLOAD_BLOB_BYTES = exports.SERVICE_VERSION = exports.SDK_VERSION = void 0;
-    exports.SDK_VERSION = "12.29.1";
-    exports.SERVICE_VERSION = "2025-11-05";
-    exports.BLOCK_BLOB_MAX_UPLOAD_BLOB_BYTES = 256 * 1024 * 1024;
-    exports.BLOCK_BLOB_MAX_STAGE_BLOCK_BYTES = 4e3 * 1024 * 1024;
-    exports.BLOCK_BLOB_MAX_BLOCKS = 5e4;
-    exports.DEFAULT_BLOCK_BUFFER_SIZE_BYTES = 8 * 1024 * 1024;
-    exports.DEFAULT_BLOB_DOWNLOAD_BLOCK_BYTES = 4 * 1024 * 1024;
-    exports.DEFAULT_MAX_DOWNLOAD_RETRY_REQUESTS = 5;
-    exports.REQUEST_TIMEOUT = 100 * 1e3;
-    exports.StorageOAuthScopes = "https://storage.azure.com/.default";
-    exports.URLConstants = {
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.PathStylePorts = exports$1.BlobDoesNotUseCustomerSpecifiedEncryption = exports$1.BlobUsesCustomerSpecifiedEncryptionMsg = exports$1.StorageBlobLoggingAllowedQueryParameters = exports$1.StorageBlobLoggingAllowedHeaderNames = exports$1.DevelopmentConnectionString = exports$1.EncryptionAlgorithmAES25 = exports$1.HTTP_VERSION_1_1 = exports$1.HTTP_LINE_ENDING = exports$1.BATCH_MAX_PAYLOAD_IN_BYTES = exports$1.BATCH_MAX_REQUEST = exports$1.SIZE_1_MB = exports$1.ETagAny = exports$1.ETagNone = exports$1.HeaderConstants = exports$1.HTTPURLConnection = exports$1.URLConstants = exports$1.StorageOAuthScopes = exports$1.REQUEST_TIMEOUT = exports$1.DEFAULT_MAX_DOWNLOAD_RETRY_REQUESTS = exports$1.DEFAULT_BLOB_DOWNLOAD_BLOCK_BYTES = exports$1.DEFAULT_BLOCK_BUFFER_SIZE_BYTES = exports$1.BLOCK_BLOB_MAX_BLOCKS = exports$1.BLOCK_BLOB_MAX_STAGE_BLOCK_BYTES = exports$1.BLOCK_BLOB_MAX_UPLOAD_BLOB_BYTES = exports$1.SERVICE_VERSION = exports$1.SDK_VERSION = void 0;
+    exports$1.SDK_VERSION = "12.29.1";
+    exports$1.SERVICE_VERSION = "2025-11-05";
+    exports$1.BLOCK_BLOB_MAX_UPLOAD_BLOB_BYTES = 256 * 1024 * 1024;
+    exports$1.BLOCK_BLOB_MAX_STAGE_BLOCK_BYTES = 4e3 * 1024 * 1024;
+    exports$1.BLOCK_BLOB_MAX_BLOCKS = 5e4;
+    exports$1.DEFAULT_BLOCK_BUFFER_SIZE_BYTES = 8 * 1024 * 1024;
+    exports$1.DEFAULT_BLOB_DOWNLOAD_BLOCK_BYTES = 4 * 1024 * 1024;
+    exports$1.DEFAULT_MAX_DOWNLOAD_RETRY_REQUESTS = 5;
+    exports$1.REQUEST_TIMEOUT = 100 * 1e3;
+    exports$1.StorageOAuthScopes = "https://storage.azure.com/.default";
+    exports$1.URLConstants = {
       Parameters: {
         FORCE_BROWSER_NO_CACHE: "_",
         SIGNATURE: "sig",
@@ -33799,14 +33801,14 @@ function requireConstants$2() {
         TIMEOUT: "timeout"
       }
     };
-    exports.HTTPURLConnection = {
+    exports$1.HTTPURLConnection = {
       HTTP_ACCEPTED: 202,
       HTTP_CONFLICT: 409,
       HTTP_NOT_FOUND: 404,
       HTTP_PRECON_FAILED: 412,
       HTTP_RANGE_NOT_SATISFIABLE: 416
     };
-    exports.HeaderConstants = {
+    exports$1.HeaderConstants = {
       AUTHORIZATION: "Authorization",
       AUTHORIZATION_SCHEME: "Bearer",
       CONTENT_ENCODING: "Content-Encoding",
@@ -33832,16 +33834,16 @@ function requireConstants$2() {
       X_MS_VERSION: "x-ms-version",
       X_MS_CopySourceErrorCode: "x-ms-copy-source-error-code"
     };
-    exports.ETagNone = "";
-    exports.ETagAny = "*";
-    exports.SIZE_1_MB = 1 * 1024 * 1024;
-    exports.BATCH_MAX_REQUEST = 256;
-    exports.BATCH_MAX_PAYLOAD_IN_BYTES = 4 * exports.SIZE_1_MB;
-    exports.HTTP_LINE_ENDING = "\r\n";
-    exports.HTTP_VERSION_1_1 = "HTTP/1.1";
-    exports.EncryptionAlgorithmAES25 = "AES256";
-    exports.DevelopmentConnectionString = `DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;`;
-    exports.StorageBlobLoggingAllowedHeaderNames = [
+    exports$1.ETagNone = "";
+    exports$1.ETagAny = "*";
+    exports$1.SIZE_1_MB = 1 * 1024 * 1024;
+    exports$1.BATCH_MAX_REQUEST = 256;
+    exports$1.BATCH_MAX_PAYLOAD_IN_BYTES = 4 * exports$1.SIZE_1_MB;
+    exports$1.HTTP_LINE_ENDING = "\r\n";
+    exports$1.HTTP_VERSION_1_1 = "HTTP/1.1";
+    exports$1.EncryptionAlgorithmAES25 = "AES256";
+    exports$1.DevelopmentConnectionString = `DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;`;
+    exports$1.StorageBlobLoggingAllowedHeaderNames = [
       "Access-Control-Allow-Origin",
       "Cache-Control",
       "Content-Length",
@@ -33939,7 +33941,7 @@ function requireConstants$2() {
       "x-ms-if-tags",
       "x-ms-source-if-tags"
     ];
-    exports.StorageBlobLoggingAllowedQueryParameters = [
+    exports$1.StorageBlobLoggingAllowedQueryParameters = [
       "comp",
       "maxresults",
       "rscc",
@@ -33974,9 +33976,9 @@ function requireConstants$2() {
       "skv",
       "snapshot"
     ];
-    exports.BlobUsesCustomerSpecifiedEncryptionMsg = "BlobUsesCustomerSpecifiedEncryption";
-    exports.BlobDoesNotUseCustomerSpecifiedEncryption = "BlobDoesNotUseCustomerSpecifiedEncryption";
-    exports.PathStylePorts = [
+    exports$1.BlobUsesCustomerSpecifiedEncryptionMsg = "BlobUsesCustomerSpecifiedEncryption";
+    exports$1.BlobDoesNotUseCustomerSpecifiedEncryption = "BlobDoesNotUseCustomerSpecifiedEncryption";
+    exports$1.PathStylePorts = [
       "10000",
       "10001",
       "10002",
@@ -34759,15 +34761,15 @@ var hasRequiredStorageRetryPolicyFactory$1;
 function requireStorageRetryPolicyFactory$1() {
   if (hasRequiredStorageRetryPolicyFactory$1) return StorageRetryPolicyFactory$1;
   hasRequiredStorageRetryPolicyFactory$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.StorageRetryPolicyFactory = exports.StorageRetryPolicy = exports.StorageRetryPolicyType = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.StorageRetryPolicyFactory = exports$1.StorageRetryPolicy = exports$1.StorageRetryPolicyType = void 0;
     const StorageRetryPolicy_js_1 = /* @__PURE__ */ requireStorageRetryPolicy$1();
-    Object.defineProperty(exports, "StorageRetryPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "StorageRetryPolicy", { enumerable: true, get: function() {
       return StorageRetryPolicy_js_1.StorageRetryPolicy;
     } });
     const StorageRetryPolicyType_js_1 = /* @__PURE__ */ requireStorageRetryPolicyType$1();
-    Object.defineProperty(exports, "StorageRetryPolicyType", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "StorageRetryPolicyType", { enumerable: true, get: function() {
       return StorageRetryPolicyType_js_1.StorageRetryPolicyType;
     } });
     class StorageRetryPolicyFactory2 {
@@ -34789,7 +34791,7 @@ function requireStorageRetryPolicyFactory$1() {
         return new StorageRetryPolicy_js_1.StorageRetryPolicy(nextPolicy, options2, this.retryOptions);
       }
     }
-    exports.StorageRetryPolicyFactory = StorageRetryPolicyFactory2;
+    exports$1.StorageRetryPolicyFactory = StorageRetryPolicyFactory2;
   })(StorageRetryPolicyFactory$1);
   return StorageRetryPolicyFactory$1;
 }
@@ -36459,11 +36461,11 @@ var hasRequiredStorageBrowserPolicyFactory$1;
 function requireStorageBrowserPolicyFactory$1() {
   if (hasRequiredStorageBrowserPolicyFactory$1) return StorageBrowserPolicyFactory$1;
   hasRequiredStorageBrowserPolicyFactory$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.StorageBrowserPolicyFactory = exports.StorageBrowserPolicy = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.StorageBrowserPolicyFactory = exports$1.StorageBrowserPolicy = void 0;
     const StorageBrowserPolicy_js_1 = /* @__PURE__ */ requireStorageBrowserPolicy$1();
-    Object.defineProperty(exports, "StorageBrowserPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "StorageBrowserPolicy", { enumerable: true, get: function() {
       return StorageBrowserPolicy_js_1.StorageBrowserPolicy;
     } });
     class StorageBrowserPolicyFactory2 {
@@ -36477,7 +36479,7 @@ function requireStorageBrowserPolicyFactory$1() {
         return new StorageBrowserPolicy_js_1.StorageBrowserPolicy(nextPolicy, options2);
       }
     }
-    exports.StorageBrowserPolicyFactory = StorageBrowserPolicyFactory2;
+    exports$1.StorageBrowserPolicyFactory = StorageBrowserPolicyFactory2;
   })(StorageBrowserPolicyFactory$1);
   return StorageBrowserPolicyFactory$1;
 }
@@ -37415,15 +37417,15 @@ var hasRequiredStorageRetryPolicyFactory;
 function requireStorageRetryPolicyFactory() {
   if (hasRequiredStorageRetryPolicyFactory) return StorageRetryPolicyFactory;
   hasRequiredStorageRetryPolicyFactory = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.StorageRetryPolicyFactory = exports.StorageRetryPolicy = exports.StorageRetryPolicyType = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.StorageRetryPolicyFactory = exports$1.StorageRetryPolicy = exports$1.StorageRetryPolicyType = void 0;
     const StorageRetryPolicy_js_1 = /* @__PURE__ */ requireStorageRetryPolicy();
-    Object.defineProperty(exports, "StorageRetryPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "StorageRetryPolicy", { enumerable: true, get: function() {
       return StorageRetryPolicy_js_1.StorageRetryPolicy;
     } });
     const StorageRetryPolicyType_js_1 = /* @__PURE__ */ requireStorageRetryPolicyType();
-    Object.defineProperty(exports, "StorageRetryPolicyType", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "StorageRetryPolicyType", { enumerable: true, get: function() {
       return StorageRetryPolicyType_js_1.StorageRetryPolicyType;
     } });
     class StorageRetryPolicyFactory2 {
@@ -37445,7 +37447,7 @@ function requireStorageRetryPolicyFactory() {
         return new StorageRetryPolicy_js_1.StorageRetryPolicy(nextPolicy, options2, this.retryOptions);
       }
     }
-    exports.StorageRetryPolicyFactory = StorageRetryPolicyFactory2;
+    exports$1.StorageRetryPolicyFactory = StorageRetryPolicyFactory2;
   })(StorageRetryPolicyFactory);
   return StorageRetryPolicyFactory;
 }
@@ -37454,17 +37456,17 @@ var hasRequiredStorageBrowserPolicyV2$1;
 function requireStorageBrowserPolicyV2$1() {
   if (hasRequiredStorageBrowserPolicyV2$1) return StorageBrowserPolicyV2$1;
   hasRequiredStorageBrowserPolicyV2$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.storageBrowserPolicyName = void 0;
-    exports.storageBrowserPolicy = storageBrowserPolicy;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.storageBrowserPolicyName = void 0;
+    exports$1.storageBrowserPolicy = storageBrowserPolicy;
     const core_util_1 = /* @__PURE__ */ requireCommonjs$9();
     const constants_js_1 = /* @__PURE__ */ requireConstants$1();
     const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
-    exports.storageBrowserPolicyName = "storageBrowserPolicy";
+    exports$1.storageBrowserPolicyName = "storageBrowserPolicy";
     function storageBrowserPolicy() {
       return {
-        name: exports.storageBrowserPolicyName,
+        name: exports$1.storageBrowserPolicyName,
         async sendRequest(request2, next) {
           if (core_util_1.isNodeLike) {
             return next(request2);
@@ -37486,12 +37488,12 @@ var hasRequiredStorageCorrectContentLengthPolicy$1;
 function requireStorageCorrectContentLengthPolicy$1() {
   if (hasRequiredStorageCorrectContentLengthPolicy$1) return StorageCorrectContentLengthPolicy$1;
   hasRequiredStorageCorrectContentLengthPolicy$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.storageCorrectContentLengthPolicyName = void 0;
-    exports.storageCorrectContentLengthPolicy = storageCorrectContentLengthPolicy;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.storageCorrectContentLengthPolicyName = void 0;
+    exports$1.storageCorrectContentLengthPolicy = storageCorrectContentLengthPolicy;
     const constants_js_1 = /* @__PURE__ */ requireConstants$1();
-    exports.storageCorrectContentLengthPolicyName = "StorageCorrectContentLengthPolicy";
+    exports$1.storageCorrectContentLengthPolicyName = "StorageCorrectContentLengthPolicy";
     function storageCorrectContentLengthPolicy() {
       function correctContentLength(request2) {
         if (request2.body && (typeof request2.body === "string" || Buffer.isBuffer(request2.body)) && request2.body.length > 0) {
@@ -37499,7 +37501,7 @@ function requireStorageCorrectContentLengthPolicy$1() {
         }
       }
       return {
-        name: exports.storageCorrectContentLengthPolicyName,
+        name: exports$1.storageCorrectContentLengthPolicyName,
         async sendRequest(request2, next) {
           correctContentLength(request2);
           return next(request2);
@@ -37514,10 +37516,10 @@ var hasRequiredStorageRetryPolicyV2$1;
 function requireStorageRetryPolicyV2$1() {
   if (hasRequiredStorageRetryPolicyV2$1) return StorageRetryPolicyV2$1;
   hasRequiredStorageRetryPolicyV2$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.storageRetryPolicyName = void 0;
-    exports.storageRetryPolicy = storageRetryPolicy;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.storageRetryPolicyName = void 0;
+    exports$1.storageRetryPolicy = storageRetryPolicy;
     const abort_controller_1 = /* @__PURE__ */ requireCommonjs$a();
     const core_rest_pipeline_1 = /* @__PURE__ */ requireCommonjs$7();
     const core_util_1 = /* @__PURE__ */ requireCommonjs$9();
@@ -37525,7 +37527,7 @@ function requireStorageRetryPolicyV2$1() {
     const constants_js_1 = /* @__PURE__ */ requireConstants$1();
     const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
     const log_js_1 = /* @__PURE__ */ requireLog();
-    exports.storageRetryPolicyName = "storageRetryPolicy";
+    exports$1.storageRetryPolicyName = "storageRetryPolicy";
     const DEFAULT_RETRY_OPTIONS = {
       maxRetryDelayInMs: 120 * 1e3,
       maxTries: 4,
@@ -37615,7 +37617,7 @@ function requireStorageRetryPolicyV2$1() {
         return delayTimeInMs;
       }
       return {
-        name: exports.storageRetryPolicyName,
+        name: exports$1.storageRetryPolicyName,
         async sendRequest(request2, next) {
           if (tryTimeoutInMs) {
             request2.url = (0, utils_common_js_1.setURLParameter)(request2.url, constants_js_1.URLConstants.Parameters.TIMEOUT, String(Math.floor(tryTimeoutInMs / 1e3)));
@@ -37666,15 +37668,15 @@ var hasRequiredStorageSharedKeyCredentialPolicyV2$1;
 function requireStorageSharedKeyCredentialPolicyV2$1() {
   if (hasRequiredStorageSharedKeyCredentialPolicyV2$1) return StorageSharedKeyCredentialPolicyV2$1;
   hasRequiredStorageSharedKeyCredentialPolicyV2$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.storageSharedKeyCredentialPolicyName = void 0;
-    exports.storageSharedKeyCredentialPolicy = storageSharedKeyCredentialPolicy;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.storageSharedKeyCredentialPolicyName = void 0;
+    exports$1.storageSharedKeyCredentialPolicy = storageSharedKeyCredentialPolicy;
     const node_crypto_1 = require$$0$e;
     const constants_js_1 = /* @__PURE__ */ requireConstants$1();
     const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
     const SharedKeyComparator_js_1 = /* @__PURE__ */ requireSharedKeyComparator();
-    exports.storageSharedKeyCredentialPolicyName = "storageSharedKeyCredentialPolicy";
+    exports$1.storageSharedKeyCredentialPolicyName = "storageSharedKeyCredentialPolicy";
     function storageSharedKeyCredentialPolicy(options2) {
       function signRequest(request2) {
         request2.headers.set(constants_js_1.HeaderConstants.X_MS_DATE, (/* @__PURE__ */ new Date()).toUTCString());
@@ -37755,7 +37757,7 @@ ${key}:${decodeURIComponent(lowercaseQueries[key])}`;
         return canonicalizedResourceString;
       }
       return {
-        name: exports.storageSharedKeyCredentialPolicyName,
+        name: exports$1.storageSharedKeyCredentialPolicyName,
         async sendRequest(request2, next) {
           signRequest(request2);
           return next(request2);
@@ -37770,14 +37772,14 @@ var hasRequiredStorageRequestFailureDetailsParserPolicy;
 function requireStorageRequestFailureDetailsParserPolicy() {
   if (hasRequiredStorageRequestFailureDetailsParserPolicy) return StorageRequestFailureDetailsParserPolicy;
   hasRequiredStorageRequestFailureDetailsParserPolicy = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.storageRequestFailureDetailsParserPolicyName = void 0;
-    exports.storageRequestFailureDetailsParserPolicy = storageRequestFailureDetailsParserPolicy;
-    exports.storageRequestFailureDetailsParserPolicyName = "storageRequestFailureDetailsParserPolicy";
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.storageRequestFailureDetailsParserPolicyName = void 0;
+    exports$1.storageRequestFailureDetailsParserPolicy = storageRequestFailureDetailsParserPolicy;
+    exports$1.storageRequestFailureDetailsParserPolicyName = "storageRequestFailureDetailsParserPolicy";
     function storageRequestFailureDetailsParserPolicy() {
       return {
-        name: exports.storageRequestFailureDetailsParserPolicyName,
+        name: exports$1.storageRequestFailureDetailsParserPolicyName,
         async sendRequest(request2, next) {
           try {
             const response2 = await next(request2);
@@ -37800,36 +37802,36 @@ var hasRequiredCommonjs$2;
 function requireCommonjs$2() {
   if (hasRequiredCommonjs$2) return commonjs$1;
   hasRequiredCommonjs$2 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.BaseRequestPolicy = exports.getCachedDefaultHttpClient = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.BaseRequestPolicy = exports$1.getCachedDefaultHttpClient = void 0;
     const tslib_1 = require$$0$2;
-    tslib_1.__exportStar(/* @__PURE__ */ requireBufferScheduler(), exports);
+    tslib_1.__exportStar(/* @__PURE__ */ requireBufferScheduler(), exports$1);
     var cache_js_1 = /* @__PURE__ */ requireCache$2();
-    Object.defineProperty(exports, "getCachedDefaultHttpClient", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "getCachedDefaultHttpClient", { enumerable: true, get: function() {
       return cache_js_1.getCachedDefaultHttpClient;
     } });
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageBrowserPolicyFactory$1(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireAnonymousCredential(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireCredential(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredential(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyFactory(), exports);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageBrowserPolicyFactory$1(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireAnonymousCredential(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireCredential(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredential(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyFactory(), exports$1);
     var RequestPolicy_js_1 = /* @__PURE__ */ requireRequestPolicy();
-    Object.defineProperty(exports, "BaseRequestPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "BaseRequestPolicy", { enumerable: true, get: function() {
       return RequestPolicy_js_1.BaseRequestPolicy;
     } });
-    tslib_1.__exportStar(/* @__PURE__ */ requireAnonymousCredentialPolicy(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireCredentialPolicy(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageBrowserPolicy$1(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageBrowserPolicyV2$1(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageCorrectContentLengthPolicy$1(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyType(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicy(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyV2$1(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredentialPolicy(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredentialPolicyV2$1(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyFactory(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRequestFailureDetailsParserPolicy(), exports);
+    tslib_1.__exportStar(/* @__PURE__ */ requireAnonymousCredentialPolicy(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireCredentialPolicy(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageBrowserPolicy$1(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageBrowserPolicyV2$1(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageCorrectContentLengthPolicy$1(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyType(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicy(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyV2$1(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredentialPolicy(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredentialPolicyV2$1(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyFactory(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRequestFailureDetailsParserPolicy(), exports$1);
   })(commonjs$1);
   return commonjs$1;
 }
@@ -37838,17 +37840,17 @@ var hasRequiredStorageBrowserPolicyV2;
 function requireStorageBrowserPolicyV2() {
   if (hasRequiredStorageBrowserPolicyV2) return StorageBrowserPolicyV2;
   hasRequiredStorageBrowserPolicyV2 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.storageBrowserPolicyName = void 0;
-    exports.storageBrowserPolicy = storageBrowserPolicy;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.storageBrowserPolicyName = void 0;
+    exports$1.storageBrowserPolicy = storageBrowserPolicy;
     const core_util_1 = /* @__PURE__ */ requireCommonjs$9();
     const constants_js_1 = /* @__PURE__ */ requireConstants$2();
     const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
-    exports.storageBrowserPolicyName = "storageBrowserPolicy";
+    exports$1.storageBrowserPolicyName = "storageBrowserPolicy";
     function storageBrowserPolicy() {
       return {
-        name: exports.storageBrowserPolicyName,
+        name: exports$1.storageBrowserPolicyName,
         async sendRequest(request2, next) {
           if (core_util_1.isNodeLike) {
             return next(request2);
@@ -37870,10 +37872,10 @@ var hasRequiredStorageRetryPolicyV2;
 function requireStorageRetryPolicyV2() {
   if (hasRequiredStorageRetryPolicyV2) return StorageRetryPolicyV2;
   hasRequiredStorageRetryPolicyV2 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.storageRetryPolicyName = void 0;
-    exports.storageRetryPolicy = storageRetryPolicy;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.storageRetryPolicyName = void 0;
+    exports$1.storageRetryPolicy = storageRetryPolicy;
     const abort_controller_1 = /* @__PURE__ */ requireCommonjs$a();
     const core_rest_pipeline_1 = /* @__PURE__ */ requireCommonjs$7();
     const core_util_1 = /* @__PURE__ */ requireCommonjs$9();
@@ -37881,7 +37883,7 @@ function requireStorageRetryPolicyV2() {
     const constants_js_1 = /* @__PURE__ */ requireConstants$2();
     const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
     const log_js_1 = /* @__PURE__ */ requireLog$1();
-    exports.storageRetryPolicyName = "storageRetryPolicy";
+    exports$1.storageRetryPolicyName = "storageRetryPolicy";
     const DEFAULT_RETRY_OPTIONS = {
       maxRetryDelayInMs: 120 * 1e3,
       maxTries: 4,
@@ -37971,7 +37973,7 @@ function requireStorageRetryPolicyV2() {
         return delayTimeInMs;
       }
       return {
-        name: exports.storageRetryPolicyName,
+        name: exports$1.storageRetryPolicyName,
         async sendRequest(request2, next) {
           if (tryTimeoutInMs) {
             request2.url = (0, utils_common_js_1.setURLParameter)(request2.url, constants_js_1.URLConstants.Parameters.TIMEOUT, String(Math.floor(tryTimeoutInMs / 1e3)));
@@ -38022,15 +38024,15 @@ var hasRequiredStorageSharedKeyCredentialPolicyV2;
 function requireStorageSharedKeyCredentialPolicyV2() {
   if (hasRequiredStorageSharedKeyCredentialPolicyV2) return StorageSharedKeyCredentialPolicyV2;
   hasRequiredStorageSharedKeyCredentialPolicyV2 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.storageSharedKeyCredentialPolicyName = void 0;
-    exports.storageSharedKeyCredentialPolicy = storageSharedKeyCredentialPolicy;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.storageSharedKeyCredentialPolicyName = void 0;
+    exports$1.storageSharedKeyCredentialPolicy = storageSharedKeyCredentialPolicy;
     const node_crypto_1 = require$$0$e;
     const constants_js_1 = /* @__PURE__ */ requireConstants$2();
     const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
     const SharedKeyComparator_js_1 = /* @__PURE__ */ requireSharedKeyComparator$1();
-    exports.storageSharedKeyCredentialPolicyName = "storageSharedKeyCredentialPolicy";
+    exports$1.storageSharedKeyCredentialPolicyName = "storageSharedKeyCredentialPolicy";
     function storageSharedKeyCredentialPolicy(options2) {
       function signRequest(request2) {
         request2.headers.set(constants_js_1.HeaderConstants.X_MS_DATE, (/* @__PURE__ */ new Date()).toUTCString());
@@ -38111,7 +38113,7 @@ ${key}:${decodeURIComponent(lowercaseQueries[key])}`;
         return canonicalizedResourceString;
       }
       return {
-        name: exports.storageSharedKeyCredentialPolicyName,
+        name: exports$1.storageSharedKeyCredentialPolicyName,
         async sendRequest(request2, next) {
           signRequest(request2);
           return next(request2);
@@ -38168,11 +38170,11 @@ var hasRequiredStorageBrowserPolicyFactory;
 function requireStorageBrowserPolicyFactory() {
   if (hasRequiredStorageBrowserPolicyFactory) return StorageBrowserPolicyFactory;
   hasRequiredStorageBrowserPolicyFactory = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.StorageBrowserPolicyFactory = exports.StorageBrowserPolicy = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.StorageBrowserPolicyFactory = exports$1.StorageBrowserPolicy = void 0;
     const StorageBrowserPolicy_js_1 = /* @__PURE__ */ requireStorageBrowserPolicy();
-    Object.defineProperty(exports, "StorageBrowserPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "StorageBrowserPolicy", { enumerable: true, get: function() {
       return StorageBrowserPolicy_js_1.StorageBrowserPolicy;
     } });
     class StorageBrowserPolicyFactory2 {
@@ -38186,7 +38188,7 @@ function requireStorageBrowserPolicyFactory() {
         return new StorageBrowserPolicy_js_1.StorageBrowserPolicy(nextPolicy, options2);
       }
     }
-    exports.StorageBrowserPolicyFactory = StorageBrowserPolicyFactory2;
+    exports$1.StorageBrowserPolicyFactory = StorageBrowserPolicyFactory2;
   })(StorageBrowserPolicyFactory);
   return StorageBrowserPolicyFactory;
 }
@@ -38195,12 +38197,12 @@ var hasRequiredStorageCorrectContentLengthPolicy;
 function requireStorageCorrectContentLengthPolicy() {
   if (hasRequiredStorageCorrectContentLengthPolicy) return StorageCorrectContentLengthPolicy;
   hasRequiredStorageCorrectContentLengthPolicy = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.storageCorrectContentLengthPolicyName = void 0;
-    exports.storageCorrectContentLengthPolicy = storageCorrectContentLengthPolicy;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.storageCorrectContentLengthPolicyName = void 0;
+    exports$1.storageCorrectContentLengthPolicy = storageCorrectContentLengthPolicy;
     const constants_js_1 = /* @__PURE__ */ requireConstants$2();
-    exports.storageCorrectContentLengthPolicyName = "StorageCorrectContentLengthPolicy";
+    exports$1.storageCorrectContentLengthPolicyName = "StorageCorrectContentLengthPolicy";
     function storageCorrectContentLengthPolicy() {
       function correctContentLength(request2) {
         if (request2.body && (typeof request2.body === "string" || Buffer.isBuffer(request2.body)) && request2.body.length > 0) {
@@ -38208,7 +38210,7 @@ function requireStorageCorrectContentLengthPolicy() {
         }
       }
       return {
-        name: exports.storageCorrectContentLengthPolicyName,
+        name: exports$1.storageCorrectContentLengthPolicyName,
         async sendRequest(request2, next) {
           correctContentLength(request2);
           return next(request2);
@@ -38222,13 +38224,13 @@ var hasRequiredPipeline;
 function requirePipeline() {
   if (hasRequiredPipeline) return Pipeline;
   hasRequiredPipeline = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Pipeline = exports.StorageOAuthScopes = void 0;
-    exports.isPipelineLike = isPipelineLike;
-    exports.newPipeline = newPipeline;
-    exports.getCoreClientOptions = getCoreClientOptions;
-    exports.getCredentialFromPipeline = getCredentialFromPipeline;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.Pipeline = exports$1.StorageOAuthScopes = void 0;
+    exports$1.isPipelineLike = isPipelineLike;
+    exports$1.newPipeline = newPipeline;
+    exports$1.getCoreClientOptions = getCoreClientOptions;
+    exports$1.getCredentialFromPipeline = getCredentialFromPipeline;
     const core_http_compat_1 = /* @__PURE__ */ requireCommonjs$4();
     const core_rest_pipeline_1 = /* @__PURE__ */ requireCommonjs$7();
     const core_client_1 = /* @__PURE__ */ requireCommonjs$5();
@@ -38239,7 +38241,7 @@ function requirePipeline() {
     const StorageSharedKeyCredential_js_1 = /* @__PURE__ */ requireStorageSharedKeyCredential$1();
     const AnonymousCredential_js_1 = /* @__PURE__ */ requireAnonymousCredential$1();
     const constants_js_1 = /* @__PURE__ */ requireConstants$2();
-    Object.defineProperty(exports, "StorageOAuthScopes", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "StorageOAuthScopes", { enumerable: true, get: function() {
       return constants_js_1.StorageOAuthScopes;
     } });
     const storage_common_1 = /* @__PURE__ */ requireCommonjs$2();
@@ -38287,7 +38289,7 @@ function requirePipeline() {
         };
       }
     }
-    exports.Pipeline = Pipeline2;
+    exports$1.Pipeline = Pipeline2;
     function newPipeline(credential, pipelineOptions = {}) {
       if (!credential) {
         credential = new AnonymousCredential_js_1.AnonymousCredential();
@@ -51723,15 +51725,15 @@ var hasRequiredOperations;
 function requireOperations() {
   if (hasRequiredOperations) return operations;
   hasRequiredOperations = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
     const tslib_1 = require$$0$2;
-    tslib_1.__exportStar(/* @__PURE__ */ requireService$1(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireContainer$1(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireBlob$1(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requirePageBlob$1(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireAppendBlob$1(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireBlockBlob$1(), exports);
+    tslib_1.__exportStar(/* @__PURE__ */ requireService$1(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireContainer$1(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireBlob$1(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requirePageBlob$1(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireAppendBlob$1(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireBlockBlob$1(), exports$1);
   })(operations);
   return operations;
 }
@@ -51846,15 +51848,15 @@ var hasRequiredOperationsInterfaces;
 function requireOperationsInterfaces() {
   if (hasRequiredOperationsInterfaces) return operationsInterfaces;
   hasRequiredOperationsInterfaces = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
     const tslib_1 = require$$0$2;
-    tslib_1.__exportStar(/* @__PURE__ */ requireService(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireContainer(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireBlob(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requirePageBlob(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireAppendBlob(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireBlockBlob(), exports);
+    tslib_1.__exportStar(/* @__PURE__ */ requireService(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireContainer(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireBlob(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requirePageBlob(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireAppendBlob(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireBlockBlob(), exports$1);
   })(operationsInterfaces);
   return operationsInterfaces;
 }
@@ -51862,16 +51864,16 @@ var hasRequiredSrc;
 function requireSrc() {
   if (hasRequiredSrc) return src$1;
   hasRequiredSrc = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.StorageClient = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.StorageClient = void 0;
     const tslib_1 = require$$0$2;
-    tslib_1.__exportStar(/* @__PURE__ */ requireModels$1(), exports);
+    tslib_1.__exportStar(/* @__PURE__ */ requireModels$1(), exports$1);
     var storageClient_js_1 = /* @__PURE__ */ requireStorageClient$1();
-    Object.defineProperty(exports, "StorageClient", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "StorageClient", { enumerable: true, get: function() {
       return storageClient_js_1.StorageClient;
     } });
-    tslib_1.__exportStar(/* @__PURE__ */ requireOperationsInterfaces(), exports);
+    tslib_1.__exportStar(/* @__PURE__ */ requireOperationsInterfaces(), exports$1);
   })(src$1);
   return src$1;
 }
@@ -54574,19 +54576,19 @@ var hasRequiredInternalAvro;
 function requireInternalAvro() {
   if (hasRequiredInternalAvro) return internalAvro;
   hasRequiredInternalAvro = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.AvroReadableFromStream = exports.AvroReadable = exports.AvroReader = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.AvroReadableFromStream = exports$1.AvroReadable = exports$1.AvroReader = void 0;
     var AvroReader_js_1 = /* @__PURE__ */ requireAvroReader();
-    Object.defineProperty(exports, "AvroReader", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "AvroReader", { enumerable: true, get: function() {
       return AvroReader_js_1.AvroReader;
     } });
     var AvroReadable_js_1 = /* @__PURE__ */ requireAvroReadable();
-    Object.defineProperty(exports, "AvroReadable", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "AvroReadable", { enumerable: true, get: function() {
       return AvroReadable_js_1.AvroReadable;
     } });
     var AvroReadableFromStream_js_1 = /* @__PURE__ */ requireAvroReadableFromStream();
-    Object.defineProperty(exports, "AvroReadableFromStream", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "AvroReadableFromStream", { enumerable: true, get: function() {
       return AvroReadableFromStream_js_1.AvroReadableFromStream;
     } });
   })(internalAvro);
@@ -56291,11 +56293,11 @@ var hasRequiredLroEngine;
 function requireLroEngine() {
   if (hasRequiredLroEngine) return lroEngine$1;
   hasRequiredLroEngine = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.LroEngine = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.LroEngine = void 0;
     var lroEngine_js_1 = /* @__PURE__ */ requireLroEngine$1();
-    Object.defineProperty(exports, "LroEngine", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "LroEngine", { enumerable: true, get: function() {
       return lroEngine_js_1.LroEngine;
     } });
   })(lroEngine$1);
@@ -56313,17 +56315,17 @@ var hasRequiredCommonjs$1;
 function requireCommonjs$1() {
   if (hasRequiredCommonjs$1) return commonjs;
   hasRequiredCommonjs$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.createHttpPoller = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.createHttpPoller = void 0;
     const tslib_1 = require$$0$2;
     var poller_js_1 = /* @__PURE__ */ requirePoller$1();
-    Object.defineProperty(exports, "createHttpPoller", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "createHttpPoller", { enumerable: true, get: function() {
       return poller_js_1.createHttpPoller;
     } });
-    tslib_1.__exportStar(/* @__PURE__ */ requireLroEngine(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requirePoller(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requirePollOperation(), exports);
+    tslib_1.__exportStar(/* @__PURE__ */ requireLroEngine(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requirePoller(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requirePollOperation(), exports$1);
   })(commonjs);
   return commonjs;
 }
@@ -62384,77 +62386,77 @@ var hasRequiredCommonjs;
 function requireCommonjs() {
   if (hasRequiredCommonjs) return commonjs$c;
   hasRequiredCommonjs = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.logger = exports.RestError = exports.BaseRequestPolicy = exports.StorageOAuthScopes = exports.newPipeline = exports.isPipelineLike = exports.Pipeline = exports.getBlobServiceAccountAudience = exports.StorageBlobAudience = exports.PremiumPageBlobTier = exports.BlockBlobTier = exports.generateBlobSASQueryParameters = exports.generateAccountSASQueryParameters = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.logger = exports$1.RestError = exports$1.BaseRequestPolicy = exports$1.StorageOAuthScopes = exports$1.newPipeline = exports$1.isPipelineLike = exports$1.Pipeline = exports$1.getBlobServiceAccountAudience = exports$1.StorageBlobAudience = exports$1.PremiumPageBlobTier = exports$1.BlockBlobTier = exports$1.generateBlobSASQueryParameters = exports$1.generateAccountSASQueryParameters = void 0;
     const tslib_1 = require$$0$2;
     const core_rest_pipeline_1 = /* @__PURE__ */ requireCommonjs$7();
-    Object.defineProperty(exports, "RestError", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "RestError", { enumerable: true, get: function() {
       return core_rest_pipeline_1.RestError;
     } });
-    tslib_1.__exportStar(/* @__PURE__ */ requireBlobServiceClient(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireClients(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireContainerClient(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireBlobLeaseClient(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireAccountSASPermissions(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireAccountSASResourceTypes(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireAccountSASServices(), exports);
+    tslib_1.__exportStar(/* @__PURE__ */ requireBlobServiceClient(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireClients(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireContainerClient(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireBlobLeaseClient(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireAccountSASPermissions(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireAccountSASResourceTypes(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireAccountSASServices(), exports$1);
     var AccountSASSignatureValues_js_1 = /* @__PURE__ */ requireAccountSASSignatureValues();
-    Object.defineProperty(exports, "generateAccountSASQueryParameters", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "generateAccountSASQueryParameters", { enumerable: true, get: function() {
       return AccountSASSignatureValues_js_1.generateAccountSASQueryParameters;
     } });
-    tslib_1.__exportStar(/* @__PURE__ */ requireBlobBatch(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireBlobBatchClient(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireBatchResponse(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireBlobSASPermissions(), exports);
+    tslib_1.__exportStar(/* @__PURE__ */ requireBlobBatch(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireBlobBatchClient(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireBatchResponse(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireBlobSASPermissions(), exports$1);
     var BlobSASSignatureValues_js_1 = /* @__PURE__ */ requireBlobSASSignatureValues();
-    Object.defineProperty(exports, "generateBlobSASQueryParameters", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "generateBlobSASQueryParameters", { enumerable: true, get: function() {
       return BlobSASSignatureValues_js_1.generateBlobSASQueryParameters;
     } });
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageBrowserPolicyFactory(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireContainerSASPermissions(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireAnonymousCredential$1(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireCredential$1(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredential$1(), exports);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageBrowserPolicyFactory(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireContainerSASPermissions(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireAnonymousCredential$1(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireCredential$1(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredential$1(), exports$1);
     var models_js_1 = /* @__PURE__ */ requireModels();
-    Object.defineProperty(exports, "BlockBlobTier", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "BlockBlobTier", { enumerable: true, get: function() {
       return models_js_1.BlockBlobTier;
     } });
-    Object.defineProperty(exports, "PremiumPageBlobTier", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "PremiumPageBlobTier", { enumerable: true, get: function() {
       return models_js_1.PremiumPageBlobTier;
     } });
-    Object.defineProperty(exports, "StorageBlobAudience", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "StorageBlobAudience", { enumerable: true, get: function() {
       return models_js_1.StorageBlobAudience;
     } });
-    Object.defineProperty(exports, "getBlobServiceAccountAudience", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "getBlobServiceAccountAudience", { enumerable: true, get: function() {
       return models_js_1.getBlobServiceAccountAudience;
     } });
     var Pipeline_js_1 = /* @__PURE__ */ requirePipeline();
-    Object.defineProperty(exports, "Pipeline", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "Pipeline", { enumerable: true, get: function() {
       return Pipeline_js_1.Pipeline;
     } });
-    Object.defineProperty(exports, "isPipelineLike", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "isPipelineLike", { enumerable: true, get: function() {
       return Pipeline_js_1.isPipelineLike;
     } });
-    Object.defineProperty(exports, "newPipeline", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "newPipeline", { enumerable: true, get: function() {
       return Pipeline_js_1.newPipeline;
     } });
-    Object.defineProperty(exports, "StorageOAuthScopes", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "StorageOAuthScopes", { enumerable: true, get: function() {
       return Pipeline_js_1.StorageOAuthScopes;
     } });
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyFactory$1(), exports);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyFactory$1(), exports$1);
     var RequestPolicy_js_1 = /* @__PURE__ */ requireRequestPolicy$1();
-    Object.defineProperty(exports, "BaseRequestPolicy", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "BaseRequestPolicy", { enumerable: true, get: function() {
       return RequestPolicy_js_1.BaseRequestPolicy;
     } });
-    tslib_1.__exportStar(/* @__PURE__ */ requireAnonymousCredentialPolicy$1(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireCredentialPolicy$1(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyFactory$1(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredentialPolicy$1(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireSASQueryParameters(), exports);
-    tslib_1.__exportStar(/* @__PURE__ */ requireGeneratedModels(), exports);
+    tslib_1.__exportStar(/* @__PURE__ */ requireAnonymousCredentialPolicy$1(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireCredentialPolicy$1(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyFactory$1(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredentialPolicy$1(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireSASQueryParameters(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireGeneratedModels(), exports$1);
     var log_js_1 = /* @__PURE__ */ requireLog$1();
-    Object.defineProperty(exports, "logger", { enumerable: true, get: function() {
+    Object.defineProperty(exports$1, "logger", { enumerable: true, get: function() {
       return log_js_1.logger;
     } });
   })(commonjs$c);
@@ -67488,9 +67490,9 @@ var hasRequiredCache$1;
 function requireCache$1() {
   if (hasRequiredCache$1) return cache;
   hasRequiredCache$1 = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.CacheService = exports.GetCacheEntryDownloadURLResponse = exports.GetCacheEntryDownloadURLRequest = exports.FinalizeCacheEntryUploadResponse = exports.FinalizeCacheEntryUploadRequest = exports.CreateCacheEntryResponse = exports.CreateCacheEntryRequest = void 0;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.CacheService = exports$1.GetCacheEntryDownloadURLResponse = exports$1.GetCacheEntryDownloadURLRequest = exports$1.FinalizeCacheEntryUploadResponse = exports$1.FinalizeCacheEntryUploadRequest = exports$1.CreateCacheEntryResponse = exports$1.CreateCacheEntryRequest = void 0;
     const runtime_rpc_1 = require$$0;
     const runtime_1 = require$$1;
     const runtime_2 = require$$1;
@@ -67566,7 +67568,7 @@ function requireCache$1() {
         return writer;
       }
     }
-    exports.CreateCacheEntryRequest = new CreateCacheEntryRequest$Type();
+    exports$1.CreateCacheEntryRequest = new CreateCacheEntryRequest$Type();
     class CreateCacheEntryResponse$Type extends runtime_5.MessageType {
       constructor() {
         super("github.actions.results.api.v1.CreateCacheEntryResponse", [
@@ -67641,7 +67643,7 @@ function requireCache$1() {
         return writer;
       }
     }
-    exports.CreateCacheEntryResponse = new CreateCacheEntryResponse$Type();
+    exports$1.CreateCacheEntryResponse = new CreateCacheEntryResponse$Type();
     class FinalizeCacheEntryUploadRequest$Type extends runtime_5.MessageType {
       constructor() {
         super("github.actions.results.api.v1.FinalizeCacheEntryUploadRequest", [
@@ -67723,7 +67725,7 @@ function requireCache$1() {
         return writer;
       }
     }
-    exports.FinalizeCacheEntryUploadRequest = new FinalizeCacheEntryUploadRequest$Type();
+    exports$1.FinalizeCacheEntryUploadRequest = new FinalizeCacheEntryUploadRequest$Type();
     class FinalizeCacheEntryUploadResponse$Type extends runtime_5.MessageType {
       constructor() {
         super("github.actions.results.api.v1.FinalizeCacheEntryUploadResponse", [
@@ -67798,7 +67800,7 @@ function requireCache$1() {
         return writer;
       }
     }
-    exports.FinalizeCacheEntryUploadResponse = new FinalizeCacheEntryUploadResponse$Type();
+    exports$1.FinalizeCacheEntryUploadResponse = new FinalizeCacheEntryUploadResponse$Type();
     class GetCacheEntryDownloadURLRequest$Type extends runtime_5.MessageType {
       constructor() {
         super("github.actions.results.api.v1.GetCacheEntryDownloadURLRequest", [
@@ -67881,7 +67883,7 @@ function requireCache$1() {
         return writer;
       }
     }
-    exports.GetCacheEntryDownloadURLRequest = new GetCacheEntryDownloadURLRequest$Type();
+    exports$1.GetCacheEntryDownloadURLRequest = new GetCacheEntryDownloadURLRequest$Type();
     class GetCacheEntryDownloadURLResponse$Type extends runtime_5.MessageType {
       constructor() {
         super("github.actions.results.api.v1.GetCacheEntryDownloadURLResponse", [
@@ -67956,11 +67958,11 @@ function requireCache$1() {
         return writer;
       }
     }
-    exports.GetCacheEntryDownloadURLResponse = new GetCacheEntryDownloadURLResponse$Type();
-    exports.CacheService = new runtime_rpc_1.ServiceType("github.actions.results.api.v1.CacheService", [
-      { name: "CreateCacheEntry", options: {}, I: exports.CreateCacheEntryRequest, O: exports.CreateCacheEntryResponse },
-      { name: "FinalizeCacheEntryUpload", options: {}, I: exports.FinalizeCacheEntryUploadRequest, O: exports.FinalizeCacheEntryUploadResponse },
-      { name: "GetCacheEntryDownloadURL", options: {}, I: exports.GetCacheEntryDownloadURLRequest, O: exports.GetCacheEntryDownloadURLResponse }
+    exports$1.GetCacheEntryDownloadURLResponse = new GetCacheEntryDownloadURLResponse$Type();
+    exports$1.CacheService = new runtime_rpc_1.ServiceType("github.actions.results.api.v1.CacheService", [
+      { name: "CreateCacheEntry", options: {}, I: exports$1.CreateCacheEntryRequest, O: exports$1.CreateCacheEntryResponse },
+      { name: "FinalizeCacheEntryUpload", options: {}, I: exports$1.FinalizeCacheEntryUploadRequest, O: exports$1.FinalizeCacheEntryUploadResponse },
+      { name: "GetCacheEntryDownloadURL", options: {}, I: exports$1.GetCacheEntryDownloadURLRequest, O: exports$1.GetCacheEntryDownloadURLResponse }
     ]);
   })(cache);
   return cache;
@@ -68926,7 +68928,7 @@ var hasRequiredIoUtil;
 function requireIoUtil() {
   if (hasRequiredIoUtil) return ioUtil;
   hasRequiredIoUtil = 1;
-  (function(exports) {
+  (function(exports$1) {
     var __createBinding2 = ioUtil && ioUtil.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -68992,33 +68994,33 @@ function requireIoUtil() {
       });
     };
     var _a;
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.READONLY = exports.UV_FS_O_EXLOCK = exports.IS_WINDOWS = exports.unlink = exports.symlink = exports.stat = exports.rmdir = exports.rm = exports.rename = exports.readdir = exports.open = exports.mkdir = exports.lstat = exports.copyFile = exports.chmod = void 0;
-    exports.readlink = readlink;
-    exports.exists = exists;
-    exports.isDirectory = isDirectory;
-    exports.isRooted = isRooted;
-    exports.tryGetExecutablePath = tryGetExecutablePath;
-    exports.getCmdPath = getCmdPath;
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.READONLY = exports$1.UV_FS_O_EXLOCK = exports$1.IS_WINDOWS = exports$1.unlink = exports$1.symlink = exports$1.stat = exports$1.rmdir = exports$1.rm = exports$1.rename = exports$1.readdir = exports$1.open = exports$1.mkdir = exports$1.lstat = exports$1.copyFile = exports$1.chmod = void 0;
+    exports$1.readlink = readlink;
+    exports$1.exists = exists;
+    exports$1.isDirectory = isDirectory;
+    exports$1.isRooted = isRooted;
+    exports$1.tryGetExecutablePath = tryGetExecutablePath;
+    exports$1.getCmdPath = getCmdPath;
     const fs = __importStar2(require$$1$2);
     const path2 = __importStar2(require$$1$7);
-    _a = fs.promises, exports.chmod = _a.chmod, exports.copyFile = _a.copyFile, exports.lstat = _a.lstat, exports.mkdir = _a.mkdir, exports.open = _a.open, exports.readdir = _a.readdir, exports.rename = _a.rename, exports.rm = _a.rm, exports.rmdir = _a.rmdir, exports.stat = _a.stat, exports.symlink = _a.symlink, exports.unlink = _a.unlink;
-    exports.IS_WINDOWS = process.platform === "win32";
+    _a = fs.promises, exports$1.chmod = _a.chmod, exports$1.copyFile = _a.copyFile, exports$1.lstat = _a.lstat, exports$1.mkdir = _a.mkdir, exports$1.open = _a.open, exports$1.readdir = _a.readdir, exports$1.rename = _a.rename, exports$1.rm = _a.rm, exports$1.rmdir = _a.rmdir, exports$1.stat = _a.stat, exports$1.symlink = _a.symlink, exports$1.unlink = _a.unlink;
+    exports$1.IS_WINDOWS = process.platform === "win32";
     function readlink(fsPath) {
       return __awaiter2(this, void 0, void 0, function* () {
         const result = yield fs.promises.readlink(fsPath);
-        if (exports.IS_WINDOWS && !result.endsWith("\\")) {
+        if (exports$1.IS_WINDOWS && !result.endsWith("\\")) {
           return `${result}\\`;
         }
         return result;
       });
     }
-    exports.UV_FS_O_EXLOCK = 268435456;
-    exports.READONLY = fs.constants.O_RDONLY;
+    exports$1.UV_FS_O_EXLOCK = 268435456;
+    exports$1.READONLY = fs.constants.O_RDONLY;
     function exists(fsPath) {
       return __awaiter2(this, void 0, void 0, function* () {
         try {
-          yield (0, exports.stat)(fsPath);
+          yield (0, exports$1.stat)(fsPath);
         } catch (err) {
           if (err.code === "ENOENT") {
             return false;
@@ -69030,7 +69032,7 @@ function requireIoUtil() {
     }
     function isDirectory(fsPath_1) {
       return __awaiter2(this, arguments, void 0, function* (fsPath, useStat = false) {
-        const stats = useStat ? yield (0, exports.stat)(fsPath) : yield (0, exports.lstat)(fsPath);
+        const stats = useStat ? yield (0, exports$1.stat)(fsPath) : yield (0, exports$1.lstat)(fsPath);
         return stats.isDirectory();
       });
     }
@@ -69039,7 +69041,7 @@ function requireIoUtil() {
       if (!p) {
         throw new Error('isRooted() parameter "p" cannot be empty');
       }
-      if (exports.IS_WINDOWS) {
+      if (exports$1.IS_WINDOWS) {
         return p.startsWith("\\") || /^[A-Z]:/i.test(p);
       }
       return p.startsWith("/");
@@ -69048,14 +69050,14 @@ function requireIoUtil() {
       return __awaiter2(this, void 0, void 0, function* () {
         let stats = void 0;
         try {
-          stats = yield (0, exports.stat)(filePath);
+          stats = yield (0, exports$1.stat)(filePath);
         } catch (err) {
           if (err.code !== "ENOENT") {
             console.log(`Unexpected error attempting to determine if executable file exists '${filePath}': ${err}`);
           }
         }
         if (stats && stats.isFile()) {
-          if (exports.IS_WINDOWS) {
+          if (exports$1.IS_WINDOWS) {
             const upperExt = path2.extname(filePath).toUpperCase();
             if (extensions.some((validExt) => validExt.toUpperCase() === upperExt)) {
               return filePath;
@@ -69071,18 +69073,18 @@ function requireIoUtil() {
           filePath = originalFilePath + extension;
           stats = void 0;
           try {
-            stats = yield (0, exports.stat)(filePath);
+            stats = yield (0, exports$1.stat)(filePath);
           } catch (err) {
             if (err.code !== "ENOENT") {
               console.log(`Unexpected error attempting to determine if executable file exists '${filePath}': ${err}`);
             }
           }
           if (stats && stats.isFile()) {
-            if (exports.IS_WINDOWS) {
+            if (exports$1.IS_WINDOWS) {
               try {
                 const directory = path2.dirname(filePath);
                 const upperName = path2.basename(filePath).toUpperCase();
-                for (const actualName of yield (0, exports.readdir)(directory)) {
+                for (const actualName of yield (0, exports$1.readdir)(directory)) {
                   if (upperName === actualName.toUpperCase()) {
                     filePath = path2.join(directory, actualName);
                     break;
@@ -69104,7 +69106,7 @@ function requireIoUtil() {
     }
     function normalizeSeparators(p) {
       p = p || "";
-      if (exports.IS_WINDOWS) {
+      if (exports$1.IS_WINDOWS) {
         p = p.replace(/\//g, "\\");
         return p.replace(/\\\\+/g, "\\");
       }
