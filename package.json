@@ -67,7 +67,7 @@
         "@vitest/coverage-istanbul": "4.0.9",
         "@vitest/ui": "4.0.9",
         "conventional-changelog-conventionalcommits": "9.1.0",
-        "dependency-cruiser": "17.2.0",
+        "dependency-cruiser": "17.3.1",
         "eslint": "9.39.1",
         "eslint-config-love": "133.0.0",
         "eslint-config-prettier": "10.1.8",
