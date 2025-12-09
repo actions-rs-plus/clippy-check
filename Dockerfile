@@ -4,4 +4,6 @@ WORKDIR /app
 
 COPY dist/ .
 
+USER clippy
+
 CMD ["node", "index.js"]
