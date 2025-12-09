@@ -45,7 +45,7 @@
         "url": "https://github.com/actions-rs-plus/clippy-check/issues"
     },
     "dependencies": {
-        "@actions-rs-plus/core": "0.5.2",
+        "@actions-rs-plus/core": "0.5.3",
         "@actions/core": "2.0.0",
         "@actions/exec": "1.1.1",
         "source-map-support": "0.5.21",
