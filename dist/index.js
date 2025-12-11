@@ -20719,6 +20719,9 @@ class BaseProgram {
   }
 }
 var cache$2 = {};
+var cacheUtils = {};
+var glob = {};
+var internalGlobber = {};
 var core = {};
 var command = {};
 var utils$2 = {};
@@ -22815,9 +22818,6 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
   })(core);
   return core;
 }
-var cacheUtils = {};
-var glob = {};
-var internalGlobber = {};
 var internalGlobOptionsHelper = {};
 var hasRequiredInternalGlobOptionsHelper;
 function requireInternalGlobOptionsHelper() {
@@ -22825,9 +22825,13 @@ function requireInternalGlobOptionsHelper() {
   hasRequiredInternalGlobOptionsHelper = 1;
   var __createBinding2 = internalGlobOptionsHelper && internalGlobOptionsHelper.__createBinding || (Object.create ? (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() {
-      return m[k];
-    } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() {
+        return m[k];
+      } };
+    }
+    Object.defineProperty(o, k2, desc);
   }) : (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
     o[k2] = m[k];
@@ -22841,7 +22845,7 @@ function requireInternalGlobOptionsHelper() {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) {
-      for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
+      for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
     }
     __setModuleDefault2(result, mod);
     return result;
@@ -22853,7 +22857,9 @@ function requireInternalGlobOptionsHelper() {
     const result = {
       followSymbolicLinks: true,
       implicitDescendants: true,
-      omitBrokenSymbolicLinks: true
+      matchDirectories: true,
+      omitBrokenSymbolicLinks: true,
+      excludeHiddenFiles: false
     };
     if (copy2) {
       if (typeof copy2.followSymbolicLinks === "boolean") {
@@ -22864,9 +22870,17 @@ function requireInternalGlobOptionsHelper() {
         result.implicitDescendants = copy2.implicitDescendants;
         core2.debug(`implicitDescendants '${result.implicitDescendants}'`);
       }
+      if (typeof copy2.matchDirectories === "boolean") {
+        result.matchDirectories = copy2.matchDirectories;
+        core2.debug(`matchDirectories '${result.matchDirectories}'`);
+      }
       if (typeof copy2.omitBrokenSymbolicLinks === "boolean") {
         result.omitBrokenSymbolicLinks = copy2.omitBrokenSymbolicLinks;
         core2.debug(`omitBrokenSymbolicLinks '${result.omitBrokenSymbolicLinks}'`);
+      }
+      if (typeof copy2.excludeHiddenFiles === "boolean") {
+        result.excludeHiddenFiles = copy2.excludeHiddenFiles;
+        core2.debug(`excludeHiddenFiles '${result.excludeHiddenFiles}'`);
       }
     }
     return result;
@@ -22882,9 +22896,13 @@ function requireInternalPathHelper() {
   hasRequiredInternalPathHelper = 1;
   var __createBinding2 = internalPathHelper && internalPathHelper.__createBinding || (Object.create ? (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() {
-      return m[k];
-    } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() {
+        return m[k];
+      } };
+    }
+    Object.defineProperty(o, k2, desc);
   }) : (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
     o[k2] = m[k];
@@ -22898,7 +22916,7 @@ function requireInternalPathHelper() {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) {
-      for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
+      for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
     }
     __setModuleDefault2(result, mod);
     return result;
@@ -22924,15 +22942,15 @@ function requireInternalPathHelper() {
   }
   internalPathHelper.dirname = dirname;
   function ensureAbsoluteRoot(root, itemPath) {
-    assert_1.default(root, `ensureAbsoluteRoot parameter 'root' must not be empty`);
-    assert_1.default(itemPath, `ensureAbsoluteRoot parameter 'itemPath' must not be empty`);
+    (0, assert_1.default)(root, `ensureAbsoluteRoot parameter 'root' must not be empty`);
+    (0, assert_1.default)(itemPath, `ensureAbsoluteRoot parameter 'itemPath' must not be empty`);
     if (hasAbsoluteRoot(itemPath)) {
       return itemPath;
     }
     if (IS_WINDOWS) {
       if (itemPath.match(/^[A-Z]:[^\\/]|^[A-Z]:$/i)) {
         let cwd = process.cwd();
-        assert_1.default(cwd.match(/^[A-Z]:\\/i), `Expected current directory to start with an absolute drive root. Actual '${cwd}'`);
+        (0, assert_1.default)(cwd.match(/^[A-Z]:\\/i), `Expected current directory to start with an absolute drive root. Actual '${cwd}'`);
         if (itemPath[0].toUpperCase() === cwd[0].toUpperCase()) {
           if (itemPath.length === 2) {
             return `${itemPath[0]}:\\${cwd.substr(3)}`;
@@ -22947,11 +22965,11 @@ function requireInternalPathHelper() {
         }
       } else if (normalizeSeparators(itemPath).match(/^\\$|^\\[^\\]/)) {
         const cwd = process.cwd();
-        assert_1.default(cwd.match(/^[A-Z]:\\/i), `Expected current directory to start with an absolute drive root. Actual '${cwd}'`);
+        (0, assert_1.default)(cwd.match(/^[A-Z]:\\/i), `Expected current directory to start with an absolute drive root. Actual '${cwd}'`);
         return `${cwd[0]}:\\${itemPath.substr(1)}`;
       }
     }
-    assert_1.default(hasAbsoluteRoot(root), `ensureAbsoluteRoot parameter 'root' must have an absolute root`);
+    (0, assert_1.default)(hasAbsoluteRoot(root), `ensureAbsoluteRoot parameter 'root' must have an absolute root`);
     if (root.endsWith("/") || IS_WINDOWS && root.endsWith("\\")) ;
     else {
       root += path2.sep;
@@ -22960,7 +22978,7 @@ function requireInternalPathHelper() {
   }
   internalPathHelper.ensureAbsoluteRoot = ensureAbsoluteRoot;
   function hasAbsoluteRoot(itemPath) {
-    assert_1.default(itemPath, `hasAbsoluteRoot parameter 'itemPath' must not be empty`);
+    (0, assert_1.default)(itemPath, `hasAbsoluteRoot parameter 'itemPath' must not be empty`);
     itemPath = normalizeSeparators(itemPath);
     if (IS_WINDOWS) {
       return itemPath.startsWith("\\\\") || /^[A-Z]:\\/i.test(itemPath);
@@ -22969,7 +22987,7 @@ function requireInternalPathHelper() {
   }
   internalPathHelper.hasAbsoluteRoot = hasAbsoluteRoot;
   function hasRoot(itemPath) {
-    assert_1.default(itemPath, `isRooted parameter 'itemPath' must not be empty`);
+    (0, assert_1.default)(itemPath, `isRooted parameter 'itemPath' must not be empty`);
     itemPath = normalizeSeparators(itemPath);
     if (IS_WINDOWS) {
       return itemPath.startsWith("\\") || /^[A-Z]:/i.test(itemPath);
@@ -23011,16 +23029,15 @@ var hasRequiredInternalMatchKind;
 function requireInternalMatchKind() {
   if (hasRequiredInternalMatchKind) return internalMatchKind;
   hasRequiredInternalMatchKind = 1;
-  (function(exports$1) {
-    Object.defineProperty(exports$1, "__esModule", { value: true });
-    exports$1.MatchKind = void 0;
-    (function(MatchKind) {
-      MatchKind[MatchKind["None"] = 0] = "None";
-      MatchKind[MatchKind["Directory"] = 1] = "Directory";
-      MatchKind[MatchKind["File"] = 2] = "File";
-      MatchKind[MatchKind["All"] = 3] = "All";
-    })(exports$1.MatchKind || (exports$1.MatchKind = {}));
-  })(internalMatchKind);
+  Object.defineProperty(internalMatchKind, "__esModule", { value: true });
+  internalMatchKind.MatchKind = void 0;
+  var MatchKind;
+  (function(MatchKind2) {
+    MatchKind2[MatchKind2["None"] = 0] = "None";
+    MatchKind2[MatchKind2["Directory"] = 1] = "Directory";
+    MatchKind2[MatchKind2["File"] = 2] = "File";
+    MatchKind2[MatchKind2["All"] = 3] = "All";
+  })(MatchKind || (internalMatchKind.MatchKind = MatchKind = {}));
   return internalMatchKind;
 }
 var hasRequiredInternalPatternHelper;
@@ -23029,9 +23046,13 @@ function requireInternalPatternHelper() {
   hasRequiredInternalPatternHelper = 1;
   var __createBinding2 = internalPatternHelper && internalPatternHelper.__createBinding || (Object.create ? (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() {
-      return m[k];
-    } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() {
+        return m[k];
+      } };
+    }
+    Object.defineProperty(o, k2, desc);
   }) : (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
     o[k2] = m[k];
@@ -23045,7 +23066,7 @@ function requireInternalPatternHelper() {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) {
-      for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
+      for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
     }
     __setModuleDefault2(result, mod);
     return result;
@@ -23908,9 +23929,13 @@ function requireInternalPath() {
   hasRequiredInternalPath = 1;
   var __createBinding2 = internalPath && internalPath.__createBinding || (Object.create ? (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() {
-      return m[k];
-    } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() {
+        return m[k];
+      } };
+    }
+    Object.defineProperty(o, k2, desc);
   }) : (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
     o[k2] = m[k];
@@ -23924,7 +23949,7 @@ function requireInternalPath() {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) {
-      for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
+      for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
     }
     __setModuleDefault2(result, mod);
     return result;
@@ -23946,7 +23971,7 @@ function requireInternalPath() {
     constructor(itemPath) {
       this.segments = [];
       if (typeof itemPath === "string") {
-        assert_1.default(itemPath, `Parameter 'itemPath' must not be empty`);
+        (0, assert_1.default)(itemPath, `Parameter 'itemPath' must not be empty`);
         itemPath = pathHelper.safeTrimTrailingSeparator(itemPath);
         if (!pathHelper.hasRoot(itemPath)) {
           this.segments = itemPath.split(path2.sep);
@@ -23962,17 +23987,17 @@ function requireInternalPath() {
           this.segments.unshift(remaining);
         }
       } else {
-        assert_1.default(itemPath.length > 0, `Parameter 'itemPath' must not be an empty array`);
+        (0, assert_1.default)(itemPath.length > 0, `Parameter 'itemPath' must not be an empty array`);
         for (let i = 0; i < itemPath.length; i++) {
           let segment = itemPath[i];
-          assert_1.default(segment, `Parameter 'itemPath' must not contain any empty segments`);
+          (0, assert_1.default)(segment, `Parameter 'itemPath' must not contain any empty segments`);
           segment = pathHelper.normalizeSeparators(itemPath[i]);
           if (i === 0 && pathHelper.hasRoot(segment)) {
             segment = pathHelper.safeTrimTrailingSeparator(segment);
-            assert_1.default(segment === pathHelper.dirname(segment), `Parameter 'itemPath' root segment contains information for multiple segments`);
+            (0, assert_1.default)(segment === pathHelper.dirname(segment), `Parameter 'itemPath' root segment contains information for multiple segments`);
             this.segments.push(segment);
           } else {
-            assert_1.default(!segment.includes(path2.sep), `Parameter 'itemPath' contains unexpected path separators`);
+            (0, assert_1.default)(!segment.includes(path2.sep), `Parameter 'itemPath' contains unexpected path separators`);
             this.segments.push(segment);
           }
         }
@@ -24004,9 +24029,13 @@ function requireInternalPattern() {
   hasRequiredInternalPattern = 1;
   var __createBinding2 = internalPattern && internalPattern.__createBinding || (Object.create ? (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() {
-      return m[k];
-    } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() {
+        return m[k];
+      } };
+    }
+    Object.defineProperty(o, k2, desc);
   }) : (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
     o[k2] = m[k];
@@ -24020,7 +24049,7 @@ function requireInternalPattern() {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) {
-      for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
+      for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
     }
     __setModuleDefault2(result, mod);
     return result;
@@ -24046,9 +24075,9 @@ function requireInternalPattern() {
         pattern = patternOrNegate.trim();
       } else {
         segments = segments || [];
-        assert_1.default(segments.length, `Parameter 'segments' must not empty`);
+        (0, assert_1.default)(segments.length, `Parameter 'segments' must not empty`);
         const root = Pattern.getLiteral(segments[0]);
-        assert_1.default(root && pathHelper.hasAbsoluteRoot(root), `Parameter 'segments' first element must be a root path`);
+        (0, assert_1.default)(root && pathHelper.hasAbsoluteRoot(root), `Parameter 'segments' first element must be a root path`);
         pattern = new internal_path_1.Path(segments).toString().trim();
         if (patternOrNegate) {
           pattern = `!${pattern}`;
@@ -24115,17 +24144,17 @@ function requireInternalPattern() {
      * Normalizes slashes and ensures absolute root
      */
     static fixupPattern(pattern, homedir) {
-      assert_1.default(pattern, "pattern cannot be empty");
+      (0, assert_1.default)(pattern, "pattern cannot be empty");
       const literalSegments = new internal_path_1.Path(pattern).segments.map((x) => Pattern.getLiteral(x));
-      assert_1.default(literalSegments.every((x, i) => (x !== "." || i === 0) && x !== ".."), `Invalid pattern '${pattern}'. Relative pathing '.' and '..' is not allowed.`);
-      assert_1.default(!pathHelper.hasRoot(pattern) || literalSegments[0], `Invalid pattern '${pattern}'. Root segment must not contain globs.`);
+      (0, assert_1.default)(literalSegments.every((x, i) => (x !== "." || i === 0) && x !== ".."), `Invalid pattern '${pattern}'. Relative pathing '.' and '..' is not allowed.`);
+      (0, assert_1.default)(!pathHelper.hasRoot(pattern) || literalSegments[0], `Invalid pattern '${pattern}'. Root segment must not contain globs.`);
       pattern = pathHelper.normalizeSeparators(pattern);
       if (pattern === "." || pattern.startsWith(`.${path2.sep}`)) {
         pattern = Pattern.globEscape(process.cwd()) + pattern.substr(1);
       } else if (pattern === "~" || pattern.startsWith(`~${path2.sep}`)) {
         homedir = homedir || os.homedir();
-        assert_1.default(homedir, "Unable to determine HOME directory");
-        assert_1.default(pathHelper.hasAbsoluteRoot(homedir), `Expected HOME directory to be a rooted path. Actual '${homedir}'`);
+        (0, assert_1.default)(homedir, "Unable to determine HOME directory");
+        (0, assert_1.default)(pathHelper.hasAbsoluteRoot(homedir), `Expected HOME directory to be a rooted path. Actual '${homedir}'`);
         pattern = Pattern.globEscape(homedir) + pattern.substr(1);
       } else if (IS_WINDOWS && (pattern.match(/^[A-Z]:$/i) || pattern.match(/^[A-Z]:[^\\]/i))) {
         let root = pathHelper.ensureAbsoluteRoot("C:\\dummy-root", pattern.substr(0, 2));
@@ -24220,9 +24249,13 @@ function requireInternalGlobber() {
   hasRequiredInternalGlobber = 1;
   var __createBinding2 = internalGlobber && internalGlobber.__createBinding || (Object.create ? (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() {
-      return m[k];
-    } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() {
+        return m[k];
+      } };
+    }
+    Object.defineProperty(o, k2, desc);
   }) : (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
     o[k2] = m[k];
@@ -24236,7 +24269,7 @@ function requireInternalGlobber() {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) {
-      for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
+      for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
     }
     __setModuleDefault2(result, mod);
     return result;
@@ -24344,19 +24377,21 @@ function requireInternalGlobber() {
       return this.searchPaths.slice();
     }
     glob() {
-      var e_1, _a;
+      var _a, e_1, _b, _c;
       return __awaiter2(this, void 0, void 0, function* () {
         const result = [];
         try {
-          for (var _b = __asyncValues2(this.globGenerator()), _c; _c = yield _b.next(), !_c.done; ) {
-            const itemPath = _c.value;
+          for (var _d = true, _e = __asyncValues2(this.globGenerator()), _f; _f = yield _e.next(), _a = _f.done, !_a; _d = true) {
+            _c = _f.value;
+            _d = false;
+            const itemPath = _c;
             result.push(itemPath);
           }
         } catch (e_1_1) {
           e_1 = { error: e_1_1 };
         } finally {
           try {
-            if (_c && !_c.done && (_a = _b.return)) yield _a.call(_b);
+            if (!_d && !_a && (_b = _e.return)) yield _b.call(_e);
           } finally {
             if (e_1) throw e_1.error;
           }
@@ -24402,8 +24437,11 @@ function requireInternalGlobber() {
           if (!stats) {
             continue;
           }
+          if (options2.excludeHiddenFiles && path2.basename(item.path).match(/^\./)) {
+            continue;
+          }
           if (stats.isDirectory()) {
-            if (match & internal_match_kind_1.MatchKind.Directory) {
+            if (match & internal_match_kind_1.MatchKind.Directory && options2.matchDirectories) {
               yield yield __await2(item.path);
             } else if (!partialMatch) {
               continue;
@@ -24476,6 +24514,146 @@ function requireInternalGlobber() {
   internalGlobber.DefaultGlobber = DefaultGlobber;
   return internalGlobber;
 }
+var internalHashFiles = {};
+var hasRequiredInternalHashFiles;
+function requireInternalHashFiles() {
+  if (hasRequiredInternalHashFiles) return internalHashFiles;
+  hasRequiredInternalHashFiles = 1;
+  var __createBinding2 = internalHashFiles && internalHashFiles.__createBinding || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === void 0) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() {
+        return m[k];
+      } };
+    }
+    Object.defineProperty(o, k2, desc);
+  }) : (function(o, m, k, k2) {
+    if (k2 === void 0) k2 = k;
+    o[k2] = m[k];
+  }));
+  var __setModuleDefault2 = internalHashFiles && internalHashFiles.__setModuleDefault || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+  }) : function(o, v) {
+    o["default"] = v;
+  });
+  var __importStar2 = internalHashFiles && internalHashFiles.__importStar || function(mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) {
+      for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
+    }
+    __setModuleDefault2(result, mod);
+    return result;
+  };
+  var __awaiter2 = internalHashFiles && internalHashFiles.__awaiter || function(thisArg, _arguments, P, generator) {
+    function adopt(value) {
+      return value instanceof P ? value : new P(function(resolve) {
+        resolve(value);
+      });
+    }
+    return new (P || (P = Promise))(function(resolve, reject) {
+      function fulfilled(value) {
+        try {
+          step(generator.next(value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function rejected(value) {
+        try {
+          step(generator["throw"](value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function step(result) {
+        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+      }
+      step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+  };
+  var __asyncValues2 = internalHashFiles && internalHashFiles.__asyncValues || function(o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function() {
+      return this;
+    }, i);
+    function verb(n) {
+      i[n] = o[n] && function(v) {
+        return new Promise(function(resolve, reject) {
+          v = o[n](v), settle(resolve, reject, v.done, v.value);
+        });
+      };
+    }
+    function settle(resolve, reject, d, v) {
+      Promise.resolve(v).then(function(v2) {
+        resolve({ value: v2, done: d });
+      }, reject);
+    }
+  };
+  Object.defineProperty(internalHashFiles, "__esModule", { value: true });
+  internalHashFiles.hashFiles = void 0;
+  const crypto2 = __importStar2(require$$0$4);
+  const core2 = __importStar2(/* @__PURE__ */ requireCore());
+  const fs = __importStar2(require$$1$2);
+  const stream = __importStar2(require$$0$9);
+  const util2 = __importStar2(require$$0$5);
+  const path2 = __importStar2(require$$1$7);
+  function hashFiles(globber, currentWorkspace, verbose = false) {
+    var _a, e_1, _b, _c;
+    var _d;
+    return __awaiter2(this, void 0, void 0, function* () {
+      const writeDelegate = verbose ? core2.info : core2.debug;
+      let hasMatch = false;
+      const githubWorkspace = currentWorkspace ? currentWorkspace : (_d = process.env["GITHUB_WORKSPACE"]) !== null && _d !== void 0 ? _d : process.cwd();
+      const result = crypto2.createHash("sha256");
+      let count = 0;
+      try {
+        for (var _e = true, _f = __asyncValues2(globber.globGenerator()), _g; _g = yield _f.next(), _a = _g.done, !_a; _e = true) {
+          _c = _g.value;
+          _e = false;
+          const file2 = _c;
+          writeDelegate(file2);
+          if (!file2.startsWith(`${githubWorkspace}${path2.sep}`)) {
+            writeDelegate(`Ignore '${file2}' since it is not under GITHUB_WORKSPACE.`);
+            continue;
+          }
+          if (fs.statSync(file2).isDirectory()) {
+            writeDelegate(`Skip directory '${file2}'.`);
+            continue;
+          }
+          const hash = crypto2.createHash("sha256");
+          const pipeline2 = util2.promisify(stream.pipeline);
+          yield pipeline2(fs.createReadStream(file2), hash);
+          result.write(hash.digest());
+          count++;
+          if (!hasMatch) {
+            hasMatch = true;
+          }
+        }
+      } catch (e_1_1) {
+        e_1 = { error: e_1_1 };
+      } finally {
+        try {
+          if (!_e && !_a && (_b = _f.return)) yield _b.call(_f);
+        } finally {
+          if (e_1) throw e_1.error;
+        }
+      }
+      result.end();
+      if (hasMatch) {
+        writeDelegate(`Found ${count} files to hash.`);
+        return result.digest("hex");
+      } else {
+        writeDelegate(`No matches found for glob`);
+        return "";
+      }
+    });
+  }
+  internalHashFiles.hashFiles = hashFiles;
+  return internalHashFiles;
+}
 var hasRequiredGlob;
 function requireGlob() {
   if (hasRequiredGlob) return glob;
@@ -24508,14 +24686,26 @@ function requireGlob() {
     });
   };
   Object.defineProperty(glob, "__esModule", { value: true });
-  glob.create = void 0;
+  glob.hashFiles = glob.create = void 0;
   const internal_globber_1 = /* @__PURE__ */ requireInternalGlobber();
+  const internal_hash_files_1 = /* @__PURE__ */ requireInternalHashFiles();
   function create(patterns, options2) {
     return __awaiter2(this, void 0, void 0, function* () {
       return yield internal_globber_1.DefaultGlobber.create(patterns, options2);
     });
   }
   glob.create = create;
+  function hashFiles(patterns, currentWorkspace = "", options2, verbose = false) {
+    return __awaiter2(this, void 0, void 0, function* () {
+      let followSymbolicLinks = true;
+      if (options2 && typeof options2.followSymbolicLinks === "boolean") {
+        followSymbolicLinks = options2.followSymbolicLinks;
+      }
+      const globber = yield create(patterns, { followSymbolicLinks });
+      return (0, internal_hash_files_1.hashFiles)(globber, currentWorkspace, verbose);
+    });
+  }
+  glob.hashFiles = hashFiles;
   return glob;
 }
 var semver = { exports: {} };
@@ -25731,15 +25921,25 @@ function requireCacheUtils() {
   }) : function(o, v) {
     o["default"] = v;
   });
-  var __importStar2 = cacheUtils && cacheUtils.__importStar || function(mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) {
-      for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
-    }
-    __setModuleDefault2(result, mod);
-    return result;
-  };
+  var __importStar2 = cacheUtils && cacheUtils.__importStar || /* @__PURE__ */ (function() {
+    var ownKeys2 = function(o) {
+      ownKeys2 = Object.getOwnPropertyNames || function(o2) {
+        var ar = [];
+        for (var k in o2) if (Object.prototype.hasOwnProperty.call(o2, k)) ar[ar.length] = k;
+        return ar;
+      };
+      return ownKeys2(o);
+    };
+    return function(mod) {
+      if (mod && mod.__esModule) return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k = ownKeys2(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding2(result, mod, k[i]);
+      }
+      __setModuleDefault2(result, mod);
+      return result;
+    };
+  })();
   var __awaiter2 = cacheUtils && cacheUtils.__awaiter || function(thisArg, _arguments, P, generator) {
     function adopt(value) {
       return value instanceof P ? value : new P(function(resolve) {
@@ -25787,11 +25987,20 @@ function requireCacheUtils() {
     }
   };
   Object.defineProperty(cacheUtils, "__esModule", { value: true });
-  cacheUtils.getRuntimeToken = cacheUtils.getCacheVersion = cacheUtils.assertDefined = cacheUtils.getGnuTarPathOnWindows = cacheUtils.getCacheFileName = cacheUtils.getCompressionMethod = cacheUtils.unlinkFile = cacheUtils.resolvePaths = cacheUtils.getArchiveFileSizeInBytes = cacheUtils.createTempDirectory = void 0;
-  const core2 = __importStar2(/* @__PURE__ */ requireCore());
-  const exec2 = __importStar2(/* @__PURE__ */ requireExec());
+  cacheUtils.createTempDirectory = createTempDirectory;
+  cacheUtils.getArchiveFileSizeInBytes = getArchiveFileSizeInBytes;
+  cacheUtils.resolvePaths = resolvePaths;
+  cacheUtils.unlinkFile = unlinkFile;
+  cacheUtils.getCompressionMethod = getCompressionMethod;
+  cacheUtils.getCacheFileName = getCacheFileName;
+  cacheUtils.getGnuTarPathOnWindows = getGnuTarPathOnWindows;
+  cacheUtils.assertDefined = assertDefined;
+  cacheUtils.getCacheVersion = getCacheVersion;
+  cacheUtils.getRuntimeToken = getRuntimeToken;
+  const core2 = __importStar2(/* @__PURE__ */ requireCore$1());
+  const exec2 = __importStar2(/* @__PURE__ */ requireExec$1());
   const glob2 = __importStar2(/* @__PURE__ */ requireGlob());
-  const io2 = __importStar2(/* @__PURE__ */ requireIo());
+  const io2 = __importStar2(/* @__PURE__ */ requireIo$1());
   const crypto2 = __importStar2(require$$0$4);
   const fs = __importStar2(require$$1$2);
   const path2 = __importStar2(require$$1$7);
@@ -25821,15 +26030,13 @@ function requireCacheUtils() {
       return dest;
     });
   }
-  cacheUtils.createTempDirectory = createTempDirectory;
   function getArchiveFileSizeInBytes(filePath) {
     return fs.statSync(filePath).size;
   }
-  cacheUtils.getArchiveFileSizeInBytes = getArchiveFileSizeInBytes;
   function resolvePaths(patterns) {
-    var _a, e_1, _b, _c;
-    var _d;
     return __awaiter2(this, void 0, void 0, function* () {
+      var _a, e_1, _b, _c;
+      var _d;
       const paths = [];
       const workspace = (_d = process.env["GITHUB_WORKSPACE"]) !== null && _d !== void 0 ? _d : process.cwd();
       const globber = yield glob2.create(patterns.join("\n"), {
@@ -25860,15 +26067,13 @@ function requireCacheUtils() {
       return paths;
     });
   }
-  cacheUtils.resolvePaths = resolvePaths;
   function unlinkFile(filePath) {
     return __awaiter2(this, void 0, void 0, function* () {
       return util2.promisify(fs.unlink)(filePath);
     });
   }
-  cacheUtils.unlinkFile = unlinkFile;
-  function getVersion(app, additionalArgs = []) {
-    return __awaiter2(this, void 0, void 0, function* () {
+  function getVersion(app_1) {
+    return __awaiter2(this, arguments, void 0, function* (app, additionalArgs = []) {
       let versionOutput = "";
       additionalArgs.push("--version");
       core2.debug(`Checking ${app} ${additionalArgs.join(" ")}`);
@@ -25901,11 +26106,9 @@ function requireCacheUtils() {
       }
     });
   }
-  cacheUtils.getCompressionMethod = getCompressionMethod;
   function getCacheFileName(compressionMethod) {
     return compressionMethod === constants_1.CompressionMethod.Gzip ? constants_1.CacheFilename.Gzip : constants_1.CacheFilename.Zstd;
   }
-  cacheUtils.getCacheFileName = getCacheFileName;
   function getGnuTarPathOnWindows() {
     return __awaiter2(this, void 0, void 0, function* () {
       if (fs.existsSync(constants_1.GnuTarPathOnWindows)) {
@@ -25915,14 +26118,12 @@ function requireCacheUtils() {
       return versionOutput.toLowerCase().includes("gnu tar") ? io2.which("tar") : "";
     });
   }
-  cacheUtils.getGnuTarPathOnWindows = getGnuTarPathOnWindows;
   function assertDefined(name, value) {
     if (value === void 0) {
       throw Error(`Expected ${name} but value was undefiend`);
     }
     return value;
   }
-  cacheUtils.assertDefined = assertDefined;
   function getCacheVersion(paths, compressionMethod, enableCrossOsArchive = false) {
     const components = paths.slice();
     if (compressionMethod) {
@@ -25934,7 +26135,6 @@ function requireCacheUtils() {
     components.push(versionSalt);
     return crypto2.createHash("sha256").update(components.join("|")).digest("hex");
   }
-  cacheUtils.getCacheVersion = getCacheVersion;
   function getRuntimeToken() {
     const token = process.env["ACTIONS_RUNTIME_TOKEN"];
     if (!token) {
@@ -25942,7 +26142,6 @@ function requireCacheUtils() {
     }
     return token;
   }
-  cacheUtils.getRuntimeToken = getRuntimeToken;
   return cacheUtils;
 }
 var cacheHttpClient = {};
@@ -65530,15 +65729,25 @@ function requireUploadUtils() {
   }) : function(o, v) {
     o["default"] = v;
   });
-  var __importStar2 = uploadUtils && uploadUtils.__importStar || function(mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) {
-      for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
-    }
-    __setModuleDefault2(result, mod);
-    return result;
-  };
+  var __importStar2 = uploadUtils && uploadUtils.__importStar || /* @__PURE__ */ (function() {
+    var ownKeys2 = function(o) {
+      ownKeys2 = Object.getOwnPropertyNames || function(o2) {
+        var ar = [];
+        for (var k in o2) if (Object.prototype.hasOwnProperty.call(o2, k)) ar[ar.length] = k;
+        return ar;
+      };
+      return ownKeys2(o);
+    };
+    return function(mod) {
+      if (mod && mod.__esModule) return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k = ownKeys2(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding2(result, mod, k[i]);
+      }
+      __setModuleDefault2(result, mod);
+      return result;
+    };
+  })();
   var __awaiter2 = uploadUtils && uploadUtils.__awaiter || function(thisArg, _arguments, P, generator) {
     function adopt(value) {
       return value instanceof P ? value : new P(function(resolve) {
@@ -65567,8 +65776,9 @@ function requireUploadUtils() {
     });
   };
   Object.defineProperty(uploadUtils, "__esModule", { value: true });
-  uploadUtils.uploadCacheArchiveSDK = uploadUtils.UploadProgress = void 0;
-  const core2 = __importStar2(/* @__PURE__ */ requireCore());
+  uploadUtils.UploadProgress = void 0;
+  uploadUtils.uploadCacheArchiveSDK = uploadCacheArchiveSDK;
+  const core2 = __importStar2(/* @__PURE__ */ requireCore$1());
   const storage_blob_1 = /* @__PURE__ */ requireCommonjs();
   const errors_1 = /* @__PURE__ */ requireErrors();
   class UploadProgress {
@@ -65652,15 +65862,17 @@ function requireUploadUtils() {
   }
   uploadUtils.UploadProgress = UploadProgress;
   function uploadCacheArchiveSDK(signedUploadURL, archivePath, options2) {
-    var _a;
     return __awaiter2(this, void 0, void 0, function* () {
+      var _a;
       const blobClient = new storage_blob_1.BlobClient(signedUploadURL);
       const blockBlobClient = blobClient.getBlockBlobClient();
       const uploadProgress = new UploadProgress((_a = options2 === null || options2 === void 0 ? void 0 : options2.archiveSizeBytes) !== null && _a !== void 0 ? _a : 0);
       const uploadOptions = {
         blockSize: options2 === null || options2 === void 0 ? void 0 : options2.uploadChunkSize,
         concurrency: options2 === null || options2 === void 0 ? void 0 : options2.uploadConcurrency,
+        // maximum number of parallel transfer workers
         maxSingleShotSize: 128 * 1024 * 1024,
+        // 128 MiB initial transfer size
         onProgress: uploadProgress.onProgress()
       };
       try {
@@ -65679,7 +65891,6 @@ function requireUploadUtils() {
       }
     });
   }
-  uploadUtils.uploadCacheArchiveSDK = uploadCacheArchiveSDK;
   return uploadUtils;
 }
 var downloadUtils = {};
@@ -65706,15 +65917,25 @@ function requireRequestUtils() {
   }) : function(o, v) {
     o["default"] = v;
   });
-  var __importStar2 = requestUtils && requestUtils.__importStar || function(mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) {
-      for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
-    }
-    __setModuleDefault2(result, mod);
-    return result;
-  };
+  var __importStar2 = requestUtils && requestUtils.__importStar || /* @__PURE__ */ (function() {
+    var ownKeys2 = function(o) {
+      ownKeys2 = Object.getOwnPropertyNames || function(o2) {
+        var ar = [];
+        for (var k in o2) if (Object.prototype.hasOwnProperty.call(o2, k)) ar[ar.length] = k;
+        return ar;
+      };
+      return ownKeys2(o);
+    };
+    return function(mod) {
+      if (mod && mod.__esModule) return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k = ownKeys2(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding2(result, mod, k[i]);
+      }
+      __setModuleDefault2(result, mod);
+      return result;
+    };
+  })();
   var __awaiter2 = requestUtils && requestUtils.__awaiter || function(thisArg, _arguments, P, generator) {
     function adopt(value) {
       return value instanceof P ? value : new P(function(resolve) {
@@ -65743,9 +65964,14 @@ function requireRequestUtils() {
     });
   };
   Object.defineProperty(requestUtils, "__esModule", { value: true });
-  requestUtils.retryHttpClientResponse = requestUtils.retryTypedResponse = requestUtils.retry = requestUtils.isRetryableStatusCode = requestUtils.isServerErrorStatusCode = requestUtils.isSuccessStatusCode = void 0;
-  const core2 = __importStar2(/* @__PURE__ */ requireCore());
-  const http_client_1 = /* @__PURE__ */ requireLib();
+  requestUtils.isSuccessStatusCode = isSuccessStatusCode;
+  requestUtils.isServerErrorStatusCode = isServerErrorStatusCode;
+  requestUtils.isRetryableStatusCode = isRetryableStatusCode;
+  requestUtils.retry = retry;
+  requestUtils.retryTypedResponse = retryTypedResponse;
+  requestUtils.retryHttpClientResponse = retryHttpClientResponse;
+  const core2 = __importStar2(/* @__PURE__ */ requireCore$1());
+  const http_client_1 = /* @__PURE__ */ requireLib$1();
   const constants_1 = /* @__PURE__ */ requireConstants$5();
   function isSuccessStatusCode(statusCode) {
     if (!statusCode) {
@@ -65753,14 +65979,12 @@ function requireRequestUtils() {
     }
     return statusCode >= 200 && statusCode < 300;
   }
-  requestUtils.isSuccessStatusCode = isSuccessStatusCode;
   function isServerErrorStatusCode(statusCode) {
     if (!statusCode) {
       return true;
     }
     return statusCode >= 500;
   }
-  requestUtils.isServerErrorStatusCode = isServerErrorStatusCode;
   function isRetryableStatusCode(statusCode) {
     if (!statusCode) {
       return false;
@@ -65772,14 +65996,13 @@ function requireRequestUtils() {
     ];
     return retryableStatusCodes.includes(statusCode);
   }
-  requestUtils.isRetryableStatusCode = isRetryableStatusCode;
   function sleep(milliseconds) {
     return __awaiter2(this, void 0, void 0, function* () {
       return new Promise((resolve) => setTimeout(resolve, milliseconds));
     });
   }
-  function retry(name, method, getStatusCode, maxAttempts = constants_1.DefaultRetryAttempts, delay2 = constants_1.DefaultRetryDelay, onError = void 0) {
-    return __awaiter2(this, void 0, void 0, function* () {
+  function retry(name_1, method_1, getStatusCode_1) {
+    return __awaiter2(this, arguments, void 0, function* (name, method, getStatusCode, maxAttempts = constants_1.DefaultRetryAttempts, delay2 = constants_1.DefaultRetryDelay, onError = void 0) {
       let errorMessage = "";
       let attempt = 1;
       while (attempt <= maxAttempts) {
@@ -65816,9 +66039,8 @@ function requireRequestUtils() {
       throw Error(`${name} failed: ${errorMessage}`);
     });
   }
-  requestUtils.retry = retry;
-  function retryTypedResponse(name, method, maxAttempts = constants_1.DefaultRetryAttempts, delay2 = constants_1.DefaultRetryDelay) {
-    return __awaiter2(this, void 0, void 0, function* () {
+  function retryTypedResponse(name_1, method_1) {
+    return __awaiter2(this, arguments, void 0, function* (name, method, maxAttempts = constants_1.DefaultRetryAttempts, delay2 = constants_1.DefaultRetryDelay) {
       return yield retry(
         name,
         method,
@@ -65842,13 +66064,11 @@ function requireRequestUtils() {
       );
     });
   }
-  requestUtils.retryTypedResponse = retryTypedResponse;
-  function retryHttpClientResponse(name, method, maxAttempts = constants_1.DefaultRetryAttempts, delay2 = constants_1.DefaultRetryDelay) {
-    return __awaiter2(this, void 0, void 0, function* () {
+  function retryHttpClientResponse(name_1, method_1) {
+    return __awaiter2(this, arguments, void 0, function* (name, method, maxAttempts = constants_1.DefaultRetryAttempts, delay2 = constants_1.DefaultRetryDelay) {
       return yield retry(name, method, (response2) => response2.message.statusCode, maxAttempts, delay2);
     });
   }
-  requestUtils.retryHttpClientResponse = retryHttpClientResponse;
   return requestUtils;
 }
 const listenersMap = /* @__PURE__ */ new WeakMap();
@@ -66013,15 +66233,25 @@ function requireDownloadUtils() {
   }) : function(o, v) {
     o["default"] = v;
   });
-  var __importStar2 = downloadUtils && downloadUtils.__importStar || function(mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) {
-      for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
-    }
-    __setModuleDefault2(result, mod);
-    return result;
-  };
+  var __importStar2 = downloadUtils && downloadUtils.__importStar || /* @__PURE__ */ (function() {
+    var ownKeys2 = function(o) {
+      ownKeys2 = Object.getOwnPropertyNames || function(o2) {
+        var ar = [];
+        for (var k in o2) if (Object.prototype.hasOwnProperty.call(o2, k)) ar[ar.length] = k;
+        return ar;
+      };
+      return ownKeys2(o);
+    };
+    return function(mod) {
+      if (mod && mod.__esModule) return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k = ownKeys2(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding2(result, mod, k[i]);
+      }
+      __setModuleDefault2(result, mod);
+      return result;
+    };
+  })();
   var __awaiter2 = downloadUtils && downloadUtils.__awaiter || function(thisArg, _arguments, P, generator) {
     function adopt(value) {
       return value instanceof P ? value : new P(function(resolve) {
@@ -66050,9 +66280,12 @@ function requireDownloadUtils() {
     });
   };
   Object.defineProperty(downloadUtils, "__esModule", { value: true });
-  downloadUtils.downloadCacheStorageSDK = downloadUtils.downloadCacheHttpClientConcurrent = downloadUtils.downloadCacheHttpClient = downloadUtils.DownloadProgress = void 0;
-  const core2 = __importStar2(/* @__PURE__ */ requireCore());
-  const http_client_1 = /* @__PURE__ */ requireLib();
+  downloadUtils.DownloadProgress = void 0;
+  downloadUtils.downloadCacheHttpClient = downloadCacheHttpClient;
+  downloadUtils.downloadCacheHttpClientConcurrent = downloadCacheHttpClientConcurrent;
+  downloadUtils.downloadCacheStorageSDK = downloadCacheStorageSDK;
+  const core2 = __importStar2(/* @__PURE__ */ requireCore$1());
+  const http_client_1 = /* @__PURE__ */ requireLib$1();
   const storage_blob_1 = /* @__PURE__ */ requireCommonjs();
   const buffer = __importStar2(require$$7);
   const fs = __importStar2(require$$1$2);
@@ -66188,10 +66421,9 @@ function requireDownloadUtils() {
       }
     });
   }
-  downloadUtils.downloadCacheHttpClient = downloadCacheHttpClient;
   function downloadCacheHttpClientConcurrent(archiveLocation, archivePath, options2) {
-    var _a;
     return __awaiter2(this, void 0, void 0, function* () {
+      var _a;
       const archiveDescriptor = yield fs.promises.open(archivePath, "w");
       const httpClient = new http_client_1.HttpClient("actions/cache", void 0, {
         socketTimeout: options2.timeoutInMs,
@@ -66252,7 +66484,6 @@ function requireDownloadUtils() {
       }
     });
   }
-  downloadUtils.downloadCacheHttpClientConcurrent = downloadCacheHttpClientConcurrent;
   function downloadSegmentRetry(httpClient, archiveLocation, offset, count) {
     return __awaiter2(this, void 0, void 0, function* () {
       const retries = 5;
@@ -66292,8 +66523,8 @@ function requireDownloadUtils() {
     });
   }
   function downloadCacheStorageSDK(archiveLocation, archivePath, options2) {
-    var _a;
     return __awaiter2(this, void 0, void 0, function* () {
+      var _a;
       const client2 = new storage_blob_1.BlockBlobClient(archiveLocation, void 0, {
         retryOptions: {
           // Override the timeout used when downloading each 4 MB chunk
@@ -66337,7 +66568,6 @@ function requireDownloadUtils() {
       }
     });
   }
-  downloadUtils.downloadCacheStorageSDK = downloadCacheStorageSDK;
   const promiseWithTimeout = (timeoutMs, promise) => __awaiter2(void 0, void 0, void 0, function* () {
     let timeoutHandle;
     const timeoutPromise = new Promise((resolve) => {
@@ -66373,18 +66603,29 @@ function requireOptions() {
   }) : function(o, v) {
     o["default"] = v;
   });
-  var __importStar2 = options && options.__importStar || function(mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) {
-      for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
-    }
-    __setModuleDefault2(result, mod);
-    return result;
-  };
+  var __importStar2 = options && options.__importStar || /* @__PURE__ */ (function() {
+    var ownKeys2 = function(o) {
+      ownKeys2 = Object.getOwnPropertyNames || function(o2) {
+        var ar = [];
+        for (var k in o2) if (Object.prototype.hasOwnProperty.call(o2, k)) ar[ar.length] = k;
+        return ar;
+      };
+      return ownKeys2(o);
+    };
+    return function(mod) {
+      if (mod && mod.__esModule) return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k = ownKeys2(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding2(result, mod, k[i]);
+      }
+      __setModuleDefault2(result, mod);
+      return result;
+    };
+  })();
   Object.defineProperty(options, "__esModule", { value: true });
-  options.getDownloadOptions = options.getUploadOptions = void 0;
-  const core2 = __importStar2(/* @__PURE__ */ requireCore());
+  options.getUploadOptions = getUploadOptions;
+  options.getDownloadOptions = getDownloadOptions;
+  const core2 = __importStar2(/* @__PURE__ */ requireCore$1());
   function getUploadOptions(copy2) {
     const result = {
       useAzureSdk: false,
@@ -66409,7 +66650,6 @@ function requireOptions() {
     core2.debug(`Upload chunk size: ${result.uploadChunkSize}`);
     return result;
   }
-  options.getUploadOptions = getUploadOptions;
   function getDownloadOptions(copy2) {
     const result = {
       useAzureSdk: false,
@@ -66451,7 +66691,6 @@ function requireOptions() {
     core2.debug(`Lookup only: ${result.lookupOnly}`);
     return result;
   }
-  options.getDownloadOptions = getDownloadOptions;
   return options;
 }
 var config = {};
@@ -66460,7 +66699,9 @@ function requireConfig() {
   if (hasRequiredConfig) return config;
   hasRequiredConfig = 1;
   Object.defineProperty(config, "__esModule", { value: true });
-  config.getCacheServiceURL = config.getCacheServiceVersion = config.isGhes = void 0;
+  config.isGhes = isGhes;
+  config.getCacheServiceVersion = getCacheServiceVersion;
+  config.getCacheServiceURL = getCacheServiceURL;
   function isGhes() {
     const ghUrl = new URL(process.env["GITHUB_SERVER_URL"] || "https://github.com");
     const hostname = ghUrl.hostname.trimEnd().toUpperCase();
@@ -66469,13 +66710,11 @@ function requireConfig() {
     const isLocalHost = hostname.endsWith(".LOCALHOST");
     return !isGitHubHost && !isGheHost && !isLocalHost;
   }
-  config.isGhes = isGhes;
   function getCacheServiceVersion() {
     if (isGhes())
       return "v1";
     return process.env["ACTIONS_CACHE_SERVICE_V2"] ? "v2" : "v1";
   }
-  config.getCacheServiceVersion = getCacheServiceVersion;
   function getCacheServiceURL() {
     const version2 = getCacheServiceVersion();
     switch (version2) {
@@ -66487,11 +66726,10 @@ function requireConfig() {
         throw new Error(`Unsupported cache service version: ${version2}`);
     }
   }
-  config.getCacheServiceURL = getCacheServiceURL;
   return config;
 }
 var userAgent = {};
-const version = "4.1.0";
+const version = "5.0.0";
 const require$$0$1 = {
   version
 };
@@ -66500,12 +66738,11 @@ function requireUserAgent() {
   if (hasRequiredUserAgent) return userAgent;
   hasRequiredUserAgent = 1;
   Object.defineProperty(userAgent, "__esModule", { value: true });
-  userAgent.getUserAgentString = void 0;
+  userAgent.getUserAgentString = getUserAgentString;
   const packageJson = require$$0$1;
   function getUserAgentString() {
     return `@actions/cache-${packageJson.version}`;
   }
-  userAgent.getUserAgentString = getUserAgentString;
   return userAgent;
 }
 var hasRequiredCacheHttpClient;
@@ -66530,15 +66767,25 @@ function requireCacheHttpClient() {
   }) : function(o, v) {
     o["default"] = v;
   });
-  var __importStar2 = cacheHttpClient && cacheHttpClient.__importStar || function(mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) {
-      for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
-    }
-    __setModuleDefault2(result, mod);
-    return result;
-  };
+  var __importStar2 = cacheHttpClient && cacheHttpClient.__importStar || /* @__PURE__ */ (function() {
+    var ownKeys2 = function(o) {
+      ownKeys2 = Object.getOwnPropertyNames || function(o2) {
+        var ar = [];
+        for (var k in o2) if (Object.prototype.hasOwnProperty.call(o2, k)) ar[ar.length] = k;
+        return ar;
+      };
+      return ownKeys2(o);
+    };
+    return function(mod) {
+      if (mod && mod.__esModule) return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k = ownKeys2(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding2(result, mod, k[i]);
+      }
+      __setModuleDefault2(result, mod);
+      return result;
+    };
+  })();
   var __awaiter2 = cacheHttpClient && cacheHttpClient.__awaiter || function(thisArg, _arguments, P, generator) {
     function adopt(value) {
       return value instanceof P ? value : new P(function(resolve) {
@@ -66567,10 +66814,13 @@ function requireCacheHttpClient() {
     });
   };
   Object.defineProperty(cacheHttpClient, "__esModule", { value: true });
-  cacheHttpClient.saveCache = cacheHttpClient.reserveCache = cacheHttpClient.downloadCache = cacheHttpClient.getCacheEntry = void 0;
-  const core2 = __importStar2(/* @__PURE__ */ requireCore());
-  const http_client_1 = /* @__PURE__ */ requireLib();
-  const auth_1 = /* @__PURE__ */ requireAuth();
+  cacheHttpClient.getCacheEntry = getCacheEntry;
+  cacheHttpClient.downloadCache = downloadCache;
+  cacheHttpClient.reserveCache = reserveCache;
+  cacheHttpClient.saveCache = saveCache;
+  const core2 = __importStar2(/* @__PURE__ */ requireCore$1());
+  const http_client_1 = /* @__PURE__ */ requireLib$1();
+  const auth_1 = /* @__PURE__ */ requireAuth$1();
   const fs = __importStar2(require$$1$2);
   const url_1 = require$$5$1;
   const utils2 = __importStar2(/* @__PURE__ */ requireCacheUtils());
@@ -66633,7 +66883,6 @@ function requireCacheHttpClient() {
       return cacheResult;
     });
   }
-  cacheHttpClient.getCacheEntry = getCacheEntry;
   function printCachesListForDiagnostics(key, httpClient, version2) {
     return __awaiter2(this, void 0, void 0, function* () {
       const resource = `caches?key=${encodeURIComponent(key)}`;
@@ -66670,7 +66919,6 @@ Other caches with similar key:`);
       }
     });
   }
-  cacheHttpClient.downloadCache = downloadCache;
   function reserveCache(key, paths, options2) {
     return __awaiter2(this, void 0, void 0, function* () {
       const httpClient = createHttpClient();
@@ -66686,7 +66934,6 @@ Other caches with similar key:`);
       return response2;
     });
   }
-  cacheHttpClient.reserveCache = reserveCache;
   function getContentRange(start, end) {
     return `bytes ${start}-${end}/*`;
   }
@@ -66770,7 +67017,6 @@ Other caches with similar key:`);
       }
     });
   }
-  cacheHttpClient.saveCache = saveCache;
   return cacheHttpClient;
 }
 var cacheTwirpClient = {};
@@ -71014,8 +71260,9 @@ function requireUtil() {
   if (hasRequiredUtil) return util;
   hasRequiredUtil = 1;
   Object.defineProperty(util, "__esModule", { value: true });
-  util.maskSecretUrls = util.maskSigUrl = void 0;
-  const core_1 = /* @__PURE__ */ requireCore();
+  util.maskSigUrl = maskSigUrl;
+  util.maskSecretUrls = maskSecretUrls;
+  const core_1 = /* @__PURE__ */ requireCore$1();
   function maskSigUrl(url) {
     if (!url)
       return;
@@ -71030,7 +71277,6 @@ function requireUtil() {
       (0, core_1.debug)(`Failed to parse URL: ${url} ${error2 instanceof Error ? error2.message : String(error2)}`);
     }
   }
-  util.maskSigUrl = maskSigUrl;
   function maskSecretUrls(body2) {
     if (typeof body2 !== "object" || body2 === null) {
       (0, core_1.debug)("body is not an object or is null");
@@ -71043,7 +71289,6 @@ function requireUtil() {
       maskSigUrl(body2.signed_download_url);
     }
   }
-  util.maskSecretUrls = maskSecretUrls;
   return util;
 }
 var hasRequiredCacheTwirpClient;
@@ -71078,14 +71323,14 @@ function requireCacheTwirpClient() {
     });
   };
   Object.defineProperty(cacheTwirpClient, "__esModule", { value: true });
-  cacheTwirpClient.internalCacheTwirpClient = void 0;
-  const core_1 = /* @__PURE__ */ requireCore();
+  cacheTwirpClient.internalCacheTwirpClient = internalCacheTwirpClient;
+  const core_1 = /* @__PURE__ */ requireCore$1();
   const user_agent_1 = /* @__PURE__ */ requireUserAgent();
   const errors_1 = /* @__PURE__ */ requireErrors();
   const config_1 = /* @__PURE__ */ requireConfig();
   const cacheUtils_1 = /* @__PURE__ */ requireCacheUtils();
-  const auth_1 = /* @__PURE__ */ requireAuth();
-  const http_client_1 = /* @__PURE__ */ requireLib();
+  const auth_1 = /* @__PURE__ */ requireAuth$1();
+  const http_client_1 = /* @__PURE__ */ requireLib$1();
   const cache_twirp_client_1 = /* @__PURE__ */ requireCache_twirpClient();
   const util_1 = /* @__PURE__ */ requireUtil();
   class CacheServiceClient {
@@ -71219,7 +71464,6 @@ function requireCacheTwirpClient() {
     const client2 = new CacheServiceClient((0, user_agent_1.getUserAgentString)(), options2 === null || options2 === void 0 ? void 0 : options2.maxAttempts, options2 === null || options2 === void 0 ? void 0 : options2.retryIntervalMs, options2 === null || options2 === void 0 ? void 0 : options2.retryMultiplier);
     return new cache_twirp_client_1.CacheServiceClientJSON(client2);
   }
-  cacheTwirpClient.internalCacheTwirpClient = internalCacheTwirpClient;
   return cacheTwirpClient;
 }
 var tar = {};
@@ -71245,15 +71489,25 @@ function requireTar() {
   }) : function(o, v) {
     o["default"] = v;
   });
-  var __importStar2 = tar && tar.__importStar || function(mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) {
-      for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
-    }
-    __setModuleDefault2(result, mod);
-    return result;
-  };
+  var __importStar2 = tar && tar.__importStar || /* @__PURE__ */ (function() {
+    var ownKeys2 = function(o) {
+      ownKeys2 = Object.getOwnPropertyNames || function(o2) {
+        var ar = [];
+        for (var k in o2) if (Object.prototype.hasOwnProperty.call(o2, k)) ar[ar.length] = k;
+        return ar;
+      };
+      return ownKeys2(o);
+    };
+    return function(mod) {
+      if (mod && mod.__esModule) return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k = ownKeys2(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding2(result, mod, k[i]);
+      }
+      __setModuleDefault2(result, mod);
+      return result;
+    };
+  })();
   var __awaiter2 = tar && tar.__awaiter || function(thisArg, _arguments, P, generator) {
     function adopt(value) {
       return value instanceof P ? value : new P(function(resolve) {
@@ -71282,9 +71536,11 @@ function requireTar() {
     });
   };
   Object.defineProperty(tar, "__esModule", { value: true });
-  tar.createTar = tar.extractTar = tar.listTar = void 0;
-  const exec_1 = /* @__PURE__ */ requireExec();
-  const io2 = __importStar2(/* @__PURE__ */ requireIo());
+  tar.listTar = listTar;
+  tar.extractTar = extractTar;
+  tar.createTar = createTar;
+  const exec_1 = /* @__PURE__ */ requireExec$1();
+  const io2 = __importStar2(/* @__PURE__ */ requireIo$1());
   const fs_1 = require$$1$2;
   const path2 = __importStar2(require$$1$7);
   const utils2 = __importStar2(/* @__PURE__ */ requireCacheUtils());
@@ -71321,8 +71577,8 @@ function requireTar() {
       };
     });
   }
-  function getTarArgs(tarPath, compressionMethod, type, archivePath = "") {
-    return __awaiter2(this, void 0, void 0, function* () {
+  function getTarArgs(tarPath_1, compressionMethod_1, type_1) {
+    return __awaiter2(this, arguments, void 0, function* (tarPath, compressionMethod, type, archivePath = "") {
       const args = [`"${tarPath.path}"`];
       const cacheFileName = utils2.getCacheFileName(compressionMethod);
       const tarFile = "cache.tar";
@@ -71352,8 +71608,8 @@ function requireTar() {
       return args;
     });
   }
-  function getCommands(compressionMethod, type, archivePath = "") {
-    return __awaiter2(this, void 0, void 0, function* () {
+  function getCommands(compressionMethod_1, type_1) {
+    return __awaiter2(this, arguments, void 0, function* (compressionMethod, type, archivePath = "") {
       let args;
       const tarPath = yield getTarPath();
       const tarArgs = yield getTarArgs(tarPath, compressionMethod, type, archivePath);
@@ -71443,7 +71699,6 @@ function requireTar() {
       yield execCommands(commands);
     });
   }
-  tar.listTar = listTar;
   function extractTar(archivePath, compressionMethod) {
     return __awaiter2(this, void 0, void 0, function* () {
       const workingDirectory = getWorkingDirectory();
@@ -71452,7 +71707,6 @@ function requireTar() {
       yield execCommands(commands);
     });
   }
-  tar.extractTar = extractTar;
   function createTar(archiveFolder, sourceDirectories, compressionMethod) {
     return __awaiter2(this, void 0, void 0, function* () {
       (0, fs_1.writeFileSync)(path2.join(archiveFolder, constants_1.ManifestFilename), sourceDirectories.join("\n"));
@@ -71460,7 +71714,6 @@ function requireTar() {
       yield execCommands(commands, archiveFolder);
     });
   }
-  tar.createTar = createTar;
   return tar;
 }
 var hasRequiredCache;
@@ -71485,15 +71738,25 @@ function requireCache() {
   }) : function(o, v) {
     o["default"] = v;
   });
-  var __importStar2 = cache$2 && cache$2.__importStar || function(mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) {
-      for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding2(result, mod, k);
-    }
-    __setModuleDefault2(result, mod);
-    return result;
-  };
+  var __importStar2 = cache$2 && cache$2.__importStar || /* @__PURE__ */ (function() {
+    var ownKeys2 = function(o) {
+      ownKeys2 = Object.getOwnPropertyNames || function(o2) {
+        var ar = [];
+        for (var k in o2) if (Object.prototype.hasOwnProperty.call(o2, k)) ar[ar.length] = k;
+        return ar;
+      };
+      return ownKeys2(o);
+    };
+    return function(mod) {
+      if (mod && mod.__esModule) return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k = ownKeys2(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding2(result, mod, k[i]);
+      }
+      __setModuleDefault2(result, mod);
+      return result;
+    };
+  })();
   var __awaiter2 = cache$2 && cache$2.__awaiter || function(thisArg, _arguments, P, generator) {
     function adopt(value) {
       return value instanceof P ? value : new P(function(resolve) {
@@ -71522,15 +71785,18 @@ function requireCache() {
     });
   };
   Object.defineProperty(cache$2, "__esModule", { value: true });
-  cache$2.saveCache = cache$2.restoreCache = cache$2.isFeatureAvailable = cache$2.FinalizeCacheError = cache$2.ReserveCacheError = cache$2.ValidationError = void 0;
-  const core2 = __importStar2(/* @__PURE__ */ requireCore());
+  cache$2.FinalizeCacheError = cache$2.ReserveCacheError = cache$2.ValidationError = void 0;
+  cache$2.isFeatureAvailable = isFeatureAvailable;
+  cache$2.restoreCache = restoreCache;
+  cache$2.saveCache = saveCache;
+  const core2 = __importStar2(/* @__PURE__ */ requireCore$1());
   const path2 = __importStar2(require$$1$7);
   const utils2 = __importStar2(/* @__PURE__ */ requireCacheUtils());
   const cacheHttpClient2 = __importStar2(/* @__PURE__ */ requireCacheHttpClient());
   const cacheTwirpClient2 = __importStar2(/* @__PURE__ */ requireCacheTwirpClient());
   const config_1 = /* @__PURE__ */ requireConfig();
   const tar_1 = /* @__PURE__ */ requireTar();
-  const http_client_1 = /* @__PURE__ */ requireLib();
+  const http_client_1 = /* @__PURE__ */ requireLib$1();
   class ValidationError extends Error {
     constructor(message) {
       super(message);
@@ -71579,9 +71845,8 @@ function requireCache() {
         return !!process.env["ACTIONS_CACHE_URL"];
     }
   }
-  cache$2.isFeatureAvailable = isFeatureAvailable;
-  function restoreCache(paths, primaryKey, restoreKeys, options2, enableCrossOsArchive = false) {
-    return __awaiter2(this, void 0, void 0, function* () {
+  function restoreCache(paths_1, primaryKey_1, restoreKeys_1, options_1) {
+    return __awaiter2(this, arguments, void 0, function* (paths, primaryKey, restoreKeys, options2, enableCrossOsArchive = false) {
       const cacheServiceVersion = (0, config_1.getCacheServiceVersion)();
       core2.debug(`Cache service version: ${cacheServiceVersion}`);
       checkPaths(paths);
@@ -71594,9 +71859,8 @@ function requireCache() {
       }
     });
   }
-  cache$2.restoreCache = restoreCache;
-  function restoreCacheV1(paths, primaryKey, restoreKeys, options2, enableCrossOsArchive = false) {
-    return __awaiter2(this, void 0, void 0, function* () {
+  function restoreCacheV1(paths_1, primaryKey_1, restoreKeys_1, options_1) {
+    return __awaiter2(this, arguments, void 0, function* (paths, primaryKey, restoreKeys, options2, enableCrossOsArchive = false) {
       restoreKeys = restoreKeys || [];
       const keys = [primaryKey, ...restoreKeys];
       core2.debug("Resolved Keys:");
@@ -71653,8 +71917,8 @@ function requireCache() {
       return void 0;
     });
   }
-  function restoreCacheV2(paths, primaryKey, restoreKeys, options2, enableCrossOsArchive = false) {
-    return __awaiter2(this, void 0, void 0, function* () {
+  function restoreCacheV2(paths_1, primaryKey_1, restoreKeys_1, options_1) {
+    return __awaiter2(this, arguments, void 0, function* (paths, primaryKey, restoreKeys, options2, enableCrossOsArchive = false) {
       options2 = Object.assign(Object.assign({}, options2), { useAzureSdk: true });
       restoreKeys = restoreKeys || [];
       const keys = [primaryKey, ...restoreKeys];
@@ -71725,8 +71989,8 @@ function requireCache() {
       return void 0;
     });
   }
-  function saveCache(paths, key, options2, enableCrossOsArchive = false) {
-    return __awaiter2(this, void 0, void 0, function* () {
+  function saveCache(paths_1, key_1, options_1) {
+    return __awaiter2(this, arguments, void 0, function* (paths, key, options2, enableCrossOsArchive = false) {
       const cacheServiceVersion = (0, config_1.getCacheServiceVersion)();
       core2.debug(`Cache service version: ${cacheServiceVersion}`);
       checkPaths(paths);
@@ -71740,10 +72004,9 @@ function requireCache() {
       }
     });
   }
-  cache$2.saveCache = saveCache;
-  function saveCacheV1(paths, key, options2, enableCrossOsArchive = false) {
-    var _a, _b, _c, _d, _e;
-    return __awaiter2(this, void 0, void 0, function* () {
+  function saveCacheV1(paths_1, key_1, options_1) {
+    return __awaiter2(this, arguments, void 0, function* (paths, key, options2, enableCrossOsArchive = false) {
+      var _a, _b, _c, _d, _e;
       const compressionMethod = yield utils2.getCompressionMethod();
       let cacheId = -1;
       const cachePaths = yield utils2.resolvePaths(paths);
@@ -71804,8 +72067,8 @@ function requireCache() {
       return cacheId;
     });
   }
-  function saveCacheV2(paths, key, options2, enableCrossOsArchive = false) {
-    return __awaiter2(this, void 0, void 0, function* () {
+  function saveCacheV2(paths_1, key_1, options_1) {
+    return __awaiter2(this, arguments, void 0, function* (paths, key, options2, enableCrossOsArchive = false) {
       options2 = Object.assign(Object.assign({}, options2), { uploadChunkSize: 64 * 1024 * 1024, uploadConcurrency: 8, useAzureSdk: true });
       const compressionMethod = yield utils2.getCompressionMethod();
       const twirpClient = cacheTwirpClient2.internalCacheTwirpClient();
