@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@actions-rs-plus/core':
-        specifier: 0.5.3
-        version: 0.5.3
+        specifier: 0.5.4
+        version: 0.5.4
       '@actions/core':
         specifier: 2.0.1
         version: 2.0.1
@@ -141,9 +141,9 @@ importers:
 
 packages:
 
-  '@actions-rs-plus/core@0.5.3':
-    resolution: {integrity: sha512-7uzBY0QqhXPk4EXPEYhchxAJZXt6xy8OxsSadSWLDoh4pzvrHAf83hXQqE7wgv+6WTFx3LJIlWI2NN6XE0030Q==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.5.3/58fa17a727f137eedd7eb12a345bcf134783c2e6}
-    engines: {node: 24.11.1, pnpm: 10.25.0}
+  '@actions-rs-plus/core@0.5.4':
+    resolution: {integrity: sha512-zvpawpFm36IoEns6p3r8vFoA3wT2YY4RwGlyZL5aXtBfmwPffBeDcrY/FmFiwlRuZo1oOhyq43sjOFdZm5MGUg==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.5.4/d53690711df55628fff7d047fc41dee804df2dd7}
+    engines: {node: 24.12.0, pnpm: 10.25.0}
 
   '@actions/cache@4.1.0':
     resolution: {integrity: sha512-z3Opg+P4Y7baq+g1dODXgdtsvPLSewr3ZKpp3U0HQR1A/vWCoJFS52XSezjdngo4SIOdR5oHtyK3a3Arar+X9A==}
@@ -1212,8 +1212,8 @@ packages:
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
 
-  baseline-browser-mapping@2.9.5:
-    resolution: {integrity: sha512-D5vIoztZOq1XM54LUdttJVc96ggEsIfju2JBvht06pSzpckp3C7HReun67Bghzrtdsq9XdMGbSSB3v3GhMNmAA==}
+  baseline-browser-mapping@2.9.6:
+    resolution: {integrity: sha512-v9BVVpOTLB59C9E7aSnmIF8h7qRsFpx+A2nugVMTszEOMcfjlZMsXRm4LF23I3Z9AJxc8ANpIvzbzONoX9VJlg==}
     hasBin: true
 
   before-after-hook@2.2.3:
@@ -2529,8 +2529,8 @@ packages:
     resolution: {integrity: sha512-9qny7Z9DsQU8Ou39ERsPU4OZQlSTP47ShQzuKZ6PRXpYLtIFgl/DEBYEXKlvcEa+9tHVcK8CF81Y2V72qaZhWA==}
     engines: {node: '>=18'}
 
-  npm@11.6.4:
-    resolution: {integrity: sha512-ERjKtGoFpQrua/9bG0+h3xiv/4nVdGViCjUYA1AmlV24fFvfnSB7B7dIfZnySQ1FDLd0ZVrWPsLLp78dCtJdRQ==}
+  npm@11.7.0:
+    resolution: {integrity: sha512-wiCZpv/41bIobCoJ31NStIWKfAxxYyD1iYnWCtiyns8s5v3+l8y0HCP/sScuH6B5+GhIfda4HQKiqeGZwJWhFw==}
     engines: {node: ^20.17.0 || >=22.9.0}
     hasBin: true
     bundledDependencies:
@@ -3618,7 +3618,7 @@ packages:
 
 snapshots:
 
-  '@actions-rs-plus/core@0.5.3':
+  '@actions-rs-plus/core@0.5.4':
     dependencies:
       '@actions/cache': 4.1.0
       '@actions/core': 2.0.1
@@ -4399,7 +4399,7 @@ snapshots:
       lodash-es: 4.17.21
       nerf-dart: 1.0.0
       normalize-url: 8.1.0
-      npm: 11.6.4
+      npm: 11.7.0
       rc: 1.2.8
       read-pkg: 10.0.0
       registry-auth-token: 5.1.0
@@ -4840,7 +4840,7 @@ snapshots:
 
   balanced-match@1.0.2: {}
 
-  baseline-browser-mapping@2.9.5: {}
+  baseline-browser-mapping@2.9.6: {}
 
   before-after-hook@2.2.3: {}
 
@@ -4863,7 +4863,7 @@ snapshots:
 
   browserslist@4.28.1:
     dependencies:
-      baseline-browser-mapping: 2.9.5
+      baseline-browser-mapping: 2.9.6
       caniuse-lite: 1.0.30001760
       electron-to-chromium: 1.5.267
       node-releases: 2.0.27
@@ -6282,7 +6282,7 @@ snapshots:
       path-key: 4.0.0
       unicorn-magic: 0.3.0
 
-  npm@11.6.4: {}
+  npm@11.7.0: {}
 
   object-assign@4.1.1: {}
 
