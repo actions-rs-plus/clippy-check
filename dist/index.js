@@ -68,16 +68,16 @@ function getAugmentedNamespace(n) {
   });
   return a;
 }
-var core$1 = {};
-var command$1 = {};
-var utils$4 = {};
-var hasRequiredUtils$4;
-function requireUtils$4() {
-  if (hasRequiredUtils$4) return utils$4;
-  hasRequiredUtils$4 = 1;
-  Object.defineProperty(utils$4, "__esModule", { value: true });
-  utils$4.toCommandValue = toCommandValue;
-  utils$4.toCommandProperties = toCommandProperties;
+var core$2 = {};
+var command$2 = {};
+var utils$5 = {};
+var hasRequiredUtils$5;
+function requireUtils$5() {
+  if (hasRequiredUtils$5) return utils$5;
+  hasRequiredUtils$5 = 1;
+  Object.defineProperty(utils$5, "__esModule", { value: true });
+  utils$5.toCommandValue = toCommandValue;
+  utils$5.toCommandProperties = toCommandProperties;
   function toCommandValue(input) {
     if (input === null || input === void 0) {
       return "";
@@ -99,13 +99,13 @@ function requireUtils$4() {
       endColumn: annotationProperties.endColumn
     };
   }
-  return utils$4;
+  return utils$5;
 }
-var hasRequiredCommand$1;
-function requireCommand$1() {
-  if (hasRequiredCommand$1) return command$1;
-  hasRequiredCommand$1 = 1;
-  var __createBinding2 = command$1 && command$1.__createBinding || (Object.create ? (function(o, m, k, k2) {
+var hasRequiredCommand$2;
+function requireCommand$2() {
+  if (hasRequiredCommand$2) return command$2;
+  hasRequiredCommand$2 = 1;
+  var __createBinding2 = command$2 && command$2.__createBinding || (Object.create ? (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
     if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -118,12 +118,12 @@ function requireCommand$1() {
     if (k2 === void 0) k2 = k;
     o[k2] = m[k];
   }));
-  var __setModuleDefault2 = command$1 && command$1.__setModuleDefault || (Object.create ? (function(o, v) {
+  var __setModuleDefault2 = command$2 && command$2.__setModuleDefault || (Object.create ? (function(o, v) {
     Object.defineProperty(o, "default", { enumerable: true, value: v });
   }) : function(o, v) {
     o["default"] = v;
   });
-  var __importStar2 = command$1 && command$1.__importStar || /* @__PURE__ */ (function() {
+  var __importStar2 = command$2 && command$2.__importStar || /* @__PURE__ */ (function() {
     var ownKeys2 = function(o) {
       ownKeys2 = Object.getOwnPropertyNames || function(o2) {
         var ar = [];
@@ -142,11 +142,11 @@ function requireCommand$1() {
       return result;
     };
   })();
-  Object.defineProperty(command$1, "__esModule", { value: true });
-  command$1.issueCommand = issueCommand;
-  command$1.issue = issue;
+  Object.defineProperty(command$2, "__esModule", { value: true });
+  command$2.issueCommand = issueCommand;
+  command$2.issue = issue;
   const os = __importStar2(require$$0$3);
-  const utils_1 = /* @__PURE__ */ requireUtils$4();
+  const utils_1 = /* @__PURE__ */ requireUtils$5();
   function issueCommand(command2, properties, message) {
     const cmd = new Command(command2, properties, message);
     process.stdout.write(cmd.toString() + os.EOL);
@@ -193,14 +193,14 @@ function requireCommand$1() {
   function escapeProperty(s) {
     return (0, utils_1.toCommandValue)(s).replace(/%/g, "%25").replace(/\r/g, "%0D").replace(/\n/g, "%0A").replace(/:/g, "%3A").replace(/,/g, "%2C");
   }
-  return command$1;
+  return command$2;
 }
-var fileCommand$1 = {};
-var hasRequiredFileCommand$1;
-function requireFileCommand$1() {
-  if (hasRequiredFileCommand$1) return fileCommand$1;
-  hasRequiredFileCommand$1 = 1;
-  var __createBinding2 = fileCommand$1 && fileCommand$1.__createBinding || (Object.create ? (function(o, m, k, k2) {
+var fileCommand$2 = {};
+var hasRequiredFileCommand$2;
+function requireFileCommand$2() {
+  if (hasRequiredFileCommand$2) return fileCommand$2;
+  hasRequiredFileCommand$2 = 1;
+  var __createBinding2 = fileCommand$2 && fileCommand$2.__createBinding || (Object.create ? (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
     if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -213,12 +213,12 @@ function requireFileCommand$1() {
     if (k2 === void 0) k2 = k;
     o[k2] = m[k];
   }));
-  var __setModuleDefault2 = fileCommand$1 && fileCommand$1.__setModuleDefault || (Object.create ? (function(o, v) {
+  var __setModuleDefault2 = fileCommand$2 && fileCommand$2.__setModuleDefault || (Object.create ? (function(o, v) {
     Object.defineProperty(o, "default", { enumerable: true, value: v });
   }) : function(o, v) {
     o["default"] = v;
   });
-  var __importStar2 = fileCommand$1 && fileCommand$1.__importStar || /* @__PURE__ */ (function() {
+  var __importStar2 = fileCommand$2 && fileCommand$2.__importStar || /* @__PURE__ */ (function() {
     var ownKeys2 = function(o) {
       ownKeys2 = Object.getOwnPropertyNames || function(o2) {
         var ar = [];
@@ -237,13 +237,13 @@ function requireFileCommand$1() {
       return result;
     };
   })();
-  Object.defineProperty(fileCommand$1, "__esModule", { value: true });
-  fileCommand$1.issueFileCommand = issueFileCommand;
-  fileCommand$1.prepareKeyValueMessage = prepareKeyValueMessage;
+  Object.defineProperty(fileCommand$2, "__esModule", { value: true });
+  fileCommand$2.issueFileCommand = issueFileCommand;
+  fileCommand$2.prepareKeyValueMessage = prepareKeyValueMessage;
   const crypto2 = __importStar2(require$$0$4);
   const fs = __importStar2(require$$1$2);
   const os = __importStar2(require$$0$3);
-  const utils_1 = /* @__PURE__ */ requireUtils$4();
+  const utils_1 = /* @__PURE__ */ requireUtils$5();
   function issueFileCommand(command2, message) {
     const filePath = process.env[`GITHUB_${command2}`];
     if (!filePath) {
@@ -267,9 +267,9 @@ function requireFileCommand$1() {
     }
     return `${key}<<${delimiter}${os.EOL}${convertedValue}${os.EOL}${delimiter}`;
   }
-  return fileCommand$1;
+  return fileCommand$2;
 }
-var oidcUtils$1 = {};
+var oidcUtils$2 = {};
 var lib$1 = {};
 var proxy$1 = {};
 var hasRequiredProxy$1;
@@ -6395,13 +6395,13 @@ function requireConnect() {
   return connect;
 }
 var constants$8 = {};
-var utils$3 = {};
-var hasRequiredUtils$3;
-function requireUtils$3() {
-  if (hasRequiredUtils$3) return utils$3;
-  hasRequiredUtils$3 = 1;
-  Object.defineProperty(utils$3, "__esModule", { value: true });
-  utils$3.enumToMap = void 0;
+var utils$4 = {};
+var hasRequiredUtils$4;
+function requireUtils$4() {
+  if (hasRequiredUtils$4) return utils$4;
+  hasRequiredUtils$4 = 1;
+  Object.defineProperty(utils$4, "__esModule", { value: true });
+  utils$4.enumToMap = void 0;
   function enumToMap(obj) {
     const res = {};
     Object.keys(obj).forEach((key) => {
@@ -6412,8 +6412,8 @@ function requireUtils$3() {
     });
     return res;
   }
-  utils$3.enumToMap = enumToMap;
-  return utils$3;
+  utils$4.enumToMap = enumToMap;
+  return utils$4;
 }
 var hasRequiredConstants$8;
 function requireConstants$8() {
@@ -6422,7 +6422,7 @@ function requireConstants$8() {
   (function(exports$1) {
     Object.defineProperty(exports$1, "__esModule", { value: true });
     exports$1.SPECIAL_HEADERS = exports$1.HEADER_STATE = exports$1.MINOR = exports$1.MAJOR = exports$1.CONNECTION_TOKEN_CHARS = exports$1.HEADER_CHARS = exports$1.TOKEN = exports$1.STRICT_TOKEN = exports$1.HEX = exports$1.URL_CHAR = exports$1.STRICT_URL_CHAR = exports$1.USERINFO_CHARS = exports$1.MARK = exports$1.ALPHANUM = exports$1.NUM = exports$1.HEX_MAP = exports$1.NUM_MAP = exports$1.ALPHA = exports$1.FINISH = exports$1.H_METHOD_MAP = exports$1.METHOD_MAP = exports$1.METHODS_RTSP = exports$1.METHODS_ICE = exports$1.METHODS_HTTP = exports$1.METHODS = exports$1.LENIENT_FLAGS = exports$1.FLAGS = exports$1.TYPE = exports$1.ERROR = void 0;
-    const utils_1 = /* @__PURE__ */ requireUtils$3();
+    const utils_1 = /* @__PURE__ */ requireUtils$4();
     (function(ERROR) {
       ERROR[ERROR["OK"] = 0] = "OK";
       ERROR[ERROR["INTERNAL"] = 1] = "INTERNAL";
@@ -18106,11 +18106,11 @@ function requireAuth$1() {
   auth$1.PersonalAccessTokenCredentialHandler = PersonalAccessTokenCredentialHandler;
   return auth$1;
 }
-var hasRequiredOidcUtils$1;
-function requireOidcUtils$1() {
-  if (hasRequiredOidcUtils$1) return oidcUtils$1;
-  hasRequiredOidcUtils$1 = 1;
-  var __awaiter2 = oidcUtils$1 && oidcUtils$1.__awaiter || function(thisArg, _arguments, P, generator) {
+var hasRequiredOidcUtils$2;
+function requireOidcUtils$2() {
+  if (hasRequiredOidcUtils$2) return oidcUtils$2;
+  hasRequiredOidcUtils$2 = 1;
+  var __awaiter2 = oidcUtils$2 && oidcUtils$2.__awaiter || function(thisArg, _arguments, P, generator) {
     function adopt(value) {
       return value instanceof P ? value : new P(function(resolve) {
         resolve(value);
@@ -18137,11 +18137,11 @@ function requireOidcUtils$1() {
       step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
   };
-  Object.defineProperty(oidcUtils$1, "__esModule", { value: true });
-  oidcUtils$1.OidcClient = void 0;
+  Object.defineProperty(oidcUtils$2, "__esModule", { value: true });
+  oidcUtils$2.OidcClient = void 0;
   const http_client_1 = /* @__PURE__ */ requireLib$1();
   const auth_1 = /* @__PURE__ */ requireAuth$1();
-  const core_1 = /* @__PURE__ */ requireCore$1();
+  const core_1 = /* @__PURE__ */ requireCore$2();
   class OidcClient {
     static createHttpClient(allowRetry = true, maxRetry = 10) {
       const requestOptions = {
@@ -18200,16 +18200,16 @@ function requireOidcUtils$1() {
       });
     }
   }
-  oidcUtils$1.OidcClient = OidcClient;
-  return oidcUtils$1;
+  oidcUtils$2.OidcClient = OidcClient;
+  return oidcUtils$2;
 }
-var summary$1 = {};
-var hasRequiredSummary$1;
-function requireSummary$1() {
-  if (hasRequiredSummary$1) return summary$1;
-  hasRequiredSummary$1 = 1;
+var summary$2 = {};
+var hasRequiredSummary$2;
+function requireSummary$2() {
+  if (hasRequiredSummary$2) return summary$2;
+  hasRequiredSummary$2 = 1;
   (function(exports$1) {
-    var __awaiter2 = summary$1 && summary$1.__awaiter || function(thisArg, _arguments, P, generator) {
+    var __awaiter2 = summary$2 && summary$2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
         return value instanceof P ? value : new P(function(resolve) {
           resolve(value);
@@ -18496,15 +18496,15 @@ function requireSummary$1() {
     const _summary = new Summary();
     exports$1.markdownSummary = _summary;
     exports$1.summary = _summary;
-  })(summary$1);
-  return summary$1;
+  })(summary$2);
+  return summary$2;
 }
-var pathUtils$1 = {};
-var hasRequiredPathUtils$1;
-function requirePathUtils$1() {
-  if (hasRequiredPathUtils$1) return pathUtils$1;
-  hasRequiredPathUtils$1 = 1;
-  var __createBinding2 = pathUtils$1 && pathUtils$1.__createBinding || (Object.create ? (function(o, m, k, k2) {
+var pathUtils$2 = {};
+var hasRequiredPathUtils$2;
+function requirePathUtils$2() {
+  if (hasRequiredPathUtils$2) return pathUtils$2;
+  hasRequiredPathUtils$2 = 1;
+  var __createBinding2 = pathUtils$2 && pathUtils$2.__createBinding || (Object.create ? (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
     if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -18517,12 +18517,12 @@ function requirePathUtils$1() {
     if (k2 === void 0) k2 = k;
     o[k2] = m[k];
   }));
-  var __setModuleDefault2 = pathUtils$1 && pathUtils$1.__setModuleDefault || (Object.create ? (function(o, v) {
+  var __setModuleDefault2 = pathUtils$2 && pathUtils$2.__setModuleDefault || (Object.create ? (function(o, v) {
     Object.defineProperty(o, "default", { enumerable: true, value: v });
   }) : function(o, v) {
     o["default"] = v;
   });
-  var __importStar2 = pathUtils$1 && pathUtils$1.__importStar || /* @__PURE__ */ (function() {
+  var __importStar2 = pathUtils$2 && pathUtils$2.__importStar || /* @__PURE__ */ (function() {
     var ownKeys2 = function(o) {
       ownKeys2 = Object.getOwnPropertyNames || function(o2) {
         var ar = [];
@@ -18541,10 +18541,10 @@ function requirePathUtils$1() {
       return result;
     };
   })();
-  Object.defineProperty(pathUtils$1, "__esModule", { value: true });
-  pathUtils$1.toPosixPath = toPosixPath;
-  pathUtils$1.toWin32Path = toWin32Path;
-  pathUtils$1.toPlatformPath = toPlatformPath;
+  Object.defineProperty(pathUtils$2, "__esModule", { value: true });
+  pathUtils$2.toPosixPath = toPosixPath;
+  pathUtils$2.toWin32Path = toWin32Path;
+  pathUtils$2.toPlatformPath = toPlatformPath;
   const path2 = __importStar2(require$$1$7);
   function toPosixPath(pth) {
     return pth.replace(/[\\]/g, "/");
@@ -18555,9 +18555,9 @@ function requirePathUtils$1() {
   function toPlatformPath(pth) {
     return pth.replace(/[/\\]/g, path2.sep);
   }
-  return pathUtils$1;
+  return pathUtils$2;
 }
-var platform$1 = {};
+var platform$2 = {};
 var exec$1 = {};
 var toolrunner$1 = {};
 var io$1 = {};
@@ -19572,12 +19572,12 @@ function requireExec$1() {
   exec$1.getExecOutput = getExecOutput;
   return exec$1;
 }
-var hasRequiredPlatform$1;
-function requirePlatform$1() {
-  if (hasRequiredPlatform$1) return platform$1;
-  hasRequiredPlatform$1 = 1;
+var hasRequiredPlatform$2;
+function requirePlatform$2() {
+  if (hasRequiredPlatform$2) return platform$2;
+  hasRequiredPlatform$2 = 1;
   (function(exports$1) {
-    var __createBinding2 = platform$1 && platform$1.__createBinding || (Object.create ? (function(o, m, k, k2) {
+    var __createBinding2 = platform$2 && platform$2.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -19590,12 +19590,12 @@ function requirePlatform$1() {
       if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     }));
-    var __setModuleDefault2 = platform$1 && platform$1.__setModuleDefault || (Object.create ? (function(o, v) {
+    var __setModuleDefault2 = platform$2 && platform$2.__setModuleDefault || (Object.create ? (function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
     }) : function(o, v) {
       o["default"] = v;
     });
-    var __importStar2 = platform$1 && platform$1.__importStar || /* @__PURE__ */ (function() {
+    var __importStar2 = platform$2 && platform$2.__importStar || /* @__PURE__ */ (function() {
       var ownKeys2 = function(o) {
         ownKeys2 = Object.getOwnPropertyNames || function(o2) {
           var ar = [];
@@ -19614,7 +19614,7 @@ function requirePlatform$1() {
         return result;
       };
     })();
-    var __awaiter2 = platform$1 && platform$1.__awaiter || function(thisArg, _arguments, P, generator) {
+    var __awaiter2 = platform$2 && platform$2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
         return value instanceof P ? value : new P(function(resolve) {
           resolve(value);
@@ -19641,7 +19641,7 @@ function requirePlatform$1() {
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
     };
-    var __importDefault2 = platform$1 && platform$1.__importDefault || function(mod) {
+    var __importDefault2 = platform$2 && platform$2.__importDefault || function(mod) {
       return mod && mod.__esModule ? mod : { "default": mod };
     };
     Object.defineProperty(exports$1, "__esModule", { value: true });
@@ -19699,15 +19699,15 @@ function requirePlatform$1() {
         });
       });
     }
-  })(platform$1);
-  return platform$1;
+  })(platform$2);
+  return platform$2;
 }
-var hasRequiredCore$1;
-function requireCore$1() {
-  if (hasRequiredCore$1) return core$1;
-  hasRequiredCore$1 = 1;
+var hasRequiredCore$2;
+function requireCore$2() {
+  if (hasRequiredCore$2) return core$2;
+  hasRequiredCore$2 = 1;
   (function(exports$1) {
-    var __createBinding2 = core$1 && core$1.__createBinding || (Object.create ? (function(o, m, k, k2) {
+    var __createBinding2 = core$2 && core$2.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -19720,12 +19720,12 @@ function requireCore$1() {
       if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     }));
-    var __setModuleDefault2 = core$1 && core$1.__setModuleDefault || (Object.create ? (function(o, v) {
+    var __setModuleDefault2 = core$2 && core$2.__setModuleDefault || (Object.create ? (function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
     }) : function(o, v) {
       o["default"] = v;
     });
-    var __importStar2 = core$1 && core$1.__importStar || /* @__PURE__ */ (function() {
+    var __importStar2 = core$2 && core$2.__importStar || /* @__PURE__ */ (function() {
       var ownKeys2 = function(o) {
         ownKeys2 = Object.getOwnPropertyNames || function(o2) {
           var ar = [];
@@ -19744,7 +19744,7 @@ function requireCore$1() {
         return result;
       };
     })();
-    var __awaiter2 = core$1 && core$1.__awaiter || function(thisArg, _arguments, P, generator) {
+    var __awaiter2 = core$2 && core$2.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
         return value instanceof P ? value : new P(function(resolve) {
           resolve(value);
@@ -19794,12 +19794,12 @@ function requireCore$1() {
     exports$1.saveState = saveState;
     exports$1.getState = getState;
     exports$1.getIDToken = getIDToken;
-    const command_1 = /* @__PURE__ */ requireCommand$1();
-    const file_command_1 = /* @__PURE__ */ requireFileCommand$1();
-    const utils_1 = /* @__PURE__ */ requireUtils$4();
+    const command_1 = /* @__PURE__ */ requireCommand$2();
+    const file_command_1 = /* @__PURE__ */ requireFileCommand$2();
+    const utils_1 = /* @__PURE__ */ requireUtils$5();
     const os = __importStar2(require$$0$3);
     const path2 = __importStar2(require$$1$7);
-    const oidc_utils_1 = /* @__PURE__ */ requireOidcUtils$1();
+    const oidc_utils_1 = /* @__PURE__ */ requireOidcUtils$2();
     var ExitCode;
     (function(ExitCode2) {
       ExitCode2[ExitCode2["Success"] = 0] = "Success";
@@ -19920,15 +19920,15 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
         return yield oidc_utils_1.OidcClient.getIDToken(aud);
       });
     }
-    var summary_1 = /* @__PURE__ */ requireSummary$1();
+    var summary_1 = /* @__PURE__ */ requireSummary$2();
     Object.defineProperty(exports$1, "summary", { enumerable: true, get: function() {
       return summary_1.summary;
     } });
-    var summary_2 = /* @__PURE__ */ requireSummary$1();
+    var summary_2 = /* @__PURE__ */ requireSummary$2();
     Object.defineProperty(exports$1, "markdownSummary", { enumerable: true, get: function() {
       return summary_2.markdownSummary;
     } });
-    var path_utils_1 = /* @__PURE__ */ requirePathUtils$1();
+    var path_utils_1 = /* @__PURE__ */ requirePathUtils$2();
     Object.defineProperty(exports$1, "toPosixPath", { enumerable: true, get: function() {
       return path_utils_1.toPosixPath;
     } });
@@ -19938,11 +19938,11 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
     Object.defineProperty(exports$1, "toPlatformPath", { enumerable: true, get: function() {
       return path_utils_1.toPlatformPath;
     } });
-    exports$1.platform = __importStar2(/* @__PURE__ */ requirePlatform$1());
-  })(core$1);
-  return core$1;
+    exports$1.platform = __importStar2(/* @__PURE__ */ requirePlatform$2());
+  })(core$2);
+  return core$2;
 }
-var coreExports = /* @__PURE__ */ requireCore$1();
+var coreExports$1 = /* @__PURE__ */ requireCore$2();
 var exec = {};
 var toolrunner = {};
 var io = {};
@@ -21733,15 +21733,15 @@ class BaseProgram {
   }
 }
 var cache$2 = {};
-var core = {};
-var command = {};
-var utils$2 = {};
-var hasRequiredUtils$2;
-function requireUtils$2() {
-  if (hasRequiredUtils$2) return utils$2;
-  hasRequiredUtils$2 = 1;
-  Object.defineProperty(utils$2, "__esModule", { value: true });
-  utils$2.toCommandProperties = utils$2.toCommandValue = void 0;
+var core$1 = {};
+var command$1 = {};
+var utils$3 = {};
+var hasRequiredUtils$3;
+function requireUtils$3() {
+  if (hasRequiredUtils$3) return utils$3;
+  hasRequiredUtils$3 = 1;
+  Object.defineProperty(utils$3, "__esModule", { value: true });
+  utils$3.toCommandProperties = utils$3.toCommandValue = void 0;
   function toCommandValue(input) {
     if (input === null || input === void 0) {
       return "";
@@ -21750,7 +21750,7 @@ function requireUtils$2() {
     }
     return JSON.stringify(input);
   }
-  utils$2.toCommandValue = toCommandValue;
+  utils$3.toCommandValue = toCommandValue;
   function toCommandProperties(annotationProperties) {
     if (!Object.keys(annotationProperties).length) {
       return {};
@@ -21764,14 +21764,14 @@ function requireUtils$2() {
       endColumn: annotationProperties.endColumn
     };
   }
-  utils$2.toCommandProperties = toCommandProperties;
-  return utils$2;
+  utils$3.toCommandProperties = toCommandProperties;
+  return utils$3;
 }
-var hasRequiredCommand;
-function requireCommand() {
-  if (hasRequiredCommand) return command;
-  hasRequiredCommand = 1;
-  var __createBinding2 = command && command.__createBinding || (Object.create ? (function(o, m, k, k2) {
+var hasRequiredCommand$1;
+function requireCommand$1() {
+  if (hasRequiredCommand$1) return command$1;
+  hasRequiredCommand$1 = 1;
+  var __createBinding2 = command$1 && command$1.__createBinding || (Object.create ? (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
     if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -21784,12 +21784,12 @@ function requireCommand() {
     if (k2 === void 0) k2 = k;
     o[k2] = m[k];
   }));
-  var __setModuleDefault2 = command && command.__setModuleDefault || (Object.create ? (function(o, v) {
+  var __setModuleDefault2 = command$1 && command$1.__setModuleDefault || (Object.create ? (function(o, v) {
     Object.defineProperty(o, "default", { enumerable: true, value: v });
   }) : function(o, v) {
     o["default"] = v;
   });
-  var __importStar2 = command && command.__importStar || function(mod) {
+  var __importStar2 = command$1 && command$1.__importStar || function(mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) {
@@ -21798,19 +21798,19 @@ function requireCommand() {
     __setModuleDefault2(result, mod);
     return result;
   };
-  Object.defineProperty(command, "__esModule", { value: true });
-  command.issue = command.issueCommand = void 0;
+  Object.defineProperty(command$1, "__esModule", { value: true });
+  command$1.issue = command$1.issueCommand = void 0;
   const os = __importStar2(require$$0$3);
-  const utils_1 = /* @__PURE__ */ requireUtils$2();
+  const utils_1 = /* @__PURE__ */ requireUtils$3();
   function issueCommand(command2, properties, message) {
     const cmd = new Command(command2, properties, message);
     process.stdout.write(cmd.toString() + os.EOL);
   }
-  command.issueCommand = issueCommand;
+  command$1.issueCommand = issueCommand;
   function issue(name, message = "") {
     issueCommand(name, {}, message);
   }
-  command.issue = issue;
+  command$1.issue = issue;
   const CMD_STRING = "::";
   class Command {
     constructor(command2, properties, message) {
@@ -21850,14 +21850,14 @@ function requireCommand() {
   function escapeProperty(s) {
     return (0, utils_1.toCommandValue)(s).replace(/%/g, "%25").replace(/\r/g, "%0D").replace(/\n/g, "%0A").replace(/:/g, "%3A").replace(/,/g, "%2C");
   }
-  return command;
+  return command$1;
 }
-var fileCommand = {};
-var hasRequiredFileCommand;
-function requireFileCommand() {
-  if (hasRequiredFileCommand) return fileCommand;
-  hasRequiredFileCommand = 1;
-  var __createBinding2 = fileCommand && fileCommand.__createBinding || (Object.create ? (function(o, m, k, k2) {
+var fileCommand$1 = {};
+var hasRequiredFileCommand$1;
+function requireFileCommand$1() {
+  if (hasRequiredFileCommand$1) return fileCommand$1;
+  hasRequiredFileCommand$1 = 1;
+  var __createBinding2 = fileCommand$1 && fileCommand$1.__createBinding || (Object.create ? (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
     if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -21870,12 +21870,12 @@ function requireFileCommand() {
     if (k2 === void 0) k2 = k;
     o[k2] = m[k];
   }));
-  var __setModuleDefault2 = fileCommand && fileCommand.__setModuleDefault || (Object.create ? (function(o, v) {
+  var __setModuleDefault2 = fileCommand$1 && fileCommand$1.__setModuleDefault || (Object.create ? (function(o, v) {
     Object.defineProperty(o, "default", { enumerable: true, value: v });
   }) : function(o, v) {
     o["default"] = v;
   });
-  var __importStar2 = fileCommand && fileCommand.__importStar || function(mod) {
+  var __importStar2 = fileCommand$1 && fileCommand$1.__importStar || function(mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) {
@@ -21884,12 +21884,12 @@ function requireFileCommand() {
     __setModuleDefault2(result, mod);
     return result;
   };
-  Object.defineProperty(fileCommand, "__esModule", { value: true });
-  fileCommand.prepareKeyValueMessage = fileCommand.issueFileCommand = void 0;
+  Object.defineProperty(fileCommand$1, "__esModule", { value: true });
+  fileCommand$1.prepareKeyValueMessage = fileCommand$1.issueFileCommand = void 0;
   const crypto2 = __importStar2(require$$0$4);
   const fs = __importStar2(require$$1$2);
   const os = __importStar2(require$$0$3);
-  const utils_1 = /* @__PURE__ */ requireUtils$2();
+  const utils_1 = /* @__PURE__ */ requireUtils$3();
   function issueFileCommand(command2, message) {
     const filePath = process.env[`GITHUB_${command2}`];
     if (!filePath) {
@@ -21902,7 +21902,7 @@ function requireFileCommand() {
       encoding: "utf8"
     });
   }
-  fileCommand.issueFileCommand = issueFileCommand;
+  fileCommand$1.issueFileCommand = issueFileCommand;
   function prepareKeyValueMessage(key, value) {
     const delimiter = `ghadelimiter_${crypto2.randomUUID()}`;
     const convertedValue = (0, utils_1.toCommandValue)(value);
@@ -21914,10 +21914,10 @@ function requireFileCommand() {
     }
     return `${key}<<${delimiter}${os.EOL}${convertedValue}${os.EOL}${delimiter}`;
   }
-  fileCommand.prepareKeyValueMessage = prepareKeyValueMessage;
-  return fileCommand;
+  fileCommand$1.prepareKeyValueMessage = prepareKeyValueMessage;
+  return fileCommand$1;
 }
-var oidcUtils = {};
+var oidcUtils$1 = {};
 var auth = {};
 var hasRequiredAuth;
 function requireAuth() {
@@ -22022,11 +22022,11 @@ function requireAuth() {
   auth.PersonalAccessTokenCredentialHandler = PersonalAccessTokenCredentialHandler;
   return auth;
 }
-var hasRequiredOidcUtils;
-function requireOidcUtils() {
-  if (hasRequiredOidcUtils) return oidcUtils;
-  hasRequiredOidcUtils = 1;
-  var __awaiter2 = oidcUtils && oidcUtils.__awaiter || function(thisArg, _arguments, P, generator) {
+var hasRequiredOidcUtils$1;
+function requireOidcUtils$1() {
+  if (hasRequiredOidcUtils$1) return oidcUtils$1;
+  hasRequiredOidcUtils$1 = 1;
+  var __awaiter2 = oidcUtils$1 && oidcUtils$1.__awaiter || function(thisArg, _arguments, P, generator) {
     function adopt(value) {
       return value instanceof P ? value : new P(function(resolve) {
         resolve(value);
@@ -22053,11 +22053,11 @@ function requireOidcUtils() {
       step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
   };
-  Object.defineProperty(oidcUtils, "__esModule", { value: true });
-  oidcUtils.OidcClient = void 0;
+  Object.defineProperty(oidcUtils$1, "__esModule", { value: true });
+  oidcUtils$1.OidcClient = void 0;
   const http_client_1 = /* @__PURE__ */ requireLib();
   const auth_1 = /* @__PURE__ */ requireAuth();
-  const core_1 = /* @__PURE__ */ requireCore();
+  const core_1 = /* @__PURE__ */ requireCore$1();
   class OidcClient {
     static createHttpClient(allowRetry = true, maxRetry = 10) {
       const requestOptions = {
@@ -22116,16 +22116,16 @@ function requireOidcUtils() {
       });
     }
   }
-  oidcUtils.OidcClient = OidcClient;
-  return oidcUtils;
+  oidcUtils$1.OidcClient = OidcClient;
+  return oidcUtils$1;
 }
-var summary = {};
-var hasRequiredSummary;
-function requireSummary() {
-  if (hasRequiredSummary) return summary;
-  hasRequiredSummary = 1;
+var summary$1 = {};
+var hasRequiredSummary$1;
+function requireSummary$1() {
+  if (hasRequiredSummary$1) return summary$1;
+  hasRequiredSummary$1 = 1;
   (function(exports$1) {
-    var __awaiter2 = summary && summary.__awaiter || function(thisArg, _arguments, P, generator) {
+    var __awaiter2 = summary$1 && summary$1.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
         return value instanceof P ? value : new P(function(resolve) {
           resolve(value);
@@ -22412,15 +22412,15 @@ function requireSummary() {
     const _summary = new Summary();
     exports$1.markdownSummary = _summary;
     exports$1.summary = _summary;
-  })(summary);
-  return summary;
+  })(summary$1);
+  return summary$1;
 }
-var pathUtils = {};
-var hasRequiredPathUtils;
-function requirePathUtils() {
-  if (hasRequiredPathUtils) return pathUtils;
-  hasRequiredPathUtils = 1;
-  var __createBinding2 = pathUtils && pathUtils.__createBinding || (Object.create ? (function(o, m, k, k2) {
+var pathUtils$1 = {};
+var hasRequiredPathUtils$1;
+function requirePathUtils$1() {
+  if (hasRequiredPathUtils$1) return pathUtils$1;
+  hasRequiredPathUtils$1 = 1;
+  var __createBinding2 = pathUtils$1 && pathUtils$1.__createBinding || (Object.create ? (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
     if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -22433,12 +22433,12 @@ function requirePathUtils() {
     if (k2 === void 0) k2 = k;
     o[k2] = m[k];
   }));
-  var __setModuleDefault2 = pathUtils && pathUtils.__setModuleDefault || (Object.create ? (function(o, v) {
+  var __setModuleDefault2 = pathUtils$1 && pathUtils$1.__setModuleDefault || (Object.create ? (function(o, v) {
     Object.defineProperty(o, "default", { enumerable: true, value: v });
   }) : function(o, v) {
     o["default"] = v;
   });
-  var __importStar2 = pathUtils && pathUtils.__importStar || function(mod) {
+  var __importStar2 = pathUtils$1 && pathUtils$1.__importStar || function(mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) {
@@ -22447,30 +22447,30 @@ function requirePathUtils() {
     __setModuleDefault2(result, mod);
     return result;
   };
-  Object.defineProperty(pathUtils, "__esModule", { value: true });
-  pathUtils.toPlatformPath = pathUtils.toWin32Path = pathUtils.toPosixPath = void 0;
+  Object.defineProperty(pathUtils$1, "__esModule", { value: true });
+  pathUtils$1.toPlatformPath = pathUtils$1.toWin32Path = pathUtils$1.toPosixPath = void 0;
   const path2 = __importStar2(require$$1$7);
   function toPosixPath(pth) {
     return pth.replace(/[\\]/g, "/");
   }
-  pathUtils.toPosixPath = toPosixPath;
+  pathUtils$1.toPosixPath = toPosixPath;
   function toWin32Path(pth) {
     return pth.replace(/[/]/g, "\\");
   }
-  pathUtils.toWin32Path = toWin32Path;
+  pathUtils$1.toWin32Path = toWin32Path;
   function toPlatformPath(pth) {
     return pth.replace(/[/\\]/g, path2.sep);
   }
-  pathUtils.toPlatformPath = toPlatformPath;
-  return pathUtils;
+  pathUtils$1.toPlatformPath = toPlatformPath;
+  return pathUtils$1;
 }
-var platform = {};
-var hasRequiredPlatform;
-function requirePlatform() {
-  if (hasRequiredPlatform) return platform;
-  hasRequiredPlatform = 1;
+var platform$1 = {};
+var hasRequiredPlatform$1;
+function requirePlatform$1() {
+  if (hasRequiredPlatform$1) return platform$1;
+  hasRequiredPlatform$1 = 1;
   (function(exports$1) {
-    var __createBinding2 = platform && platform.__createBinding || (Object.create ? (function(o, m, k, k2) {
+    var __createBinding2 = platform$1 && platform$1.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -22483,12 +22483,12 @@ function requirePlatform() {
       if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     }));
-    var __setModuleDefault2 = platform && platform.__setModuleDefault || (Object.create ? (function(o, v) {
+    var __setModuleDefault2 = platform$1 && platform$1.__setModuleDefault || (Object.create ? (function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
     }) : function(o, v) {
       o["default"] = v;
     });
-    var __importStar2 = platform && platform.__importStar || function(mod) {
+    var __importStar2 = platform$1 && platform$1.__importStar || function(mod) {
       if (mod && mod.__esModule) return mod;
       var result = {};
       if (mod != null) {
@@ -22497,7 +22497,7 @@ function requirePlatform() {
       __setModuleDefault2(result, mod);
       return result;
     };
-    var __awaiter2 = platform && platform.__awaiter || function(thisArg, _arguments, P, generator) {
+    var __awaiter2 = platform$1 && platform$1.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
         return value instanceof P ? value : new P(function(resolve) {
           resolve(value);
@@ -22524,7 +22524,7 @@ function requirePlatform() {
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
     };
-    var __importDefault2 = platform && platform.__importDefault || function(mod) {
+    var __importDefault2 = platform$1 && platform$1.__importDefault || function(mod) {
       return mod && mod.__esModule ? mod : { "default": mod };
     };
     Object.defineProperty(exports$1, "__esModule", { value: true });
@@ -22582,15 +22582,15 @@ function requirePlatform() {
       });
     }
     exports$1.getDetails = getDetails;
-  })(platform);
-  return platform;
+  })(platform$1);
+  return platform$1;
 }
-var hasRequiredCore;
-function requireCore() {
-  if (hasRequiredCore) return core;
-  hasRequiredCore = 1;
+var hasRequiredCore$1;
+function requireCore$1() {
+  if (hasRequiredCore$1) return core$1;
+  hasRequiredCore$1 = 1;
   (function(exports$1) {
-    var __createBinding2 = core && core.__createBinding || (Object.create ? (function(o, m, k, k2) {
+    var __createBinding2 = core$1 && core$1.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
       var desc = Object.getOwnPropertyDescriptor(m, k);
       if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -22603,12 +22603,12 @@ function requireCore() {
       if (k2 === void 0) k2 = k;
       o[k2] = m[k];
     }));
-    var __setModuleDefault2 = core && core.__setModuleDefault || (Object.create ? (function(o, v) {
+    var __setModuleDefault2 = core$1 && core$1.__setModuleDefault || (Object.create ? (function(o, v) {
       Object.defineProperty(o, "default", { enumerable: true, value: v });
     }) : function(o, v) {
       o["default"] = v;
     });
-    var __importStar2 = core && core.__importStar || function(mod) {
+    var __importStar2 = core$1 && core$1.__importStar || function(mod) {
       if (mod && mod.__esModule) return mod;
       var result = {};
       if (mod != null) {
@@ -22617,7 +22617,7 @@ function requireCore() {
       __setModuleDefault2(result, mod);
       return result;
     };
-    var __awaiter2 = core && core.__awaiter || function(thisArg, _arguments, P, generator) {
+    var __awaiter2 = core$1 && core$1.__awaiter || function(thisArg, _arguments, P, generator) {
       function adopt(value) {
         return value instanceof P ? value : new P(function(resolve) {
           resolve(value);
@@ -22646,12 +22646,12 @@ function requireCore() {
     };
     Object.defineProperty(exports$1, "__esModule", { value: true });
     exports$1.platform = exports$1.toPlatformPath = exports$1.toWin32Path = exports$1.toPosixPath = exports$1.markdownSummary = exports$1.summary = exports$1.getIDToken = exports$1.getState = exports$1.saveState = exports$1.group = exports$1.endGroup = exports$1.startGroup = exports$1.info = exports$1.notice = exports$1.warning = exports$1.error = exports$1.debug = exports$1.isDebug = exports$1.setFailed = exports$1.setCommandEcho = exports$1.setOutput = exports$1.getBooleanInput = exports$1.getMultilineInput = exports$1.getInput = exports$1.addPath = exports$1.setSecret = exports$1.exportVariable = exports$1.ExitCode = void 0;
-    const command_1 = /* @__PURE__ */ requireCommand();
-    const file_command_1 = /* @__PURE__ */ requireFileCommand();
-    const utils_1 = /* @__PURE__ */ requireUtils$2();
+    const command_1 = /* @__PURE__ */ requireCommand$1();
+    const file_command_1 = /* @__PURE__ */ requireFileCommand$1();
+    const utils_1 = /* @__PURE__ */ requireUtils$3();
     const os = __importStar2(require$$0$3);
     const path2 = __importStar2(require$$1$7);
-    const oidc_utils_1 = /* @__PURE__ */ requireOidcUtils();
+    const oidc_utils_1 = /* @__PURE__ */ requireOidcUtils$1();
     var ExitCode;
     (function(ExitCode2) {
       ExitCode2[ExitCode2["Success"] = 0] = "Success";
@@ -22793,15 +22793,15 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       });
     }
     exports$1.getIDToken = getIDToken;
-    var summary_1 = /* @__PURE__ */ requireSummary();
+    var summary_1 = /* @__PURE__ */ requireSummary$1();
     Object.defineProperty(exports$1, "summary", { enumerable: true, get: function() {
       return summary_1.summary;
     } });
-    var summary_2 = /* @__PURE__ */ requireSummary();
+    var summary_2 = /* @__PURE__ */ requireSummary$1();
     Object.defineProperty(exports$1, "markdownSummary", { enumerable: true, get: function() {
       return summary_2.markdownSummary;
     } });
-    var path_utils_1 = /* @__PURE__ */ requirePathUtils();
+    var path_utils_1 = /* @__PURE__ */ requirePathUtils$1();
     Object.defineProperty(exports$1, "toPosixPath", { enumerable: true, get: function() {
       return path_utils_1.toPosixPath;
     } });
@@ -22811,9 +22811,9 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
     Object.defineProperty(exports$1, "toPlatformPath", { enumerable: true, get: function() {
       return path_utils_1.toPlatformPath;
     } });
-    exports$1.platform = __importStar2(/* @__PURE__ */ requirePlatform());
-  })(core);
-  return core;
+    exports$1.platform = __importStar2(/* @__PURE__ */ requirePlatform$1());
+  })(core$1);
+  return core$1;
 }
 var cacheUtils = {};
 var glob = {};
@@ -22848,7 +22848,7 @@ function requireInternalGlobOptionsHelper() {
   };
   Object.defineProperty(internalGlobOptionsHelper, "__esModule", { value: true });
   internalGlobOptionsHelper.getOptions = void 0;
-  const core2 = __importStar2(/* @__PURE__ */ requireCore());
+  const core2 = __importStar2(/* @__PURE__ */ requireCore$1());
   function getOptions(copy2) {
     const result = {
       followSymbolicLinks: true,
@@ -24325,7 +24325,7 @@ function requireInternalGlobber() {
   };
   Object.defineProperty(internalGlobber, "__esModule", { value: true });
   internalGlobber.DefaultGlobber = void 0;
-  const core2 = __importStar2(/* @__PURE__ */ requireCore());
+  const core2 = __importStar2(/* @__PURE__ */ requireCore$1());
   const fs = __importStar2(require$$1$2);
   const globOptionsHelper = __importStar2(/* @__PURE__ */ requireInternalGlobOptionsHelper());
   const path2 = __importStar2(require$$1$7);
@@ -25788,7 +25788,7 @@ function requireCacheUtils() {
   };
   Object.defineProperty(cacheUtils, "__esModule", { value: true });
   cacheUtils.getRuntimeToken = cacheUtils.getCacheVersion = cacheUtils.assertDefined = cacheUtils.getGnuTarPathOnWindows = cacheUtils.getCacheFileName = cacheUtils.getCompressionMethod = cacheUtils.unlinkFile = cacheUtils.resolvePaths = cacheUtils.getArchiveFileSizeInBytes = cacheUtils.createTempDirectory = void 0;
-  const core2 = __importStar2(/* @__PURE__ */ requireCore());
+  const core2 = __importStar2(/* @__PURE__ */ requireCore$1());
   const exec2 = __importStar2(/* @__PURE__ */ requireExec$1());
   const glob2 = __importStar2(/* @__PURE__ */ requireGlob());
   const io2 = __importStar2(/* @__PURE__ */ requireIo$1());
@@ -33405,16 +33405,16 @@ function requireInterfaces() {
   interfaces.XML_CHARKEY = "_";
   return interfaces;
 }
-var utils$1 = {};
-var hasRequiredUtils$1;
-function requireUtils$1() {
-  if (hasRequiredUtils$1) return utils$1;
-  hasRequiredUtils$1 = 1;
-  Object.defineProperty(utils$1, "__esModule", { value: true });
-  utils$1.isPrimitiveBody = isPrimitiveBody;
-  utils$1.isDuration = isDuration;
-  utils$1.isValidUuid = isValidUuid;
-  utils$1.flattenResponse = flattenResponse;
+var utils$2 = {};
+var hasRequiredUtils$2;
+function requireUtils$2() {
+  if (hasRequiredUtils$2) return utils$2;
+  hasRequiredUtils$2 = 1;
+  Object.defineProperty(utils$2, "__esModule", { value: true });
+  utils$2.isPrimitiveBody = isPrimitiveBody;
+  utils$2.isDuration = isDuration;
+  utils$2.isValidUuid = isValidUuid;
+  utils$2.flattenResponse = flattenResponse;
   function isPrimitiveBody(value, mapperTypeName) {
     return mapperTypeName !== "Composite" && mapperTypeName !== "Dictionary" && (typeof value === "string" || typeof value === "number" || typeof value === "boolean" || mapperTypeName?.match(/^(Date|DateTime|DateTimeRfc1123|UnixTime|ByteArray|Base64Url)$/i) !== null || value === void 0 || value === null);
   }
@@ -33481,7 +33481,7 @@ function requireUtils$1() {
       shouldWrapBody: isPrimitiveBody(fullResponse.parsedBody, expectedBodyTypeName)
     });
   }
-  return utils$1;
+  return utils$2;
 }
 var hasRequiredSerializer;
 function requireSerializer() {
@@ -33493,7 +33493,7 @@ function requireSerializer() {
   const tslib_1 = require$$0$2;
   const base642 = tslib_1.__importStar(/* @__PURE__ */ requireBase64());
   const interfaces_js_1 = /* @__PURE__ */ requireInterfaces();
-  const utils_js_1 = /* @__PURE__ */ requireUtils$1();
+  const utils_js_1 = /* @__PURE__ */ requireUtils$2();
   class SerializerImpl {
     modelMappers;
     isXML;
@@ -34961,7 +34961,7 @@ function requireServiceClient() {
   serviceClient.ServiceClient = void 0;
   const core_rest_pipeline_1 = /* @__PURE__ */ requireCommonjs$7();
   const pipeline_js_1 = /* @__PURE__ */ requirePipeline$1();
-  const utils_js_1 = /* @__PURE__ */ requireUtils$1();
+  const utils_js_1 = /* @__PURE__ */ requireUtils$2();
   const httpClientCache_js_1 = /* @__PURE__ */ requireHttpClientCache();
   const operationHelpers_js_1 = /* @__PURE__ */ requireOperationHelpers();
   const urlHelpers_js_1 = /* @__PURE__ */ requireUrlHelpers();
@@ -59543,17 +59543,17 @@ function requireBatch() {
   Batch.Batch = Batch$1;
   return Batch;
 }
-var utils = {};
-var hasRequiredUtils;
-function requireUtils() {
-  if (hasRequiredUtils) return utils;
-  hasRequiredUtils = 1;
-  Object.defineProperty(utils, "__esModule", { value: true });
-  utils.fsCreateReadStream = utils.fsStat = void 0;
-  utils.streamToBuffer = streamToBuffer;
-  utils.streamToBuffer2 = streamToBuffer2;
-  utils.streamToBuffer3 = streamToBuffer3;
-  utils.readStreamToLocalFile = readStreamToLocalFile;
+var utils$1 = {};
+var hasRequiredUtils$1;
+function requireUtils$1() {
+  if (hasRequiredUtils$1) return utils$1;
+  hasRequiredUtils$1 = 1;
+  Object.defineProperty(utils$1, "__esModule", { value: true });
+  utils$1.fsCreateReadStream = utils$1.fsStat = void 0;
+  utils$1.streamToBuffer = streamToBuffer;
+  utils$1.streamToBuffer2 = streamToBuffer2;
+  utils$1.streamToBuffer3 = streamToBuffer3;
+  utils$1.readStreamToLocalFile = readStreamToLocalFile;
   const tslib_1 = require$$0$2;
   const node_fs_1 = tslib_1.__importDefault(require$$1$a);
   const node_util_1 = tslib_1.__importDefault(require$$1$5);
@@ -59643,9 +59643,9 @@ function requireUtils() {
       rs.pipe(ws);
     });
   }
-  utils.fsStat = node_util_1.default.promisify(node_fs_1.default.stat);
-  utils.fsCreateReadStream = node_fs_1.default.createReadStream;
-  return utils;
+  utils$1.fsStat = node_util_1.default.promisify(node_fs_1.default.stat);
+  utils$1.fsCreateReadStream = node_fs_1.default.createReadStream;
+  return utils$1;
 }
 var hasRequiredClients;
 function requireClients() {
@@ -59672,7 +59672,7 @@ function requireClients() {
   const constants_js_1 = /* @__PURE__ */ requireConstants$2();
   const tracing_js_1 = /* @__PURE__ */ requireTracing();
   const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
-  const utils_js_1 = /* @__PURE__ */ requireUtils();
+  const utils_js_1 = /* @__PURE__ */ requireUtils$1();
   const BlobSASSignatureValues_js_1 = /* @__PURE__ */ requireBlobSASSignatureValues();
   const BlobLeaseClient_js_1 = /* @__PURE__ */ requireBlobLeaseClient();
   class BlobClient extends StorageClient_js_1.StorageClient {
@@ -62344,7 +62344,7 @@ function requireBatchUtils() {
   Object.defineProperty(BatchUtils, "__esModule", { value: true });
   BatchUtils.getBodyAsText = getBodyAsText;
   BatchUtils.utf8ByteLength = utf8ByteLength;
-  const utils_js_1 = /* @__PURE__ */ requireUtils();
+  const utils_js_1 = /* @__PURE__ */ requireUtils$1();
   const constants_js_1 = /* @__PURE__ */ requireConstants$2();
   async function getBodyAsText(batchResponse) {
     let buffer = Buffer.alloc(constants_js_1.BATCH_MAX_PAYLOAD_IN_BYTES);
@@ -65568,7 +65568,7 @@ function requireUploadUtils() {
   };
   Object.defineProperty(uploadUtils, "__esModule", { value: true });
   uploadUtils.uploadCacheArchiveSDK = uploadUtils.UploadProgress = void 0;
-  const core2 = __importStar2(/* @__PURE__ */ requireCore());
+  const core2 = __importStar2(/* @__PURE__ */ requireCore$1());
   const storage_blob_1 = /* @__PURE__ */ requireCommonjs();
   const errors_1 = /* @__PURE__ */ requireErrors();
   class UploadProgress {
@@ -65744,7 +65744,7 @@ function requireRequestUtils() {
   };
   Object.defineProperty(requestUtils, "__esModule", { value: true });
   requestUtils.retryHttpClientResponse = requestUtils.retryTypedResponse = requestUtils.retry = requestUtils.isRetryableStatusCode = requestUtils.isServerErrorStatusCode = requestUtils.isSuccessStatusCode = void 0;
-  const core2 = __importStar2(/* @__PURE__ */ requireCore());
+  const core2 = __importStar2(/* @__PURE__ */ requireCore$1());
   const http_client_1 = /* @__PURE__ */ requireLib();
   const constants_1 = /* @__PURE__ */ requireConstants$5();
   function isSuccessStatusCode(statusCode) {
@@ -66051,7 +66051,7 @@ function requireDownloadUtils() {
   };
   Object.defineProperty(downloadUtils, "__esModule", { value: true });
   downloadUtils.downloadCacheStorageSDK = downloadUtils.downloadCacheHttpClientConcurrent = downloadUtils.downloadCacheHttpClient = downloadUtils.DownloadProgress = void 0;
-  const core2 = __importStar2(/* @__PURE__ */ requireCore());
+  const core2 = __importStar2(/* @__PURE__ */ requireCore$1());
   const http_client_1 = /* @__PURE__ */ requireLib();
   const storage_blob_1 = /* @__PURE__ */ requireCommonjs();
   const buffer = __importStar2(require$$7);
@@ -66384,7 +66384,7 @@ function requireOptions() {
   };
   Object.defineProperty(options, "__esModule", { value: true });
   options.getDownloadOptions = options.getUploadOptions = void 0;
-  const core2 = __importStar2(/* @__PURE__ */ requireCore());
+  const core2 = __importStar2(/* @__PURE__ */ requireCore$1());
   function getUploadOptions(copy2) {
     const result = {
       useAzureSdk: false,
@@ -66568,7 +66568,7 @@ function requireCacheHttpClient() {
   };
   Object.defineProperty(cacheHttpClient, "__esModule", { value: true });
   cacheHttpClient.saveCache = cacheHttpClient.reserveCache = cacheHttpClient.downloadCache = cacheHttpClient.getCacheEntry = void 0;
-  const core2 = __importStar2(/* @__PURE__ */ requireCore());
+  const core2 = __importStar2(/* @__PURE__ */ requireCore$1());
   const http_client_1 = /* @__PURE__ */ requireLib();
   const auth_1 = /* @__PURE__ */ requireAuth();
   const fs = __importStar2(require$$1$2);
@@ -71015,7 +71015,7 @@ function requireUtil() {
   hasRequiredUtil = 1;
   Object.defineProperty(util, "__esModule", { value: true });
   util.maskSecretUrls = util.maskSigUrl = void 0;
-  const core_1 = /* @__PURE__ */ requireCore();
+  const core_1 = /* @__PURE__ */ requireCore$1();
   function maskSigUrl(url) {
     if (!url)
       return;
@@ -71079,7 +71079,7 @@ function requireCacheTwirpClient() {
   };
   Object.defineProperty(cacheTwirpClient, "__esModule", { value: true });
   cacheTwirpClient.internalCacheTwirpClient = void 0;
-  const core_1 = /* @__PURE__ */ requireCore();
+  const core_1 = /* @__PURE__ */ requireCore$1();
   const user_agent_1 = /* @__PURE__ */ requireUserAgent();
   const errors_1 = /* @__PURE__ */ requireErrors();
   const config_1 = /* @__PURE__ */ requireConfig();
@@ -71523,7 +71523,7 @@ function requireCache() {
   };
   Object.defineProperty(cache$2, "__esModule", { value: true });
   cache$2.saveCache = cache$2.restoreCache = cache$2.isFeatureAvailable = cache$2.FinalizeCacheError = cache$2.ReserveCacheError = cache$2.ValidationError = void 0;
-  const core2 = __importStar2(/* @__PURE__ */ requireCore());
+  const core2 = __importStar2(/* @__PURE__ */ requireCore$1());
   const path2 = __importStar2(require$$1$7);
   const utils2 = __importStar2(/* @__PURE__ */ requireCacheUtils());
   const cacheHttpClient2 = __importStar2(/* @__PURE__ */ requireCacheHttpClient());
@@ -71891,6 +71891,1031 @@ function requireCache() {
   return cache$2;
 }
 var cacheExports = /* @__PURE__ */ requireCache();
+var core = {};
+var command = {};
+var utils = {};
+var hasRequiredUtils;
+function requireUtils() {
+  if (hasRequiredUtils) return utils;
+  hasRequiredUtils = 1;
+  Object.defineProperty(utils, "__esModule", { value: true });
+  utils.toCommandValue = toCommandValue;
+  utils.toCommandProperties = toCommandProperties;
+  function toCommandValue(input) {
+    if (input === null || input === void 0) {
+      return "";
+    } else if (typeof input === "string" || input instanceof String) {
+      return input;
+    }
+    return JSON.stringify(input);
+  }
+  function toCommandProperties(annotationProperties) {
+    if (!Object.keys(annotationProperties).length) {
+      return {};
+    }
+    return {
+      title: annotationProperties.title,
+      file: annotationProperties.file,
+      line: annotationProperties.startLine,
+      endLine: annotationProperties.endLine,
+      col: annotationProperties.startColumn,
+      endColumn: annotationProperties.endColumn
+    };
+  }
+  return utils;
+}
+var hasRequiredCommand;
+function requireCommand() {
+  if (hasRequiredCommand) return command;
+  hasRequiredCommand = 1;
+  var __createBinding2 = command && command.__createBinding || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === void 0) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() {
+        return m[k];
+      } };
+    }
+    Object.defineProperty(o, k2, desc);
+  }) : (function(o, m, k, k2) {
+    if (k2 === void 0) k2 = k;
+    o[k2] = m[k];
+  }));
+  var __setModuleDefault2 = command && command.__setModuleDefault || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+  }) : function(o, v) {
+    o["default"] = v;
+  });
+  var __importStar2 = command && command.__importStar || /* @__PURE__ */ (function() {
+    var ownKeys2 = function(o) {
+      ownKeys2 = Object.getOwnPropertyNames || function(o2) {
+        var ar = [];
+        for (var k in o2) if (Object.prototype.hasOwnProperty.call(o2, k)) ar[ar.length] = k;
+        return ar;
+      };
+      return ownKeys2(o);
+    };
+    return function(mod) {
+      if (mod && mod.__esModule) return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k = ownKeys2(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding2(result, mod, k[i]);
+      }
+      __setModuleDefault2(result, mod);
+      return result;
+    };
+  })();
+  Object.defineProperty(command, "__esModule", { value: true });
+  command.issueCommand = issueCommand;
+  command.issue = issue;
+  const os = __importStar2(require$$0$3);
+  const utils_1 = /* @__PURE__ */ requireUtils();
+  function issueCommand(command2, properties, message) {
+    const cmd = new Command(command2, properties, message);
+    process.stdout.write(cmd.toString() + os.EOL);
+  }
+  function issue(name, message = "") {
+    issueCommand(name, {}, message);
+  }
+  const CMD_STRING = "::";
+  class Command {
+    constructor(command2, properties, message) {
+      if (!command2) {
+        command2 = "missing.command";
+      }
+      this.command = command2;
+      this.properties = properties;
+      this.message = message;
+    }
+    toString() {
+      let cmdStr = CMD_STRING + this.command;
+      if (this.properties && Object.keys(this.properties).length > 0) {
+        cmdStr += " ";
+        let first = true;
+        for (const key in this.properties) {
+          if (this.properties.hasOwnProperty(key)) {
+            const val = this.properties[key];
+            if (val) {
+              if (first) {
+                first = false;
+              } else {
+                cmdStr += ",";
+              }
+              cmdStr += `${key}=${escapeProperty(val)}`;
+            }
+          }
+        }
+      }
+      cmdStr += `${CMD_STRING}${escapeData(this.message)}`;
+      return cmdStr;
+    }
+  }
+  function escapeData(s) {
+    return (0, utils_1.toCommandValue)(s).replace(/%/g, "%25").replace(/\r/g, "%0D").replace(/\n/g, "%0A");
+  }
+  function escapeProperty(s) {
+    return (0, utils_1.toCommandValue)(s).replace(/%/g, "%25").replace(/\r/g, "%0D").replace(/\n/g, "%0A").replace(/:/g, "%3A").replace(/,/g, "%2C");
+  }
+  return command;
+}
+var fileCommand = {};
+var hasRequiredFileCommand;
+function requireFileCommand() {
+  if (hasRequiredFileCommand) return fileCommand;
+  hasRequiredFileCommand = 1;
+  var __createBinding2 = fileCommand && fileCommand.__createBinding || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === void 0) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() {
+        return m[k];
+      } };
+    }
+    Object.defineProperty(o, k2, desc);
+  }) : (function(o, m, k, k2) {
+    if (k2 === void 0) k2 = k;
+    o[k2] = m[k];
+  }));
+  var __setModuleDefault2 = fileCommand && fileCommand.__setModuleDefault || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+  }) : function(o, v) {
+    o["default"] = v;
+  });
+  var __importStar2 = fileCommand && fileCommand.__importStar || /* @__PURE__ */ (function() {
+    var ownKeys2 = function(o) {
+      ownKeys2 = Object.getOwnPropertyNames || function(o2) {
+        var ar = [];
+        for (var k in o2) if (Object.prototype.hasOwnProperty.call(o2, k)) ar[ar.length] = k;
+        return ar;
+      };
+      return ownKeys2(o);
+    };
+    return function(mod) {
+      if (mod && mod.__esModule) return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k = ownKeys2(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding2(result, mod, k[i]);
+      }
+      __setModuleDefault2(result, mod);
+      return result;
+    };
+  })();
+  Object.defineProperty(fileCommand, "__esModule", { value: true });
+  fileCommand.issueFileCommand = issueFileCommand;
+  fileCommand.prepareKeyValueMessage = prepareKeyValueMessage;
+  const crypto2 = __importStar2(require$$0$4);
+  const fs = __importStar2(require$$1$2);
+  const os = __importStar2(require$$0$3);
+  const utils_1 = /* @__PURE__ */ requireUtils();
+  function issueFileCommand(command2, message) {
+    const filePath = process.env[`GITHUB_${command2}`];
+    if (!filePath) {
+      throw new Error(`Unable to find environment variable for file command ${command2}`);
+    }
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`Missing file at path: ${filePath}`);
+    }
+    fs.appendFileSync(filePath, `${(0, utils_1.toCommandValue)(message)}${os.EOL}`, {
+      encoding: "utf8"
+    });
+  }
+  function prepareKeyValueMessage(key, value) {
+    const delimiter = `ghadelimiter_${crypto2.randomUUID()}`;
+    const convertedValue = (0, utils_1.toCommandValue)(value);
+    if (key.includes(delimiter)) {
+      throw new Error(`Unexpected input: name should not contain the delimiter "${delimiter}"`);
+    }
+    if (convertedValue.includes(delimiter)) {
+      throw new Error(`Unexpected input: value should not contain the delimiter "${delimiter}"`);
+    }
+    return `${key}<<${delimiter}${os.EOL}${convertedValue}${os.EOL}${delimiter}`;
+  }
+  return fileCommand;
+}
+var oidcUtils = {};
+var hasRequiredOidcUtils;
+function requireOidcUtils() {
+  if (hasRequiredOidcUtils) return oidcUtils;
+  hasRequiredOidcUtils = 1;
+  var __awaiter2 = oidcUtils && oidcUtils.__awaiter || function(thisArg, _arguments, P, generator) {
+    function adopt(value) {
+      return value instanceof P ? value : new P(function(resolve) {
+        resolve(value);
+      });
+    }
+    return new (P || (P = Promise))(function(resolve, reject) {
+      function fulfilled(value) {
+        try {
+          step(generator.next(value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function rejected(value) {
+        try {
+          step(generator["throw"](value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function step(result) {
+        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+      }
+      step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+  };
+  Object.defineProperty(oidcUtils, "__esModule", { value: true });
+  oidcUtils.OidcClient = void 0;
+  const http_client_1 = /* @__PURE__ */ requireLib$1();
+  const auth_1 = /* @__PURE__ */ requireAuth$1();
+  const core_1 = /* @__PURE__ */ requireCore();
+  class OidcClient {
+    static createHttpClient(allowRetry = true, maxRetry = 10) {
+      const requestOptions = {
+        allowRetries: allowRetry,
+        maxRetries: maxRetry
+      };
+      return new http_client_1.HttpClient("actions/oidc-client", [new auth_1.BearerCredentialHandler(OidcClient.getRequestToken())], requestOptions);
+    }
+    static getRequestToken() {
+      const token = process.env["ACTIONS_ID_TOKEN_REQUEST_TOKEN"];
+      if (!token) {
+        throw new Error("Unable to get ACTIONS_ID_TOKEN_REQUEST_TOKEN env variable");
+      }
+      return token;
+    }
+    static getIDTokenUrl() {
+      const runtimeUrl = process.env["ACTIONS_ID_TOKEN_REQUEST_URL"];
+      if (!runtimeUrl) {
+        throw new Error("Unable to get ACTIONS_ID_TOKEN_REQUEST_URL env variable");
+      }
+      return runtimeUrl;
+    }
+    static getCall(id_token_url) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        var _a;
+        const httpclient = OidcClient.createHttpClient();
+        const res = yield httpclient.getJson(id_token_url).catch((error2) => {
+          throw new Error(`Failed to get ID Token. 
+ 
+        Error Code : ${error2.statusCode}
+ 
+        Error Message: ${error2.message}`);
+        });
+        const id_token = (_a = res.result) === null || _a === void 0 ? void 0 : _a.value;
+        if (!id_token) {
+          throw new Error("Response json body do not have ID Token field");
+        }
+        return id_token;
+      });
+    }
+    static getIDToken(audience) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        try {
+          let id_token_url = OidcClient.getIDTokenUrl();
+          if (audience) {
+            const encodedAudience = encodeURIComponent(audience);
+            id_token_url = `${id_token_url}&audience=${encodedAudience}`;
+          }
+          (0, core_1.debug)(`ID token url is ${id_token_url}`);
+          const id_token = yield OidcClient.getCall(id_token_url);
+          (0, core_1.setSecret)(id_token);
+          return id_token;
+        } catch (error2) {
+          throw new Error(`Error message: ${error2.message}`);
+        }
+      });
+    }
+  }
+  oidcUtils.OidcClient = OidcClient;
+  return oidcUtils;
+}
+var summary = {};
+var hasRequiredSummary;
+function requireSummary() {
+  if (hasRequiredSummary) return summary;
+  hasRequiredSummary = 1;
+  (function(exports$1) {
+    var __awaiter2 = summary && summary.__awaiter || function(thisArg, _arguments, P, generator) {
+      function adopt(value) {
+        return value instanceof P ? value : new P(function(resolve) {
+          resolve(value);
+        });
+      }
+      return new (P || (P = Promise))(function(resolve, reject) {
+        function fulfilled(value) {
+          try {
+            step(generator.next(value));
+          } catch (e) {
+            reject(e);
+          }
+        }
+        function rejected(value) {
+          try {
+            step(generator["throw"](value));
+          } catch (e) {
+            reject(e);
+          }
+        }
+        function step(result) {
+          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+        }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+      });
+    };
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.summary = exports$1.markdownSummary = exports$1.SUMMARY_DOCS_URL = exports$1.SUMMARY_ENV_VAR = void 0;
+    const os_1 = require$$0$3;
+    const fs_1 = require$$1$2;
+    const { access, appendFile, writeFile } = fs_1.promises;
+    exports$1.SUMMARY_ENV_VAR = "GITHUB_STEP_SUMMARY";
+    exports$1.SUMMARY_DOCS_URL = "https://docs.github.com/actions/using-workflows/workflow-commands-for-github-actions#adding-a-job-summary";
+    class Summary {
+      constructor() {
+        this._buffer = "";
+      }
+      /**
+       * Finds the summary file path from the environment, rejects if env var is not found or file does not exist
+       * Also checks r/w permissions.
+       *
+       * @returns step summary file path
+       */
+      filePath() {
+        return __awaiter2(this, void 0, void 0, function* () {
+          if (this._filePath) {
+            return this._filePath;
+          }
+          const pathFromEnv = process.env[exports$1.SUMMARY_ENV_VAR];
+          if (!pathFromEnv) {
+            throw new Error(`Unable to find environment variable for $${exports$1.SUMMARY_ENV_VAR}. Check if your runtime environment supports job summaries.`);
+          }
+          try {
+            yield access(pathFromEnv, fs_1.constants.R_OK | fs_1.constants.W_OK);
+          } catch (_a) {
+            throw new Error(`Unable to access summary file: '${pathFromEnv}'. Check if the file has correct read/write permissions.`);
+          }
+          this._filePath = pathFromEnv;
+          return this._filePath;
+        });
+      }
+      /**
+       * Wraps content in an HTML tag, adding any HTML attributes
+       *
+       * @param {string} tag HTML tag to wrap
+       * @param {string | null} content content within the tag
+       * @param {[attribute: string]: string} attrs key-value list of HTML attributes to add
+       *
+       * @returns {string} content wrapped in HTML element
+       */
+      wrap(tag, content, attrs = {}) {
+        const htmlAttrs = Object.entries(attrs).map(([key, value]) => ` ${key}="${value}"`).join("");
+        if (!content) {
+          return `<${tag}${htmlAttrs}>`;
+        }
+        return `<${tag}${htmlAttrs}>${content}</${tag}>`;
+      }
+      /**
+       * Writes text in the buffer to the summary buffer file and empties buffer. Will append by default.
+       *
+       * @param {SummaryWriteOptions} [options] (optional) options for write operation
+       *
+       * @returns {Promise<Summary>} summary instance
+       */
+      write(options2) {
+        return __awaiter2(this, void 0, void 0, function* () {
+          const overwrite = !!(options2 === null || options2 === void 0 ? void 0 : options2.overwrite);
+          const filePath = yield this.filePath();
+          const writeFunc = overwrite ? writeFile : appendFile;
+          yield writeFunc(filePath, this._buffer, { encoding: "utf8" });
+          return this.emptyBuffer();
+        });
+      }
+      /**
+       * Clears the summary buffer and wipes the summary file
+       *
+       * @returns {Summary} summary instance
+       */
+      clear() {
+        return __awaiter2(this, void 0, void 0, function* () {
+          return this.emptyBuffer().write({ overwrite: true });
+        });
+      }
+      /**
+       * Returns the current summary buffer as a string
+       *
+       * @returns {string} string of summary buffer
+       */
+      stringify() {
+        return this._buffer;
+      }
+      /**
+       * If the summary buffer is empty
+       *
+       * @returns {boolen} true if the buffer is empty
+       */
+      isEmptyBuffer() {
+        return this._buffer.length === 0;
+      }
+      /**
+       * Resets the summary buffer without writing to summary file
+       *
+       * @returns {Summary} summary instance
+       */
+      emptyBuffer() {
+        this._buffer = "";
+        return this;
+      }
+      /**
+       * Adds raw text to the summary buffer
+       *
+       * @param {string} text content to add
+       * @param {boolean} [addEOL=false] (optional) append an EOL to the raw text (default: false)
+       *
+       * @returns {Summary} summary instance
+       */
+      addRaw(text, addEOL = false) {
+        this._buffer += text;
+        return addEOL ? this.addEOL() : this;
+      }
+      /**
+       * Adds the operating system-specific end-of-line marker to the buffer
+       *
+       * @returns {Summary} summary instance
+       */
+      addEOL() {
+        return this.addRaw(os_1.EOL);
+      }
+      /**
+       * Adds an HTML codeblock to the summary buffer
+       *
+       * @param {string} code content to render within fenced code block
+       * @param {string} lang (optional) language to syntax highlight code
+       *
+       * @returns {Summary} summary instance
+       */
+      addCodeBlock(code, lang) {
+        const attrs = Object.assign({}, lang && { lang });
+        const element = this.wrap("pre", this.wrap("code", code), attrs);
+        return this.addRaw(element).addEOL();
+      }
+      /**
+       * Adds an HTML list to the summary buffer
+       *
+       * @param {string[]} items list of items to render
+       * @param {boolean} [ordered=false] (optional) if the rendered list should be ordered or not (default: false)
+       *
+       * @returns {Summary} summary instance
+       */
+      addList(items, ordered = false) {
+        const tag = ordered ? "ol" : "ul";
+        const listItems = items.map((item) => this.wrap("li", item)).join("");
+        const element = this.wrap(tag, listItems);
+        return this.addRaw(element).addEOL();
+      }
+      /**
+       * Adds an HTML table to the summary buffer
+       *
+       * @param {SummaryTableCell[]} rows table rows
+       *
+       * @returns {Summary} summary instance
+       */
+      addTable(rows) {
+        const tableBody = rows.map((row) => {
+          const cells = row.map((cell) => {
+            if (typeof cell === "string") {
+              return this.wrap("td", cell);
+            }
+            const { header, data, colspan, rowspan } = cell;
+            const tag = header ? "th" : "td";
+            const attrs = Object.assign(Object.assign({}, colspan && { colspan }), rowspan && { rowspan });
+            return this.wrap(tag, data, attrs);
+          }).join("");
+          return this.wrap("tr", cells);
+        }).join("");
+        const element = this.wrap("table", tableBody);
+        return this.addRaw(element).addEOL();
+      }
+      /**
+       * Adds a collapsable HTML details element to the summary buffer
+       *
+       * @param {string} label text for the closed state
+       * @param {string} content collapsable content
+       *
+       * @returns {Summary} summary instance
+       */
+      addDetails(label, content) {
+        const element = this.wrap("details", this.wrap("summary", label) + content);
+        return this.addRaw(element).addEOL();
+      }
+      /**
+       * Adds an HTML image tag to the summary buffer
+       *
+       * @param {string} src path to the image you to embed
+       * @param {string} alt text description of the image
+       * @param {SummaryImageOptions} options (optional) addition image attributes
+       *
+       * @returns {Summary} summary instance
+       */
+      addImage(src2, alt, options2) {
+        const { width, height } = options2 || {};
+        const attrs = Object.assign(Object.assign({}, width && { width }), height && { height });
+        const element = this.wrap("img", null, Object.assign({ src: src2, alt }, attrs));
+        return this.addRaw(element).addEOL();
+      }
+      /**
+       * Adds an HTML section heading element
+       *
+       * @param {string} text heading text
+       * @param {number | string} [level=1] (optional) the heading level, default: 1
+       *
+       * @returns {Summary} summary instance
+       */
+      addHeading(text, level) {
+        const tag = `h${level}`;
+        const allowedTag = ["h1", "h2", "h3", "h4", "h5", "h6"].includes(tag) ? tag : "h1";
+        const element = this.wrap(allowedTag, text);
+        return this.addRaw(element).addEOL();
+      }
+      /**
+       * Adds an HTML thematic break (<hr>) to the summary buffer
+       *
+       * @returns {Summary} summary instance
+       */
+      addSeparator() {
+        const element = this.wrap("hr", null);
+        return this.addRaw(element).addEOL();
+      }
+      /**
+       * Adds an HTML line break (<br>) to the summary buffer
+       *
+       * @returns {Summary} summary instance
+       */
+      addBreak() {
+        const element = this.wrap("br", null);
+        return this.addRaw(element).addEOL();
+      }
+      /**
+       * Adds an HTML blockquote to the summary buffer
+       *
+       * @param {string} text quote text
+       * @param {string} cite (optional) citation url
+       *
+       * @returns {Summary} summary instance
+       */
+      addQuote(text, cite) {
+        const attrs = Object.assign({}, cite && { cite });
+        const element = this.wrap("blockquote", text, attrs);
+        return this.addRaw(element).addEOL();
+      }
+      /**
+       * Adds an HTML anchor tag to the summary buffer
+       *
+       * @param {string} text link text/content
+       * @param {string} href hyperlink
+       *
+       * @returns {Summary} summary instance
+       */
+      addLink(text, href) {
+        const element = this.wrap("a", text, { href });
+        return this.addRaw(element).addEOL();
+      }
+    }
+    const _summary = new Summary();
+    exports$1.markdownSummary = _summary;
+    exports$1.summary = _summary;
+  })(summary);
+  return summary;
+}
+var pathUtils = {};
+var hasRequiredPathUtils;
+function requirePathUtils() {
+  if (hasRequiredPathUtils) return pathUtils;
+  hasRequiredPathUtils = 1;
+  var __createBinding2 = pathUtils && pathUtils.__createBinding || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === void 0) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() {
+        return m[k];
+      } };
+    }
+    Object.defineProperty(o, k2, desc);
+  }) : (function(o, m, k, k2) {
+    if (k2 === void 0) k2 = k;
+    o[k2] = m[k];
+  }));
+  var __setModuleDefault2 = pathUtils && pathUtils.__setModuleDefault || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+  }) : function(o, v) {
+    o["default"] = v;
+  });
+  var __importStar2 = pathUtils && pathUtils.__importStar || /* @__PURE__ */ (function() {
+    var ownKeys2 = function(o) {
+      ownKeys2 = Object.getOwnPropertyNames || function(o2) {
+        var ar = [];
+        for (var k in o2) if (Object.prototype.hasOwnProperty.call(o2, k)) ar[ar.length] = k;
+        return ar;
+      };
+      return ownKeys2(o);
+    };
+    return function(mod) {
+      if (mod && mod.__esModule) return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k = ownKeys2(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding2(result, mod, k[i]);
+      }
+      __setModuleDefault2(result, mod);
+      return result;
+    };
+  })();
+  Object.defineProperty(pathUtils, "__esModule", { value: true });
+  pathUtils.toPosixPath = toPosixPath;
+  pathUtils.toWin32Path = toWin32Path;
+  pathUtils.toPlatformPath = toPlatformPath;
+  const path2 = __importStar2(require$$1$7);
+  function toPosixPath(pth) {
+    return pth.replace(/[\\]/g, "/");
+  }
+  function toWin32Path(pth) {
+    return pth.replace(/[/]/g, "\\");
+  }
+  function toPlatformPath(pth) {
+    return pth.replace(/[/\\]/g, path2.sep);
+  }
+  return pathUtils;
+}
+var platform = {};
+var hasRequiredPlatform;
+function requirePlatform() {
+  if (hasRequiredPlatform) return platform;
+  hasRequiredPlatform = 1;
+  (function(exports$1) {
+    var __createBinding2 = platform && platform.__createBinding || (Object.create ? (function(o, m, k, k2) {
+      if (k2 === void 0) k2 = k;
+      var desc = Object.getOwnPropertyDescriptor(m, k);
+      if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+        desc = { enumerable: true, get: function() {
+          return m[k];
+        } };
+      }
+      Object.defineProperty(o, k2, desc);
+    }) : (function(o, m, k, k2) {
+      if (k2 === void 0) k2 = k;
+      o[k2] = m[k];
+    }));
+    var __setModuleDefault2 = platform && platform.__setModuleDefault || (Object.create ? (function(o, v) {
+      Object.defineProperty(o, "default", { enumerable: true, value: v });
+    }) : function(o, v) {
+      o["default"] = v;
+    });
+    var __importStar2 = platform && platform.__importStar || /* @__PURE__ */ (function() {
+      var ownKeys2 = function(o) {
+        ownKeys2 = Object.getOwnPropertyNames || function(o2) {
+          var ar = [];
+          for (var k in o2) if (Object.prototype.hasOwnProperty.call(o2, k)) ar[ar.length] = k;
+          return ar;
+        };
+        return ownKeys2(o);
+      };
+      return function(mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) {
+          for (var k = ownKeys2(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding2(result, mod, k[i]);
+        }
+        __setModuleDefault2(result, mod);
+        return result;
+      };
+    })();
+    var __awaiter2 = platform && platform.__awaiter || function(thisArg, _arguments, P, generator) {
+      function adopt(value) {
+        return value instanceof P ? value : new P(function(resolve) {
+          resolve(value);
+        });
+      }
+      return new (P || (P = Promise))(function(resolve, reject) {
+        function fulfilled(value) {
+          try {
+            step(generator.next(value));
+          } catch (e) {
+            reject(e);
+          }
+        }
+        function rejected(value) {
+          try {
+            step(generator["throw"](value));
+          } catch (e) {
+            reject(e);
+          }
+        }
+        function step(result) {
+          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+        }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+      });
+    };
+    var __importDefault2 = platform && platform.__importDefault || function(mod) {
+      return mod && mod.__esModule ? mod : { "default": mod };
+    };
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.isLinux = exports$1.isMacOS = exports$1.isWindows = exports$1.arch = exports$1.platform = void 0;
+    exports$1.getDetails = getDetails;
+    const os_1 = __importDefault2(require$$0$3);
+    const exec2 = __importStar2(/* @__PURE__ */ requireExec());
+    const getWindowsInfo = () => __awaiter2(void 0, void 0, void 0, function* () {
+      const { stdout: version2 } = yield exec2.getExecOutput('powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Version"', void 0, {
+        silent: true
+      });
+      const { stdout: name } = yield exec2.getExecOutput('powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Caption"', void 0, {
+        silent: true
+      });
+      return {
+        name: name.trim(),
+        version: version2.trim()
+      };
+    });
+    const getMacOsInfo = () => __awaiter2(void 0, void 0, void 0, function* () {
+      var _a, _b, _c, _d;
+      const { stdout } = yield exec2.getExecOutput("sw_vers", void 0, {
+        silent: true
+      });
+      const version2 = (_b = (_a = stdout.match(/ProductVersion:\s*(.+)/)) === null || _a === void 0 ? void 0 : _a[1]) !== null && _b !== void 0 ? _b : "";
+      const name = (_d = (_c = stdout.match(/ProductName:\s*(.+)/)) === null || _c === void 0 ? void 0 : _c[1]) !== null && _d !== void 0 ? _d : "";
+      return {
+        name,
+        version: version2
+      };
+    });
+    const getLinuxInfo = () => __awaiter2(void 0, void 0, void 0, function* () {
+      const { stdout } = yield exec2.getExecOutput("lsb_release", ["-i", "-r", "-s"], {
+        silent: true
+      });
+      const [name, version2] = stdout.trim().split("\n");
+      return {
+        name,
+        version: version2
+      };
+    });
+    exports$1.platform = os_1.default.platform();
+    exports$1.arch = os_1.default.arch();
+    exports$1.isWindows = exports$1.platform === "win32";
+    exports$1.isMacOS = exports$1.platform === "darwin";
+    exports$1.isLinux = exports$1.platform === "linux";
+    function getDetails() {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return Object.assign(Object.assign({}, yield exports$1.isWindows ? getWindowsInfo() : exports$1.isMacOS ? getMacOsInfo() : getLinuxInfo()), {
+          platform: exports$1.platform,
+          arch: exports$1.arch,
+          isWindows: exports$1.isWindows,
+          isMacOS: exports$1.isMacOS,
+          isLinux: exports$1.isLinux
+        });
+      });
+    }
+  })(platform);
+  return platform;
+}
+var hasRequiredCore;
+function requireCore() {
+  if (hasRequiredCore) return core;
+  hasRequiredCore = 1;
+  (function(exports$1) {
+    var __createBinding2 = core && core.__createBinding || (Object.create ? (function(o, m, k, k2) {
+      if (k2 === void 0) k2 = k;
+      var desc = Object.getOwnPropertyDescriptor(m, k);
+      if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+        desc = { enumerable: true, get: function() {
+          return m[k];
+        } };
+      }
+      Object.defineProperty(o, k2, desc);
+    }) : (function(o, m, k, k2) {
+      if (k2 === void 0) k2 = k;
+      o[k2] = m[k];
+    }));
+    var __setModuleDefault2 = core && core.__setModuleDefault || (Object.create ? (function(o, v) {
+      Object.defineProperty(o, "default", { enumerable: true, value: v });
+    }) : function(o, v) {
+      o["default"] = v;
+    });
+    var __importStar2 = core && core.__importStar || /* @__PURE__ */ (function() {
+      var ownKeys2 = function(o) {
+        ownKeys2 = Object.getOwnPropertyNames || function(o2) {
+          var ar = [];
+          for (var k in o2) if (Object.prototype.hasOwnProperty.call(o2, k)) ar[ar.length] = k;
+          return ar;
+        };
+        return ownKeys2(o);
+      };
+      return function(mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) {
+          for (var k = ownKeys2(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding2(result, mod, k[i]);
+        }
+        __setModuleDefault2(result, mod);
+        return result;
+      };
+    })();
+    var __awaiter2 = core && core.__awaiter || function(thisArg, _arguments, P, generator) {
+      function adopt(value) {
+        return value instanceof P ? value : new P(function(resolve) {
+          resolve(value);
+        });
+      }
+      return new (P || (P = Promise))(function(resolve, reject) {
+        function fulfilled(value) {
+          try {
+            step(generator.next(value));
+          } catch (e) {
+            reject(e);
+          }
+        }
+        function rejected(value) {
+          try {
+            step(generator["throw"](value));
+          } catch (e) {
+            reject(e);
+          }
+        }
+        function step(result) {
+          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+        }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+      });
+    };
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.platform = exports$1.toPlatformPath = exports$1.toWin32Path = exports$1.toPosixPath = exports$1.markdownSummary = exports$1.summary = exports$1.ExitCode = void 0;
+    exports$1.exportVariable = exportVariable;
+    exports$1.setSecret = setSecret;
+    exports$1.addPath = addPath;
+    exports$1.getInput = getInput2;
+    exports$1.getMultilineInput = getMultilineInput;
+    exports$1.getBooleanInput = getBooleanInput;
+    exports$1.setOutput = setOutput;
+    exports$1.setCommandEcho = setCommandEcho;
+    exports$1.setFailed = setFailed;
+    exports$1.isDebug = isDebug;
+    exports$1.debug = debug2;
+    exports$1.error = error2;
+    exports$1.warning = warning;
+    exports$1.notice = notice;
+    exports$1.info = info;
+    exports$1.startGroup = startGroup;
+    exports$1.endGroup = endGroup;
+    exports$1.group = group;
+    exports$1.saveState = saveState;
+    exports$1.getState = getState;
+    exports$1.getIDToken = getIDToken;
+    const command_1 = /* @__PURE__ */ requireCommand();
+    const file_command_1 = /* @__PURE__ */ requireFileCommand();
+    const utils_1 = /* @__PURE__ */ requireUtils();
+    const os = __importStar2(require$$0$3);
+    const path2 = __importStar2(require$$1$7);
+    const oidc_utils_1 = /* @__PURE__ */ requireOidcUtils();
+    var ExitCode;
+    (function(ExitCode2) {
+      ExitCode2[ExitCode2["Success"] = 0] = "Success";
+      ExitCode2[ExitCode2["Failure"] = 1] = "Failure";
+    })(ExitCode || (exports$1.ExitCode = ExitCode = {}));
+    function exportVariable(name, val) {
+      const convertedVal = (0, utils_1.toCommandValue)(val);
+      process.env[name] = convertedVal;
+      const filePath = process.env["GITHUB_ENV"] || "";
+      if (filePath) {
+        return (0, file_command_1.issueFileCommand)("ENV", (0, file_command_1.prepareKeyValueMessage)(name, val));
+      }
+      (0, command_1.issueCommand)("set-env", { name }, convertedVal);
+    }
+    function setSecret(secret) {
+      (0, command_1.issueCommand)("add-mask", {}, secret);
+    }
+    function addPath(inputPath) {
+      const filePath = process.env["GITHUB_PATH"] || "";
+      if (filePath) {
+        (0, file_command_1.issueFileCommand)("PATH", inputPath);
+      } else {
+        (0, command_1.issueCommand)("add-path", {}, inputPath);
+      }
+      process.env["PATH"] = `${inputPath}${path2.delimiter}${process.env["PATH"]}`;
+    }
+    function getInput2(name, options2) {
+      const val = process.env[`INPUT_${name.replace(/ /g, "_").toUpperCase()}`] || "";
+      if (options2 && options2.required && !val) {
+        throw new Error(`Input required and not supplied: ${name}`);
+      }
+      if (options2 && options2.trimWhitespace === false) {
+        return val;
+      }
+      return val.trim();
+    }
+    function getMultilineInput(name, options2) {
+      const inputs = getInput2(name, options2).split("\n").filter((x) => x !== "");
+      if (options2 && options2.trimWhitespace === false) {
+        return inputs;
+      }
+      return inputs.map((input) => input.trim());
+    }
+    function getBooleanInput(name, options2) {
+      const trueValue = ["true", "True", "TRUE"];
+      const falseValue = ["false", "False", "FALSE"];
+      const val = getInput2(name, options2);
+      if (trueValue.includes(val))
+        return true;
+      if (falseValue.includes(val))
+        return false;
+      throw new TypeError(`Input does not meet YAML 1.2 "Core Schema" specification: ${name}
+Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
+    }
+    function setOutput(name, value) {
+      const filePath = process.env["GITHUB_OUTPUT"] || "";
+      if (filePath) {
+        return (0, file_command_1.issueFileCommand)("OUTPUT", (0, file_command_1.prepareKeyValueMessage)(name, value));
+      }
+      process.stdout.write(os.EOL);
+      (0, command_1.issueCommand)("set-output", { name }, (0, utils_1.toCommandValue)(value));
+    }
+    function setCommandEcho(enabled) {
+      (0, command_1.issue)("echo", enabled ? "on" : "off");
+    }
+    function setFailed(message) {
+      process.exitCode = ExitCode.Failure;
+      error2(message);
+    }
+    function isDebug() {
+      return process.env["RUNNER_DEBUG"] === "1";
+    }
+    function debug2(message) {
+      (0, command_1.issueCommand)("debug", {}, message);
+    }
+    function error2(message, properties = {}) {
+      (0, command_1.issueCommand)("error", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
+    }
+    function warning(message, properties = {}) {
+      (0, command_1.issueCommand)("warning", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
+    }
+    function notice(message, properties = {}) {
+      (0, command_1.issueCommand)("notice", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
+    }
+    function info(message) {
+      process.stdout.write(message + os.EOL);
+    }
+    function startGroup(name) {
+      (0, command_1.issue)("group", name);
+    }
+    function endGroup() {
+      (0, command_1.issue)("endgroup");
+    }
+    function group(name, fn) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        startGroup(name);
+        let result;
+        try {
+          result = yield fn();
+        } finally {
+          endGroup();
+        }
+        return result;
+      });
+    }
+    function saveState(name, value) {
+      const filePath = process.env["GITHUB_STATE"] || "";
+      if (filePath) {
+        return (0, file_command_1.issueFileCommand)("STATE", (0, file_command_1.prepareKeyValueMessage)(name, value));
+      }
+      (0, command_1.issueCommand)("save-state", { name }, (0, utils_1.toCommandValue)(value));
+    }
+    function getState(name) {
+      return process.env[`STATE_${name}`] || "";
+    }
+    function getIDToken(aud) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return yield oidc_utils_1.OidcClient.getIDToken(aud);
+      });
+    }
+    var summary_1 = /* @__PURE__ */ requireSummary();
+    Object.defineProperty(exports$1, "summary", { enumerable: true, get: function() {
+      return summary_1.summary;
+    } });
+    var summary_2 = /* @__PURE__ */ requireSummary();
+    Object.defineProperty(exports$1, "markdownSummary", { enumerable: true, get: function() {
+      return summary_2.markdownSummary;
+    } });
+    var path_utils_1 = /* @__PURE__ */ requirePathUtils();
+    Object.defineProperty(exports$1, "toPosixPath", { enumerable: true, get: function() {
+      return path_utils_1.toPosixPath;
+    } });
+    Object.defineProperty(exports$1, "toWin32Path", { enumerable: true, get: function() {
+      return path_utils_1.toWin32Path;
+    } });
+    Object.defineProperty(exports$1, "toPlatformPath", { enumerable: true, get: function() {
+      return path_utils_1.toPlatformPath;
+    } });
+    exports$1.platform = __importStar2(/* @__PURE__ */ requirePlatform());
+  })(core);
+  return core;
+}
+var coreExports = /* @__PURE__ */ requireCore();
 var ioExports = /* @__PURE__ */ requireIo();
 var libExports = /* @__PURE__ */ requireLib$1();
 async function resolveVersion(crate) {
@@ -72091,11 +73116,11 @@ class OutputParser {
   }
   static validateMessageIsCargoMessage(contents) {
     if (contents.reason !== "compiler-message") {
-      coreExports.debug(`Unexpected reason field, ignoring it: ${contents.reason}`);
+      coreExports$1.debug(`Unexpected reason field, ignoring it: ${contents.reason}`);
       return false;
     }
     if (contents.message?.code === void 0 || contents.message.code === null) {
-      coreExports.debug("Message code is missing, ignoring it");
+      coreExports$1.debug("Message code is missing, ignoring it");
       return false;
     }
     return true;
@@ -72117,7 +73142,7 @@ class OutputParser {
   tryParseClippyLine(line) {
     const message = OutputParser.parseCargoJson(line);
     if (message === null) {
-      coreExports.debug("Not valid JSON or null, ignoring it");
+      coreExports$1.debug("Not valid JSON or null, ignoring it");
       return;
     }
     if (!OutputParser.validateMessageIsCargoMessage(message)) {
@@ -72190,21 +73215,21 @@ async function report(stats, annotations, context) {
   for (const annotation of annotations) {
     switch (annotation.level) {
       case AnnotationLevel.Error: {
-        coreExports.error(annotation.message, annotation.properties);
+        coreExports$1.error(annotation.message, annotation.properties);
         break;
       }
       case AnnotationLevel.Notice: {
-        coreExports.notice(annotation.message, annotation.properties);
+        coreExports$1.notice(annotation.message, annotation.properties);
         break;
       }
       case AnnotationLevel.Warning: {
-        coreExports.warning(annotation.message, annotation.properties);
+        coreExports$1.warning(annotation.message, annotation.properties);
         break;
       }
     }
   }
-  coreExports.summary.addHeading("Clippy summary", 2);
-  coreExports.summary.addTable([
+  coreExports$1.summary.addHeading("Clippy summary", 2);
+  coreExports$1.summary.addTable([
     [
       {
         header: true,
@@ -72256,9 +73281,9 @@ async function report(stats, annotations, context) {
       }
     ]
   ]);
-  coreExports.summary.addHeading("Versions", 2);
-  coreExports.summary.addList([context.rustc, context.cargo, context.clippy]);
-  await coreExports.summary.write();
+  coreExports$1.summary.addHeading("Versions", 2);
+  coreExports$1.summary.addList([context.rustc, context.cargo, context.clippy]);
+  await coreExports$1.summary.write();
 }
 async function buildContext(program, toolchain) {
   const context = {
@@ -72326,10 +73351,10 @@ async function runClippy(actionInput, program) {
   }
   let exitCode = 0;
   try {
-    coreExports.startGroup("Executing cargo clippy (JSON output)");
+    coreExports$1.startGroup("Executing cargo clippy (JSON output)");
     exitCode = await program.call(arguments_, options2);
   } finally {
-    coreExports.endGroup();
+    coreExports$1.endGroup();
   }
   return {
     stats: outputParser.stats,
@@ -72416,9 +73441,9 @@ async function main() {
     await run(actionInput);
   } catch (error2) {
     if (error2 instanceof Error) {
-      coreExports.setFailed(error2.message);
+      coreExports$1.setFailed(error2.message);
     } else {
-      coreExports.setFailed(String(error2));
+      coreExports$1.setFailed(String(error2));
     }
   }
 }
