@@ -1487,6 +1487,10 @@ packages:
     resolution: {integrity: sha512-d4lC8xfavMeBjzGr2vECC3fsGXziXZQyJxD868h2M/mBI3PwAuODxAkLkq5HYuvrPYcUtiLzsTo8U3PgX3Ocww==}
     engines: {node: '>=10.13.0'}
 
+  enhanced-resolve@5.18.4:
+    resolution: {integrity: sha512-LgQMM4WXU3QI+SYgEc2liRgznaD5ojbmY3sb8LxyguVkIg5FxdpTkvk72te2R38/TGKxH634oLxXRGY6d7AP+Q==}
+    engines: {node: '>=10.13.0'}
+
   env-ci@11.2.0:
     resolution: {integrity: sha512-D5kWfzkmaOQDioPmiviWAVtKmpPT4/iJmMVQxWxMPJTFyTkdc5JQUfc5iXEeWxcOdsYTKSAiA/Age4NUOqKsRA==}
     engines: {node: ^18.17 || >=20.6.1}
@@ -5048,6 +5052,11 @@ snapshots:
       graceful-fs: 4.2.11
       tapable: 2.3.0
 
+  enhanced-resolve@5.18.4:
+    dependencies:
+      graceful-fs: 4.2.11
+      tapable: 2.3.0
+
   env-ci@11.2.0:
     dependencies:
       execa: 8.0.1
@@ -5293,7 +5302,7 @@ snapshots:
   eslint-plugin-n@17.23.1(eslint@9.39.1)(typescript@5.9.3):
     dependencies:
       '@eslint-community/eslint-utils': 4.9.0(eslint@9.39.1)
-      enhanced-resolve: 5.18.3
+      enhanced-resolve: 5.18.4
       eslint: 9.39.1
       eslint-plugin-es-x: 7.8.0(eslint@9.39.1)
       get-tsconfig: 4.13.0
