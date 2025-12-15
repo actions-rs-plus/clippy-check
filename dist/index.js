@@ -36358,13 +36358,13 @@ function requireFxp() {
       return t2;
     }
     const _ = new RegExp(`([^\\s=]+)\\s*(=\\s*(['"])([\\s\\S]*?)\\3)?`, "gm");
-    function k(t2, e2, i2) {
+    function k(t2, e2) {
       if (true !== this.options.ignoreAttributes && "string" == typeof t2) {
-        const i3 = s(t2, _), n2 = i3.length, r2 = {};
+        const i2 = s(t2, _), n2 = i2.length, r2 = {};
         for (let t3 = 0; t3 < n2; t3++) {
-          const n3 = this.resolveNameSpace(i3[t3][1]);
+          const n3 = this.resolveNameSpace(i2[t3][1]);
           if (this.ignoreAttributesFn(n3, e2)) continue;
-          let s2 = i3[t3][4], o2 = this.options.attributeNamePrefix + n3;
+          let s2 = i2[t3][4], o2 = this.options.attributeNamePrefix + n3;
           if (n3.length) if (this.options.transformAttributeName && (o2 = this.options.transformAttributeName(o2)), "__proto__" === o2 && (o2 = "#__proto__"), void 0 !== s2) {
             this.options.trimValues && (s2 = s2.trim()), s2 = this.replaceEntitiesValue(s2);
             const t4 = this.options.attributeValueProcessor(n3, s2, e2);
@@ -36402,7 +36402,7 @@ function requireFxp() {
         if (n2 = this.saveTextToParentTag(n2, i2, s2), this.options.ignoreDeclaration && "?xml" === e3.tagName || this.options.ignorePiTags) ;
         else {
           const t3 = new y(e3.tagName);
-          t3.add(this.options.textNodeName, ""), e3.tagName !== e3.tagExp && e3.attrExpPresent && (t3[":@"] = this.buildAttributesMap(e3.tagExp, s2, e3.tagName)), this.addChild(i2, t3, s2, o2);
+          t3.add(this.options.textNodeName, ""), e3.tagName !== e3.tagExp && e3.attrExpPresent && (t3[":@"] = this.buildAttributesMap(e3.tagExp, s2)), this.addChild(i2, t3, s2, o2);
         }
         o2 = e3.closeIndex + 1;
       } else if ("!--" === t2.substr(o2 + 1, 3)) {
@@ -36424,7 +36424,11 @@ function requireFxp() {
         let r3 = X(t2, o2, this.options.removeNSPrefix), a2 = r3.tagName;
         const l2 = r3.rawTagName;
         let u2 = r3.tagExp, h2 = r3.attrExpPresent, d2 = r3.closeIndex;
-        this.options.transformTagName && (a2 = this.options.transformTagName(a2)), i2 && n2 && "!xml" !== i2.tagname && (n2 = this.saveTextToParentTag(n2, i2, s2, false));
+        if (this.options.transformTagName) {
+          const t3 = this.options.transformTagName(a2);
+          u2 === a2 && (u2 = t3), a2 = t3;
+        }
+        i2 && n2 && "!xml" !== i2.tagname && (n2 = this.saveTextToParentTag(n2, i2, s2, false));
         const p2 = i2;
         p2 && -1 !== this.options.unpairedTags.indexOf(p2.tagname) && (i2 = this.tagsNodeStack.pop(), s2 = s2.substring(0, s2.lastIndexOf("."))), a2 !== e2.tagname && (s2 += s2 ? "." + a2 : a2);
         const f2 = o2;
@@ -36438,15 +36442,18 @@ function requireFxp() {
             o2 = i3.i, e3 = i3.tagContent;
           }
           const n3 = new y(a2);
-          a2 !== u2 && h2 && (n3[":@"] = this.buildAttributesMap(u2, s2, a2)), e3 && (e3 = this.parseTextData(e3, a2, s2, true, h2, true, true)), s2 = s2.substr(0, s2.lastIndexOf(".")), n3.add(this.options.textNodeName, e3), this.addChild(i2, n3, s2, f2);
+          a2 !== u2 && h2 && (n3[":@"] = this.buildAttributesMap(u2, s2)), e3 && (e3 = this.parseTextData(e3, a2, s2, true, h2, true, true)), s2 = s2.substr(0, s2.lastIndexOf(".")), n3.add(this.options.textNodeName, e3), this.addChild(i2, n3, s2, f2);
         } else {
           if (u2.length > 0 && u2.lastIndexOf("/") === u2.length - 1) {
-            "/" === a2[a2.length - 1] ? (a2 = a2.substr(0, a2.length - 1), s2 = s2.substr(0, s2.length - 1), u2 = a2) : u2 = u2.substr(0, u2.length - 1), this.options.transformTagName && (a2 = this.options.transformTagName(a2));
+            if ("/" === a2[a2.length - 1] ? (a2 = a2.substr(0, a2.length - 1), s2 = s2.substr(0, s2.length - 1), u2 = a2) : u2 = u2.substr(0, u2.length - 1), this.options.transformTagName) {
+              const t4 = this.options.transformTagName(a2);
+              u2 === a2 && (u2 = t4), a2 = t4;
+            }
             const t3 = new y(a2);
-            a2 !== u2 && h2 && (t3[":@"] = this.buildAttributesMap(u2, s2, a2)), this.addChild(i2, t3, s2, f2), s2 = s2.substr(0, s2.lastIndexOf("."));
+            a2 !== u2 && h2 && (t3[":@"] = this.buildAttributesMap(u2, s2)), this.addChild(i2, t3, s2, f2), s2 = s2.substr(0, s2.lastIndexOf("."));
           } else {
             const t3 = new y(a2);
-            this.tagsNodeStack.push(i2), a2 !== u2 && h2 && (t3[":@"] = this.buildAttributesMap(u2, s2, a2)), this.addChild(i2, t3, s2, f2), i2 = t3;
+            this.tagsNodeStack.push(i2), a2 !== u2 && h2 && (t3[":@"] = this.buildAttributesMap(u2, s2)), this.addChild(i2, t3, s2, f2), i2 = t3;
           }
           n2 = "", o2 = d2;
         }
@@ -66729,7 +66736,7 @@ function requireConfig() {
   return config;
 }
 var userAgent = {};
-const version = "5.0.0";
+const version = "5.0.1";
 const require$$0$1 = {
   version
 };
