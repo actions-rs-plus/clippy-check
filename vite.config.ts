@@ -36,7 +36,7 @@ export default defineConfig(({ mode }) => {
         },
         resolve: {
             alias: {
-                "@/": nodePath.resolve(import.meta.dirname, "src/"),
+                "@": nodePath.resolve(import.meta.dirname, "src/"),
             },
         },
         plugins: [
