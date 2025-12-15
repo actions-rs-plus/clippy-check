@@ -595,67 +595,67 @@ function requireSymbols$4() {
   if (hasRequiredSymbols$4) return symbols$4;
   hasRequiredSymbols$4 = 1;
   symbols$4 = {
-    kClose: Symbol("close"),
-    kDestroy: Symbol("destroy"),
-    kDispatch: Symbol("dispatch"),
-    kUrl: Symbol("url"),
-    kWriting: Symbol("writing"),
-    kResuming: Symbol("resuming"),
-    kQueue: Symbol("queue"),
-    kConnect: Symbol("connect"),
-    kConnecting: Symbol("connecting"),
-    kHeadersList: Symbol("headers list"),
-    kKeepAliveDefaultTimeout: Symbol("default keep alive timeout"),
-    kKeepAliveMaxTimeout: Symbol("max keep alive timeout"),
-    kKeepAliveTimeoutThreshold: Symbol("keep alive timeout threshold"),
-    kKeepAliveTimeoutValue: Symbol("keep alive timeout"),
-    kKeepAlive: Symbol("keep alive"),
-    kHeadersTimeout: Symbol("headers timeout"),
-    kBodyTimeout: Symbol("body timeout"),
-    kServerName: Symbol("server name"),
-    kLocalAddress: Symbol("local address"),
-    kHost: Symbol("host"),
-    kNoRef: Symbol("no ref"),
-    kBodyUsed: Symbol("used"),
-    kRunning: Symbol("running"),
-    kBlocking: Symbol("blocking"),
-    kPending: Symbol("pending"),
-    kSize: Symbol("size"),
-    kBusy: Symbol("busy"),
-    kQueued: Symbol("queued"),
-    kFree: Symbol("free"),
-    kConnected: Symbol("connected"),
-    kClosed: Symbol("closed"),
-    kNeedDrain: Symbol("need drain"),
-    kReset: Symbol("reset"),
-    kDestroyed: Symbol.for("nodejs.stream.destroyed"),
-    kMaxHeadersSize: Symbol("max headers size"),
-    kRunningIdx: Symbol("running index"),
-    kPendingIdx: Symbol("pending index"),
-    kError: Symbol("error"),
-    kClients: Symbol("clients"),
-    kClient: Symbol("client"),
-    kParser: Symbol("parser"),
-    kOnDestroyed: Symbol("destroy callbacks"),
-    kPipelining: Symbol("pipelining"),
-    kSocket: Symbol("socket"),
-    kHostHeader: Symbol("host header"),
-    kConnector: Symbol("connector"),
-    kStrictContentLength: Symbol("strict content length"),
-    kMaxRedirections: Symbol("maxRedirections"),
-    kMaxRequests: Symbol("maxRequestsPerClient"),
-    kProxy: Symbol("proxy agent options"),
-    kCounter: Symbol("socket request counter"),
-    kInterceptors: Symbol("dispatch interceptors"),
-    kMaxResponseSize: Symbol("max response size"),
-    kHTTP2Session: Symbol("http2Session"),
-    kHTTP2SessionState: Symbol("http2Session state"),
-    kHTTP2BuildRequest: Symbol("http2 build request"),
-    kHTTP1BuildRequest: Symbol("http1 build request"),
-    kHTTP2CopyHeaders: Symbol("http2 copy headers"),
-    kHTTPConnVersion: Symbol("http connection version"),
-    kRetryHandlerDefaultRetry: Symbol("retry agent default retry"),
-    kConstruct: Symbol("constructable")
+    kClose: /* @__PURE__ */ Symbol("close"),
+    kDestroy: /* @__PURE__ */ Symbol("destroy"),
+    kDispatch: /* @__PURE__ */ Symbol("dispatch"),
+    kUrl: /* @__PURE__ */ Symbol("url"),
+    kWriting: /* @__PURE__ */ Symbol("writing"),
+    kResuming: /* @__PURE__ */ Symbol("resuming"),
+    kQueue: /* @__PURE__ */ Symbol("queue"),
+    kConnect: /* @__PURE__ */ Symbol("connect"),
+    kConnecting: /* @__PURE__ */ Symbol("connecting"),
+    kHeadersList: /* @__PURE__ */ Symbol("headers list"),
+    kKeepAliveDefaultTimeout: /* @__PURE__ */ Symbol("default keep alive timeout"),
+    kKeepAliveMaxTimeout: /* @__PURE__ */ Symbol("max keep alive timeout"),
+    kKeepAliveTimeoutThreshold: /* @__PURE__ */ Symbol("keep alive timeout threshold"),
+    kKeepAliveTimeoutValue: /* @__PURE__ */ Symbol("keep alive timeout"),
+    kKeepAlive: /* @__PURE__ */ Symbol("keep alive"),
+    kHeadersTimeout: /* @__PURE__ */ Symbol("headers timeout"),
+    kBodyTimeout: /* @__PURE__ */ Symbol("body timeout"),
+    kServerName: /* @__PURE__ */ Symbol("server name"),
+    kLocalAddress: /* @__PURE__ */ Symbol("local address"),
+    kHost: /* @__PURE__ */ Symbol("host"),
+    kNoRef: /* @__PURE__ */ Symbol("no ref"),
+    kBodyUsed: /* @__PURE__ */ Symbol("used"),
+    kRunning: /* @__PURE__ */ Symbol("running"),
+    kBlocking: /* @__PURE__ */ Symbol("blocking"),
+    kPending: /* @__PURE__ */ Symbol("pending"),
+    kSize: /* @__PURE__ */ Symbol("size"),
+    kBusy: /* @__PURE__ */ Symbol("busy"),
+    kQueued: /* @__PURE__ */ Symbol("queued"),
+    kFree: /* @__PURE__ */ Symbol("free"),
+    kConnected: /* @__PURE__ */ Symbol("connected"),
+    kClosed: /* @__PURE__ */ Symbol("closed"),
+    kNeedDrain: /* @__PURE__ */ Symbol("need drain"),
+    kReset: /* @__PURE__ */ Symbol("reset"),
+    kDestroyed: /* @__PURE__ */ Symbol.for("nodejs.stream.destroyed"),
+    kMaxHeadersSize: /* @__PURE__ */ Symbol("max headers size"),
+    kRunningIdx: /* @__PURE__ */ Symbol("running index"),
+    kPendingIdx: /* @__PURE__ */ Symbol("pending index"),
+    kError: /* @__PURE__ */ Symbol("error"),
+    kClients: /* @__PURE__ */ Symbol("clients"),
+    kClient: /* @__PURE__ */ Symbol("client"),
+    kParser: /* @__PURE__ */ Symbol("parser"),
+    kOnDestroyed: /* @__PURE__ */ Symbol("destroy callbacks"),
+    kPipelining: /* @__PURE__ */ Symbol("pipelining"),
+    kSocket: /* @__PURE__ */ Symbol("socket"),
+    kHostHeader: /* @__PURE__ */ Symbol("host header"),
+    kConnector: /* @__PURE__ */ Symbol("connector"),
+    kStrictContentLength: /* @__PURE__ */ Symbol("strict content length"),
+    kMaxRedirections: /* @__PURE__ */ Symbol("maxRedirections"),
+    kMaxRequests: /* @__PURE__ */ Symbol("maxRequestsPerClient"),
+    kProxy: /* @__PURE__ */ Symbol("proxy agent options"),
+    kCounter: /* @__PURE__ */ Symbol("socket request counter"),
+    kInterceptors: /* @__PURE__ */ Symbol("dispatch interceptors"),
+    kMaxResponseSize: /* @__PURE__ */ Symbol("max response size"),
+    kHTTP2Session: /* @__PURE__ */ Symbol("http2Session"),
+    kHTTP2SessionState: /* @__PURE__ */ Symbol("http2Session state"),
+    kHTTP2BuildRequest: /* @__PURE__ */ Symbol("http2 build request"),
+    kHTTP1BuildRequest: /* @__PURE__ */ Symbol("http1 build request"),
+    kHTTP2CopyHeaders: /* @__PURE__ */ Symbol("http2 copy headers"),
+    kHTTPConnVersion: /* @__PURE__ */ Symbol("http connection version"),
+    kRetryHandlerDefaultRetry: /* @__PURE__ */ Symbol("retry agent default retry"),
+    kConstruct: /* @__PURE__ */ Symbol("constructable")
   };
   return symbols$4;
 }
@@ -3650,7 +3650,7 @@ var hasRequiredGlobal$1;
 function requireGlobal$1() {
   if (hasRequiredGlobal$1) return global$2;
   hasRequiredGlobal$1 = 1;
-  const globalOrigin = Symbol.for("undici.globalOrigin.1");
+  const globalOrigin = /* @__PURE__ */ Symbol.for("undici.globalOrigin.1");
   function getGlobalOrigin() {
     return globalThis[globalOrigin];
   }
@@ -4301,12 +4301,12 @@ function requireSymbols$3() {
   if (hasRequiredSymbols$3) return symbols$3;
   hasRequiredSymbols$3 = 1;
   symbols$3 = {
-    kUrl: Symbol("url"),
-    kHeaders: Symbol("headers"),
-    kSignal: Symbol("signal"),
-    kState: Symbol("state"),
-    kGuard: Symbol("guard"),
-    kRealm: Symbol("realm")
+    kUrl: /* @__PURE__ */ Symbol("url"),
+    kHeaders: /* @__PURE__ */ Symbol("headers"),
+    kSignal: /* @__PURE__ */ Symbol("signal"),
+    kState: /* @__PURE__ */ Symbol("state"),
+    kGuard: /* @__PURE__ */ Symbol("guard"),
+    kRealm: /* @__PURE__ */ Symbol("realm")
   };
   return symbols$3;
 }
@@ -5700,7 +5700,7 @@ function requireRequest$1() {
   const tokenRegExp = /^[\^_`a-zA-Z\-0-9!#$%&'*+.|~]+$/;
   const headerCharRegex = /[^\t\x20-\x7e\x80-\xff]/;
   const invalidPathRegex = /[^\u0021-\u00ff]/;
-  const kHandler = Symbol("handler");
+  const kHandler = /* @__PURE__ */ Symbol("handler");
   const channels = {};
   let extractBody;
   try {
@@ -6087,11 +6087,11 @@ function requireDispatcherBase() {
     InvalidArgumentError
   } = /* @__PURE__ */ requireErrors$1();
   const { kDestroy, kClose, kDispatch, kInterceptors } = /* @__PURE__ */ requireSymbols$4();
-  const kDestroyed = Symbol("destroyed");
-  const kClosed = Symbol("closed");
-  const kOnDestroyed = Symbol("onDestroyed");
-  const kOnClosed = Symbol("onClosed");
-  const kInterceptedDispatch = Symbol("Intercepted Dispatch");
+  const kDestroyed = /* @__PURE__ */ Symbol("destroyed");
+  const kClosed = /* @__PURE__ */ Symbol("closed");
+  const kOnDestroyed = /* @__PURE__ */ Symbol("onDestroyed");
+  const kOnClosed = /* @__PURE__ */ Symbol("onClosed");
+  const kInterceptedDispatch = /* @__PURE__ */ Symbol("Intercepted Dispatch");
   class DispatcherBase extends Dispatcher {
     constructor() {
       super();
@@ -6743,7 +6743,7 @@ function requireRedirectHandler() {
   const { InvalidArgumentError } = /* @__PURE__ */ requireErrors$1();
   const EE = require$$0$6;
   const redirectableStatusCodes = [300, 301, 302, 303, 307, 308];
-  const kBody = Symbol("body");
+  const kBody = /* @__PURE__ */ Symbol("body");
   class BodyAsyncIterable {
     constructor(body2) {
       this[kBody] = body2;
@@ -7019,7 +7019,7 @@ function requireClient() {
   } = http2;
   let h2ExperimentalWarned = false;
   const FastBuffer = Buffer[Symbol.species];
-  const kClosedResolve = Symbol("kClosedResolve");
+  const kClosedResolve = /* @__PURE__ */ Symbol("kClosedResolve");
   const channels = {};
   try {
     const diagnosticsChannel = require("diagnostics_channel");
@@ -8690,7 +8690,7 @@ function requirePoolStats() {
   if (hasRequiredPoolStats) return poolStats;
   hasRequiredPoolStats = 1;
   const { kFree, kConnected, kPending, kQueued, kRunning, kSize } = /* @__PURE__ */ requireSymbols$4();
-  const kPool = Symbol("pool");
+  const kPool = /* @__PURE__ */ Symbol("pool");
   class PoolStats {
     constructor(pool2) {
       this[kPool] = pool2;
@@ -8726,18 +8726,18 @@ function requirePoolBase() {
   const FixedQueue = /* @__PURE__ */ requireFixedQueue();
   const { kConnected, kSize, kRunning, kPending, kQueued, kBusy, kFree, kUrl, kClose, kDestroy, kDispatch } = /* @__PURE__ */ requireSymbols$4();
   const PoolStats = /* @__PURE__ */ requirePoolStats();
-  const kClients = Symbol("clients");
-  const kNeedDrain = Symbol("needDrain");
-  const kQueue = Symbol("queue");
-  const kClosedResolve = Symbol("closed resolve");
-  const kOnDrain = Symbol("onDrain");
-  const kOnConnect = Symbol("onConnect");
-  const kOnDisconnect = Symbol("onDisconnect");
-  const kOnConnectionError = Symbol("onConnectionError");
-  const kGetDispatcher = Symbol("get dispatcher");
-  const kAddClient = Symbol("add client");
-  const kRemoveClient = Symbol("remove client");
-  const kStats = Symbol("stats");
+  const kClients = /* @__PURE__ */ Symbol("clients");
+  const kNeedDrain = /* @__PURE__ */ Symbol("needDrain");
+  const kQueue = /* @__PURE__ */ Symbol("queue");
+  const kClosedResolve = /* @__PURE__ */ Symbol("closed resolve");
+  const kOnDrain = /* @__PURE__ */ Symbol("onDrain");
+  const kOnConnect = /* @__PURE__ */ Symbol("onConnect");
+  const kOnDisconnect = /* @__PURE__ */ Symbol("onDisconnect");
+  const kOnConnectionError = /* @__PURE__ */ Symbol("onConnectionError");
+  const kGetDispatcher = /* @__PURE__ */ Symbol("get dispatcher");
+  const kAddClient = /* @__PURE__ */ Symbol("add client");
+  const kRemoveClient = /* @__PURE__ */ Symbol("remove client");
+  const kStats = /* @__PURE__ */ Symbol("stats");
   class PoolBase extends DispatcherBase {
     constructor() {
       super();
@@ -8891,9 +8891,9 @@ function requirePool() {
   const util2 = /* @__PURE__ */ requireUtil$8();
   const { kUrl, kInterceptors } = /* @__PURE__ */ requireSymbols$4();
   const buildConnector = /* @__PURE__ */ requireConnect();
-  const kOptions = Symbol("options");
-  const kConnections = Symbol("connections");
-  const kFactory = Symbol("factory");
+  const kOptions = /* @__PURE__ */ Symbol("options");
+  const kConnections = /* @__PURE__ */ Symbol("connections");
+  const kFactory = /* @__PURE__ */ Symbol("factory");
   function defaultFactory(origin, opts) {
     return new Client(origin, opts);
   }
@@ -8982,14 +8982,14 @@ function requireBalancedPool() {
   const Pool = /* @__PURE__ */ requirePool();
   const { kUrl, kInterceptors } = /* @__PURE__ */ requireSymbols$4();
   const { parseOrigin } = /* @__PURE__ */ requireUtil$8();
-  const kFactory = Symbol("factory");
-  const kOptions = Symbol("options");
-  const kGreatestCommonDivisor = Symbol("kGreatestCommonDivisor");
-  const kCurrentWeight = Symbol("kCurrentWeight");
-  const kIndex = Symbol("kIndex");
-  const kWeight = Symbol("kWeight");
-  const kMaxWeightPerServer = Symbol("kMaxWeightPerServer");
-  const kErrorPenalty = Symbol("kErrorPenalty");
+  const kFactory = /* @__PURE__ */ Symbol("factory");
+  const kOptions = /* @__PURE__ */ Symbol("options");
+  const kGreatestCommonDivisor = /* @__PURE__ */ Symbol("kGreatestCommonDivisor");
+  const kCurrentWeight = /* @__PURE__ */ Symbol("kCurrentWeight");
+  const kIndex = /* @__PURE__ */ Symbol("kIndex");
+  const kWeight = /* @__PURE__ */ Symbol("kWeight");
+  const kMaxWeightPerServer = /* @__PURE__ */ Symbol("kMaxWeightPerServer");
+  const kErrorPenalty = /* @__PURE__ */ Symbol("kErrorPenalty");
   function getGreatestCommonDivisor(a, b) {
     if (b === 0) return a;
     return getGreatestCommonDivisor(b, a % b);
@@ -9152,14 +9152,14 @@ function requireAgent() {
   const util2 = /* @__PURE__ */ requireUtil$8();
   const createRedirectInterceptor = /* @__PURE__ */ requireRedirectInterceptor();
   const { WeakRef: WeakRef2, FinalizationRegistry } = /* @__PURE__ */ requireDispatcherWeakref()();
-  const kOnConnect = Symbol("onConnect");
-  const kOnDisconnect = Symbol("onDisconnect");
-  const kOnConnectionError = Symbol("onConnectionError");
-  const kMaxRedirections = Symbol("maxRedirections");
-  const kOnDrain = Symbol("onDrain");
-  const kFactory = Symbol("factory");
-  const kFinalizer = Symbol("finalizer");
-  const kOptions = Symbol("options");
+  const kOnConnect = /* @__PURE__ */ Symbol("onConnect");
+  const kOnDisconnect = /* @__PURE__ */ Symbol("onDisconnect");
+  const kOnConnectionError = /* @__PURE__ */ Symbol("onConnectionError");
+  const kMaxRedirections = /* @__PURE__ */ Symbol("maxRedirections");
+  const kOnDrain = /* @__PURE__ */ Symbol("onDrain");
+  const kFactory = /* @__PURE__ */ Symbol("factory");
+  const kFinalizer = /* @__PURE__ */ Symbol("finalizer");
+  const kOptions = /* @__PURE__ */ Symbol("options");
   function defaultFactory(origin, opts) {
     return opts && opts.connections === 1 ? new Client(origin, opts) : new Pool(origin, opts);
   }
@@ -9270,11 +9270,11 @@ function requireReadable() {
   const util2 = /* @__PURE__ */ requireUtil$8();
   const { ReadableStreamFrom, toUSVString } = /* @__PURE__ */ requireUtil$8();
   let Blob2;
-  const kConsume = Symbol("kConsume");
-  const kReading = Symbol("kReading");
-  const kBody = Symbol("kBody");
-  const kAbort = Symbol("abort");
-  const kContentType = Symbol("kContentType");
+  const kConsume = /* @__PURE__ */ Symbol("kConsume");
+  const kReading = /* @__PURE__ */ Symbol("kReading");
+  const kBody = /* @__PURE__ */ Symbol("kBody");
+  const kAbort = /* @__PURE__ */ Symbol("abort");
+  const kContentType = /* @__PURE__ */ Symbol("kContentType");
   const noop = () => {
   };
   readable = class BodyReadable extends Readable {
@@ -9562,8 +9562,8 @@ function requireAbortSignal() {
   hasRequiredAbortSignal = 1;
   const { addAbortListener } = /* @__PURE__ */ requireUtil$8();
   const { RequestAbortedError } = /* @__PURE__ */ requireErrors$1();
-  const kListener = Symbol("kListener");
-  const kSignal = Symbol("kSignal");
+  const kListener = /* @__PURE__ */ Symbol("kListener");
+  const kSignal = /* @__PURE__ */ Symbol("kSignal");
   function abort(self2) {
     if (self2.abort) {
       self2.abort();
@@ -9951,7 +9951,7 @@ function requireApiPipeline() {
   const { AsyncResource } = require$$4;
   const { addSignal, removeSignal } = /* @__PURE__ */ requireAbortSignal();
   const assert2 = require$$0$7;
-  const kResume = Symbol("resume");
+  const kResume = /* @__PURE__ */ Symbol("resume");
   class PipelineRequest extends Readable {
     constructor() {
       super({ autoDestroy: true });
@@ -10344,25 +10344,25 @@ function requireMockSymbols() {
   if (hasRequiredMockSymbols) return mockSymbols;
   hasRequiredMockSymbols = 1;
   mockSymbols = {
-    kAgent: Symbol("agent"),
-    kOptions: Symbol("options"),
-    kFactory: Symbol("factory"),
-    kDispatches: Symbol("dispatches"),
-    kDispatchKey: Symbol("dispatch key"),
-    kDefaultHeaders: Symbol("default headers"),
-    kDefaultTrailers: Symbol("default trailers"),
-    kContentLength: Symbol("content length"),
-    kMockAgent: Symbol("mock agent"),
-    kMockAgentSet: Symbol("mock agent set"),
-    kMockAgentGet: Symbol("mock agent get"),
-    kMockDispatch: Symbol("mock dispatch"),
-    kClose: Symbol("close"),
-    kOriginalClose: Symbol("original agent close"),
-    kOrigin: Symbol("origin"),
-    kIsMockActive: Symbol("is mock active"),
-    kNetConnect: Symbol("net connect"),
-    kGetNetConnect: Symbol("get net connect"),
-    kConnected: Symbol("connected")
+    kAgent: /* @__PURE__ */ Symbol("agent"),
+    kOptions: /* @__PURE__ */ Symbol("options"),
+    kFactory: /* @__PURE__ */ Symbol("factory"),
+    kDispatches: /* @__PURE__ */ Symbol("dispatches"),
+    kDispatchKey: /* @__PURE__ */ Symbol("dispatch key"),
+    kDefaultHeaders: /* @__PURE__ */ Symbol("default headers"),
+    kDefaultTrailers: /* @__PURE__ */ Symbol("default trailers"),
+    kContentLength: /* @__PURE__ */ Symbol("content length"),
+    kMockAgent: /* @__PURE__ */ Symbol("mock agent"),
+    kMockAgentSet: /* @__PURE__ */ Symbol("mock agent set"),
+    kMockAgentGet: /* @__PURE__ */ Symbol("mock agent get"),
+    kMockDispatch: /* @__PURE__ */ Symbol("mock dispatch"),
+    kClose: /* @__PURE__ */ Symbol("close"),
+    kOriginalClose: /* @__PURE__ */ Symbol("original agent close"),
+    kOrigin: /* @__PURE__ */ Symbol("origin"),
+    kIsMockActive: /* @__PURE__ */ Symbol("is mock active"),
+    kNetConnect: /* @__PURE__ */ Symbol("net connect"),
+    kGetNetConnect: /* @__PURE__ */ Symbol("get net connect"),
+    kConnected: /* @__PURE__ */ Symbol("connected")
   };
   return mockSymbols;
 }
@@ -11134,12 +11134,12 @@ function requireProxyAgent() {
   const DispatcherBase = /* @__PURE__ */ requireDispatcherBase();
   const { InvalidArgumentError, RequestAbortedError } = /* @__PURE__ */ requireErrors$1();
   const buildConnector = /* @__PURE__ */ requireConnect();
-  const kAgent = Symbol("proxy agent");
-  const kClient = Symbol("proxy client");
-  const kProxyHeaders = Symbol("proxy headers");
-  const kRequestTls = Symbol("request tls settings");
-  const kProxyTls = Symbol("proxy tls settings");
-  const kConnectEndpoint = Symbol("connect endpoint function");
+  const kAgent = /* @__PURE__ */ Symbol("proxy agent");
+  const kClient = /* @__PURE__ */ Symbol("proxy client");
+  const kProxyHeaders = /* @__PURE__ */ Symbol("proxy headers");
+  const kRequestTls = /* @__PURE__ */ Symbol("request tls settings");
+  const kProxyTls = /* @__PURE__ */ Symbol("proxy tls settings");
+  const kConnectEndpoint = /* @__PURE__ */ Symbol("connect endpoint function");
   function defaultProtocolPort(protocol) {
     return protocol === "https:" ? 443 : 80;
   }
@@ -11547,7 +11547,7 @@ var hasRequiredGlobal;
 function requireGlobal() {
   if (hasRequiredGlobal) return global$1;
   hasRequiredGlobal = 1;
-  const globalDispatcher = Symbol.for("undici.globalDispatcher.1");
+  const globalDispatcher = /* @__PURE__ */ Symbol.for("undici.globalDispatcher.1");
   const { InvalidArgumentError } = /* @__PURE__ */ requireErrors$1();
   const Agent = /* @__PURE__ */ requireAgent();
   if (getGlobalDispatcher() === void 0) {
@@ -11622,8 +11622,8 @@ function requireHeaders() {
   const util2 = require$$0$5;
   const { webidl } = /* @__PURE__ */ requireWebidl();
   const assert2 = require$$0$7;
-  const kHeadersMap = Symbol("headers map");
-  const kHeadersSortedMap = Symbol("headers map sorted");
+  const kHeadersMap = /* @__PURE__ */ Symbol("headers map");
+  const kHeadersSortedMap = /* @__PURE__ */ Symbol("headers map sorted");
   function isHTTPWhiteSpaceCharCode(code) {
     return code === 10 || code === 13 || code === 9 || code === 32;
   }
@@ -11947,7 +11947,7 @@ function requireHeaders() {
         callbackFn.apply(thisArg, [value, key, this]);
       }
     }
-    [Symbol.for("nodejs.util.inspect.custom")]() {
+    [/* @__PURE__ */ Symbol.for("nodejs.util.inspect.custom")]() {
       webidl.brandCheck(this, Headers);
       return this[kHeadersList];
     }
@@ -12407,7 +12407,7 @@ function requireRequest() {
   const assert2 = require$$0$7;
   const { getMaxListeners, setMaxListeners, getEventListeners, defaultMaxListeners } = require$$0$6;
   let TransformStream = globalThis.TransformStream;
-  const kAbortController = Symbol("abortController");
+  const kAbortController = /* @__PURE__ */ Symbol("abortController");
   const requestFinalizer = new FinalizationRegistry(({ signal, abort }) => {
     signal.removeEventListener("abort", abort);
   });
@@ -14028,12 +14028,12 @@ function requireSymbols$2() {
   if (hasRequiredSymbols$2) return symbols$2;
   hasRequiredSymbols$2 = 1;
   symbols$2 = {
-    kState: Symbol("FileReader state"),
-    kResult: Symbol("FileReader result"),
-    kError: Symbol("FileReader error"),
-    kLastProgressEventFired: Symbol("FileReader last progress event fired timestamp"),
-    kEvents: Symbol("FileReader events"),
-    kAborted: Symbol("FileReader aborted")
+    kState: /* @__PURE__ */ Symbol("FileReader state"),
+    kResult: /* @__PURE__ */ Symbol("FileReader result"),
+    kError: /* @__PURE__ */ Symbol("FileReader error"),
+    kLastProgressEventFired: /* @__PURE__ */ Symbol("FileReader last progress event fired timestamp"),
+    kEvents: /* @__PURE__ */ Symbol("FileReader events"),
+    kAborted: /* @__PURE__ */ Symbol("FileReader aborted")
   };
   return symbols$2;
 }
@@ -14043,7 +14043,7 @@ function requireProgressevent() {
   if (hasRequiredProgressevent) return progressevent;
   hasRequiredProgressevent = 1;
   const { webidl } = /* @__PURE__ */ requireWebidl();
-  const kState = Symbol("ProgressEvent state");
+  const kState = /* @__PURE__ */ Symbol("ProgressEvent state");
   class ProgressEvent extends Event {
     constructor(type, eventInitDict = {}) {
       type = webidl.converters.DOMString(type);
@@ -15993,14 +15993,14 @@ function requireSymbols() {
   if (hasRequiredSymbols) return symbols;
   hasRequiredSymbols = 1;
   symbols = {
-    kWebSocketURL: Symbol("url"),
-    kReadyState: Symbol("ready state"),
-    kController: Symbol("controller"),
-    kResponse: Symbol("response"),
-    kBinaryType: Symbol("binary type"),
-    kSentClose: Symbol("sent close"),
-    kReceivedClose: Symbol("received close"),
-    kByteParser: Symbol("byte parser")
+    kWebSocketURL: /* @__PURE__ */ Symbol("url"),
+    kReadyState: /* @__PURE__ */ Symbol("ready state"),
+    kController: /* @__PURE__ */ Symbol("controller"),
+    kResponse: /* @__PURE__ */ Symbol("response"),
+    kBinaryType: /* @__PURE__ */ Symbol("binary type"),
+    kSentClose: /* @__PURE__ */ Symbol("sent close"),
+    kReceivedClose: /* @__PURE__ */ Symbol("received close"),
+    kByteParser: /* @__PURE__ */ Symbol("byte parser")
   };
   return symbols;
 }
@@ -29451,7 +29451,7 @@ function requireDist$2() {
     const http = __importStar2(require$$2);
     const https_1 = require$$1$3;
     __exportStar2(/* @__PURE__ */ requireHelpers(), exports$1);
-    const INTERNAL = Symbol("AgentBaseInternalState");
+    const INTERNAL = /* @__PURE__ */ Symbol("AgentBaseInternalState");
     class Agent extends http.Agent {
       constructor(opts) {
         super(opts);
@@ -31988,7 +31988,7 @@ function requireFile() {
       throw new Error("Not implemented");
     }
   };
-  const rawContent = Symbol("rawContent");
+  const rawContent = /* @__PURE__ */ Symbol("rawContent");
   function hasRawContent(x) {
     return typeof x[rawContent] === "function";
   }
@@ -32203,8 +32203,8 @@ function requireTracingContext() {
     exports$1.TracingContextImpl = exports$1.knownContextKeys = void 0;
     exports$1.createTracingContext = createTracingContext;
     exports$1.knownContextKeys = {
-      span: Symbol.for("@azure/core-tracing span"),
-      namespace: Symbol.for("@azure/core-tracing namespace")
+      span: /* @__PURE__ */ Symbol.for("@azure/core-tracing span"),
+      namespace: /* @__PURE__ */ Symbol.for("@azure/core-tracing namespace")
     };
     function createTracingContext(options2 = {}) {
       let context = new TracingContextImpl(options2.parentContext);
@@ -34516,7 +34516,7 @@ function requireOperationHelpers() {
     }
     return result;
   }
-  const originalRequestSymbol = Symbol.for("@azure/core-client original request");
+  const originalRequestSymbol = /* @__PURE__ */ Symbol.for("@azure/core-client original request");
   function hasOriginalRequest(request2) {
     return originalRequestSymbol in request2;
   }
@@ -35518,8 +35518,8 @@ function requireUtil$1() {
   util$1.toWebResourceLike = toWebResourceLike;
   util$1.toHttpHeadersLike = toHttpHeadersLike;
   const core_rest_pipeline_1 = /* @__PURE__ */ requireCommonjs$7();
-  const originalRequestSymbol = Symbol("Original PipelineRequest");
-  const originalClientRequestSymbol = Symbol.for("@azure/core-client original request");
+  const originalRequestSymbol = /* @__PURE__ */ Symbol("Original PipelineRequest");
+  const originalClientRequestSymbol = /* @__PURE__ */ Symbol.for("@azure/core-client original request");
   function toPipelineRequest(webResource, options2 = {}) {
     const compatWebResource = webResource;
     const request2 = compatWebResource[originalRequestSymbol];
@@ -35764,7 +35764,7 @@ function requireResponse() {
   response.toPipelineResponse = toPipelineResponse;
   const core_rest_pipeline_1 = /* @__PURE__ */ requireCommonjs$7();
   const util_js_1 = /* @__PURE__ */ requireUtil$1();
-  const originalResponse = Symbol("Original FullOperationResponse");
+  const originalResponse = /* @__PURE__ */ Symbol("Original FullOperationResponse");
   function toCompatResponse(response2, options2) {
     let request2 = (0, util_js_1.toWebResourceLike)(response2.request);
     let headers2 = (0, util_js_1.toHttpHeadersLike)(response2.headers);
@@ -36173,7 +36173,7 @@ function requireFxp() {
       return t2;
     }, captureMetaData: false };
     let T;
-    T = "function" != typeof Symbol ? "@@xmlMetadata" : Symbol("XML Node Metadata");
+    T = "function" != typeof Symbol ? "@@xmlMetadata" : /* @__PURE__ */ Symbol("XML Node Metadata");
     class y {
       constructor(t2) {
         this.tagname = t2, this.child = [], this[":@"] = {};
@@ -58887,7 +58887,7 @@ function requirePoller$2() {
           state: state2
         }),
         onProgress: (callback) => {
-          const s = Symbol();
+          const s = /* @__PURE__ */ Symbol();
           handlers.set(s, callback);
           return () => handlers.delete(s);
         },
@@ -67159,7 +67159,7 @@ function utf8read(bytes) {
 }
 var UnknownFieldHandler;
 (function(UnknownFieldHandler2) {
-  UnknownFieldHandler2.symbol = Symbol.for("protobuf-ts/unknown");
+  UnknownFieldHandler2.symbol = /* @__PURE__ */ Symbol.for("protobuf-ts/unknown");
   UnknownFieldHandler2.onRead = (typeName, message, fieldNo, wireType, data) => {
     let container2 = is(message) ? message[UnknownFieldHandler2.symbol] : message[UnknownFieldHandler2.symbol] = [];
     container2.push({ no: fieldNo, wireType, data });
@@ -67987,7 +67987,7 @@ function mergeJsonOptions(a, b) {
   c.typeRegistry = [...(_a = a === null || a === void 0 ? void 0 : a.typeRegistry) !== null && _a !== void 0 ? _a : [], ...(_b = b === null || b === void 0 ? void 0 : b.typeRegistry) !== null && _b !== void 0 ? _b : []];
   return c;
 }
-const MESSAGE_TYPE = Symbol.for("protobuf-ts/message-type");
+const MESSAGE_TYPE = /* @__PURE__ */ Symbol.for("protobuf-ts/message-type");
 function lowerCamelCase(snakeCase) {
   let capNext = false;
   const sb = [];
