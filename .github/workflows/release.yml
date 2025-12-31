@@ -9,14 +9,15 @@ on:
 
 permissions:
   contents: write # to write tags
-  id-token: write # to enable use of OIDC for npm provenance
-  issues: write
   packages: write # to write tags to Docker registry
+  issues: write
   pull-requests: write
+  id-token: write # to enable use of OIDC for npm provenance
 
 env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
+  NPM_CONFIG_FUND: "false"
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
 
@@ -55,6 +56,11 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pnpm install --frozen-lockfile
+
+      - name: Build
+        shell: bash
+        run: |
+          pnpm run build
 
       - name: Release
         shell: bash

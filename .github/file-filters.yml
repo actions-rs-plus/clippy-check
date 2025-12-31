@@ -1,8 +1,9 @@
 code:
-  - "**/*.ts"
-  - "**/*.mjs"
-  - "dist/**"
-  - "src/**"
-  - "package.json"
-  - pnpm-lock.yaml
   - ".github/**"
+  - Dockerfile
+  - "src/**"
+  - "**/*.ts"
+  - "**/*.cjs"
+  - "**/*.mjs"
+  - "package.json"
+  - "pnpm-lock.yaml"
