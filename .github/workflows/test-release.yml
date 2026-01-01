@@ -4,13 +4,14 @@ on:
   workflow_dispatch: # releasing is manual as we don't want to release every time
 
 permissions:
-  contents: write # we're not actually writing, but semantic release tests write, even on dry-run
+  contents: write
   issues: read
   pull-requests: read
 
 env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
+  NPM_CONFIG_FUND: "false"
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
 

@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: "CodeQL Advanced"
 
 on:
@@ -26,6 +27,8 @@ jobs:
           - language: javascript-typescript
             config: typescript.yaml
             build-mode: none
+        #   - language: rust
+        #     build-mode: none
 
     steps:
       - name: Checkout

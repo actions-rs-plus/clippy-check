@@ -11,8 +11,6 @@ import { coverageConfigDefaults, defineConfig } from "vitest/config";
 export default defineConfig(({ mode }) => {
     const environment = loadEnv(mode, process.cwd(), "");
 
-    const depsToInlineDuringTest: string[] = ["@actions-rs-plus/core"];
-
     const config: UserConfig = {
         appType: "custom",
         build: {
@@ -49,9 +47,9 @@ export default defineConfig(({ mode }) => {
         test: {
             coverage: {
                 exclude: [...coverageConfigDefaults.exclude, "./dependency-cruiser.config.mjs"],
-                reporter: ["json", "html", "text"],
+                reporter: ["json", "html", "text", "lcov"],
                 provider: "istanbul",
-                reportsDirectory: "coverage",
+                reportsDirectory: "reports",
             },
             environment: "node",
             environmentOptions: {
@@ -59,12 +57,7 @@ export default defineConfig(({ mode }) => {
             },
             globals: false,
             outputFile: {
-                junit: "./reports/test-report.xml",
-            },
-            server: {
-                deps: {
-                    inline: depsToInlineDuringTest,
-                },
+                junit: "./reports/results.xml",
             },
             restoreMocks: true,
             setupFiles: ["./test.setup.ts"],
