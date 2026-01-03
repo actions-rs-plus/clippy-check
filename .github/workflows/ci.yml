@@ -26,7 +26,6 @@ jobs:
     name: Detect changes
     runs-on: ubuntu-latest
     permissions:
-      contents: read
       pull-requests: read
     outputs:
       code: ${{ steps.filter.outputs.code }}
@@ -41,12 +40,13 @@ jobs:
         uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
         id: filter
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           filters: .github/file-filters.yml
 
   warm-up-cache:
     name: Warm up the cache
     runs-on: ubuntu-latest
+    permissions:
+      packages: read
     steps:
       - *checkout
 
@@ -142,7 +142,10 @@ jobs:
   npm-lint:
     name: Lint the code
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
     needs:
+      - changes
       - warm-up-cache
     steps:
       - *checkout
@@ -241,6 +244,8 @@ jobs:
   npm-test-windows:
     name: Test the code on Windows
     runs-on: windows-latest
+    permissions:
+      packages: read
     steps:
       - *checkout
 
