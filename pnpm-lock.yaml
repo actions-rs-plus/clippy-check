@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@actions-rs-plus/core':
-        specifier: 0.5.5
-        version: 0.5.5
+        specifier: 0.5.6
+        version: 0.5.6
       '@actions/core':
         specifier: 2.0.2
         version: 2.0.2
@@ -141,9 +141,9 @@ importers:
 
 packages:
 
-  '@actions-rs-plus/core@0.5.5':
-    resolution: {integrity: sha512-33qot5etKebk65Q0c+60n259qgDS6HpEsbOeGTibjNs/U/pagxfcglO5KBynVxIX0XFNIRiqzFQ91aa2SQb7hw==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.5.5/5af6bea9f50f68ada172d47fdc9ffb60e534b79d}
-    engines: {node: 24.12.0, pnpm: 10.25.0}
+  '@actions-rs-plus/core@0.5.6':
+    resolution: {integrity: sha512-fFTR0Iq6RqcchyYcMWnqimTH8/TjTbYnAe7c2bgIruYW7GLHNlvljgpyIgU2TFegG1DfzyZ9qJh5LedD9sDvCg==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.5.6/b45dfc5f41f4f914baeebfdde131e0a8fba0fb5d}
+    engines: {node: 24.12.0, pnpm: 10.27.0}
 
   '@actions/cache@5.0.2':
     resolution: {integrity: sha512-6w3i9n12eWJyut6TOnh7SIxGmeIepB5wbXMvlPv9+6CjvTD4OYKi1Wjh7TQrjEf8xLb6hxsVCpPsL/1gxnlTtw==}
@@ -163,6 +163,9 @@ packages:
   '@actions/github@6.0.1':
     resolution: {integrity: sha512-xbZVcaqD4XnQAe35qSQqskb3SqIAfRyLBrHMd/8TuL7hJSz2QtbDwnNM8zWx4zO5l2fnGtseNE3MbEvD7BxVMw==}
 
+  '@actions/github@7.0.0':
+    resolution: {integrity: sha512-PyGODO938aoBTZd/IfN/+e+Pd5hUcVpyf+thm4CPESLeqhdSkq5QwMTGX9v84XHE1ifmHWBQ60KB8kIgm96opw==}
+
   '@actions/glob@0.5.0':
     resolution: {integrity: sha512-tST2rjPvJLRZLuT9NMUtyBjvj9Yo0MiJS3ow004slMvm8GFM+Zv9HvMJ7HWzfUyJnGrJvDsYkWBaaG3YKXRtCw==}
 
@@ -178,8 +181,8 @@ packages:
   '@actions/io@2.0.0':
     resolution: {integrity: sha512-Jv33IN09XLO+0HS79aaODsvIRyduiF7NY/F6LYeK5oeUmrsz7aFdRphQjFoESF4jS7lMauDOttKALcpapVDIAg==}
 
-  '@actions/tool-cache@2.0.2':
-    resolution: {integrity: sha512-fBhNNOWxuoLxztQebpOaWu6WeVmuwa77Z+DxIZ1B+OYvGkGQon6kTVg6Z32Cb13WCuw0szqonK+hh03mJV7Z6w==}
+  '@actions/tool-cache@3.0.0':
+    resolution: {integrity: sha512-JBx8gEWuu8Lqaqx/hEnL6QdKvF06suBR4y+dBDi9vJbHx1r+p6QtmBKhQYhiKjDUYIoDX1bUrbyAYPChoPK+XA==}
 
   '@azure/abort-controller@1.1.0':
     resolution: {integrity: sha512-TrRLIoSQVzfAJX9H1JeFjzAoDGcoK1IYX1UImfceTZpsyYfWr09Ss1aHW1y5TrrR3iq6RZLBwJ3E24uwPhwahw==}
@@ -3543,15 +3546,15 @@ packages:
 
 snapshots:
 
-  '@actions-rs-plus/core@0.5.5':
+  '@actions-rs-plus/core@0.5.6':
     dependencies:
       '@actions/cache': 5.0.2
       '@actions/core': 2.0.2
       '@actions/exec': 2.0.0
-      '@actions/github': 6.0.1
+      '@actions/github': 7.0.0
       '@actions/http-client': 3.0.1
       '@actions/io': 2.0.0
-      '@actions/tool-cache': 2.0.2
+      '@actions/tool-cache': 3.0.0
       semver: 7.7.3
     transitivePeerDependencies:
       - supports-color
@@ -3599,6 +3602,16 @@ snapshots:
       '@octokit/request-error': 5.1.1
       undici: 5.29.0
 
+  '@actions/github@7.0.0':
+    dependencies:
+      '@actions/http-client': 3.0.1
+      '@octokit/core': 5.2.2
+      '@octokit/plugin-paginate-rest': 9.2.2(@octokit/core@5.2.2)
+      '@octokit/plugin-rest-endpoint-methods': 10.4.1(@octokit/core@5.2.2)
+      '@octokit/request': 8.4.1
+      '@octokit/request-error': 5.1.1
+      undici: 5.29.0
+
   '@actions/glob@0.5.0':
     dependencies:
       '@actions/core': 1.11.1
@@ -3618,12 +3631,12 @@ snapshots:
 
   '@actions/io@2.0.0': {}
 
-  '@actions/tool-cache@2.0.2':
+  '@actions/tool-cache@3.0.0':
     dependencies:
-      '@actions/core': 1.11.1
-      '@actions/exec': 1.1.1
-      '@actions/http-client': 2.2.3
-      '@actions/io': 1.1.3
+      '@actions/core': 2.0.2
+      '@actions/exec': 2.0.0
+      '@actions/http-client': 3.0.1
+      '@actions/io': 2.0.0
       semver: 6.3.1
 
   '@azure/abort-controller@1.1.0':
