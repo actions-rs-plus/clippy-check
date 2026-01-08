@@ -2,41 +2,41 @@ import require$$0$3 from "os";
 import require$$0$4 from "crypto";
 import require$$1$2 from "fs";
 import require$$1$7 from "path";
-import require$$2 from "http";
+import require$$0$5 from "http";
 import require$$1$3 from "https";
 import require$$1$4 from "tls";
-import require$$0$6 from "events";
-import require$$0$5 from "util";
-import require$$0$7 from "assert";
-import require$$0$8 from "net";
-import require$$0$9 from "stream";
+import require$$0$7 from "events";
+import require$$0$6 from "util";
+import require$$0$8 from "assert";
+import require$$0$9 from "net";
+import require$$0$a from "stream";
 import require$$7 from "buffer";
 import require$$8 from "querystring";
 import require$$14 from "stream/web";
-import require$$0$b from "node:stream";
+import require$$0$c from "node:stream";
 import require$$1$5 from "node:util";
-import require$$0$a from "node:events";
-import require$$0$c from "worker_threads";
-import require$$2$1 from "perf_hooks";
+import require$$0$b from "node:events";
+import require$$0$d from "worker_threads";
+import require$$2 from "perf_hooks";
 import require$$5 from "util/types";
 import require$$4 from "async_hooks";
 import require$$1$6 from "console";
 import require$$5$1 from "url";
 import require$$3 from "zlib";
-import require$$0$d from "string_decoder";
-import require$$0$e from "diagnostics_channel";
-import require$$2$2 from "child_process";
+import require$$0$e from "string_decoder";
+import require$$0$f from "diagnostics_channel";
+import require$$2$1 from "child_process";
 import require$$6 from "timers";
 import path from "node:path";
 import * as require$$1$1 from "node:os";
 import require$$1__default from "node:os";
-import require$$2$3 from "node:process";
+import require$$2$2 from "node:process";
 import require$$1$8 from "node:http";
-import require$$2$4 from "node:https";
+import require$$2$3 from "node:https";
 import require$$3$1 from "node:zlib";
 import require$$1$9 from "tty";
-import require$$0$f from "node:crypto";
-import require$$2$5 from "node:buffer";
+import require$$0$g from "node:crypto";
+import require$$2$4 from "node:buffer";
 import require$$1$a from "node:fs";
 var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
 function getAugmentedNamespace(n) {
@@ -270,15 +270,15 @@ function requireFileCommand$1() {
   return fileCommand$1;
 }
 var oidcUtils$1 = {};
-var lib$1 = {};
-var proxy$1 = {};
-var hasRequiredProxy$1;
-function requireProxy$1() {
-  if (hasRequiredProxy$1) return proxy$1;
-  hasRequiredProxy$1 = 1;
-  Object.defineProperty(proxy$1, "__esModule", { value: true });
-  proxy$1.getProxyUrl = getProxyUrl;
-  proxy$1.checkBypass = checkBypass;
+var lib$2 = {};
+var proxy$2 = {};
+var hasRequiredProxy$2;
+function requireProxy$2() {
+  if (hasRequiredProxy$2) return proxy$2;
+  hasRequiredProxy$2 = 1;
+  Object.defineProperty(proxy$2, "__esModule", { value: true });
+  proxy$2.getProxyUrl = getProxyUrl;
+  proxy$2.checkBypass = checkBypass;
   function getProxyUrl(reqUrl) {
     const usingSsl = reqUrl.protocol === "https:";
     if (checkBypass(reqUrl)) {
@@ -350,7 +350,7 @@ function requireProxy$1() {
       return this._decodedPassword;
     }
   }
-  return proxy$1;
+  return proxy$2;
 }
 var tunnel$1 = {};
 var hasRequiredTunnel$1;
@@ -358,10 +358,10 @@ function requireTunnel$1() {
   if (hasRequiredTunnel$1) return tunnel$1;
   hasRequiredTunnel$1 = 1;
   var tls = require$$1$4;
-  var http = require$$2;
+  var http = require$$0$5;
   var https = require$$1$3;
-  var events2 = require$$0$6;
-  var util2 = require$$0$5;
+  var events2 = require$$0$7;
+  var util2 = require$$0$6;
   tunnel$1.httpOverHttp = httpOverHttp;
   tunnel$1.httpsOverHttp = httpsOverHttp;
   tunnel$1.httpOverHttps = httpOverHttps;
@@ -994,14 +994,14 @@ var hasRequiredUtil$8;
 function requireUtil$8() {
   if (hasRequiredUtil$8) return util$8;
   hasRequiredUtil$8 = 1;
-  const assert2 = require$$0$7;
+  const assert2 = require$$0$8;
   const { kDestroyed, kBodyUsed } = /* @__PURE__ */ requireSymbols$4();
-  const { IncomingMessage } = require$$2;
-  const stream = require$$0$9;
-  const net = require$$0$8;
+  const { IncomingMessage } = require$$0$5;
+  const stream = require$$0$a;
+  const net = require$$0$9;
   const { InvalidArgumentError } = /* @__PURE__ */ requireErrors$1();
   const { Blob: Blob2 } = require$$7;
-  const nodeUtil = require$$0$5;
+  const nodeUtil = require$$0$6;
   const { stringify } = require$$8;
   const { headerNameLowerCasedRecord } = /* @__PURE__ */ requireConstants$a();
   const [nodeMajor, nodeMinor] = process.versions.node.split(".").map((v) => Number(v));
@@ -1461,7 +1461,7 @@ var hasRequiredSbmh;
 function requireSbmh() {
   if (hasRequiredSbmh) return sbmh;
   hasRequiredSbmh = 1;
-  const EventEmitter = require$$0$a.EventEmitter;
+  const EventEmitter = require$$0$b.EventEmitter;
   const inherits = require$$1$5.inherits;
   function SBMH(needle) {
     if (typeof needle === "string") {
@@ -1599,7 +1599,7 @@ function requirePartStream() {
   if (hasRequiredPartStream) return PartStream_1;
   hasRequiredPartStream = 1;
   const inherits = require$$1$5.inherits;
-  const ReadableStream2 = require$$0$b.Readable;
+  const ReadableStream2 = require$$0$c.Readable;
   function PartStream(opts) {
     ReadableStream2.call(this, opts);
   }
@@ -1630,7 +1630,7 @@ var hasRequiredHeaderParser;
 function requireHeaderParser() {
   if (hasRequiredHeaderParser) return HeaderParser_1;
   hasRequiredHeaderParser = 1;
-  const EventEmitter = require$$0$a.EventEmitter;
+  const EventEmitter = require$$0$b.EventEmitter;
   const inherits = require$$1$5.inherits;
   const getLimit2 = /* @__PURE__ */ requireGetLimit();
   const StreamSearch = /* @__PURE__ */ requireSbmh();
@@ -1730,7 +1730,7 @@ var hasRequiredDicer;
 function requireDicer() {
   if (hasRequiredDicer) return Dicer_1;
   hasRequiredDicer = 1;
-  const WritableStream = require$$0$b.Writable;
+  const WritableStream = require$$0$c.Writable;
   const inherits = require$$1$5.inherits;
   const StreamSearch = /* @__PURE__ */ requireSbmh();
   const PartStream = /* @__PURE__ */ requirePartStream();
@@ -2699,7 +2699,7 @@ var hasRequiredMultipart$1;
 function requireMultipart$1() {
   if (hasRequiredMultipart$1) return multipart$1;
   hasRequiredMultipart$1 = 1;
-  const { Readable } = require$$0$b;
+  const { Readable } = require$$0$c;
   const { inherits } = require$$1$5;
   const Dicer = /* @__PURE__ */ requireDicer();
   const parseParams = /* @__PURE__ */ requireParseParams();
@@ -3372,7 +3372,7 @@ var hasRequiredMain;
 function requireMain() {
   if (hasRequiredMain) return main$1.exports;
   hasRequiredMain = 1;
-  const WritableStream = require$$0$b.Writable;
+  const WritableStream = require$$0$c.Writable;
   const { inherits } = require$$1$5;
   const Dicer = /* @__PURE__ */ requireDicer();
   const MultipartParser = /* @__PURE__ */ requireMultipart$1();
@@ -3451,7 +3451,7 @@ var hasRequiredConstants$9;
 function requireConstants$9() {
   if (hasRequiredConstants$9) return constants$9;
   hasRequiredConstants$9 = 1;
-  const { MessageChannel, receiveMessageOnPort } = require$$0$c;
+  const { MessageChannel, receiveMessageOnPort } = require$$0$d;
   const corsSafeListedMethods = ["GET", "HEAD", "POST"];
   const corsSafeListedMethodsSet = new Set(corsSafeListedMethods);
   const nullBodyStatus = [101, 204, 205, 304];
@@ -3688,9 +3688,9 @@ function requireUtil$7() {
   hasRequiredUtil$7 = 1;
   const { redirectStatusSet, referrerPolicySet: referrerPolicyTokens, badPortsSet } = /* @__PURE__ */ requireConstants$9();
   const { getGlobalOrigin } = /* @__PURE__ */ requireGlobal$1();
-  const { performance: performance2 } = require$$2$1;
+  const { performance: performance2 } = require$$2;
   const { isBlobLike, toUSVString, ReadableStreamFrom } = /* @__PURE__ */ requireUtil$8();
-  const assert2 = require$$0$7;
+  const assert2 = require$$0$8;
   const { isUint8Array } = require$$5;
   let supportedHashes = [];
   let crypto2;
@@ -4315,7 +4315,7 @@ var hasRequiredWebidl;
 function requireWebidl() {
   if (hasRequiredWebidl) return webidl_1;
   hasRequiredWebidl = 1;
-  const { types } = require$$0$5;
+  const { types } = require$$0$6;
   const { hasOwn, toUSVString } = /* @__PURE__ */ requireUtil$7();
   const webidl = {};
   webidl.converters = {};
@@ -4684,7 +4684,7 @@ var hasRequiredDataURL;
 function requireDataURL() {
   if (hasRequiredDataURL) return dataURL;
   hasRequiredDataURL = 1;
-  const assert2 = require$$0$7;
+  const assert2 = require$$0$8;
   const { atob: atob2 } = require$$7;
   const { isomorphicDecode } = /* @__PURE__ */ requireUtil$7();
   const encoder = new TextEncoder();
@@ -4971,7 +4971,7 @@ function requireFile$1() {
   if (hasRequiredFile$1) return file$1;
   hasRequiredFile$1 = 1;
   const { Blob: Blob2, File: NativeFile } = require$$7;
-  const { types } = require$$0$5;
+  const { types } = require$$0$6;
   const { kState } = /* @__PURE__ */ requireSymbols$3();
   const { isBlobLike } = /* @__PURE__ */ requireUtil$7();
   const { webidl } = /* @__PURE__ */ requireWebidl();
@@ -5328,7 +5328,7 @@ function requireBody() {
   const { DOMException: DOMException2, structuredClone } = /* @__PURE__ */ requireConstants$9();
   const { Blob: Blob2, File: NativeFile } = require$$7;
   const { kBodyUsed } = /* @__PURE__ */ requireSymbols$4();
-  const assert2 = require$$0$7;
+  const assert2 = require$$0$8;
   const { isErrored } = /* @__PURE__ */ requireUtil$8();
   const { isUint8Array, isArrayBuffer } = require$$5;
   const { File: UndiciFile } = /* @__PURE__ */ requireFile$1();
@@ -5694,7 +5694,7 @@ function requireRequest$1() {
     InvalidArgumentError,
     NotSupportedError
   } = /* @__PURE__ */ requireErrors$1();
-  const assert2 = require$$0$7;
+  const assert2 = require$$0$8;
   const { kHTTP2BuildRequest, kHTTP2CopyHeaders, kHTTP1BuildRequest } = /* @__PURE__ */ requireSymbols$4();
   const util2 = /* @__PURE__ */ requireUtil$8();
   const tokenRegExp = /^[\^_`a-zA-Z\-0-9!#$%&'*+.|~]+$/;
@@ -6060,7 +6060,7 @@ var hasRequiredDispatcher;
 function requireDispatcher() {
   if (hasRequiredDispatcher) return dispatcher;
   hasRequiredDispatcher = 1;
-  const EventEmitter = require$$0$6;
+  const EventEmitter = require$$0$7;
   class Dispatcher extends EventEmitter {
     dispatch() {
       throw new Error("not implemented");
@@ -6243,8 +6243,8 @@ var hasRequiredConnect;
 function requireConnect() {
   if (hasRequiredConnect) return connect;
   hasRequiredConnect = 1;
-  const net = require$$0$8;
-  const assert2 = require$$0$7;
+  const net = require$$0$9;
+  const assert2 = require$$0$8;
   const util2 = /* @__PURE__ */ requireUtil$8();
   const { InvalidArgumentError, ConnectTimeoutError } = /* @__PURE__ */ requireErrors$1();
   let tls;
@@ -6739,9 +6739,9 @@ function requireRedirectHandler() {
   hasRequiredRedirectHandler = 1;
   const util2 = /* @__PURE__ */ requireUtil$8();
   const { kBodyUsed } = /* @__PURE__ */ requireSymbols$4();
-  const assert2 = require$$0$7;
+  const assert2 = require$$0$8;
   const { InvalidArgumentError } = /* @__PURE__ */ requireErrors$1();
-  const EE = require$$0$6;
+  const EE = require$$0$7;
   const redirectableStatusCodes = [300, 301, 302, 303, 307, 308];
   const kBody = /* @__PURE__ */ Symbol("body");
   class BodyAsyncIterable {
@@ -6925,10 +6925,10 @@ var hasRequiredClient;
 function requireClient() {
   if (hasRequiredClient) return client;
   hasRequiredClient = 1;
-  const assert2 = require$$0$7;
-  const net = require$$0$8;
-  const http = require$$2;
-  const { pipeline: pipeline2 } = require$$0$9;
+  const assert2 = require$$0$8;
+  const net = require$$0$9;
+  const http = require$$0$5;
+  const { pipeline: pipeline2 } = require$$0$a;
   const util2 = /* @__PURE__ */ requireUtil$8();
   const timers2 = /* @__PURE__ */ requireTimers();
   const Request = /* @__PURE__ */ requireRequest$1();
@@ -9264,8 +9264,8 @@ var hasRequiredReadable;
 function requireReadable() {
   if (hasRequiredReadable) return readable;
   hasRequiredReadable = 1;
-  const assert2 = require$$0$7;
-  const { Readable } = require$$0$9;
+  const assert2 = require$$0$8;
+  const { Readable } = require$$0$a;
   const { RequestAbortedError, NotSupportedError, InvalidArgumentError } = /* @__PURE__ */ requireErrors$1();
   const util2 = /* @__PURE__ */ requireUtil$8();
   const { ReadableStreamFrom, toUSVString } = /* @__PURE__ */ requireUtil$8();
@@ -9516,7 +9516,7 @@ var hasRequiredUtil$6;
 function requireUtil$6() {
   if (hasRequiredUtil$6) return util$6;
   hasRequiredUtil$6 = 1;
-  const assert2 = require$$0$7;
+  const assert2 = require$$0$8;
   const {
     ResponseStatusCodeError
   } = /* @__PURE__ */ requireErrors$1();
@@ -9763,7 +9763,7 @@ var hasRequiredApiStream;
 function requireApiStream() {
   if (hasRequiredApiStream) return apiStream;
   hasRequiredApiStream = 1;
-  const { finished, PassThrough } = require$$0$9;
+  const { finished, PassThrough } = require$$0$a;
   const {
     InvalidArgumentError,
     InvalidReturnValueError,
@@ -9941,7 +9941,7 @@ function requireApiPipeline() {
     Readable,
     Duplex,
     PassThrough
-  } = require$$0$9;
+  } = require$$0$a;
   const {
     InvalidArgumentError,
     InvalidReturnValueError,
@@ -9950,7 +9950,7 @@ function requireApiPipeline() {
   const util2 = /* @__PURE__ */ requireUtil$8();
   const { AsyncResource } = require$$4;
   const { addSignal, removeSignal } = /* @__PURE__ */ requireAbortSignal();
-  const assert2 = require$$0$7;
+  const assert2 = require$$0$8;
   const kResume = /* @__PURE__ */ Symbol("resume");
   class PipelineRequest extends Readable {
     constructor() {
@@ -10139,7 +10139,7 @@ function requireApiUpgrade() {
   const { AsyncResource } = require$$4;
   const util2 = /* @__PURE__ */ requireUtil$8();
   const { addSignal, removeSignal } = /* @__PURE__ */ requireAbortSignal();
-  const assert2 = require$$0$7;
+  const assert2 = require$$0$8;
   class UpgradeHandler extends AsyncResource {
     constructor(opts, callback) {
       if (!opts || typeof opts !== "object") {
@@ -10380,12 +10380,12 @@ function requireMockUtils() {
     kGetNetConnect
   } = /* @__PURE__ */ requireMockSymbols();
   const { buildURL, nop } = /* @__PURE__ */ requireUtil$8();
-  const { STATUS_CODES } = require$$2;
+  const { STATUS_CODES } = require$$0$5;
   const {
     types: {
       isPromise
     }
-  } = require$$0$5;
+  } = require$$0$6;
   function matchValue(match, value) {
     if (typeof match === "string") {
       return match === value;
@@ -10812,7 +10812,7 @@ var hasRequiredMockClient;
 function requireMockClient() {
   if (hasRequiredMockClient) return mockClient;
   hasRequiredMockClient = 1;
-  const { promisify } = require$$0$5;
+  const { promisify } = require$$0$6;
   const Client = /* @__PURE__ */ requireClient();
   const { buildMockDispatch } = /* @__PURE__ */ requireMockUtils();
   const {
@@ -10865,7 +10865,7 @@ var hasRequiredMockPool;
 function requireMockPool() {
   if (hasRequiredMockPool) return mockPool;
   hasRequiredMockPool = 1;
-  const { promisify } = require$$0$5;
+  const { promisify } = require$$0$6;
   const Pool = /* @__PURE__ */ requirePool();
   const { buildMockDispatch } = /* @__PURE__ */ requireMockUtils();
   const {
@@ -10949,7 +10949,7 @@ var hasRequiredPendingInterceptorsFormatter;
 function requirePendingInterceptorsFormatter() {
   if (hasRequiredPendingInterceptorsFormatter) return pendingInterceptorsFormatter;
   hasRequiredPendingInterceptorsFormatter = 1;
-  const { Transform } = require$$0$9;
+  const { Transform } = require$$0$a;
   const { Console } = require$$1$6;
   pendingInterceptorsFormatter = class PendingInterceptorsFormatter {
     constructor({ disableColors } = {}) {
@@ -11279,7 +11279,7 @@ var hasRequiredRetryHandler;
 function requireRetryHandler() {
   if (hasRequiredRetryHandler) return RetryHandler_1;
   hasRequiredRetryHandler = 1;
-  const assert2 = require$$0$7;
+  const assert2 = require$$0$8;
   const { kRetryHandlerDefaultRetry } = /* @__PURE__ */ requireSymbols$4();
   const { RequestRetryError } = /* @__PURE__ */ requireErrors$1();
   const { isDisturbed, parseHeaders, parseRangeHeader } = /* @__PURE__ */ requireUtil$8();
@@ -11619,9 +11619,9 @@ function requireHeaders() {
     isValidHeaderName,
     isValidHeaderValue
   } = /* @__PURE__ */ requireUtil$7();
-  const util2 = require$$0$5;
+  const util2 = require$$0$6;
   const { webidl } = /* @__PURE__ */ requireWebidl();
-  const assert2 = require$$0$7;
+  const assert2 = require$$0$8;
   const kHeadersMap = /* @__PURE__ */ Symbol("headers map");
   const kHeadersSortedMap = /* @__PURE__ */ Symbol("headers map sorted");
   function isHTTPWhiteSpaceCharCode(code) {
@@ -12022,8 +12022,8 @@ function requireResponse$1() {
   const { getGlobalOrigin } = /* @__PURE__ */ requireGlobal$1();
   const { URLSerializer } = /* @__PURE__ */ requireDataURL();
   const { kHeadersList, kConstruct } = /* @__PURE__ */ requireSymbols$4();
-  const assert2 = require$$0$7;
-  const { types } = require$$0$5;
+  const assert2 = require$$0$8;
+  const { types } = require$$0$6;
   const ReadableStream2 = globalThis.ReadableStream || require$$14.ReadableStream;
   const textEncoder = new TextEncoder("utf-8");
   class Response {
@@ -12404,8 +12404,8 @@ function requireRequest() {
   const { getGlobalOrigin } = /* @__PURE__ */ requireGlobal$1();
   const { URLSerializer } = /* @__PURE__ */ requireDataURL();
   const { kHeadersList, kConstruct } = /* @__PURE__ */ requireSymbols$4();
-  const assert2 = require$$0$7;
-  const { getMaxListeners, setMaxListeners, getEventListeners, defaultMaxListeners } = require$$0$6;
+  const assert2 = require$$0$8;
+  const { getMaxListeners, setMaxListeners, getEventListeners, defaultMaxListeners } = require$$0$7;
   let TransformStream = globalThis.TransformStream;
   const kAbortController = /* @__PURE__ */ Symbol("abortController");
   const requestFinalizer = new FinalizationRegistry(({ signal, abort }) => {
@@ -13057,7 +13057,7 @@ function requireFetch() {
     urlHasHttpsScheme
   } = /* @__PURE__ */ requireUtil$7();
   const { kState, kHeaders, kGuard, kRealm } = /* @__PURE__ */ requireSymbols$3();
-  const assert2 = require$$0$7;
+  const assert2 = require$$0$8;
   const { safelyExtractBody } = /* @__PURE__ */ requireBody();
   const {
     redirectStatusSet,
@@ -13068,14 +13068,14 @@ function requireFetch() {
     DOMException: DOMException2
   } = /* @__PURE__ */ requireConstants$9();
   const { kHeadersList } = /* @__PURE__ */ requireSymbols$4();
-  const EE = require$$0$6;
-  const { Readable, pipeline: pipeline2 } = require$$0$9;
+  const EE = require$$0$7;
+  const { Readable, pipeline: pipeline2 } = require$$0$a;
   const { addAbortListener, isErrored, isReadable, nodeMajor, nodeMinor } = /* @__PURE__ */ requireUtil$8();
   const { dataURLProcessor, serializeAMimeType } = /* @__PURE__ */ requireDataURL();
   const { TransformStream } = require$$14;
   const { getGlobalDispatcher } = /* @__PURE__ */ requireGlobal();
   const { webidl } = /* @__PURE__ */ requireWebidl();
-  const { STATUS_CODES } = require$$2;
+  const { STATUS_CODES } = require$$0$5;
   const GET_OR_HEAD = ["GET", "HEAD"];
   let resolveObjectURL;
   let ReadableStream2 = globalThis.ReadableStream;
@@ -14407,8 +14407,8 @@ function requireUtil$5() {
   const { getEncoding } = /* @__PURE__ */ requireEncoding();
   const { DOMException: DOMException2 } = /* @__PURE__ */ requireConstants$9();
   const { serializeAMimeType, parseMIMEType } = /* @__PURE__ */ requireDataURL();
-  const { types } = require$$0$5;
-  const { StringDecoder } = require$$0$d;
+  const { types } = require$$0$6;
+  const { StringDecoder } = require$$0$e;
   const { btoa: btoa2 } = require$$7;
   const staticPropertyDescriptors = {
     enumerable: true,
@@ -14851,7 +14851,7 @@ var hasRequiredUtil$4;
 function requireUtil$4() {
   if (hasRequiredUtil$4) return util$4;
   hasRequiredUtil$4 = 1;
-  const assert2 = require$$0$7;
+  const assert2 = require$$0$8;
   const { URLSerializer } = /* @__PURE__ */ requireDataURL();
   const { isValidHeaderName } = /* @__PURE__ */ requireUtil$7();
   function urlEquals(A, B, excludeFragment = false) {
@@ -14894,7 +14894,7 @@ function requireCache$3() {
   const { kState, kHeaders, kGuard, kRealm } = /* @__PURE__ */ requireSymbols$3();
   const { fetching } = /* @__PURE__ */ requireFetch();
   const { urlIsHttpHttpsScheme, createDeferredPromise, readAllBytes } = /* @__PURE__ */ requireUtil$7();
-  const assert2 = require$$0$7;
+  const assert2 = require$$0$8;
   const { getGlobalDispatcher } = /* @__PURE__ */ requireGlobal();
   class Cache {
     /**
@@ -15683,7 +15683,7 @@ function requireParse() {
   const { maxNameValuePairSize, maxAttributeValueSize } = /* @__PURE__ */ requireConstants$7();
   const { isCTLExcludingHtab } = /* @__PURE__ */ requireUtil$3();
   const { collectASequenceOfCodePointsFast } = /* @__PURE__ */ requireDataURL();
-  const assert2 = require$$0$7;
+  const assert2 = require$$0$8;
   function parseSetCookie(header) {
     if (isCTLExcludingHtab(header)) {
       return null;
@@ -16011,7 +16011,7 @@ function requireEvents() {
   hasRequiredEvents = 1;
   const { webidl } = /* @__PURE__ */ requireWebidl();
   const { kEnumerableProperty } = /* @__PURE__ */ requireUtil$8();
-  const { MessagePort } = require$$0$c;
+  const { MessagePort } = require$$0$d;
   class MessageEvent extends Event {
     #eventInit;
     constructor(type, eventInitDict = {}) {
@@ -16342,7 +16342,7 @@ var hasRequiredConnection;
 function requireConnection() {
   if (hasRequiredConnection) return connection;
   hasRequiredConnection = 1;
-  const diagnosticsChannel = require$$0$e;
+  const diagnosticsChannel = require$$0$f;
   const { uid, states } = /* @__PURE__ */ requireConstants$6();
   const {
     kReadyState,
@@ -16547,8 +16547,8 @@ var hasRequiredReceiver;
 function requireReceiver() {
   if (hasRequiredReceiver) return receiver;
   hasRequiredReceiver = 1;
-  const { Writable } = require$$0$9;
-  const diagnosticsChannel = require$$0$e;
+  const { Writable } = require$$0$a;
+  const diagnosticsChannel = require$$0$f;
   const { parserStates, opcodes, states, emptyBuffer } = /* @__PURE__ */ requireConstants$6();
   const { kReadyState, kSentClose, kResponse, kReceivedClose } = /* @__PURE__ */ requireSymbols();
   const { isValidStatusCode, failWebsocketConnection, websocketMessageReceived } = /* @__PURE__ */ requireUtil$2();
@@ -16803,7 +16803,7 @@ function requireWebsocket() {
   const { ByteParser } = /* @__PURE__ */ requireReceiver();
   const { kEnumerableProperty, isBlobLike } = /* @__PURE__ */ requireUtil$8();
   const { getGlobalDispatcher } = /* @__PURE__ */ requireGlobal();
-  const { types } = require$$0$5;
+  const { types } = require$$0$6;
   let experimentalWarned = false;
   class WebSocket extends EventTarget {
     #events = {
@@ -17321,11 +17321,11 @@ function requireUndici() {
   undici.mockErrors = mockErrors2;
   return undici;
 }
-var hasRequiredLib$1;
-function requireLib$1() {
-  if (hasRequiredLib$1) return lib$1;
-  hasRequiredLib$1 = 1;
-  var __createBinding2 = lib$1 && lib$1.__createBinding || (Object.create ? (function(o, m, k, k2) {
+var hasRequiredLib$2;
+function requireLib$2() {
+  if (hasRequiredLib$2) return lib$2;
+  hasRequiredLib$2 = 1;
+  var __createBinding2 = lib$2 && lib$2.__createBinding || (Object.create ? (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
     if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -17338,12 +17338,12 @@ function requireLib$1() {
     if (k2 === void 0) k2 = k;
     o[k2] = m[k];
   }));
-  var __setModuleDefault2 = lib$1 && lib$1.__setModuleDefault || (Object.create ? (function(o, v) {
+  var __setModuleDefault2 = lib$2 && lib$2.__setModuleDefault || (Object.create ? (function(o, v) {
     Object.defineProperty(o, "default", { enumerable: true, value: v });
   }) : function(o, v) {
     o["default"] = v;
   });
-  var __importStar2 = lib$1 && lib$1.__importStar || /* @__PURE__ */ (function() {
+  var __importStar2 = lib$2 && lib$2.__importStar || /* @__PURE__ */ (function() {
     var ownKeys2 = function(o) {
       ownKeys2 = Object.getOwnPropertyNames || function(o2) {
         var ar = [];
@@ -17362,7 +17362,7 @@ function requireLib$1() {
       return result;
     };
   })();
-  var __awaiter2 = lib$1 && lib$1.__awaiter || function(thisArg, _arguments, P, generator) {
+  var __awaiter2 = lib$2 && lib$2.__awaiter || function(thisArg, _arguments, P, generator) {
     function adopt(value) {
       return value instanceof P ? value : new P(function(resolve) {
         resolve(value);
@@ -17389,13 +17389,13 @@ function requireLib$1() {
       step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
   };
-  Object.defineProperty(lib$1, "__esModule", { value: true });
-  lib$1.HttpClient = lib$1.HttpClientResponse = lib$1.HttpClientError = lib$1.MediaTypes = lib$1.Headers = lib$1.HttpCodes = void 0;
-  lib$1.getProxyUrl = getProxyUrl;
-  lib$1.isHttps = isHttps;
-  const http = __importStar2(require$$2);
+  Object.defineProperty(lib$2, "__esModule", { value: true });
+  lib$2.HttpClient = lib$2.HttpClientResponse = lib$2.HttpClientError = lib$2.MediaTypes = lib$2.Headers = lib$2.HttpCodes = void 0;
+  lib$2.getProxyUrl = getProxyUrl;
+  lib$2.isHttps = isHttps;
+  const http = __importStar2(require$$0$5);
   const https = __importStar2(require$$1$3);
-  const pm = __importStar2(/* @__PURE__ */ requireProxy$1());
+  const pm = __importStar2(/* @__PURE__ */ requireProxy$2());
   const tunnel2 = __importStar2(/* @__PURE__ */ requireTunnel());
   const undici_1 = /* @__PURE__ */ requireUndici();
   var HttpCodes;
@@ -17427,16 +17427,16 @@ function requireLib$1() {
     HttpCodes2[HttpCodes2["BadGateway"] = 502] = "BadGateway";
     HttpCodes2[HttpCodes2["ServiceUnavailable"] = 503] = "ServiceUnavailable";
     HttpCodes2[HttpCodes2["GatewayTimeout"] = 504] = "GatewayTimeout";
-  })(HttpCodes || (lib$1.HttpCodes = HttpCodes = {}));
+  })(HttpCodes || (lib$2.HttpCodes = HttpCodes = {}));
   var Headers;
   (function(Headers2) {
     Headers2["Accept"] = "accept";
     Headers2["ContentType"] = "content-type";
-  })(Headers || (lib$1.Headers = Headers = {}));
+  })(Headers || (lib$2.Headers = Headers = {}));
   var MediaTypes;
   (function(MediaTypes2) {
     MediaTypes2["ApplicationJson"] = "application/json";
-  })(MediaTypes || (lib$1.MediaTypes = MediaTypes = {}));
+  })(MediaTypes || (lib$2.MediaTypes = MediaTypes = {}));
   function getProxyUrl(serverUrl) {
     const proxyUrl = pm.getProxyUrl(new URL(serverUrl));
     return proxyUrl ? proxyUrl.href : "";
@@ -17464,7 +17464,7 @@ function requireLib$1() {
       Object.setPrototypeOf(this, HttpClientError.prototype);
     }
   }
-  lib$1.HttpClientError = HttpClientError;
+  lib$2.HttpClientError = HttpClientError;
   class HttpClientResponse {
     constructor(message) {
       this.message = message;
@@ -17496,7 +17496,7 @@ function requireLib$1() {
       });
     }
   }
-  lib$1.HttpClientResponse = HttpClientResponse;
+  lib$2.HttpClientResponse = HttpClientResponse;
   function isHttps(requestUrl) {
     const parsedUrl = new URL(requestUrl);
     return parsedUrl.protocol === "https:";
@@ -17511,7 +17511,7 @@ function requireLib$1() {
       this._maxRetries = 1;
       this._keepAlive = false;
       this._disposed = false;
-      this.userAgent = userAgent2;
+      this.userAgent = this._getUserAgentWithOrchestrationId(userAgent2);
       this.handlers = handlers || [];
       this.requestOptions = requestOptions;
       if (requestOptions) {
@@ -17936,6 +17936,15 @@ function requireLib$1() {
       }
       return proxyAgent2;
     }
+    _getUserAgentWithOrchestrationId(userAgent2) {
+      const baseUserAgent = userAgent2 || "actions/http-client";
+      const orchId = process.env["ACTIONS_ORCHESTRATION_ID"];
+      if (orchId) {
+        const sanitizedId = orchId.replace(/[^a-z0-9_.-]/gi, "_");
+        return `${baseUserAgent} actions_orchestration_id/${sanitizedId}`;
+      }
+      return baseUserAgent;
+    }
     _performExponentialBackoff(retryNumber) {
       return __awaiter2(this, void 0, void 0, function* () {
         retryNumber = Math.min(ExponentialBackoffCeiling, retryNumber);
@@ -17998,16 +18007,16 @@ function requireLib$1() {
       });
     }
   }
-  lib$1.HttpClient = HttpClient;
+  lib$2.HttpClient = HttpClient;
   const lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => (c[k.toLowerCase()] = obj[k], c), {});
-  return lib$1;
+  return lib$2;
 }
-var auth$1 = {};
-var hasRequiredAuth$1;
-function requireAuth$1() {
-  if (hasRequiredAuth$1) return auth$1;
-  hasRequiredAuth$1 = 1;
-  var __awaiter2 = auth$1 && auth$1.__awaiter || function(thisArg, _arguments, P, generator) {
+var auth$2 = {};
+var hasRequiredAuth$2;
+function requireAuth$2() {
+  if (hasRequiredAuth$2) return auth$2;
+  hasRequiredAuth$2 = 1;
+  var __awaiter2 = auth$2 && auth$2.__awaiter || function(thisArg, _arguments, P, generator) {
     function adopt(value) {
       return value instanceof P ? value : new P(function(resolve) {
         resolve(value);
@@ -18034,8 +18043,8 @@ function requireAuth$1() {
       step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
   };
-  Object.defineProperty(auth$1, "__esModule", { value: true });
-  auth$1.PersonalAccessTokenCredentialHandler = auth$1.BearerCredentialHandler = auth$1.BasicCredentialHandler = void 0;
+  Object.defineProperty(auth$2, "__esModule", { value: true });
+  auth$2.PersonalAccessTokenCredentialHandler = auth$2.BearerCredentialHandler = auth$2.BasicCredentialHandler = void 0;
   class BasicCredentialHandler {
     constructor(username, password) {
       this.username = username;
@@ -18057,7 +18066,7 @@ function requireAuth$1() {
       });
     }
   }
-  auth$1.BasicCredentialHandler = BasicCredentialHandler;
+  auth$2.BasicCredentialHandler = BasicCredentialHandler;
   class BearerCredentialHandler {
     constructor(token) {
       this.token = token;
@@ -18080,7 +18089,7 @@ function requireAuth$1() {
       });
     }
   }
-  auth$1.BearerCredentialHandler = BearerCredentialHandler;
+  auth$2.BearerCredentialHandler = BearerCredentialHandler;
   class PersonalAccessTokenCredentialHandler {
     constructor(token) {
       this.token = token;
@@ -18103,8 +18112,8 @@ function requireAuth$1() {
       });
     }
   }
-  auth$1.PersonalAccessTokenCredentialHandler = PersonalAccessTokenCredentialHandler;
-  return auth$1;
+  auth$2.PersonalAccessTokenCredentialHandler = PersonalAccessTokenCredentialHandler;
+  return auth$2;
 }
 var hasRequiredOidcUtils$1;
 function requireOidcUtils$1() {
@@ -18139,8 +18148,8 @@ function requireOidcUtils$1() {
   };
   Object.defineProperty(oidcUtils$1, "__esModule", { value: true });
   oidcUtils$1.OidcClient = void 0;
-  const http_client_1 = /* @__PURE__ */ requireLib$1();
-  const auth_1 = /* @__PURE__ */ requireAuth$1();
+  const http_client_1 = /* @__PURE__ */ requireLib$2();
+  const auth_1 = /* @__PURE__ */ requireAuth$2();
   const core_1 = /* @__PURE__ */ requireCore$1();
   class OidcClient {
     static createHttpClient(allowRetry = true, maxRetry = 10) {
@@ -18835,7 +18844,7 @@ function requireIo$1() {
   io$1.mkdirP = mkdirP;
   io$1.which = which;
   io$1.findInPath = findInPath;
-  const assert_1 = require$$0$7;
+  const assert_1 = require$$0$8;
   const path2 = __importStar2(require$$1$7);
   const ioUtil2 = __importStar2(/* @__PURE__ */ requireIoUtil$1());
   function cp(source_1, dest_1) {
@@ -19092,8 +19101,8 @@ function requireToolrunner$1() {
   toolrunner$1.ToolRunner = void 0;
   toolrunner$1.argStringToArray = argStringToArray;
   const os = __importStar2(require$$0$3);
-  const events2 = __importStar2(require$$0$6);
-  const child = __importStar2(require$$2$2);
+  const events2 = __importStar2(require$$0$7);
+  const child = __importStar2(require$$2$1);
   const path2 = __importStar2(require$$1$7);
   const io2 = __importStar2(/* @__PURE__ */ requireIo$1());
   const ioUtil2 = __importStar2(/* @__PURE__ */ requireIoUtil$1());
@@ -19588,7 +19597,7 @@ function requireExec$1() {
   Object.defineProperty(exec$1, "__esModule", { value: true });
   exec$1.exec = exec2;
   exec$1.getExecOutput = getExecOutput;
-  const string_decoder_1 = require$$0$d;
+  const string_decoder_1 = require$$0$e;
   const tr = __importStar2(/* @__PURE__ */ requireToolrunner$1());
   function exec2(commandLine, args, options2) {
     return __awaiter2(this, void 0, void 0, function* () {
@@ -20008,14 +20017,14 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
 }
 var coreExports = /* @__PURE__ */ requireCore$1();
 var execExports = /* @__PURE__ */ requireExec$1();
-var lib = {};
-var proxy = {};
-var hasRequiredProxy;
-function requireProxy() {
-  if (hasRequiredProxy) return proxy;
-  hasRequiredProxy = 1;
-  Object.defineProperty(proxy, "__esModule", { value: true });
-  proxy.checkBypass = proxy.getProxyUrl = void 0;
+var lib$1 = {};
+var proxy$1 = {};
+var hasRequiredProxy$1;
+function requireProxy$1() {
+  if (hasRequiredProxy$1) return proxy$1;
+  hasRequiredProxy$1 = 1;
+  Object.defineProperty(proxy$1, "__esModule", { value: true });
+  proxy$1.checkBypass = proxy$1.getProxyUrl = void 0;
   function getProxyUrl(reqUrl) {
     const usingSsl = reqUrl.protocol === "https:";
     if (checkBypass(reqUrl)) {
@@ -20039,7 +20048,7 @@ function requireProxy() {
       return void 0;
     }
   }
-  proxy.getProxyUrl = getProxyUrl;
+  proxy$1.getProxyUrl = getProxyUrl;
   function checkBypass(reqUrl) {
     if (!reqUrl.hostname) {
       return false;
@@ -20071,7 +20080,7 @@ function requireProxy() {
     }
     return false;
   }
-  proxy.checkBypass = checkBypass;
+  proxy$1.checkBypass = checkBypass;
   function isLoopbackAddress(host) {
     const hostLower = host.toLowerCase();
     return hostLower === "localhost" || hostLower.startsWith("127.") || hostLower.startsWith("[::1]") || hostLower.startsWith("[0:0:0:0:0:0:0:1]");
@@ -20089,13 +20098,13 @@ function requireProxy() {
       return this._decodedPassword;
     }
   }
-  return proxy;
+  return proxy$1;
 }
-var hasRequiredLib;
-function requireLib() {
-  if (hasRequiredLib) return lib;
-  hasRequiredLib = 1;
-  var __createBinding2 = lib && lib.__createBinding || (Object.create ? (function(o, m, k, k2) {
+var hasRequiredLib$1;
+function requireLib$1() {
+  if (hasRequiredLib$1) return lib$1;
+  hasRequiredLib$1 = 1;
+  var __createBinding2 = lib$1 && lib$1.__createBinding || (Object.create ? (function(o, m, k, k2) {
     if (k2 === void 0) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
     if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
@@ -20108,12 +20117,12 @@ function requireLib() {
     if (k2 === void 0) k2 = k;
     o[k2] = m[k];
   }));
-  var __setModuleDefault2 = lib && lib.__setModuleDefault || (Object.create ? (function(o, v) {
+  var __setModuleDefault2 = lib$1 && lib$1.__setModuleDefault || (Object.create ? (function(o, v) {
     Object.defineProperty(o, "default", { enumerable: true, value: v });
   }) : function(o, v) {
     o["default"] = v;
   });
-  var __importStar2 = lib && lib.__importStar || function(mod) {
+  var __importStar2 = lib$1 && lib$1.__importStar || function(mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) {
@@ -20122,7 +20131,7 @@ function requireLib() {
     __setModuleDefault2(result, mod);
     return result;
   };
-  var __awaiter2 = lib && lib.__awaiter || function(thisArg, _arguments, P, generator) {
+  var __awaiter2 = lib$1 && lib$1.__awaiter || function(thisArg, _arguments, P, generator) {
     function adopt(value) {
       return value instanceof P ? value : new P(function(resolve) {
         resolve(value);
@@ -20149,11 +20158,11 @@ function requireLib() {
       step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
   };
-  Object.defineProperty(lib, "__esModule", { value: true });
-  lib.HttpClient = lib.isHttps = lib.HttpClientResponse = lib.HttpClientError = lib.getProxyUrl = lib.MediaTypes = lib.Headers = lib.HttpCodes = void 0;
-  const http = __importStar2(require$$2);
+  Object.defineProperty(lib$1, "__esModule", { value: true });
+  lib$1.HttpClient = lib$1.isHttps = lib$1.HttpClientResponse = lib$1.HttpClientError = lib$1.getProxyUrl = lib$1.MediaTypes = lib$1.Headers = lib$1.HttpCodes = void 0;
+  const http = __importStar2(require$$0$5);
   const https = __importStar2(require$$1$3);
-  const pm = __importStar2(/* @__PURE__ */ requireProxy());
+  const pm = __importStar2(/* @__PURE__ */ requireProxy$1());
   const tunnel2 = __importStar2(/* @__PURE__ */ requireTunnel());
   const undici_1 = /* @__PURE__ */ requireUndici();
   var HttpCodes;
@@ -20185,21 +20194,21 @@ function requireLib() {
     HttpCodes2[HttpCodes2["BadGateway"] = 502] = "BadGateway";
     HttpCodes2[HttpCodes2["ServiceUnavailable"] = 503] = "ServiceUnavailable";
     HttpCodes2[HttpCodes2["GatewayTimeout"] = 504] = "GatewayTimeout";
-  })(HttpCodes || (lib.HttpCodes = HttpCodes = {}));
+  })(HttpCodes || (lib$1.HttpCodes = HttpCodes = {}));
   var Headers;
   (function(Headers2) {
     Headers2["Accept"] = "accept";
     Headers2["ContentType"] = "content-type";
-  })(Headers || (lib.Headers = Headers = {}));
+  })(Headers || (lib$1.Headers = Headers = {}));
   var MediaTypes;
   (function(MediaTypes2) {
     MediaTypes2["ApplicationJson"] = "application/json";
-  })(MediaTypes || (lib.MediaTypes = MediaTypes = {}));
+  })(MediaTypes || (lib$1.MediaTypes = MediaTypes = {}));
   function getProxyUrl(serverUrl) {
     const proxyUrl = pm.getProxyUrl(new URL(serverUrl));
     return proxyUrl ? proxyUrl.href : "";
   }
-  lib.getProxyUrl = getProxyUrl;
+  lib$1.getProxyUrl = getProxyUrl;
   const HttpRedirectCodes = [
     HttpCodes.MovedPermanently,
     HttpCodes.ResourceMoved,
@@ -20223,7 +20232,7 @@ function requireLib() {
       Object.setPrototypeOf(this, HttpClientError.prototype);
     }
   }
-  lib.HttpClientError = HttpClientError;
+  lib$1.HttpClientError = HttpClientError;
   class HttpClientResponse {
     constructor(message) {
       this.message = message;
@@ -20255,12 +20264,12 @@ function requireLib() {
       });
     }
   }
-  lib.HttpClientResponse = HttpClientResponse;
+  lib$1.HttpClientResponse = HttpClientResponse;
   function isHttps(requestUrl) {
     const parsedUrl = new URL(requestUrl);
     return parsedUrl.protocol === "https:";
   }
-  lib.isHttps = isHttps;
+  lib$1.isHttps = isHttps;
   class HttpClient {
     constructor(userAgent2, handlers, requestOptions) {
       this._ignoreSslError = false;
@@ -20705,9 +20714,9 @@ function requireLib() {
       });
     }
   }
-  lib.HttpClient = HttpClient;
+  lib$1.HttpClient = HttpClient;
   const lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => (c[k.toLowerCase()] = obj[k], c), {});
-  return lib;
+  return lib$1;
 }
 class BaseProgram {
   path;
@@ -20907,12 +20916,12 @@ function requireFileCommand() {
   return fileCommand;
 }
 var oidcUtils = {};
-var auth = {};
-var hasRequiredAuth;
-function requireAuth() {
-  if (hasRequiredAuth) return auth;
-  hasRequiredAuth = 1;
-  var __awaiter2 = auth && auth.__awaiter || function(thisArg, _arguments, P, generator) {
+var auth$1 = {};
+var hasRequiredAuth$1;
+function requireAuth$1() {
+  if (hasRequiredAuth$1) return auth$1;
+  hasRequiredAuth$1 = 1;
+  var __awaiter2 = auth$1 && auth$1.__awaiter || function(thisArg, _arguments, P, generator) {
     function adopt(value) {
       return value instanceof P ? value : new P(function(resolve) {
         resolve(value);
@@ -20939,8 +20948,8 @@ function requireAuth() {
       step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
   };
-  Object.defineProperty(auth, "__esModule", { value: true });
-  auth.PersonalAccessTokenCredentialHandler = auth.BearerCredentialHandler = auth.BasicCredentialHandler = void 0;
+  Object.defineProperty(auth$1, "__esModule", { value: true });
+  auth$1.PersonalAccessTokenCredentialHandler = auth$1.BearerCredentialHandler = auth$1.BasicCredentialHandler = void 0;
   class BasicCredentialHandler {
     constructor(username, password) {
       this.username = username;
@@ -20962,7 +20971,7 @@ function requireAuth() {
       });
     }
   }
-  auth.BasicCredentialHandler = BasicCredentialHandler;
+  auth$1.BasicCredentialHandler = BasicCredentialHandler;
   class BearerCredentialHandler {
     constructor(token) {
       this.token = token;
@@ -20985,7 +20994,7 @@ function requireAuth() {
       });
     }
   }
-  auth.BearerCredentialHandler = BearerCredentialHandler;
+  auth$1.BearerCredentialHandler = BearerCredentialHandler;
   class PersonalAccessTokenCredentialHandler {
     constructor(token) {
       this.token = token;
@@ -21008,8 +21017,8 @@ function requireAuth() {
       });
     }
   }
-  auth.PersonalAccessTokenCredentialHandler = PersonalAccessTokenCredentialHandler;
-  return auth;
+  auth$1.PersonalAccessTokenCredentialHandler = PersonalAccessTokenCredentialHandler;
+  return auth$1;
 }
 var hasRequiredOidcUtils;
 function requireOidcUtils() {
@@ -21044,8 +21053,8 @@ function requireOidcUtils() {
   };
   Object.defineProperty(oidcUtils, "__esModule", { value: true });
   oidcUtils.OidcClient = void 0;
-  const http_client_1 = /* @__PURE__ */ requireLib();
-  const auth_1 = /* @__PURE__ */ requireAuth();
+  const http_client_1 = /* @__PURE__ */ requireLib$1();
+  const auth_1 = /* @__PURE__ */ requireAuth$1();
   const core_1 = /* @__PURE__ */ requireCore();
   class OidcClient {
     static createHttpClient(allowRetry = true, maxRetry = 10) {
@@ -21688,7 +21697,7 @@ function requireIo() {
   };
   Object.defineProperty(io, "__esModule", { value: true });
   io.findInPath = io.which = io.mkdirP = io.rmRF = io.mv = io.cp = void 0;
-  const assert_1 = require$$0$7;
+  const assert_1 = require$$0$8;
   const path2 = __importStar2(require$$1$7);
   const ioUtil2 = __importStar2(/* @__PURE__ */ requireIoUtil());
   function cp(source, dest, options2 = {}) {
@@ -21936,8 +21945,8 @@ function requireToolrunner() {
   Object.defineProperty(toolrunner, "__esModule", { value: true });
   toolrunner.argStringToArray = toolrunner.ToolRunner = void 0;
   const os = __importStar2(require$$0$3);
-  const events2 = __importStar2(require$$0$6);
-  const child = __importStar2(require$$2$2);
+  const events2 = __importStar2(require$$0$7);
+  const child = __importStar2(require$$2$1);
   const path2 = __importStar2(require$$1$7);
   const io2 = __importStar2(/* @__PURE__ */ requireIo());
   const ioUtil2 = __importStar2(/* @__PURE__ */ requireIoUtil());
@@ -22418,7 +22427,7 @@ function requireExec() {
   };
   Object.defineProperty(exec, "__esModule", { value: true });
   exec.getExecOutput = exec.exec = void 0;
-  const string_decoder_1 = require$$0$d;
+  const string_decoder_1 = require$$0$e;
   const tr = __importStar2(/* @__PURE__ */ requireToolrunner());
   function exec$12(commandLine, args, options2) {
     return __awaiter2(this, void 0, void 0, function* () {
@@ -22927,7 +22936,7 @@ function requireInternalPathHelper() {
   Object.defineProperty(internalPathHelper, "__esModule", { value: true });
   internalPathHelper.safeTrimTrailingSeparator = internalPathHelper.normalizeSeparators = internalPathHelper.hasRoot = internalPathHelper.hasAbsoluteRoot = internalPathHelper.ensureAbsoluteRoot = internalPathHelper.dirname = void 0;
   const path2 = __importStar2(require$$1$7);
-  const assert_1 = __importDefault2(require$$0$7);
+  const assert_1 = __importDefault2(require$$0$8);
   const IS_WINDOWS = process.platform === "win32";
   function dirname(p) {
     p = safeTrimTrailingSeparator(p);
@@ -23961,7 +23970,7 @@ function requireInternalPath() {
   internalPath.Path = void 0;
   const path2 = __importStar2(require$$1$7);
   const pathHelper = __importStar2(/* @__PURE__ */ requireInternalPathHelper());
-  const assert_1 = __importDefault2(require$$0$7);
+  const assert_1 = __importDefault2(require$$0$8);
   const IS_WINDOWS = process.platform === "win32";
   class Path {
     /**
@@ -24062,7 +24071,7 @@ function requireInternalPattern() {
   const os = __importStar2(require$$0$3);
   const path2 = __importStar2(require$$1$7);
   const pathHelper = __importStar2(/* @__PURE__ */ requireInternalPathHelper());
-  const assert_1 = __importDefault2(require$$0$7);
+  const assert_1 = __importDefault2(require$$0$8);
   const minimatch_12 = /* @__PURE__ */ requireMinimatch();
   const internal_match_kind_1 = /* @__PURE__ */ requireInternalMatchKind();
   const internal_path_1 = /* @__PURE__ */ requireInternalPath();
@@ -24597,8 +24606,8 @@ function requireInternalHashFiles() {
   const crypto2 = __importStar2(require$$0$4);
   const core2 = __importStar2(/* @__PURE__ */ requireCore());
   const fs = __importStar2(require$$1$2);
-  const stream = __importStar2(require$$0$9);
-  const util2 = __importStar2(require$$0$5);
+  const stream = __importStar2(require$$0$a);
+  const util2 = __importStar2(require$$0$6);
   const path2 = __importStar2(require$$1$7);
   function hashFiles(globber, currentWorkspace, verbose = false) {
     var _a, e_1, _b, _c;
@@ -26005,7 +26014,7 @@ function requireCacheUtils() {
   const fs = __importStar2(require$$1$2);
   const path2 = __importStar2(require$$1$7);
   const semver2 = __importStar2(/* @__PURE__ */ requireSemver());
-  const util2 = __importStar2(require$$0$5);
+  const util2 = __importStar2(require$$0$6);
   const constants_1 = /* @__PURE__ */ requireConstants$5();
   const versionSalt = "1.0";
   function createTempDirectory() {
@@ -26145,6 +26154,873 @@ function requireCacheUtils() {
   return cacheUtils;
 }
 var cacheHttpClient = {};
+var lib = {};
+var proxy = {};
+var hasRequiredProxy;
+function requireProxy() {
+  if (hasRequiredProxy) return proxy;
+  hasRequiredProxy = 1;
+  Object.defineProperty(proxy, "__esModule", { value: true });
+  proxy.getProxyUrl = getProxyUrl;
+  proxy.checkBypass = checkBypass;
+  function getProxyUrl(reqUrl) {
+    const usingSsl = reqUrl.protocol === "https:";
+    if (checkBypass(reqUrl)) {
+      return void 0;
+    }
+    const proxyVar = (() => {
+      if (usingSsl) {
+        return process.env["https_proxy"] || process.env["HTTPS_PROXY"];
+      } else {
+        return process.env["http_proxy"] || process.env["HTTP_PROXY"];
+      }
+    })();
+    if (proxyVar) {
+      try {
+        return new DecodedURL(proxyVar);
+      } catch (_a) {
+        if (!proxyVar.startsWith("http://") && !proxyVar.startsWith("https://"))
+          return new DecodedURL(`http://${proxyVar}`);
+      }
+    } else {
+      return void 0;
+    }
+  }
+  function checkBypass(reqUrl) {
+    if (!reqUrl.hostname) {
+      return false;
+    }
+    const reqHost = reqUrl.hostname;
+    if (isLoopbackAddress(reqHost)) {
+      return true;
+    }
+    const noProxy = process.env["no_proxy"] || process.env["NO_PROXY"] || "";
+    if (!noProxy) {
+      return false;
+    }
+    let reqPort;
+    if (reqUrl.port) {
+      reqPort = Number(reqUrl.port);
+    } else if (reqUrl.protocol === "http:") {
+      reqPort = 80;
+    } else if (reqUrl.protocol === "https:") {
+      reqPort = 443;
+    }
+    const upperReqHosts = [reqUrl.hostname.toUpperCase()];
+    if (typeof reqPort === "number") {
+      upperReqHosts.push(`${upperReqHosts[0]}:${reqPort}`);
+    }
+    for (const upperNoProxyItem of noProxy.split(",").map((x) => x.trim().toUpperCase()).filter((x) => x)) {
+      if (upperNoProxyItem === "*" || upperReqHosts.some((x) => x === upperNoProxyItem || x.endsWith(`.${upperNoProxyItem}`) || upperNoProxyItem.startsWith(".") && x.endsWith(`${upperNoProxyItem}`))) {
+        return true;
+      }
+    }
+    return false;
+  }
+  function isLoopbackAddress(host) {
+    const hostLower = host.toLowerCase();
+    return hostLower === "localhost" || hostLower.startsWith("127.") || hostLower.startsWith("[::1]") || hostLower.startsWith("[0:0:0:0:0:0:0:1]");
+  }
+  class DecodedURL extends URL {
+    constructor(url, base) {
+      super(url, base);
+      this._decodedUsername = decodeURIComponent(super.username);
+      this._decodedPassword = decodeURIComponent(super.password);
+    }
+    get username() {
+      return this._decodedUsername;
+    }
+    get password() {
+      return this._decodedPassword;
+    }
+  }
+  return proxy;
+}
+var hasRequiredLib;
+function requireLib() {
+  if (hasRequiredLib) return lib;
+  hasRequiredLib = 1;
+  var __createBinding2 = lib && lib.__createBinding || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === void 0) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() {
+        return m[k];
+      } };
+    }
+    Object.defineProperty(o, k2, desc);
+  }) : (function(o, m, k, k2) {
+    if (k2 === void 0) k2 = k;
+    o[k2] = m[k];
+  }));
+  var __setModuleDefault2 = lib && lib.__setModuleDefault || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+  }) : function(o, v) {
+    o["default"] = v;
+  });
+  var __importStar2 = lib && lib.__importStar || /* @__PURE__ */ (function() {
+    var ownKeys2 = function(o) {
+      ownKeys2 = Object.getOwnPropertyNames || function(o2) {
+        var ar = [];
+        for (var k in o2) if (Object.prototype.hasOwnProperty.call(o2, k)) ar[ar.length] = k;
+        return ar;
+      };
+      return ownKeys2(o);
+    };
+    return function(mod) {
+      if (mod && mod.__esModule) return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k = ownKeys2(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding2(result, mod, k[i]);
+      }
+      __setModuleDefault2(result, mod);
+      return result;
+    };
+  })();
+  var __awaiter2 = lib && lib.__awaiter || function(thisArg, _arguments, P, generator) {
+    function adopt(value) {
+      return value instanceof P ? value : new P(function(resolve) {
+        resolve(value);
+      });
+    }
+    return new (P || (P = Promise))(function(resolve, reject) {
+      function fulfilled(value) {
+        try {
+          step(generator.next(value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function rejected(value) {
+        try {
+          step(generator["throw"](value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function step(result) {
+        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+      }
+      step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+  };
+  Object.defineProperty(lib, "__esModule", { value: true });
+  lib.HttpClient = lib.HttpClientResponse = lib.HttpClientError = lib.MediaTypes = lib.Headers = lib.HttpCodes = void 0;
+  lib.getProxyUrl = getProxyUrl;
+  lib.isHttps = isHttps;
+  const http = __importStar2(require$$0$5);
+  const https = __importStar2(require$$1$3);
+  const pm = __importStar2(/* @__PURE__ */ requireProxy());
+  const tunnel2 = __importStar2(/* @__PURE__ */ requireTunnel());
+  const undici_1 = /* @__PURE__ */ requireUndici();
+  var HttpCodes;
+  (function(HttpCodes2) {
+    HttpCodes2[HttpCodes2["OK"] = 200] = "OK";
+    HttpCodes2[HttpCodes2["MultipleChoices"] = 300] = "MultipleChoices";
+    HttpCodes2[HttpCodes2["MovedPermanently"] = 301] = "MovedPermanently";
+    HttpCodes2[HttpCodes2["ResourceMoved"] = 302] = "ResourceMoved";
+    HttpCodes2[HttpCodes2["SeeOther"] = 303] = "SeeOther";
+    HttpCodes2[HttpCodes2["NotModified"] = 304] = "NotModified";
+    HttpCodes2[HttpCodes2["UseProxy"] = 305] = "UseProxy";
+    HttpCodes2[HttpCodes2["SwitchProxy"] = 306] = "SwitchProxy";
+    HttpCodes2[HttpCodes2["TemporaryRedirect"] = 307] = "TemporaryRedirect";
+    HttpCodes2[HttpCodes2["PermanentRedirect"] = 308] = "PermanentRedirect";
+    HttpCodes2[HttpCodes2["BadRequest"] = 400] = "BadRequest";
+    HttpCodes2[HttpCodes2["Unauthorized"] = 401] = "Unauthorized";
+    HttpCodes2[HttpCodes2["PaymentRequired"] = 402] = "PaymentRequired";
+    HttpCodes2[HttpCodes2["Forbidden"] = 403] = "Forbidden";
+    HttpCodes2[HttpCodes2["NotFound"] = 404] = "NotFound";
+    HttpCodes2[HttpCodes2["MethodNotAllowed"] = 405] = "MethodNotAllowed";
+    HttpCodes2[HttpCodes2["NotAcceptable"] = 406] = "NotAcceptable";
+    HttpCodes2[HttpCodes2["ProxyAuthenticationRequired"] = 407] = "ProxyAuthenticationRequired";
+    HttpCodes2[HttpCodes2["RequestTimeout"] = 408] = "RequestTimeout";
+    HttpCodes2[HttpCodes2["Conflict"] = 409] = "Conflict";
+    HttpCodes2[HttpCodes2["Gone"] = 410] = "Gone";
+    HttpCodes2[HttpCodes2["TooManyRequests"] = 429] = "TooManyRequests";
+    HttpCodes2[HttpCodes2["InternalServerError"] = 500] = "InternalServerError";
+    HttpCodes2[HttpCodes2["NotImplemented"] = 501] = "NotImplemented";
+    HttpCodes2[HttpCodes2["BadGateway"] = 502] = "BadGateway";
+    HttpCodes2[HttpCodes2["ServiceUnavailable"] = 503] = "ServiceUnavailable";
+    HttpCodes2[HttpCodes2["GatewayTimeout"] = 504] = "GatewayTimeout";
+  })(HttpCodes || (lib.HttpCodes = HttpCodes = {}));
+  var Headers;
+  (function(Headers2) {
+    Headers2["Accept"] = "accept";
+    Headers2["ContentType"] = "content-type";
+  })(Headers || (lib.Headers = Headers = {}));
+  var MediaTypes;
+  (function(MediaTypes2) {
+    MediaTypes2["ApplicationJson"] = "application/json";
+  })(MediaTypes || (lib.MediaTypes = MediaTypes = {}));
+  function getProxyUrl(serverUrl) {
+    const proxyUrl = pm.getProxyUrl(new URL(serverUrl));
+    return proxyUrl ? proxyUrl.href : "";
+  }
+  const HttpRedirectCodes = [
+    HttpCodes.MovedPermanently,
+    HttpCodes.ResourceMoved,
+    HttpCodes.SeeOther,
+    HttpCodes.TemporaryRedirect,
+    HttpCodes.PermanentRedirect
+  ];
+  const HttpResponseRetryCodes = [
+    HttpCodes.BadGateway,
+    HttpCodes.ServiceUnavailable,
+    HttpCodes.GatewayTimeout
+  ];
+  const RetryableHttpVerbs = ["OPTIONS", "GET", "DELETE", "HEAD"];
+  const ExponentialBackoffCeiling = 10;
+  const ExponentialBackoffTimeSlice = 5;
+  class HttpClientError extends Error {
+    constructor(message, statusCode) {
+      super(message);
+      this.name = "HttpClientError";
+      this.statusCode = statusCode;
+      Object.setPrototypeOf(this, HttpClientError.prototype);
+    }
+  }
+  lib.HttpClientError = HttpClientError;
+  class HttpClientResponse {
+    constructor(message) {
+      this.message = message;
+    }
+    readBody() {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return new Promise((resolve) => __awaiter2(this, void 0, void 0, function* () {
+          let output = Buffer.alloc(0);
+          this.message.on("data", (chunk) => {
+            output = Buffer.concat([output, chunk]);
+          });
+          this.message.on("end", () => {
+            resolve(output.toString());
+          });
+        }));
+      });
+    }
+    readBodyBuffer() {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return new Promise((resolve) => __awaiter2(this, void 0, void 0, function* () {
+          const chunks = [];
+          this.message.on("data", (chunk) => {
+            chunks.push(chunk);
+          });
+          this.message.on("end", () => {
+            resolve(Buffer.concat(chunks));
+          });
+        }));
+      });
+    }
+  }
+  lib.HttpClientResponse = HttpClientResponse;
+  function isHttps(requestUrl) {
+    const parsedUrl = new URL(requestUrl);
+    return parsedUrl.protocol === "https:";
+  }
+  class HttpClient {
+    constructor(userAgent2, handlers, requestOptions) {
+      this._ignoreSslError = false;
+      this._allowRedirects = true;
+      this._allowRedirectDowngrade = false;
+      this._maxRedirects = 50;
+      this._allowRetries = false;
+      this._maxRetries = 1;
+      this._keepAlive = false;
+      this._disposed = false;
+      this.userAgent = userAgent2;
+      this.handlers = handlers || [];
+      this.requestOptions = requestOptions;
+      if (requestOptions) {
+        if (requestOptions.ignoreSslError != null) {
+          this._ignoreSslError = requestOptions.ignoreSslError;
+        }
+        this._socketTimeout = requestOptions.socketTimeout;
+        if (requestOptions.allowRedirects != null) {
+          this._allowRedirects = requestOptions.allowRedirects;
+        }
+        if (requestOptions.allowRedirectDowngrade != null) {
+          this._allowRedirectDowngrade = requestOptions.allowRedirectDowngrade;
+        }
+        if (requestOptions.maxRedirects != null) {
+          this._maxRedirects = Math.max(requestOptions.maxRedirects, 0);
+        }
+        if (requestOptions.keepAlive != null) {
+          this._keepAlive = requestOptions.keepAlive;
+        }
+        if (requestOptions.allowRetries != null) {
+          this._allowRetries = requestOptions.allowRetries;
+        }
+        if (requestOptions.maxRetries != null) {
+          this._maxRetries = requestOptions.maxRetries;
+        }
+      }
+    }
+    options(requestUrl, additionalHeaders) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return this.request("OPTIONS", requestUrl, null, additionalHeaders || {});
+      });
+    }
+    get(requestUrl, additionalHeaders) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return this.request("GET", requestUrl, null, additionalHeaders || {});
+      });
+    }
+    del(requestUrl, additionalHeaders) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return this.request("DELETE", requestUrl, null, additionalHeaders || {});
+      });
+    }
+    post(requestUrl, data, additionalHeaders) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return this.request("POST", requestUrl, data, additionalHeaders || {});
+      });
+    }
+    patch(requestUrl, data, additionalHeaders) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return this.request("PATCH", requestUrl, data, additionalHeaders || {});
+      });
+    }
+    put(requestUrl, data, additionalHeaders) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return this.request("PUT", requestUrl, data, additionalHeaders || {});
+      });
+    }
+    head(requestUrl, additionalHeaders) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return this.request("HEAD", requestUrl, null, additionalHeaders || {});
+      });
+    }
+    sendStream(verb, requestUrl, stream, additionalHeaders) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return this.request(verb, requestUrl, stream, additionalHeaders);
+      });
+    }
+    /**
+     * Gets a typed object from an endpoint
+     * Be aware that not found returns a null.  Other errors (4xx, 5xx) reject the promise
+     */
+    getJson(requestUrl_1) {
+      return __awaiter2(this, arguments, void 0, function* (requestUrl, additionalHeaders = {}) {
+        additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
+        const res = yield this.get(requestUrl, additionalHeaders);
+        return this._processResponse(res, this.requestOptions);
+      });
+    }
+    postJson(requestUrl_1, obj_1) {
+      return __awaiter2(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
+        const data = JSON.stringify(obj, null, 2);
+        additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
+        additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
+        const res = yield this.post(requestUrl, data, additionalHeaders);
+        return this._processResponse(res, this.requestOptions);
+      });
+    }
+    putJson(requestUrl_1, obj_1) {
+      return __awaiter2(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
+        const data = JSON.stringify(obj, null, 2);
+        additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
+        additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
+        const res = yield this.put(requestUrl, data, additionalHeaders);
+        return this._processResponse(res, this.requestOptions);
+      });
+    }
+    patchJson(requestUrl_1, obj_1) {
+      return __awaiter2(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
+        const data = JSON.stringify(obj, null, 2);
+        additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
+        additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
+        const res = yield this.patch(requestUrl, data, additionalHeaders);
+        return this._processResponse(res, this.requestOptions);
+      });
+    }
+    /**
+     * Makes a raw http request.
+     * All other methods such as get, post, patch, and request ultimately call this.
+     * Prefer get, del, post and patch
+     */
+    request(verb, requestUrl, data, headers2) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        if (this._disposed) {
+          throw new Error("Client has already been disposed.");
+        }
+        const parsedUrl = new URL(requestUrl);
+        let info = this._prepareRequest(verb, parsedUrl, headers2);
+        const maxTries = this._allowRetries && RetryableHttpVerbs.includes(verb) ? this._maxRetries + 1 : 1;
+        let numTries = 0;
+        let response2;
+        do {
+          response2 = yield this.requestRaw(info, data);
+          if (response2 && response2.message && response2.message.statusCode === HttpCodes.Unauthorized) {
+            let authenticationHandler;
+            for (const handler of this.handlers) {
+              if (handler.canHandleAuthentication(response2)) {
+                authenticationHandler = handler;
+                break;
+              }
+            }
+            if (authenticationHandler) {
+              return authenticationHandler.handleAuthentication(this, info, data);
+            } else {
+              return response2;
+            }
+          }
+          let redirectsRemaining = this._maxRedirects;
+          while (response2.message.statusCode && HttpRedirectCodes.includes(response2.message.statusCode) && this._allowRedirects && redirectsRemaining > 0) {
+            const redirectUrl = response2.message.headers["location"];
+            if (!redirectUrl) {
+              break;
+            }
+            const parsedRedirectUrl = new URL(redirectUrl);
+            if (parsedUrl.protocol === "https:" && parsedUrl.protocol !== parsedRedirectUrl.protocol && !this._allowRedirectDowngrade) {
+              throw new Error("Redirect from HTTPS to HTTP protocol. This downgrade is not allowed for security reasons. If you want to allow this behavior, set the allowRedirectDowngrade option to true.");
+            }
+            yield response2.readBody();
+            if (parsedRedirectUrl.hostname !== parsedUrl.hostname) {
+              for (const header in headers2) {
+                if (header.toLowerCase() === "authorization") {
+                  delete headers2[header];
+                }
+              }
+            }
+            info = this._prepareRequest(verb, parsedRedirectUrl, headers2);
+            response2 = yield this.requestRaw(info, data);
+            redirectsRemaining--;
+          }
+          if (!response2.message.statusCode || !HttpResponseRetryCodes.includes(response2.message.statusCode)) {
+            return response2;
+          }
+          numTries += 1;
+          if (numTries < maxTries) {
+            yield response2.readBody();
+            yield this._performExponentialBackoff(numTries);
+          }
+        } while (numTries < maxTries);
+        return response2;
+      });
+    }
+    /**
+     * Needs to be called if keepAlive is set to true in request options.
+     */
+    dispose() {
+      if (this._agent) {
+        this._agent.destroy();
+      }
+      this._disposed = true;
+    }
+    /**
+     * Raw request.
+     * @param info
+     * @param data
+     */
+    requestRaw(info, data) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return new Promise((resolve, reject) => {
+          function callbackForResult(err, res) {
+            if (err) {
+              reject(err);
+            } else if (!res) {
+              reject(new Error("Unknown error"));
+            } else {
+              resolve(res);
+            }
+          }
+          this.requestRawWithCallback(info, data, callbackForResult);
+        });
+      });
+    }
+    /**
+     * Raw request with callback.
+     * @param info
+     * @param data
+     * @param onResult
+     */
+    requestRawWithCallback(info, data, onResult) {
+      if (typeof data === "string") {
+        if (!info.options.headers) {
+          info.options.headers = {};
+        }
+        info.options.headers["Content-Length"] = Buffer.byteLength(data, "utf8");
+      }
+      let callbackCalled = false;
+      function handleResult(err, res) {
+        if (!callbackCalled) {
+          callbackCalled = true;
+          onResult(err, res);
+        }
+      }
+      const req = info.httpModule.request(info.options, (msg) => {
+        const res = new HttpClientResponse(msg);
+        handleResult(void 0, res);
+      });
+      let socket;
+      req.on("socket", (sock) => {
+        socket = sock;
+      });
+      req.setTimeout(this._socketTimeout || 3 * 6e4, () => {
+        if (socket) {
+          socket.end();
+        }
+        handleResult(new Error(`Request timeout: ${info.options.path}`));
+      });
+      req.on("error", function(err) {
+        handleResult(err);
+      });
+      if (data && typeof data === "string") {
+        req.write(data, "utf8");
+      }
+      if (data && typeof data !== "string") {
+        data.on("close", function() {
+          req.end();
+        });
+        data.pipe(req);
+      } else {
+        req.end();
+      }
+    }
+    /**
+     * Gets an http agent. This function is useful when you need an http agent that handles
+     * routing through a proxy server - depending upon the url and proxy environment variables.
+     * @param serverUrl  The server URL where the request will be sent. For example, https://api.github.com
+     */
+    getAgent(serverUrl) {
+      const parsedUrl = new URL(serverUrl);
+      return this._getAgent(parsedUrl);
+    }
+    getAgentDispatcher(serverUrl) {
+      const parsedUrl = new URL(serverUrl);
+      const proxyUrl = pm.getProxyUrl(parsedUrl);
+      const useProxy = proxyUrl && proxyUrl.hostname;
+      if (!useProxy) {
+        return;
+      }
+      return this._getProxyAgentDispatcher(parsedUrl, proxyUrl);
+    }
+    _prepareRequest(method, requestUrl, headers2) {
+      const info = {};
+      info.parsedUrl = requestUrl;
+      const usingSsl = info.parsedUrl.protocol === "https:";
+      info.httpModule = usingSsl ? https : http;
+      const defaultPort = usingSsl ? 443 : 80;
+      info.options = {};
+      info.options.host = info.parsedUrl.hostname;
+      info.options.port = info.parsedUrl.port ? parseInt(info.parsedUrl.port) : defaultPort;
+      info.options.path = (info.parsedUrl.pathname || "") + (info.parsedUrl.search || "");
+      info.options.method = method;
+      info.options.headers = this._mergeHeaders(headers2);
+      if (this.userAgent != null) {
+        info.options.headers["user-agent"] = this.userAgent;
+      }
+      info.options.agent = this._getAgent(info.parsedUrl);
+      if (this.handlers) {
+        for (const handler of this.handlers) {
+          handler.prepareRequest(info.options);
+        }
+      }
+      return info;
+    }
+    _mergeHeaders(headers2) {
+      if (this.requestOptions && this.requestOptions.headers) {
+        return Object.assign({}, lowercaseKeys(this.requestOptions.headers), lowercaseKeys(headers2 || {}));
+      }
+      return lowercaseKeys(headers2 || {});
+    }
+    /**
+     * Gets an existing header value or returns a default.
+     * Handles converting number header values to strings since HTTP headers must be strings.
+     * Note: This returns string | string[] since some headers can have multiple values.
+     * For headers that must always be a single string (like Content-Type), use the
+     * specialized _getExistingOrDefaultContentTypeHeader method instead.
+     */
+    _getExistingOrDefaultHeader(additionalHeaders, header, _default) {
+      let clientHeader;
+      if (this.requestOptions && this.requestOptions.headers) {
+        const headerValue = lowercaseKeys(this.requestOptions.headers)[header];
+        if (headerValue) {
+          clientHeader = typeof headerValue === "number" ? headerValue.toString() : headerValue;
+        }
+      }
+      const additionalValue = additionalHeaders[header];
+      if (additionalValue !== void 0) {
+        return typeof additionalValue === "number" ? additionalValue.toString() : additionalValue;
+      }
+      if (clientHeader !== void 0) {
+        return clientHeader;
+      }
+      return _default;
+    }
+    /**
+     * Specialized version of _getExistingOrDefaultHeader for Content-Type header.
+     * Always returns a single string (not an array) since Content-Type should be a single value.
+     * Converts arrays to comma-separated strings and numbers to strings to ensure type safety.
+     * This was split from _getExistingOrDefaultHeader to provide stricter typing for callers
+     * that assign the result to places expecting a string (e.g., additionalHeaders[Headers.ContentType]).
+     */
+    _getExistingOrDefaultContentTypeHeader(additionalHeaders, _default) {
+      let clientHeader;
+      if (this.requestOptions && this.requestOptions.headers) {
+        const headerValue = lowercaseKeys(this.requestOptions.headers)[Headers.ContentType];
+        if (headerValue) {
+          if (typeof headerValue === "number") {
+            clientHeader = String(headerValue);
+          } else if (Array.isArray(headerValue)) {
+            clientHeader = headerValue.join(", ");
+          } else {
+            clientHeader = headerValue;
+          }
+        }
+      }
+      const additionalValue = additionalHeaders[Headers.ContentType];
+      if (additionalValue !== void 0) {
+        if (typeof additionalValue === "number") {
+          return String(additionalValue);
+        } else if (Array.isArray(additionalValue)) {
+          return additionalValue.join(", ");
+        } else {
+          return additionalValue;
+        }
+      }
+      if (clientHeader !== void 0) {
+        return clientHeader;
+      }
+      return _default;
+    }
+    _getAgent(parsedUrl) {
+      let agent2;
+      const proxyUrl = pm.getProxyUrl(parsedUrl);
+      const useProxy = proxyUrl && proxyUrl.hostname;
+      if (this._keepAlive && useProxy) {
+        agent2 = this._proxyAgent;
+      }
+      if (!useProxy) {
+        agent2 = this._agent;
+      }
+      if (agent2) {
+        return agent2;
+      }
+      const usingSsl = parsedUrl.protocol === "https:";
+      let maxSockets = 100;
+      if (this.requestOptions) {
+        maxSockets = this.requestOptions.maxSockets || http.globalAgent.maxSockets;
+      }
+      if (proxyUrl && proxyUrl.hostname) {
+        const agentOptions = {
+          maxSockets,
+          keepAlive: this._keepAlive,
+          proxy: Object.assign(Object.assign({}, (proxyUrl.username || proxyUrl.password) && {
+            proxyAuth: `${proxyUrl.username}:${proxyUrl.password}`
+          }), { host: proxyUrl.hostname, port: proxyUrl.port })
+        };
+        let tunnelAgent;
+        const overHttps = proxyUrl.protocol === "https:";
+        if (usingSsl) {
+          tunnelAgent = overHttps ? tunnel2.httpsOverHttps : tunnel2.httpsOverHttp;
+        } else {
+          tunnelAgent = overHttps ? tunnel2.httpOverHttps : tunnel2.httpOverHttp;
+        }
+        agent2 = tunnelAgent(agentOptions);
+        this._proxyAgent = agent2;
+      }
+      if (!agent2) {
+        const options2 = { keepAlive: this._keepAlive, maxSockets };
+        agent2 = usingSsl ? new https.Agent(options2) : new http.Agent(options2);
+        this._agent = agent2;
+      }
+      if (usingSsl && this._ignoreSslError) {
+        agent2.options = Object.assign(agent2.options || {}, {
+          rejectUnauthorized: false
+        });
+      }
+      return agent2;
+    }
+    _getProxyAgentDispatcher(parsedUrl, proxyUrl) {
+      let proxyAgent2;
+      if (this._keepAlive) {
+        proxyAgent2 = this._proxyAgentDispatcher;
+      }
+      if (proxyAgent2) {
+        return proxyAgent2;
+      }
+      const usingSsl = parsedUrl.protocol === "https:";
+      proxyAgent2 = new undici_1.ProxyAgent(Object.assign({ uri: proxyUrl.href, pipelining: !this._keepAlive ? 0 : 1 }, (proxyUrl.username || proxyUrl.password) && {
+        token: `Basic ${Buffer.from(`${proxyUrl.username}:${proxyUrl.password}`).toString("base64")}`
+      }));
+      this._proxyAgentDispatcher = proxyAgent2;
+      if (usingSsl && this._ignoreSslError) {
+        proxyAgent2.options = Object.assign(proxyAgent2.options.requestTls || {}, {
+          rejectUnauthorized: false
+        });
+      }
+      return proxyAgent2;
+    }
+    _performExponentialBackoff(retryNumber) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        retryNumber = Math.min(ExponentialBackoffCeiling, retryNumber);
+        const ms2 = ExponentialBackoffTimeSlice * Math.pow(2, retryNumber);
+        return new Promise((resolve) => setTimeout(() => resolve(), ms2));
+      });
+    }
+    _processResponse(res, options2) {
+      return __awaiter2(this, void 0, void 0, function* () {
+        return new Promise((resolve, reject) => __awaiter2(this, void 0, void 0, function* () {
+          const statusCode = res.message.statusCode || 0;
+          const response2 = {
+            statusCode,
+            result: null,
+            headers: {}
+          };
+          if (statusCode === HttpCodes.NotFound) {
+            resolve(response2);
+          }
+          function dateTimeDeserializer(key, value) {
+            if (typeof value === "string") {
+              const a = new Date(value);
+              if (!isNaN(a.valueOf())) {
+                return a;
+              }
+            }
+            return value;
+          }
+          let obj;
+          let contents;
+          try {
+            contents = yield res.readBody();
+            if (contents && contents.length > 0) {
+              if (options2 && options2.deserializeDates) {
+                obj = JSON.parse(contents, dateTimeDeserializer);
+              } else {
+                obj = JSON.parse(contents);
+              }
+              response2.result = obj;
+            }
+            response2.headers = res.message.headers;
+          } catch (err) {
+          }
+          if (statusCode > 299) {
+            let msg;
+            if (obj && obj.message) {
+              msg = obj.message;
+            } else if (contents && contents.length > 0) {
+              msg = contents;
+            } else {
+              msg = `Failed request: (${statusCode})`;
+            }
+            const err = new HttpClientError(msg, statusCode);
+            err.result = response2.result;
+            reject(err);
+          } else {
+            resolve(response2);
+          }
+        }));
+      });
+    }
+  }
+  lib.HttpClient = HttpClient;
+  const lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => (c[k.toLowerCase()] = obj[k], c), {});
+  return lib;
+}
+var auth = {};
+var hasRequiredAuth;
+function requireAuth() {
+  if (hasRequiredAuth) return auth;
+  hasRequiredAuth = 1;
+  var __awaiter2 = auth && auth.__awaiter || function(thisArg, _arguments, P, generator) {
+    function adopt(value) {
+      return value instanceof P ? value : new P(function(resolve) {
+        resolve(value);
+      });
+    }
+    return new (P || (P = Promise))(function(resolve, reject) {
+      function fulfilled(value) {
+        try {
+          step(generator.next(value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function rejected(value) {
+        try {
+          step(generator["throw"](value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function step(result) {
+        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+      }
+      step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+  };
+  Object.defineProperty(auth, "__esModule", { value: true });
+  auth.PersonalAccessTokenCredentialHandler = auth.BearerCredentialHandler = auth.BasicCredentialHandler = void 0;
+  class BasicCredentialHandler {
+    constructor(username, password) {
+      this.username = username;
+      this.password = password;
+    }
+    prepareRequest(options2) {
+      if (!options2.headers) {
+        throw Error("The request has no headers");
+      }
+      options2.headers["Authorization"] = `Basic ${Buffer.from(`${this.username}:${this.password}`).toString("base64")}`;
+    }
+    // This handler cannot handle 401
+    canHandleAuthentication() {
+      return false;
+    }
+    handleAuthentication() {
+      return __awaiter2(this, void 0, void 0, function* () {
+        throw new Error("not implemented");
+      });
+    }
+  }
+  auth.BasicCredentialHandler = BasicCredentialHandler;
+  class BearerCredentialHandler {
+    constructor(token) {
+      this.token = token;
+    }
+    // currently implements pre-authorization
+    // TODO: support preAuth = false where it hooks on 401
+    prepareRequest(options2) {
+      if (!options2.headers) {
+        throw Error("The request has no headers");
+      }
+      options2.headers["Authorization"] = `Bearer ${this.token}`;
+    }
+    // This handler cannot handle 401
+    canHandleAuthentication() {
+      return false;
+    }
+    handleAuthentication() {
+      return __awaiter2(this, void 0, void 0, function* () {
+        throw new Error("not implemented");
+      });
+    }
+  }
+  auth.BearerCredentialHandler = BearerCredentialHandler;
+  class PersonalAccessTokenCredentialHandler {
+    constructor(token) {
+      this.token = token;
+    }
+    // currently implements pre-authorization
+    // TODO: support preAuth = false where it hooks on 401
+    prepareRequest(options2) {
+      if (!options2.headers) {
+        throw Error("The request has no headers");
+      }
+      options2.headers["Authorization"] = `Basic ${Buffer.from(`PAT:${this.token}`).toString("base64")}`;
+    }
+    // This handler cannot handle 401
+    canHandleAuthentication() {
+      return false;
+    }
+    handleAuthentication() {
+      return __awaiter2(this, void 0, void 0, function* () {
+        throw new Error("not implemented");
+      });
+    }
+  }
+  auth.PersonalAccessTokenCredentialHandler = PersonalAccessTokenCredentialHandler;
+  return auth;
+}
 var uploadUtils = {};
 var commonjs$c = {};
 var extendStatics = function(d, b) {
@@ -26699,7 +27575,7 @@ function requireLog$5() {
   const tslib_1 = require$$0$2;
   const node_os_1 = require$$1__default;
   const node_util_1 = tslib_1.__importDefault(require$$1$5);
-  const node_process_1 = tslib_1.__importDefault(require$$2$3);
+  const node_process_1 = tslib_1.__importDefault(require$$2$2);
   function log2(message, ...args) {
     node_process_1.default.stderr.write(`${node_util_1.default.format(message, ...args)}${node_os_1.EOL}`);
   }
@@ -27641,9 +28517,9 @@ function requireNodeHttpClient() {
   nodeHttpClient.createNodeHttpClient = createNodeHttpClient;
   const tslib_1 = require$$0$2;
   const node_http_1 = tslib_1.__importDefault(require$$1$8);
-  const node_https_1 = tslib_1.__importDefault(require$$2$4);
+  const node_https_1 = tslib_1.__importDefault(require$$2$3);
   const node_zlib_1 = tslib_1.__importDefault(require$$3$1);
-  const node_stream_1 = require$$0$b;
+  const node_stream_1 = require$$0$c;
   const AbortError_js_1 = /* @__PURE__ */ requireAbortError$1();
   const httpHeaders_js_1 = /* @__PURE__ */ requireHttpHeaders$1();
   const restError_js_1 = /* @__PURE__ */ requireRestError$2();
@@ -28045,7 +28921,7 @@ function requireUserAgentPlatform$1() {
   userAgentPlatform$1.setPlatformSpecificData = setPlatformSpecificData;
   const tslib_1 = require$$0$2;
   const node_os_1 = tslib_1.__importDefault(require$$1__default);
-  const node_process_1 = tslib_1.__importDefault(require$$2$3);
+  const node_process_1 = tslib_1.__importDefault(require$$2$2);
   function getHeaderName() {
     return "User-Agent";
   }
@@ -29158,7 +30034,7 @@ function requireNode() {
   hasRequiredNode = 1;
   (function(module, exports$1) {
     const tty = require$$1$9;
-    const util2 = require$$0$5;
+    const util2 = require$$0$6;
     exports$1.init = init;
     exports$1.log = log2;
     exports$1.formatArgs = formatArgs;
@@ -29374,7 +30250,7 @@ function requireHelpers() {
   };
   Object.defineProperty(helpers, "__esModule", { value: true });
   helpers.req = helpers.json = helpers.toBuffer = void 0;
-  const http = __importStar2(require$$2);
+  const http = __importStar2(require$$0$5);
   const https = __importStar2(require$$1$3);
   async function toBuffer(stream) {
     let length = 0;
@@ -29447,8 +30323,8 @@ function requireDist$2() {
     };
     Object.defineProperty(exports$1, "__esModule", { value: true });
     exports$1.Agent = void 0;
-    const net = __importStar2(require$$0$8);
-    const http = __importStar2(require$$2);
+    const net = __importStar2(require$$0$9);
+    const http = __importStar2(require$$0$5);
     const https_1 = require$$1$3;
     __exportStar2(/* @__PURE__ */ requireHelpers(), exports$1);
     const INTERNAL = /* @__PURE__ */ Symbol("AgentBaseInternalState");
@@ -29699,9 +30575,9 @@ function requireDist$1() {
   };
   Object.defineProperty(dist$2, "__esModule", { value: true });
   dist$2.HttpsProxyAgent = void 0;
-  const net = __importStar2(require$$0$8);
+  const net = __importStar2(require$$0$9);
   const tls = __importStar2(require$$1$4);
-  const assert_1 = __importDefault2(require$$0$7);
+  const assert_1 = __importDefault2(require$$0$8);
   const debug_1 = __importDefault2(/* @__PURE__ */ requireSrc$1());
   const agent_base_1 = /* @__PURE__ */ requireDist$2();
   const url_1 = require$$5$1;
@@ -29849,10 +30725,10 @@ function requireDist() {
   };
   Object.defineProperty(dist, "__esModule", { value: true });
   dist.HttpProxyAgent = void 0;
-  const net = __importStar2(require$$0$8);
+  const net = __importStar2(require$$0$9);
   const tls = __importStar2(require$$1$4);
   const debug_1 = __importDefault2(/* @__PURE__ */ requireSrc$1());
-  const events_1 = require$$0$6;
+  const events_1 = require$$0$7;
   const agent_base_1 = /* @__PURE__ */ requireDist$2();
   const url_1 = require$$5$1;
   const debug2 = (0, debug_1.default)("http-proxy-agent");
@@ -30178,7 +31054,7 @@ function requireConcat() {
   hasRequiredConcat = 1;
   Object.defineProperty(concat, "__esModule", { value: true });
   concat.concat = concat$1;
-  const stream_1 = require$$0$9;
+  const stream_1 = require$$0$a;
   const typeGuards_js_1 = /* @__PURE__ */ requireTypeGuards$1();
   async function* streamAsyncIterator() {
     const reader = this.getReader();
@@ -31522,7 +32398,7 @@ function requireUserAgentPlatform() {
   userAgentPlatform.setPlatformSpecificData = setPlatformSpecificData;
   const tslib_1 = require$$0$2;
   const node_os_1 = tslib_1.__importDefault(require$$1__default);
-  const node_process_1 = tslib_1.__importDefault(require$$2$3);
+  const node_process_1 = tslib_1.__importDefault(require$$2$2);
   function getHeaderName() {
     return "User-Agent";
   }
@@ -31620,7 +32496,7 @@ function requireSha256() {
   Object.defineProperty(sha256, "__esModule", { value: true });
   sha256.computeSha256Hmac = computeSha256Hmac;
   sha256.computeSha256Hash = computeSha256Hash;
-  const node_crypto_1 = require$$0$f;
+  const node_crypto_1 = require$$0$g;
   async function computeSha256Hmac(key, stringToSign, encoding2) {
     const decodedKey = Buffer.from(key, "base64");
     return (0, node_crypto_1.createHmac)("sha256", decodedKey).update(stringToSign).digest(encoding2);
@@ -38596,7 +39472,7 @@ function requireStorageSharedKeyCredential$1() {
   hasRequiredStorageSharedKeyCredential$1 = 1;
   Object.defineProperty(StorageSharedKeyCredential$1, "__esModule", { value: true });
   StorageSharedKeyCredential$1.StorageSharedKeyCredential = void 0;
-  const node_crypto_1 = require$$0$f;
+  const node_crypto_1 = require$$0$g;
   const StorageSharedKeyCredentialPolicy_js_1 = /* @__PURE__ */ requireStorageSharedKeyCredentialPolicy$1();
   const Credential_js_1 = /* @__PURE__ */ requireCredential$1();
   class StorageSharedKeyCredential2 extends Credential_js_1.Credential {
@@ -38695,7 +39571,7 @@ function requireBuffersStream() {
   hasRequiredBuffersStream = 1;
   Object.defineProperty(BuffersStream, "__esModule", { value: true });
   BuffersStream.BuffersStream = void 0;
-  const node_stream_1 = require$$0$b;
+  const node_stream_1 = require$$0$c;
   let BuffersStream$1 = class BuffersStream extends node_stream_1.Readable {
     buffers;
     byteLength;
@@ -38789,7 +39665,7 @@ function requirePooledBuffer() {
   PooledBuffer.PooledBuffer = void 0;
   const tslib_1 = require$$0$2;
   const BuffersStream_js_1 = /* @__PURE__ */ requireBuffersStream();
-  const node_buffer_1 = tslib_1.__importDefault(require$$2$5);
+  const node_buffer_1 = tslib_1.__importDefault(require$$2$4);
   const maxBufferLength = node_buffer_1.default.constants.MAX_LENGTH;
   let PooledBuffer$1 = class PooledBuffer {
     /**
@@ -38876,7 +39752,7 @@ function requireBufferScheduler() {
   hasRequiredBufferScheduler = 1;
   Object.defineProperty(BufferScheduler, "__esModule", { value: true });
   BufferScheduler.BufferScheduler = void 0;
-  const events_1 = require$$0$6;
+  const events_1 = require$$0$7;
   const PooledBuffer_js_1 = /* @__PURE__ */ requirePooledBuffer();
   let BufferScheduler$1 = class BufferScheduler {
     /**
@@ -40330,7 +41206,7 @@ function requireStorageSharedKeyCredential() {
   hasRequiredStorageSharedKeyCredential = 1;
   Object.defineProperty(StorageSharedKeyCredential, "__esModule", { value: true });
   StorageSharedKeyCredential.StorageSharedKeyCredential = void 0;
-  const node_crypto_1 = require$$0$f;
+  const node_crypto_1 = require$$0$g;
   const StorageSharedKeyCredentialPolicy_js_1 = /* @__PURE__ */ requireStorageSharedKeyCredentialPolicy();
   const Credential_js_1 = /* @__PURE__ */ requireCredential();
   let StorageSharedKeyCredential$12 = class StorageSharedKeyCredential extends Credential_js_1.Credential {
@@ -40847,7 +41723,7 @@ function requireStorageSharedKeyCredentialPolicyV2$1() {
     Object.defineProperty(exports$1, "__esModule", { value: true });
     exports$1.storageSharedKeyCredentialPolicyName = void 0;
     exports$1.storageSharedKeyCredentialPolicy = storageSharedKeyCredentialPolicy;
-    const node_crypto_1 = require$$0$f;
+    const node_crypto_1 = require$$0$g;
     const constants_js_1 = /* @__PURE__ */ requireConstants$1();
     const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
     const SharedKeyComparator_js_1 = /* @__PURE__ */ requireSharedKeyComparator();
@@ -41203,7 +42079,7 @@ function requireStorageSharedKeyCredentialPolicyV2() {
     Object.defineProperty(exports$1, "__esModule", { value: true });
     exports$1.storageSharedKeyCredentialPolicyName = void 0;
     exports$1.storageSharedKeyCredentialPolicy = storageSharedKeyCredentialPolicy;
-    const node_crypto_1 = require$$0$f;
+    const node_crypto_1 = require$$0$g;
     const constants_js_1 = /* @__PURE__ */ requireConstants$2();
     const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
     const SharedKeyComparator_js_1 = /* @__PURE__ */ requireSharedKeyComparator$1();
@@ -55557,7 +56433,7 @@ function requireUserDelegationKeyCredential() {
   hasRequiredUserDelegationKeyCredential = 1;
   Object.defineProperty(UserDelegationKeyCredential, "__esModule", { value: true });
   UserDelegationKeyCredential.UserDelegationKeyCredential = void 0;
-  const node_crypto_1 = require$$0$f;
+  const node_crypto_1 = require$$0$g;
   let UserDelegationKeyCredential$1 = class UserDelegationKeyCredential {
     /**
      * Azure Storage account name; readonly.
@@ -56616,7 +57492,7 @@ function requireRetriableReadableStream() {
   Object.defineProperty(RetriableReadableStream, "__esModule", { value: true });
   RetriableReadableStream.RetriableReadableStream = void 0;
   const abort_controller_1 = /* @__PURE__ */ requireCommonjs$a();
-  const node_stream_1 = require$$0$b;
+  const node_stream_1 = require$$0$c;
   let RetriableReadableStream$1 = class RetriableReadableStream extends node_stream_1.Readable {
     start;
     offset;
@@ -57775,7 +58651,7 @@ function requireBlobQuickQueryStream() {
   hasRequiredBlobQuickQueryStream = 1;
   Object.defineProperty(BlobQuickQueryStream, "__esModule", { value: true });
   BlobQuickQueryStream.BlobQuickQueryStream = void 0;
-  const node_stream_1 = require$$0$b;
+  const node_stream_1 = require$$0$c;
   const index_js_1 = /* @__PURE__ */ requireInternalAvro();
   let BlobQuickQueryStream$1 = class BlobQuickQueryStream extends node_stream_1.Readable {
     source;
@@ -59631,7 +60507,7 @@ function requireBatch() {
   hasRequiredBatch = 1;
   Object.defineProperty(Batch, "__esModule", { value: true });
   Batch.Batch = void 0;
-  const events_1 = require$$0$6;
+  const events_1 = require$$0$7;
   var BatchStates;
   (function(BatchStates2) {
     BatchStates2[BatchStates2["Good"] = 0] = "Good";
@@ -65978,7 +66854,7 @@ function requireRequestUtils() {
   requestUtils.retryTypedResponse = retryTypedResponse;
   requestUtils.retryHttpClientResponse = retryHttpClientResponse;
   const core2 = __importStar2(/* @__PURE__ */ requireCore$1());
-  const http_client_1 = /* @__PURE__ */ requireLib$1();
+  const http_client_1 = /* @__PURE__ */ requireLib();
   const constants_1 = /* @__PURE__ */ requireConstants$5();
   function isSuccessStatusCode(statusCode) {
     if (!statusCode) {
@@ -66292,12 +67168,12 @@ function requireDownloadUtils() {
   downloadUtils.downloadCacheHttpClientConcurrent = downloadCacheHttpClientConcurrent;
   downloadUtils.downloadCacheStorageSDK = downloadCacheStorageSDK;
   const core2 = __importStar2(/* @__PURE__ */ requireCore$1());
-  const http_client_1 = /* @__PURE__ */ requireLib$1();
+  const http_client_1 = /* @__PURE__ */ requireLib();
   const storage_blob_1 = /* @__PURE__ */ requireCommonjs();
   const buffer = __importStar2(require$$7);
   const fs = __importStar2(require$$1$2);
-  const stream = __importStar2(require$$0$9);
-  const util2 = __importStar2(require$$0$5);
+  const stream = __importStar2(require$$0$a);
+  const util2 = __importStar2(require$$0$6);
   const utils2 = __importStar2(/* @__PURE__ */ requireCacheUtils());
   const constants_1 = /* @__PURE__ */ requireConstants$5();
   const requestUtils_1 = /* @__PURE__ */ requireRequestUtils();
@@ -66826,8 +67702,8 @@ function requireCacheHttpClient() {
   cacheHttpClient.reserveCache = reserveCache;
   cacheHttpClient.saveCache = saveCache;
   const core2 = __importStar2(/* @__PURE__ */ requireCore$1());
-  const http_client_1 = /* @__PURE__ */ requireLib$1();
-  const auth_1 = /* @__PURE__ */ requireAuth$1();
+  const http_client_1 = /* @__PURE__ */ requireLib();
+  const auth_1 = /* @__PURE__ */ requireAuth();
   const fs = __importStar2(require$$1$2);
   const url_1 = require$$5$1;
   const utils2 = __importStar2(/* @__PURE__ */ requireCacheUtils());
@@ -71336,8 +72212,8 @@ function requireCacheTwirpClient() {
   const errors_1 = /* @__PURE__ */ requireErrors();
   const config_1 = /* @__PURE__ */ requireConfig();
   const cacheUtils_1 = /* @__PURE__ */ requireCacheUtils();
-  const auth_1 = /* @__PURE__ */ requireAuth$1();
-  const http_client_1 = /* @__PURE__ */ requireLib$1();
+  const auth_1 = /* @__PURE__ */ requireAuth();
+  const http_client_1 = /* @__PURE__ */ requireLib();
   const cache_twirp_client_1 = /* @__PURE__ */ requireCache_twirpClient();
   const util_1 = /* @__PURE__ */ requireUtil();
   class CacheServiceClient {
@@ -71803,7 +72679,7 @@ function requireCache() {
   const cacheTwirpClient2 = __importStar2(/* @__PURE__ */ requireCacheTwirpClient());
   const config_1 = /* @__PURE__ */ requireConfig();
   const tar_1 = /* @__PURE__ */ requireTar();
-  const http_client_1 = /* @__PURE__ */ requireLib$1();
+  const http_client_1 = /* @__PURE__ */ requireLib();
   class ValidationError extends Error {
     constructor(message) {
       super(message);
@@ -72162,7 +73038,7 @@ function requireCache() {
 }
 var cacheExports = /* @__PURE__ */ requireCache();
 var ioExports = /* @__PURE__ */ requireIo$1();
-var libExports = /* @__PURE__ */ requireLib$1();
+var libExports = /* @__PURE__ */ requireLib();
 async function resolveVersion(crate) {
   const url = `https://crates.io/api/v1/crates/${crate}`;
   const client2 = new libExports.HttpClient("@actions-rs-plus (https://github.com/actions-rs-plus/)");
