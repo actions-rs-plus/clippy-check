@@ -36918,1782 +36918,6 @@ function requireLog$1() {
   log$1.logger = (0, logger_1.createClientLogger)("storage-blob");
   return log$1;
 }
-var StorageRetryPolicyFactory$1 = {};
-var StorageRetryPolicy$1 = {};
-var RequestPolicy$1 = {};
-var hasRequiredRequestPolicy$1;
-function requireRequestPolicy$1() {
-  if (hasRequiredRequestPolicy$1) return RequestPolicy$1;
-  hasRequiredRequestPolicy$1 = 1;
-  Object.defineProperty(RequestPolicy$1, "__esModule", { value: true });
-  RequestPolicy$1.BaseRequestPolicy = void 0;
-  class BaseRequestPolicy {
-    _nextPolicy;
-    _options;
-    /**
-     * The main method to implement that manipulates a request/response.
-     */
-    constructor(_nextPolicy, _options) {
-      this._nextPolicy = _nextPolicy;
-      this._options = _options;
-    }
-    /**
-     * Get whether or not a log with the provided log level should be logged.
-     * @param logLevel - The log level of the log that will be logged.
-     * @returns Whether or not a log with the provided log level should be logged.
-     */
-    shouldLog(logLevel) {
-      return this._options.shouldLog(logLevel);
-    }
-    /**
-     * Attempt to log the provided message to the provided logger. If no logger was provided or if
-     * the log level does not meat the logger's threshold, then nothing will be logged.
-     * @param logLevel - The log level of this log.
-     * @param message - The message of this log.
-     */
-    log(logLevel, message) {
-      this._options.log(logLevel, message);
-    }
-  }
-  RequestPolicy$1.BaseRequestPolicy = BaseRequestPolicy;
-  return RequestPolicy$1;
-}
-var constants$2 = {};
-var hasRequiredConstants$2;
-function requireConstants$2() {
-  if (hasRequiredConstants$2) return constants$2;
-  hasRequiredConstants$2 = 1;
-  (function(exports$1) {
-    Object.defineProperty(exports$1, "__esModule", { value: true });
-    exports$1.PathStylePorts = exports$1.BlobDoesNotUseCustomerSpecifiedEncryption = exports$1.BlobUsesCustomerSpecifiedEncryptionMsg = exports$1.StorageBlobLoggingAllowedQueryParameters = exports$1.StorageBlobLoggingAllowedHeaderNames = exports$1.DevelopmentConnectionString = exports$1.EncryptionAlgorithmAES25 = exports$1.HTTP_VERSION_1_1 = exports$1.HTTP_LINE_ENDING = exports$1.BATCH_MAX_PAYLOAD_IN_BYTES = exports$1.BATCH_MAX_REQUEST = exports$1.SIZE_1_MB = exports$1.ETagAny = exports$1.ETagNone = exports$1.HeaderConstants = exports$1.HTTPURLConnection = exports$1.URLConstants = exports$1.StorageOAuthScopes = exports$1.REQUEST_TIMEOUT = exports$1.DEFAULT_MAX_DOWNLOAD_RETRY_REQUESTS = exports$1.DEFAULT_BLOB_DOWNLOAD_BLOCK_BYTES = exports$1.DEFAULT_BLOCK_BUFFER_SIZE_BYTES = exports$1.BLOCK_BLOB_MAX_BLOCKS = exports$1.BLOCK_BLOB_MAX_STAGE_BLOCK_BYTES = exports$1.BLOCK_BLOB_MAX_UPLOAD_BLOB_BYTES = exports$1.SERVICE_VERSION = exports$1.SDK_VERSION = void 0;
-    exports$1.SDK_VERSION = "12.29.1";
-    exports$1.SERVICE_VERSION = "2025-11-05";
-    exports$1.BLOCK_BLOB_MAX_UPLOAD_BLOB_BYTES = 256 * 1024 * 1024;
-    exports$1.BLOCK_BLOB_MAX_STAGE_BLOCK_BYTES = 4e3 * 1024 * 1024;
-    exports$1.BLOCK_BLOB_MAX_BLOCKS = 5e4;
-    exports$1.DEFAULT_BLOCK_BUFFER_SIZE_BYTES = 8 * 1024 * 1024;
-    exports$1.DEFAULT_BLOB_DOWNLOAD_BLOCK_BYTES = 4 * 1024 * 1024;
-    exports$1.DEFAULT_MAX_DOWNLOAD_RETRY_REQUESTS = 5;
-    exports$1.REQUEST_TIMEOUT = 100 * 1e3;
-    exports$1.StorageOAuthScopes = "https://storage.azure.com/.default";
-    exports$1.URLConstants = {
-      Parameters: {
-        FORCE_BROWSER_NO_CACHE: "_",
-        SIGNATURE: "sig",
-        SNAPSHOT: "snapshot",
-        VERSIONID: "versionid",
-        TIMEOUT: "timeout"
-      }
-    };
-    exports$1.HTTPURLConnection = {
-      HTTP_ACCEPTED: 202,
-      HTTP_CONFLICT: 409,
-      HTTP_NOT_FOUND: 404,
-      HTTP_PRECON_FAILED: 412,
-      HTTP_RANGE_NOT_SATISFIABLE: 416
-    };
-    exports$1.HeaderConstants = {
-      AUTHORIZATION: "Authorization",
-      AUTHORIZATION_SCHEME: "Bearer",
-      CONTENT_ENCODING: "Content-Encoding",
-      CONTENT_ID: "Content-ID",
-      CONTENT_LANGUAGE: "Content-Language",
-      CONTENT_LENGTH: "Content-Length",
-      CONTENT_MD5: "Content-Md5",
-      CONTENT_TRANSFER_ENCODING: "Content-Transfer-Encoding",
-      CONTENT_TYPE: "Content-Type",
-      COOKIE: "Cookie",
-      DATE: "date",
-      IF_MATCH: "if-match",
-      IF_MODIFIED_SINCE: "if-modified-since",
-      IF_NONE_MATCH: "if-none-match",
-      IF_UNMODIFIED_SINCE: "if-unmodified-since",
-      PREFIX_FOR_STORAGE: "x-ms-",
-      RANGE: "Range",
-      USER_AGENT: "User-Agent",
-      X_MS_CLIENT_REQUEST_ID: "x-ms-client-request-id",
-      X_MS_COPY_SOURCE: "x-ms-copy-source",
-      X_MS_DATE: "x-ms-date",
-      X_MS_ERROR_CODE: "x-ms-error-code",
-      X_MS_VERSION: "x-ms-version",
-      X_MS_CopySourceErrorCode: "x-ms-copy-source-error-code"
-    };
-    exports$1.ETagNone = "";
-    exports$1.ETagAny = "*";
-    exports$1.SIZE_1_MB = 1 * 1024 * 1024;
-    exports$1.BATCH_MAX_REQUEST = 256;
-    exports$1.BATCH_MAX_PAYLOAD_IN_BYTES = 4 * exports$1.SIZE_1_MB;
-    exports$1.HTTP_LINE_ENDING = "\r\n";
-    exports$1.HTTP_VERSION_1_1 = "HTTP/1.1";
-    exports$1.EncryptionAlgorithmAES25 = "AES256";
-    exports$1.DevelopmentConnectionString = `DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;`;
-    exports$1.StorageBlobLoggingAllowedHeaderNames = [
-      "Access-Control-Allow-Origin",
-      "Cache-Control",
-      "Content-Length",
-      "Content-Type",
-      "Date",
-      "Request-Id",
-      "traceparent",
-      "Transfer-Encoding",
-      "User-Agent",
-      "x-ms-client-request-id",
-      "x-ms-date",
-      "x-ms-error-code",
-      "x-ms-request-id",
-      "x-ms-return-client-request-id",
-      "x-ms-version",
-      "Accept-Ranges",
-      "Content-Disposition",
-      "Content-Encoding",
-      "Content-Language",
-      "Content-MD5",
-      "Content-Range",
-      "ETag",
-      "Last-Modified",
-      "Server",
-      "Vary",
-      "x-ms-content-crc64",
-      "x-ms-copy-action",
-      "x-ms-copy-completion-time",
-      "x-ms-copy-id",
-      "x-ms-copy-progress",
-      "x-ms-copy-status",
-      "x-ms-has-immutability-policy",
-      "x-ms-has-legal-hold",
-      "x-ms-lease-state",
-      "x-ms-lease-status",
-      "x-ms-range",
-      "x-ms-request-server-encrypted",
-      "x-ms-server-encrypted",
-      "x-ms-snapshot",
-      "x-ms-source-range",
-      "If-Match",
-      "If-Modified-Since",
-      "If-None-Match",
-      "If-Unmodified-Since",
-      "x-ms-access-tier",
-      "x-ms-access-tier-change-time",
-      "x-ms-access-tier-inferred",
-      "x-ms-account-kind",
-      "x-ms-archive-status",
-      "x-ms-blob-append-offset",
-      "x-ms-blob-cache-control",
-      "x-ms-blob-committed-block-count",
-      "x-ms-blob-condition-appendpos",
-      "x-ms-blob-condition-maxsize",
-      "x-ms-blob-content-disposition",
-      "x-ms-blob-content-encoding",
-      "x-ms-blob-content-language",
-      "x-ms-blob-content-length",
-      "x-ms-blob-content-md5",
-      "x-ms-blob-content-type",
-      "x-ms-blob-public-access",
-      "x-ms-blob-sequence-number",
-      "x-ms-blob-type",
-      "x-ms-copy-destination-snapshot",
-      "x-ms-creation-time",
-      "x-ms-default-encryption-scope",
-      "x-ms-delete-snapshots",
-      "x-ms-delete-type-permanent",
-      "x-ms-deny-encryption-scope-override",
-      "x-ms-encryption-algorithm",
-      "x-ms-if-sequence-number-eq",
-      "x-ms-if-sequence-number-le",
-      "x-ms-if-sequence-number-lt",
-      "x-ms-incremental-copy",
-      "x-ms-lease-action",
-      "x-ms-lease-break-period",
-      "x-ms-lease-duration",
-      "x-ms-lease-id",
-      "x-ms-lease-time",
-      "x-ms-page-write",
-      "x-ms-proposed-lease-id",
-      "x-ms-range-get-content-md5",
-      "x-ms-rehydrate-priority",
-      "x-ms-sequence-number-action",
-      "x-ms-sku-name",
-      "x-ms-source-content-md5",
-      "x-ms-source-if-match",
-      "x-ms-source-if-modified-since",
-      "x-ms-source-if-none-match",
-      "x-ms-source-if-unmodified-since",
-      "x-ms-tag-count",
-      "x-ms-encryption-key-sha256",
-      "x-ms-copy-source-error-code",
-      "x-ms-copy-source-status-code",
-      "x-ms-if-tags",
-      "x-ms-source-if-tags"
-    ];
-    exports$1.StorageBlobLoggingAllowedQueryParameters = [
-      "comp",
-      "maxresults",
-      "rscc",
-      "rscd",
-      "rsce",
-      "rscl",
-      "rsct",
-      "se",
-      "si",
-      "sip",
-      "sp",
-      "spr",
-      "sr",
-      "srt",
-      "ss",
-      "st",
-      "sv",
-      "include",
-      "marker",
-      "prefix",
-      "copyid",
-      "restype",
-      "blockid",
-      "blocklisttype",
-      "delimiter",
-      "prevsnapshot",
-      "ske",
-      "skoid",
-      "sks",
-      "skt",
-      "sktid",
-      "skv",
-      "snapshot"
-    ];
-    exports$1.BlobUsesCustomerSpecifiedEncryptionMsg = "BlobUsesCustomerSpecifiedEncryption";
-    exports$1.BlobDoesNotUseCustomerSpecifiedEncryption = "BlobDoesNotUseCustomerSpecifiedEncryption";
-    exports$1.PathStylePorts = [
-      "10000",
-      "10001",
-      "10002",
-      "10003",
-      "10004",
-      "10100",
-      "10101",
-      "10102",
-      "10103",
-      "10104",
-      "11000",
-      "11001",
-      "11002",
-      "11003",
-      "11004",
-      "11100",
-      "11101",
-      "11102",
-      "11103",
-      "11104"
-    ];
-  })(constants$2);
-  return constants$2;
-}
-var utils_common$2 = {};
-var hasRequiredUtils_common$2;
-function requireUtils_common$2() {
-  if (hasRequiredUtils_common$2) return utils_common$2;
-  hasRequiredUtils_common$2 = 1;
-  Object.defineProperty(utils_common$2, "__esModule", { value: true });
-  utils_common$2.escapeURLPath = escapeURLPath;
-  utils_common$2.getValueInConnString = getValueInConnString;
-  utils_common$2.extractConnectionStringParts = extractConnectionStringParts;
-  utils_common$2.appendToURLPath = appendToURLPath;
-  utils_common$2.setURLParameter = setURLParameter;
-  utils_common$2.getURLParameter = getURLParameter;
-  utils_common$2.setURLHost = setURLHost;
-  utils_common$2.getURLPath = getURLPath;
-  utils_common$2.getURLScheme = getURLScheme;
-  utils_common$2.getURLPathAndQuery = getURLPathAndQuery;
-  utils_common$2.getURLQueries = getURLQueries;
-  utils_common$2.appendToURLQuery = appendToURLQuery;
-  utils_common$2.truncatedISO8061Date = truncatedISO8061Date;
-  utils_common$2.base64encode = base64encode2;
-  utils_common$2.base64decode = base64decode2;
-  utils_common$2.generateBlockID = generateBlockID;
-  utils_common$2.delay = delay2;
-  utils_common$2.padStart = padStart;
-  utils_common$2.sanitizeURL = sanitizeURL;
-  utils_common$2.sanitizeHeaders = sanitizeHeaders;
-  utils_common$2.iEqual = iEqual;
-  utils_common$2.getAccountNameFromUrl = getAccountNameFromUrl;
-  utils_common$2.isIpEndpointStyle = isIpEndpointStyle;
-  utils_common$2.toBlobTagsString = toBlobTagsString;
-  utils_common$2.toBlobTags = toBlobTags;
-  utils_common$2.toTags = toTags;
-  utils_common$2.toQuerySerialization = toQuerySerialization;
-  utils_common$2.parseObjectReplicationRecord = parseObjectReplicationRecord;
-  utils_common$2.attachCredential = attachCredential;
-  utils_common$2.httpAuthorizationToString = httpAuthorizationToString;
-  utils_common$2.BlobNameToString = BlobNameToString;
-  utils_common$2.ConvertInternalResponseOfListBlobFlat = ConvertInternalResponseOfListBlobFlat;
-  utils_common$2.ConvertInternalResponseOfListBlobHierarchy = ConvertInternalResponseOfListBlobHierarchy;
-  utils_common$2.ExtractPageRangeInfoItems = ExtractPageRangeInfoItems;
-  utils_common$2.EscapePath = EscapePath;
-  utils_common$2.assertResponse = assertResponse;
-  const core_rest_pipeline_1 = /* @__PURE__ */ requireCommonjs$7();
-  const core_util_1 = /* @__PURE__ */ requireCommonjs$9();
-  const constants_js_1 = /* @__PURE__ */ requireConstants$2();
-  function escapeURLPath(url) {
-    const urlParsed = new URL(url);
-    let path2 = urlParsed.pathname;
-    path2 = path2 || "/";
-    path2 = escape(path2);
-    urlParsed.pathname = path2;
-    return urlParsed.toString();
-  }
-  function getProxyUriFromDevConnString(connectionString) {
-    let proxyUri = "";
-    if (connectionString.search("DevelopmentStorageProxyUri=") !== -1) {
-      const matchCredentials = connectionString.split(";");
-      for (const element of matchCredentials) {
-        if (element.trim().startsWith("DevelopmentStorageProxyUri=")) {
-          proxyUri = element.trim().match("DevelopmentStorageProxyUri=(.*)")[1];
-        }
-      }
-    }
-    return proxyUri;
-  }
-  function getValueInConnString(connectionString, argument) {
-    const elements = connectionString.split(";");
-    for (const element of elements) {
-      if (element.trim().startsWith(argument)) {
-        return element.trim().match(argument + "=(.*)")[1];
-      }
-    }
-    return "";
-  }
-  function extractConnectionStringParts(connectionString) {
-    let proxyUri = "";
-    if (connectionString.startsWith("UseDevelopmentStorage=true")) {
-      proxyUri = getProxyUriFromDevConnString(connectionString);
-      connectionString = constants_js_1.DevelopmentConnectionString;
-    }
-    let blobEndpoint = getValueInConnString(connectionString, "BlobEndpoint");
-    blobEndpoint = blobEndpoint.endsWith("/") ? blobEndpoint.slice(0, -1) : blobEndpoint;
-    if (connectionString.search("DefaultEndpointsProtocol=") !== -1 && connectionString.search("AccountKey=") !== -1) {
-      let defaultEndpointsProtocol = "";
-      let accountName = "";
-      let accountKey = Buffer.from("accountKey", "base64");
-      let endpointSuffix = "";
-      accountName = getValueInConnString(connectionString, "AccountName");
-      accountKey = Buffer.from(getValueInConnString(connectionString, "AccountKey"), "base64");
-      if (!blobEndpoint) {
-        defaultEndpointsProtocol = getValueInConnString(connectionString, "DefaultEndpointsProtocol");
-        const protocol = defaultEndpointsProtocol.toLowerCase();
-        if (protocol !== "https" && protocol !== "http") {
-          throw new Error("Invalid DefaultEndpointsProtocol in the provided Connection String. Expecting 'https' or 'http'");
-        }
-        endpointSuffix = getValueInConnString(connectionString, "EndpointSuffix");
-        if (!endpointSuffix) {
-          throw new Error("Invalid EndpointSuffix in the provided Connection String");
-        }
-        blobEndpoint = `${defaultEndpointsProtocol}://${accountName}.blob.${endpointSuffix}`;
-      }
-      if (!accountName) {
-        throw new Error("Invalid AccountName in the provided Connection String");
-      } else if (accountKey.length === 0) {
-        throw new Error("Invalid AccountKey in the provided Connection String");
-      }
-      return {
-        kind: "AccountConnString",
-        url: blobEndpoint,
-        accountName,
-        accountKey,
-        proxyUri
-      };
-    } else {
-      let accountSas = getValueInConnString(connectionString, "SharedAccessSignature");
-      let accountName = getValueInConnString(connectionString, "AccountName");
-      if (!accountName) {
-        accountName = getAccountNameFromUrl(blobEndpoint);
-      }
-      if (!blobEndpoint) {
-        throw new Error("Invalid BlobEndpoint in the provided SAS Connection String");
-      } else if (!accountSas) {
-        throw new Error("Invalid SharedAccessSignature in the provided SAS Connection String");
-      }
-      if (accountSas.startsWith("?")) {
-        accountSas = accountSas.substring(1);
-      }
-      return { kind: "SASConnString", url: blobEndpoint, accountName, accountSas };
-    }
-  }
-  function escape(text) {
-    return encodeURIComponent(text).replace(/%2F/g, "/").replace(/'/g, "%27").replace(/\+/g, "%20").replace(/%25/g, "%");
-  }
-  function appendToURLPath(url, name) {
-    const urlParsed = new URL(url);
-    let path2 = urlParsed.pathname;
-    path2 = path2 ? path2.endsWith("/") ? `${path2}${name}` : `${path2}/${name}` : name;
-    urlParsed.pathname = path2;
-    return urlParsed.toString();
-  }
-  function setURLParameter(url, name, value) {
-    const urlParsed = new URL(url);
-    const encodedName = encodeURIComponent(name);
-    const encodedValue = value ? encodeURIComponent(value) : void 0;
-    const searchString = urlParsed.search === "" ? "?" : urlParsed.search;
-    const searchPieces = [];
-    for (const pair of searchString.slice(1).split("&")) {
-      if (pair) {
-        const [key] = pair.split("=", 2);
-        if (key !== encodedName) {
-          searchPieces.push(pair);
-        }
-      }
-    }
-    if (encodedValue) {
-      searchPieces.push(`${encodedName}=${encodedValue}`);
-    }
-    urlParsed.search = searchPieces.length ? `?${searchPieces.join("&")}` : "";
-    return urlParsed.toString();
-  }
-  function getURLParameter(url, name) {
-    const urlParsed = new URL(url);
-    return urlParsed.searchParams.get(name) ?? void 0;
-  }
-  function setURLHost(url, host) {
-    const urlParsed = new URL(url);
-    urlParsed.hostname = host;
-    return urlParsed.toString();
-  }
-  function getURLPath(url) {
-    try {
-      const urlParsed = new URL(url);
-      return urlParsed.pathname;
-    } catch (e) {
-      return void 0;
-    }
-  }
-  function getURLScheme(url) {
-    try {
-      const urlParsed = new URL(url);
-      return urlParsed.protocol.endsWith(":") ? urlParsed.protocol.slice(0, -1) : urlParsed.protocol;
-    } catch (e) {
-      return void 0;
-    }
-  }
-  function getURLPathAndQuery(url) {
-    const urlParsed = new URL(url);
-    const pathString = urlParsed.pathname;
-    if (!pathString) {
-      throw new RangeError("Invalid url without valid path.");
-    }
-    let queryString = urlParsed.search || "";
-    queryString = queryString.trim();
-    if (queryString !== "") {
-      queryString = queryString.startsWith("?") ? queryString : `?${queryString}`;
-    }
-    return `${pathString}${queryString}`;
-  }
-  function getURLQueries(url) {
-    let queryString = new URL(url).search;
-    if (!queryString) {
-      return {};
-    }
-    queryString = queryString.trim();
-    queryString = queryString.startsWith("?") ? queryString.substring(1) : queryString;
-    let querySubStrings = queryString.split("&");
-    querySubStrings = querySubStrings.filter((value) => {
-      const indexOfEqual = value.indexOf("=");
-      const lastIndexOfEqual = value.lastIndexOf("=");
-      return indexOfEqual > 0 && indexOfEqual === lastIndexOfEqual && lastIndexOfEqual < value.length - 1;
-    });
-    const queries = {};
-    for (const querySubString of querySubStrings) {
-      const splitResults = querySubString.split("=");
-      const key = splitResults[0];
-      const value = splitResults[1];
-      queries[key] = value;
-    }
-    return queries;
-  }
-  function appendToURLQuery(url, queryParts) {
-    const urlParsed = new URL(url);
-    let query = urlParsed.search;
-    if (query) {
-      query += "&" + queryParts;
-    } else {
-      query = queryParts;
-    }
-    urlParsed.search = query;
-    return urlParsed.toString();
-  }
-  function truncatedISO8061Date(date, withMilliseconds = true) {
-    const dateString = date.toISOString();
-    return withMilliseconds ? dateString.substring(0, dateString.length - 1) + "0000Z" : dateString.substring(0, dateString.length - 5) + "Z";
-  }
-  function base64encode2(content) {
-    return !core_util_1.isNodeLike ? btoa(content) : Buffer.from(content).toString("base64");
-  }
-  function base64decode2(encodedString) {
-    return !core_util_1.isNodeLike ? atob(encodedString) : Buffer.from(encodedString, "base64").toString();
-  }
-  function generateBlockID(blockIDPrefix, blockIndex) {
-    const maxSourceStringLength = 48;
-    const maxBlockIndexLength = 6;
-    const maxAllowedBlockIDPrefixLength = maxSourceStringLength - maxBlockIndexLength;
-    if (blockIDPrefix.length > maxAllowedBlockIDPrefixLength) {
-      blockIDPrefix = blockIDPrefix.slice(0, maxAllowedBlockIDPrefixLength);
-    }
-    const res = blockIDPrefix + padStart(blockIndex.toString(), maxSourceStringLength - blockIDPrefix.length, "0");
-    return base64encode2(res);
-  }
-  async function delay2(timeInMs, aborter, abortError) {
-    return new Promise((resolve, reject) => {
-      let timeout;
-      const abortHandler = () => {
-        if (timeout !== void 0) {
-          clearTimeout(timeout);
-        }
-        reject(abortError);
-      };
-      const resolveHandler = () => {
-        if (aborter !== void 0) {
-          aborter.removeEventListener("abort", abortHandler);
-        }
-        resolve();
-      };
-      timeout = setTimeout(resolveHandler, timeInMs);
-      if (aborter !== void 0) {
-        aborter.addEventListener("abort", abortHandler);
-      }
-    });
-  }
-  function padStart(currentString, targetLength, padString = " ") {
-    if (String.prototype.padStart) {
-      return currentString.padStart(targetLength, padString);
-    }
-    padString = padString || " ";
-    if (currentString.length > targetLength) {
-      return currentString;
-    } else {
-      targetLength = targetLength - currentString.length;
-      if (targetLength > padString.length) {
-        padString += padString.repeat(targetLength / padString.length);
-      }
-      return padString.slice(0, targetLength) + currentString;
-    }
-  }
-  function sanitizeURL(url) {
-    let safeURL = url;
-    if (getURLParameter(safeURL, constants_js_1.URLConstants.Parameters.SIGNATURE)) {
-      safeURL = setURLParameter(safeURL, constants_js_1.URLConstants.Parameters.SIGNATURE, "*****");
-    }
-    return safeURL;
-  }
-  function sanitizeHeaders(originalHeader) {
-    const headers2 = (0, core_rest_pipeline_1.createHttpHeaders)();
-    for (const [name, value] of originalHeader) {
-      if (name.toLowerCase() === constants_js_1.HeaderConstants.AUTHORIZATION.toLowerCase()) {
-        headers2.set(name, "*****");
-      } else if (name.toLowerCase() === constants_js_1.HeaderConstants.X_MS_COPY_SOURCE) {
-        headers2.set(name, sanitizeURL(value));
-      } else {
-        headers2.set(name, value);
-      }
-    }
-    return headers2;
-  }
-  function iEqual(str1, str2) {
-    return str1.toLocaleLowerCase() === str2.toLocaleLowerCase();
-  }
-  function getAccountNameFromUrl(url) {
-    const parsedUrl = new URL(url);
-    let accountName;
-    try {
-      if (parsedUrl.hostname.split(".")[1] === "blob") {
-        accountName = parsedUrl.hostname.split(".")[0];
-      } else if (isIpEndpointStyle(parsedUrl)) {
-        accountName = parsedUrl.pathname.split("/")[1];
-      } else {
-        accountName = "";
-      }
-      return accountName;
-    } catch (error2) {
-      throw new Error("Unable to extract accountName with provided information.");
-    }
-  }
-  function isIpEndpointStyle(parsedUrl) {
-    const host = parsedUrl.host;
-    return /^.*:.*:.*$|^(localhost|host.docker.internal)(:[0-9]+)?$|^(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])(\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])){3}(:[0-9]+)?$/.test(host) || Boolean(parsedUrl.port) && constants_js_1.PathStylePorts.includes(parsedUrl.port);
-  }
-  function toBlobTagsString(tags) {
-    if (tags === void 0) {
-      return void 0;
-    }
-    const tagPairs = [];
-    for (const key in tags) {
-      if (Object.prototype.hasOwnProperty.call(tags, key)) {
-        const value = tags[key];
-        tagPairs.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
-      }
-    }
-    return tagPairs.join("&");
-  }
-  function toBlobTags(tags) {
-    if (tags === void 0) {
-      return void 0;
-    }
-    const res = {
-      blobTagSet: []
-    };
-    for (const key in tags) {
-      if (Object.prototype.hasOwnProperty.call(tags, key)) {
-        const value = tags[key];
-        res.blobTagSet.push({
-          key,
-          value
-        });
-      }
-    }
-    return res;
-  }
-  function toTags(tags) {
-    if (tags === void 0) {
-      return void 0;
-    }
-    const res = {};
-    for (const blobTag of tags.blobTagSet) {
-      res[blobTag.key] = blobTag.value;
-    }
-    return res;
-  }
-  function toQuerySerialization(textConfiguration) {
-    if (textConfiguration === void 0) {
-      return void 0;
-    }
-    switch (textConfiguration.kind) {
-      case "csv":
-        return {
-          format: {
-            type: "delimited",
-            delimitedTextConfiguration: {
-              columnSeparator: textConfiguration.columnSeparator || ",",
-              fieldQuote: textConfiguration.fieldQuote || "",
-              recordSeparator: textConfiguration.recordSeparator,
-              escapeChar: textConfiguration.escapeCharacter || "",
-              headersPresent: textConfiguration.hasHeaders || false
-            }
-          }
-        };
-      case "json":
-        return {
-          format: {
-            type: "json",
-            jsonTextConfiguration: {
-              recordSeparator: textConfiguration.recordSeparator
-            }
-          }
-        };
-      case "arrow":
-        return {
-          format: {
-            type: "arrow",
-            arrowConfiguration: {
-              schema: textConfiguration.schema
-            }
-          }
-        };
-      case "parquet":
-        return {
-          format: {
-            type: "parquet"
-          }
-        };
-      default:
-        throw Error("Invalid BlobQueryTextConfiguration.");
-    }
-  }
-  function parseObjectReplicationRecord(objectReplicationRecord) {
-    if (!objectReplicationRecord) {
-      return void 0;
-    }
-    if ("policy-id" in objectReplicationRecord) {
-      return void 0;
-    }
-    const orProperties = [];
-    for (const key in objectReplicationRecord) {
-      const ids = key.split("_");
-      const policyPrefix = "or-";
-      if (ids[0].startsWith(policyPrefix)) {
-        ids[0] = ids[0].substring(policyPrefix.length);
-      }
-      const rule = {
-        ruleId: ids[1],
-        replicationStatus: objectReplicationRecord[key]
-      };
-      const policyIndex = orProperties.findIndex((policy) => policy.policyId === ids[0]);
-      if (policyIndex > -1) {
-        orProperties[policyIndex].rules.push(rule);
-      } else {
-        orProperties.push({
-          policyId: ids[0],
-          rules: [rule]
-        });
-      }
-    }
-    return orProperties;
-  }
-  function attachCredential(thing, credential) {
-    thing.credential = credential;
-    return thing;
-  }
-  function httpAuthorizationToString(httpAuthorization) {
-    return httpAuthorization ? httpAuthorization.scheme + " " + httpAuthorization.value : void 0;
-  }
-  function BlobNameToString(name) {
-    if (name.encoded) {
-      return decodeURIComponent(name.content);
-    } else {
-      return name.content;
-    }
-  }
-  function ConvertInternalResponseOfListBlobFlat(internalResponse) {
-    return {
-      ...internalResponse,
-      segment: {
-        blobItems: internalResponse.segment.blobItems.map((blobItemInteral) => {
-          const blobItem = {
-            ...blobItemInteral,
-            name: BlobNameToString(blobItemInteral.name)
-          };
-          return blobItem;
-        })
-      }
-    };
-  }
-  function ConvertInternalResponseOfListBlobHierarchy(internalResponse) {
-    return {
-      ...internalResponse,
-      segment: {
-        blobPrefixes: internalResponse.segment.blobPrefixes?.map((blobPrefixInternal) => {
-          const blobPrefix = {
-            ...blobPrefixInternal,
-            name: BlobNameToString(blobPrefixInternal.name)
-          };
-          return blobPrefix;
-        }),
-        blobItems: internalResponse.segment.blobItems.map((blobItemInteral) => {
-          const blobItem = {
-            ...blobItemInteral,
-            name: BlobNameToString(blobItemInteral.name)
-          };
-          return blobItem;
-        })
-      }
-    };
-  }
-  function* ExtractPageRangeInfoItems(getPageRangesSegment) {
-    let pageRange = [];
-    let clearRange = [];
-    if (getPageRangesSegment.pageRange)
-      pageRange = getPageRangesSegment.pageRange;
-    if (getPageRangesSegment.clearRange)
-      clearRange = getPageRangesSegment.clearRange;
-    let pageRangeIndex = 0;
-    let clearRangeIndex = 0;
-    while (pageRangeIndex < pageRange.length && clearRangeIndex < clearRange.length) {
-      if (pageRange[pageRangeIndex].start < clearRange[clearRangeIndex].start) {
-        yield {
-          start: pageRange[pageRangeIndex].start,
-          end: pageRange[pageRangeIndex].end,
-          isClear: false
-        };
-        ++pageRangeIndex;
-      } else {
-        yield {
-          start: clearRange[clearRangeIndex].start,
-          end: clearRange[clearRangeIndex].end,
-          isClear: true
-        };
-        ++clearRangeIndex;
-      }
-    }
-    for (; pageRangeIndex < pageRange.length; ++pageRangeIndex) {
-      yield {
-        start: pageRange[pageRangeIndex].start,
-        end: pageRange[pageRangeIndex].end,
-        isClear: false
-      };
-    }
-    for (; clearRangeIndex < clearRange.length; ++clearRangeIndex) {
-      yield {
-        start: clearRange[clearRangeIndex].start,
-        end: clearRange[clearRangeIndex].end,
-        isClear: true
-      };
-    }
-  }
-  function EscapePath(blobName) {
-    const split = blobName.split("/");
-    for (let i = 0; i < split.length; i++) {
-      split[i] = encodeURIComponent(split[i]);
-    }
-    return split.join("/");
-  }
-  function assertResponse(response2) {
-    if (`_response` in response2) {
-      return response2;
-    }
-    throw new TypeError(`Unexpected response object ${response2}`);
-  }
-  return utils_common$2;
-}
-var StorageRetryPolicyType$1 = {};
-var hasRequiredStorageRetryPolicyType$1;
-function requireStorageRetryPolicyType$1() {
-  if (hasRequiredStorageRetryPolicyType$1) return StorageRetryPolicyType$1;
-  hasRequiredStorageRetryPolicyType$1 = 1;
-  Object.defineProperty(StorageRetryPolicyType$1, "__esModule", { value: true });
-  StorageRetryPolicyType$1.StorageRetryPolicyType = void 0;
-  var StorageRetryPolicyType2;
-  (function(StorageRetryPolicyType3) {
-    StorageRetryPolicyType3[StorageRetryPolicyType3["EXPONENTIAL"] = 0] = "EXPONENTIAL";
-    StorageRetryPolicyType3[StorageRetryPolicyType3["FIXED"] = 1] = "FIXED";
-  })(StorageRetryPolicyType2 || (StorageRetryPolicyType$1.StorageRetryPolicyType = StorageRetryPolicyType2 = {}));
-  return StorageRetryPolicyType$1;
-}
-var hasRequiredStorageRetryPolicy$1;
-function requireStorageRetryPolicy$1() {
-  if (hasRequiredStorageRetryPolicy$1) return StorageRetryPolicy$1;
-  hasRequiredStorageRetryPolicy$1 = 1;
-  Object.defineProperty(StorageRetryPolicy$1, "__esModule", { value: true });
-  StorageRetryPolicy$1.StorageRetryPolicy = void 0;
-  StorageRetryPolicy$1.NewRetryPolicyFactory = NewRetryPolicyFactory;
-  const abort_controller_1 = /* @__PURE__ */ requireCommonjs$a();
-  const RequestPolicy_js_1 = /* @__PURE__ */ requireRequestPolicy$1();
-  const constants_js_1 = /* @__PURE__ */ requireConstants$2();
-  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
-  const log_js_1 = /* @__PURE__ */ requireLog$1();
-  const StorageRetryPolicyType_js_1 = /* @__PURE__ */ requireStorageRetryPolicyType$1();
-  function NewRetryPolicyFactory(retryOptions) {
-    return {
-      create: (nextPolicy, options2) => {
-        return new StorageRetryPolicy2(nextPolicy, options2, retryOptions);
-      }
-    };
-  }
-  const DEFAULT_RETRY_OPTIONS = {
-    maxRetryDelayInMs: 120 * 1e3,
-    maxTries: 4,
-    retryDelayInMs: 4 * 1e3,
-    retryPolicyType: StorageRetryPolicyType_js_1.StorageRetryPolicyType.EXPONENTIAL,
-    secondaryHost: "",
-    tryTimeoutInMs: void 0
-    // Use server side default timeout strategy
-  };
-  const RETRY_ABORT_ERROR = new abort_controller_1.AbortError("The operation was aborted.");
-  class StorageRetryPolicy2 extends RequestPolicy_js_1.BaseRequestPolicy {
-    /**
-     * RetryOptions.
-     */
-    retryOptions;
-    /**
-     * Creates an instance of RetryPolicy.
-     *
-     * @param nextPolicy -
-     * @param options -
-     * @param retryOptions -
-     */
-    constructor(nextPolicy, options2, retryOptions = DEFAULT_RETRY_OPTIONS) {
-      super(nextPolicy, options2);
-      this.retryOptions = {
-        retryPolicyType: retryOptions.retryPolicyType ? retryOptions.retryPolicyType : DEFAULT_RETRY_OPTIONS.retryPolicyType,
-        maxTries: retryOptions.maxTries && retryOptions.maxTries >= 1 ? Math.floor(retryOptions.maxTries) : DEFAULT_RETRY_OPTIONS.maxTries,
-        tryTimeoutInMs: retryOptions.tryTimeoutInMs && retryOptions.tryTimeoutInMs >= 0 ? retryOptions.tryTimeoutInMs : DEFAULT_RETRY_OPTIONS.tryTimeoutInMs,
-        retryDelayInMs: retryOptions.retryDelayInMs && retryOptions.retryDelayInMs >= 0 ? Math.min(retryOptions.retryDelayInMs, retryOptions.maxRetryDelayInMs ? retryOptions.maxRetryDelayInMs : DEFAULT_RETRY_OPTIONS.maxRetryDelayInMs) : DEFAULT_RETRY_OPTIONS.retryDelayInMs,
-        maxRetryDelayInMs: retryOptions.maxRetryDelayInMs && retryOptions.maxRetryDelayInMs >= 0 ? retryOptions.maxRetryDelayInMs : DEFAULT_RETRY_OPTIONS.maxRetryDelayInMs,
-        secondaryHost: retryOptions.secondaryHost ? retryOptions.secondaryHost : DEFAULT_RETRY_OPTIONS.secondaryHost
-      };
-    }
-    /**
-     * Sends request.
-     *
-     * @param request -
-     */
-    async sendRequest(request2) {
-      return this.attemptSendRequest(request2, false, 1);
-    }
-    /**
-     * Decide and perform next retry. Won't mutate request parameter.
-     *
-     * @param request -
-     * @param secondaryHas404 -  If attempt was against the secondary & it returned a StatusNotFound (404), then
-     *                                   the resource was not found. This may be due to replication delay. So, in this
-     *                                   case, we'll never try the secondary again for this operation.
-     * @param attempt -           How many retries has been attempted to performed, starting from 1, which includes
-     *                                   the attempt will be performed by this method call.
-     */
-    async attemptSendRequest(request2, secondaryHas404, attempt) {
-      const newRequest = request2.clone();
-      const isPrimaryRetry = secondaryHas404 || !this.retryOptions.secondaryHost || !(request2.method === "GET" || request2.method === "HEAD" || request2.method === "OPTIONS") || attempt % 2 === 1;
-      if (!isPrimaryRetry) {
-        newRequest.url = (0, utils_common_js_1.setURLHost)(newRequest.url, this.retryOptions.secondaryHost);
-      }
-      if (this.retryOptions.tryTimeoutInMs) {
-        newRequest.url = (0, utils_common_js_1.setURLParameter)(newRequest.url, constants_js_1.URLConstants.Parameters.TIMEOUT, Math.floor(this.retryOptions.tryTimeoutInMs / 1e3).toString());
-      }
-      let response2;
-      try {
-        log_js_1.logger.info(`RetryPolicy: =====> Try=${attempt} ${isPrimaryRetry ? "Primary" : "Secondary"}`);
-        response2 = await this._nextPolicy.sendRequest(newRequest);
-        if (!this.shouldRetry(isPrimaryRetry, attempt, response2)) {
-          return response2;
-        }
-        secondaryHas404 = secondaryHas404 || !isPrimaryRetry && response2.status === 404;
-      } catch (err) {
-        log_js_1.logger.error(`RetryPolicy: Caught error, message: ${err.message}, code: ${err.code}`);
-        if (!this.shouldRetry(isPrimaryRetry, attempt, response2, err)) {
-          throw err;
-        }
-      }
-      await this.delay(isPrimaryRetry, attempt, request2.abortSignal);
-      return this.attemptSendRequest(request2, secondaryHas404, ++attempt);
-    }
-    /**
-     * Decide whether to retry according to last HTTP response and retry counters.
-     *
-     * @param isPrimaryRetry -
-     * @param attempt -
-     * @param response -
-     * @param err -
-     */
-    shouldRetry(isPrimaryRetry, attempt, response2, err) {
-      if (attempt >= this.retryOptions.maxTries) {
-        log_js_1.logger.info(`RetryPolicy: Attempt(s) ${attempt} >= maxTries ${this.retryOptions.maxTries}, no further try.`);
-        return false;
-      }
-      const retriableErrors = [
-        "ETIMEDOUT",
-        "ESOCKETTIMEDOUT",
-        "ECONNREFUSED",
-        "ECONNRESET",
-        "ENOENT",
-        "ENOTFOUND",
-        "TIMEOUT",
-        "EPIPE",
-        "REQUEST_SEND_ERROR"
-        // For default xhr based http client provided in ms-rest-js
-      ];
-      if (err) {
-        for (const retriableError of retriableErrors) {
-          if (err.name.toUpperCase().includes(retriableError) || err.message.toUpperCase().includes(retriableError) || err.code && err.code.toString().toUpperCase() === retriableError) {
-            log_js_1.logger.info(`RetryPolicy: Network error ${retriableError} found, will retry.`);
-            return true;
-          }
-        }
-      }
-      if (response2 || err) {
-        const statusCode = response2 ? response2.status : err ? err.statusCode : 0;
-        if (!isPrimaryRetry && statusCode === 404) {
-          log_js_1.logger.info(`RetryPolicy: Secondary access with 404, will retry.`);
-          return true;
-        }
-        if (statusCode === 503 || statusCode === 500) {
-          log_js_1.logger.info(`RetryPolicy: Will retry for status code ${statusCode}.`);
-          return true;
-        }
-      }
-      if (response2) {
-        if (response2?.status >= 400) {
-          const copySourceError = response2.headers.get(constants_js_1.HeaderConstants.X_MS_CopySourceErrorCode);
-          if (copySourceError !== void 0) {
-            switch (copySourceError) {
-              case "InternalError":
-              case "OperationTimedOut":
-              case "ServerBusy":
-                return true;
-            }
-          }
-        }
-      }
-      if (err?.code === "PARSE_ERROR" && err?.message.startsWith(`Error "Error: Unclosed root tag`)) {
-        log_js_1.logger.info("RetryPolicy: Incomplete XML response likely due to service timeout, will retry.");
-        return true;
-      }
-      return false;
-    }
-    /**
-     * Delay a calculated time between retries.
-     *
-     * @param isPrimaryRetry -
-     * @param attempt -
-     * @param abortSignal -
-     */
-    async delay(isPrimaryRetry, attempt, abortSignal2) {
-      let delayTimeInMs = 0;
-      if (isPrimaryRetry) {
-        switch (this.retryOptions.retryPolicyType) {
-          case StorageRetryPolicyType_js_1.StorageRetryPolicyType.EXPONENTIAL:
-            delayTimeInMs = Math.min((Math.pow(2, attempt - 1) - 1) * this.retryOptions.retryDelayInMs, this.retryOptions.maxRetryDelayInMs);
-            break;
-          case StorageRetryPolicyType_js_1.StorageRetryPolicyType.FIXED:
-            delayTimeInMs = this.retryOptions.retryDelayInMs;
-            break;
-        }
-      } else {
-        delayTimeInMs = Math.random() * 1e3;
-      }
-      log_js_1.logger.info(`RetryPolicy: Delay for ${delayTimeInMs}ms`);
-      return (0, utils_common_js_1.delay)(delayTimeInMs, abortSignal2, RETRY_ABORT_ERROR);
-    }
-  }
-  StorageRetryPolicy$1.StorageRetryPolicy = StorageRetryPolicy2;
-  return StorageRetryPolicy$1;
-}
-var hasRequiredStorageRetryPolicyFactory$1;
-function requireStorageRetryPolicyFactory$1() {
-  if (hasRequiredStorageRetryPolicyFactory$1) return StorageRetryPolicyFactory$1;
-  hasRequiredStorageRetryPolicyFactory$1 = 1;
-  (function(exports$1) {
-    Object.defineProperty(exports$1, "__esModule", { value: true });
-    exports$1.StorageRetryPolicyFactory = exports$1.StorageRetryPolicy = exports$1.StorageRetryPolicyType = void 0;
-    const StorageRetryPolicy_js_1 = /* @__PURE__ */ requireStorageRetryPolicy$1();
-    Object.defineProperty(exports$1, "StorageRetryPolicy", { enumerable: true, get: function() {
-      return StorageRetryPolicy_js_1.StorageRetryPolicy;
-    } });
-    const StorageRetryPolicyType_js_1 = /* @__PURE__ */ requireStorageRetryPolicyType$1();
-    Object.defineProperty(exports$1, "StorageRetryPolicyType", { enumerable: true, get: function() {
-      return StorageRetryPolicyType_js_1.StorageRetryPolicyType;
-    } });
-    class StorageRetryPolicyFactory2 {
-      retryOptions;
-      /**
-       * Creates an instance of StorageRetryPolicyFactory.
-       * @param retryOptions -
-       */
-      constructor(retryOptions) {
-        this.retryOptions = retryOptions;
-      }
-      /**
-       * Creates a StorageRetryPolicy object.
-       *
-       * @param nextPolicy -
-       * @param options -
-       */
-      create(nextPolicy, options2) {
-        return new StorageRetryPolicy_js_1.StorageRetryPolicy(nextPolicy, options2, this.retryOptions);
-      }
-    }
-    exports$1.StorageRetryPolicyFactory = StorageRetryPolicyFactory2;
-  })(StorageRetryPolicyFactory$1);
-  return StorageRetryPolicyFactory$1;
-}
-var StorageSharedKeyCredential$1 = {};
-var StorageSharedKeyCredentialPolicy$1 = {};
-var CredentialPolicy$1 = {};
-var hasRequiredCredentialPolicy$1;
-function requireCredentialPolicy$1() {
-  if (hasRequiredCredentialPolicy$1) return CredentialPolicy$1;
-  hasRequiredCredentialPolicy$1 = 1;
-  Object.defineProperty(CredentialPolicy$1, "__esModule", { value: true });
-  CredentialPolicy$1.CredentialPolicy = void 0;
-  const RequestPolicy_js_1 = /* @__PURE__ */ requireRequestPolicy$1();
-  class CredentialPolicy2 extends RequestPolicy_js_1.BaseRequestPolicy {
-    /**
-     * Sends out request.
-     *
-     * @param request -
-     */
-    sendRequest(request2) {
-      return this._nextPolicy.sendRequest(this.signRequest(request2));
-    }
-    /**
-     * Child classes must implement this method with request signing. This method
-     * will be executed in {@link sendRequest}.
-     *
-     * @param request -
-     */
-    signRequest(request2) {
-      return request2;
-    }
-  }
-  CredentialPolicy$1.CredentialPolicy = CredentialPolicy2;
-  return CredentialPolicy$1;
-}
-var SharedKeyComparator$1 = {};
-var hasRequiredSharedKeyComparator$1;
-function requireSharedKeyComparator$1() {
-  if (hasRequiredSharedKeyComparator$1) return SharedKeyComparator$1;
-  hasRequiredSharedKeyComparator$1 = 1;
-  Object.defineProperty(SharedKeyComparator$1, "__esModule", { value: true });
-  SharedKeyComparator$1.compareHeader = compareHeader;
-  const table_lv0 = new Uint32Array([
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    1820,
-    0,
-    1823,
-    1825,
-    1827,
-    1829,
-    0,
-    0,
-    0,
-    1837,
-    2051,
-    0,
-    0,
-    1843,
-    0,
-    3331,
-    3354,
-    3356,
-    3358,
-    3360,
-    3362,
-    3364,
-    3366,
-    3368,
-    3370,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    3586,
-    3593,
-    3594,
-    3610,
-    3617,
-    3619,
-    3621,
-    3628,
-    3634,
-    3637,
-    3638,
-    3656,
-    3665,
-    3696,
-    3708,
-    3710,
-    3721,
-    3722,
-    3729,
-    3737,
-    3743,
-    3746,
-    3748,
-    3750,
-    3751,
-    3753,
-    0,
-    0,
-    0,
-    1859,
-    1860,
-    1864,
-    3586,
-    3593,
-    3594,
-    3610,
-    3617,
-    3619,
-    3621,
-    3628,
-    3634,
-    3637,
-    3638,
-    3656,
-    3665,
-    3696,
-    3708,
-    3710,
-    3721,
-    3722,
-    3729,
-    3737,
-    3743,
-    3746,
-    3748,
-    3750,
-    3751,
-    3753,
-    0,
-    1868,
-    0,
-    1872,
-    0
-  ]);
-  const table_lv2 = new Uint32Array([
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    18,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0
-  ]);
-  const table_lv4 = new Uint32Array([
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    32786,
-    0,
-    0,
-    0,
-    0,
-    0,
-    33298,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0
-  ]);
-  function compareHeader(lhs, rhs) {
-    if (isLessThan(lhs, rhs))
-      return -1;
-    return 1;
-  }
-  function isLessThan(lhs, rhs) {
-    const tables = [table_lv0, table_lv2, table_lv4];
-    let curr_level = 0;
-    let i = 0;
-    let j = 0;
-    while (curr_level < tables.length) {
-      if (curr_level === tables.length - 1 && i !== j) {
-        return i > j;
-      }
-      const weight1 = i < lhs.length ? tables[curr_level][lhs[i].charCodeAt(0)] : 1;
-      const weight2 = j < rhs.length ? tables[curr_level][rhs[j].charCodeAt(0)] : 1;
-      if (weight1 === 1 && weight2 === 1) {
-        i = 0;
-        j = 0;
-        ++curr_level;
-      } else if (weight1 === weight2) {
-        ++i;
-        ++j;
-      } else if (weight1 === 0) {
-        ++i;
-      } else if (weight2 === 0) {
-        ++j;
-      } else {
-        return weight1 < weight2;
-      }
-    }
-    return false;
-  }
-  return SharedKeyComparator$1;
-}
-var hasRequiredStorageSharedKeyCredentialPolicy$1;
-function requireStorageSharedKeyCredentialPolicy$1() {
-  if (hasRequiredStorageSharedKeyCredentialPolicy$1) return StorageSharedKeyCredentialPolicy$1;
-  hasRequiredStorageSharedKeyCredentialPolicy$1 = 1;
-  Object.defineProperty(StorageSharedKeyCredentialPolicy$1, "__esModule", { value: true });
-  StorageSharedKeyCredentialPolicy$1.StorageSharedKeyCredentialPolicy = void 0;
-  const constants_js_1 = /* @__PURE__ */ requireConstants$2();
-  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
-  const CredentialPolicy_js_1 = /* @__PURE__ */ requireCredentialPolicy$1();
-  const SharedKeyComparator_js_1 = /* @__PURE__ */ requireSharedKeyComparator$1();
-  class StorageSharedKeyCredentialPolicy2 extends CredentialPolicy_js_1.CredentialPolicy {
-    /**
-     * Reference to StorageSharedKeyCredential which generates StorageSharedKeyCredentialPolicy
-     */
-    factory;
-    /**
-     * Creates an instance of StorageSharedKeyCredentialPolicy.
-     * @param nextPolicy -
-     * @param options -
-     * @param factory -
-     */
-    constructor(nextPolicy, options2, factory) {
-      super(nextPolicy, options2);
-      this.factory = factory;
-    }
-    /**
-     * Signs request.
-     *
-     * @param request -
-     */
-    signRequest(request2) {
-      request2.headers.set(constants_js_1.HeaderConstants.X_MS_DATE, (/* @__PURE__ */ new Date()).toUTCString());
-      if (request2.body && (typeof request2.body === "string" || request2.body !== void 0) && request2.body.length > 0) {
-        request2.headers.set(constants_js_1.HeaderConstants.CONTENT_LENGTH, Buffer.byteLength(request2.body));
-      }
-      const stringToSign = [
-        request2.method.toUpperCase(),
-        this.getHeaderValueToSign(request2, constants_js_1.HeaderConstants.CONTENT_LANGUAGE),
-        this.getHeaderValueToSign(request2, constants_js_1.HeaderConstants.CONTENT_ENCODING),
-        this.getHeaderValueToSign(request2, constants_js_1.HeaderConstants.CONTENT_LENGTH),
-        this.getHeaderValueToSign(request2, constants_js_1.HeaderConstants.CONTENT_MD5),
-        this.getHeaderValueToSign(request2, constants_js_1.HeaderConstants.CONTENT_TYPE),
-        this.getHeaderValueToSign(request2, constants_js_1.HeaderConstants.DATE),
-        this.getHeaderValueToSign(request2, constants_js_1.HeaderConstants.IF_MODIFIED_SINCE),
-        this.getHeaderValueToSign(request2, constants_js_1.HeaderConstants.IF_MATCH),
-        this.getHeaderValueToSign(request2, constants_js_1.HeaderConstants.IF_NONE_MATCH),
-        this.getHeaderValueToSign(request2, constants_js_1.HeaderConstants.IF_UNMODIFIED_SINCE),
-        this.getHeaderValueToSign(request2, constants_js_1.HeaderConstants.RANGE)
-      ].join("\n") + "\n" + this.getCanonicalizedHeadersString(request2) + this.getCanonicalizedResourceString(request2);
-      const signature = this.factory.computeHMACSHA256(stringToSign);
-      request2.headers.set(constants_js_1.HeaderConstants.AUTHORIZATION, `SharedKey ${this.factory.accountName}:${signature}`);
-      return request2;
-    }
-    /**
-     * Retrieve header value according to shared key sign rules.
-     * @see https://learn.microsoft.com/rest/api/storageservices/authenticate-with-shared-key
-     *
-     * @param request -
-     * @param headerName -
-     */
-    getHeaderValueToSign(request2, headerName) {
-      const value = request2.headers.get(headerName);
-      if (!value) {
-        return "";
-      }
-      if (headerName === constants_js_1.HeaderConstants.CONTENT_LENGTH && value === "0") {
-        return "";
-      }
-      return value;
-    }
-    /**
-     * To construct the CanonicalizedHeaders portion of the signature string, follow these steps:
-     * 1. Retrieve all headers for the resource that begin with x-ms-, including the x-ms-date header.
-     * 2. Convert each HTTP header name to lowercase.
-     * 3. Sort the headers lexicographically by header name, in ascending order.
-     *    Each header may appear only once in the string.
-     * 4. Replace any linear whitespace in the header value with a single space.
-     * 5. Trim any whitespace around the colon in the header.
-     * 6. Finally, append a new-line character to each canonicalized header in the resulting list.
-     *    Construct the CanonicalizedHeaders string by concatenating all headers in this list into a single string.
-     *
-     * @param request -
-     */
-    getCanonicalizedHeadersString(request2) {
-      let headersArray = request2.headers.headersArray().filter((value) => {
-        return value.name.toLowerCase().startsWith(constants_js_1.HeaderConstants.PREFIX_FOR_STORAGE);
-      });
-      headersArray.sort((a, b) => {
-        return (0, SharedKeyComparator_js_1.compareHeader)(a.name.toLowerCase(), b.name.toLowerCase());
-      });
-      headersArray = headersArray.filter((value, index, array) => {
-        if (index > 0 && value.name.toLowerCase() === array[index - 1].name.toLowerCase()) {
-          return false;
-        }
-        return true;
-      });
-      let canonicalizedHeadersStringToSign = "";
-      headersArray.forEach((header) => {
-        canonicalizedHeadersStringToSign += `${header.name.toLowerCase().trimRight()}:${header.value.trimLeft()}
-`;
-      });
-      return canonicalizedHeadersStringToSign;
-    }
-    /**
-     * Retrieves the webResource canonicalized resource string.
-     *
-     * @param request -
-     */
-    getCanonicalizedResourceString(request2) {
-      const path2 = (0, utils_common_js_1.getURLPath)(request2.url) || "/";
-      let canonicalizedResourceString = "";
-      canonicalizedResourceString += `/${this.factory.accountName}${path2}`;
-      const queries = (0, utils_common_js_1.getURLQueries)(request2.url);
-      const lowercaseQueries = {};
-      if (queries) {
-        const queryKeys = [];
-        for (const key in queries) {
-          if (Object.prototype.hasOwnProperty.call(queries, key)) {
-            const lowercaseKey = key.toLowerCase();
-            lowercaseQueries[lowercaseKey] = queries[key];
-            queryKeys.push(lowercaseKey);
-          }
-        }
-        queryKeys.sort();
-        for (const key of queryKeys) {
-          canonicalizedResourceString += `
-${key}:${decodeURIComponent(lowercaseQueries[key])}`;
-        }
-      }
-      return canonicalizedResourceString;
-    }
-  }
-  StorageSharedKeyCredentialPolicy$1.StorageSharedKeyCredentialPolicy = StorageSharedKeyCredentialPolicy2;
-  return StorageSharedKeyCredentialPolicy$1;
-}
-var Credential$1 = {};
-var hasRequiredCredential$1;
-function requireCredential$1() {
-  if (hasRequiredCredential$1) return Credential$1;
-  hasRequiredCredential$1 = 1;
-  Object.defineProperty(Credential$1, "__esModule", { value: true });
-  Credential$1.Credential = void 0;
-  class Credential2 {
-    /**
-     * Creates a RequestPolicy object.
-     *
-     * @param _nextPolicy -
-     * @param _options -
-     */
-    create(_nextPolicy, _options) {
-      throw new Error("Method should be implemented in children classes.");
-    }
-  }
-  Credential$1.Credential = Credential2;
-  return Credential$1;
-}
-var hasRequiredStorageSharedKeyCredential$1;
-function requireStorageSharedKeyCredential$1() {
-  if (hasRequiredStorageSharedKeyCredential$1) return StorageSharedKeyCredential$1;
-  hasRequiredStorageSharedKeyCredential$1 = 1;
-  Object.defineProperty(StorageSharedKeyCredential$1, "__esModule", { value: true });
-  StorageSharedKeyCredential$1.StorageSharedKeyCredential = void 0;
-  const node_crypto_1 = require$$0$f;
-  const StorageSharedKeyCredentialPolicy_js_1 = /* @__PURE__ */ requireStorageSharedKeyCredentialPolicy$1();
-  const Credential_js_1 = /* @__PURE__ */ requireCredential$1();
-  class StorageSharedKeyCredential2 extends Credential_js_1.Credential {
-    /**
-     * Azure Storage account name; readonly.
-     */
-    accountName;
-    /**
-     * Azure Storage account key; readonly.
-     */
-    accountKey;
-    /**
-     * Creates an instance of StorageSharedKeyCredential.
-     * @param accountName -
-     * @param accountKey -
-     */
-    constructor(accountName, accountKey) {
-      super();
-      this.accountName = accountName;
-      this.accountKey = Buffer.from(accountKey, "base64");
-    }
-    /**
-     * Creates a StorageSharedKeyCredentialPolicy object.
-     *
-     * @param nextPolicy -
-     * @param options -
-     */
-    create(nextPolicy, options2) {
-      return new StorageSharedKeyCredentialPolicy_js_1.StorageSharedKeyCredentialPolicy(nextPolicy, options2, this);
-    }
-    /**
-     * Generates a hash signature for an HTTP request or for a SAS.
-     *
-     * @param stringToSign -
-     */
-    computeHMACSHA256(stringToSign) {
-      return (0, node_crypto_1.createHmac)("sha256", this.accountKey).update(stringToSign, "utf8").digest("base64");
-    }
-  }
-  StorageSharedKeyCredential$1.StorageSharedKeyCredential = StorageSharedKeyCredential2;
-  return StorageSharedKeyCredential$1;
-}
-var AnonymousCredential$1 = {};
-var AnonymousCredentialPolicy$1 = {};
-var hasRequiredAnonymousCredentialPolicy$1;
-function requireAnonymousCredentialPolicy$1() {
-  if (hasRequiredAnonymousCredentialPolicy$1) return AnonymousCredentialPolicy$1;
-  hasRequiredAnonymousCredentialPolicy$1 = 1;
-  Object.defineProperty(AnonymousCredentialPolicy$1, "__esModule", { value: true });
-  AnonymousCredentialPolicy$1.AnonymousCredentialPolicy = void 0;
-  const CredentialPolicy_js_1 = /* @__PURE__ */ requireCredentialPolicy$1();
-  class AnonymousCredentialPolicy2 extends CredentialPolicy_js_1.CredentialPolicy {
-    /**
-     * Creates an instance of AnonymousCredentialPolicy.
-     * @param nextPolicy -
-     * @param options -
-     */
-    // The base class has a protected constructor. Adding a public one to enable constructing of this class.
-    /* eslint-disable-next-line @typescript-eslint/no-useless-constructor*/
-    constructor(nextPolicy, options2) {
-      super(nextPolicy, options2);
-    }
-  }
-  AnonymousCredentialPolicy$1.AnonymousCredentialPolicy = AnonymousCredentialPolicy2;
-  return AnonymousCredentialPolicy$1;
-}
-var hasRequiredAnonymousCredential$1;
-function requireAnonymousCredential$1() {
-  if (hasRequiredAnonymousCredential$1) return AnonymousCredential$1;
-  hasRequiredAnonymousCredential$1 = 1;
-  Object.defineProperty(AnonymousCredential$1, "__esModule", { value: true });
-  AnonymousCredential$1.AnonymousCredential = void 0;
-  const AnonymousCredentialPolicy_js_1 = /* @__PURE__ */ requireAnonymousCredentialPolicy$1();
-  const Credential_js_1 = /* @__PURE__ */ requireCredential$1();
-  class AnonymousCredential2 extends Credential_js_1.Credential {
-    /**
-     * Creates an {@link AnonymousCredentialPolicy} object.
-     *
-     * @param nextPolicy -
-     * @param options -
-     */
-    create(nextPolicy, options2) {
-      return new AnonymousCredentialPolicy_js_1.AnonymousCredentialPolicy(nextPolicy, options2);
-    }
-  }
-  AnonymousCredential$1.AnonymousCredential = AnonymousCredential2;
-  return AnonymousCredential$1;
-}
 var commonjs$1 = {};
 var BufferScheduler = {};
 var PooledBuffer = {};
@@ -39149,8 +37373,8 @@ function requireCache$2() {
   }
   return cache$1;
 }
-var StorageBrowserPolicyFactory$1 = {};
-var StorageBrowserPolicy$1 = {};
+var StorageBrowserPolicyFactory = {};
+var StorageBrowserPolicy = {};
 var RequestPolicy = {};
 var hasRequiredRequestPolicy;
 function requireRequestPolicy() {
@@ -39189,15 +37413,15 @@ function requireRequestPolicy() {
   RequestPolicy.BaseRequestPolicy = BaseRequestPolicy;
   return RequestPolicy;
 }
-var constants$1 = {};
-var hasRequiredConstants$1;
-function requireConstants$1() {
-  if (hasRequiredConstants$1) return constants$1;
-  hasRequiredConstants$1 = 1;
-  Object.defineProperty(constants$1, "__esModule", { value: true });
-  constants$1.PathStylePorts = constants$1.DevelopmentConnectionString = constants$1.HeaderConstants = constants$1.URLConstants = constants$1.SDK_VERSION = void 0;
-  constants$1.SDK_VERSION = "1.0.0";
-  constants$1.URLConstants = {
+var constants$2 = {};
+var hasRequiredConstants$2;
+function requireConstants$2() {
+  if (hasRequiredConstants$2) return constants$2;
+  hasRequiredConstants$2 = 1;
+  Object.defineProperty(constants$2, "__esModule", { value: true });
+  constants$2.PathStylePorts = constants$2.DevelopmentConnectionString = constants$2.HeaderConstants = constants$2.URLConstants = constants$2.SDK_VERSION = void 0;
+  constants$2.SDK_VERSION = "1.0.0";
+  constants$2.URLConstants = {
     Parameters: {
       FORCE_BROWSER_NO_CACHE: "_",
       SIGNATURE: "sig",
@@ -39206,7 +37430,7 @@ function requireConstants$1() {
       TIMEOUT: "timeout"
     }
   };
-  constants$1.HeaderConstants = {
+  constants$2.HeaderConstants = {
     AUTHORIZATION: "Authorization",
     AUTHORIZATION_SCHEME: "Bearer",
     CONTENT_ENCODING: "Content-Encoding",
@@ -39232,8 +37456,8 @@ function requireConstants$1() {
     X_MS_VERSION: "x-ms-version",
     X_MS_CopySourceErrorCode: "x-ms-copy-source-error-code"
   };
-  constants$1.DevelopmentConnectionString = `DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;`;
-  constants$1.PathStylePorts = [
+  constants$2.DevelopmentConnectionString = `DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;`;
+  constants$2.PathStylePorts = [
     "10000",
     "10001",
     "10002",
@@ -39255,44 +37479,44 @@ function requireConstants$1() {
     "11103",
     "11104"
   ];
-  return constants$1;
+  return constants$2;
 }
-var utils_common$1 = {};
-var hasRequiredUtils_common$1;
-function requireUtils_common$1() {
-  if (hasRequiredUtils_common$1) return utils_common$1;
-  hasRequiredUtils_common$1 = 1;
-  Object.defineProperty(utils_common$1, "__esModule", { value: true });
-  utils_common$1.escapeURLPath = escapeURLPath;
-  utils_common$1.getValueInConnString = getValueInConnString;
-  utils_common$1.extractConnectionStringParts = extractConnectionStringParts;
-  utils_common$1.appendToURLPath = appendToURLPath;
-  utils_common$1.setURLParameter = setURLParameter;
-  utils_common$1.getURLParameter = getURLParameter;
-  utils_common$1.setURLHost = setURLHost;
-  utils_common$1.getURLPath = getURLPath;
-  utils_common$1.getURLScheme = getURLScheme;
-  utils_common$1.getURLPathAndQuery = getURLPathAndQuery;
-  utils_common$1.getURLQueries = getURLQueries;
-  utils_common$1.appendToURLQuery = appendToURLQuery;
-  utils_common$1.truncatedISO8061Date = truncatedISO8061Date;
-  utils_common$1.base64encode = base64encode2;
-  utils_common$1.base64decode = base64decode2;
-  utils_common$1.generateBlockID = generateBlockID;
-  utils_common$1.delay = delay2;
-  utils_common$1.padStart = padStart;
-  utils_common$1.sanitizeURL = sanitizeURL;
-  utils_common$1.sanitizeHeaders = sanitizeHeaders;
-  utils_common$1.iEqual = iEqual;
-  utils_common$1.getAccountNameFromUrl = getAccountNameFromUrl;
-  utils_common$1.isIpEndpointStyle = isIpEndpointStyle;
-  utils_common$1.attachCredential = attachCredential;
-  utils_common$1.httpAuthorizationToString = httpAuthorizationToString;
-  utils_common$1.EscapePath = EscapePath;
-  utils_common$1.assertResponse = assertResponse;
+var utils_common$2 = {};
+var hasRequiredUtils_common$2;
+function requireUtils_common$2() {
+  if (hasRequiredUtils_common$2) return utils_common$2;
+  hasRequiredUtils_common$2 = 1;
+  Object.defineProperty(utils_common$2, "__esModule", { value: true });
+  utils_common$2.escapeURLPath = escapeURLPath;
+  utils_common$2.getValueInConnString = getValueInConnString;
+  utils_common$2.extractConnectionStringParts = extractConnectionStringParts;
+  utils_common$2.appendToURLPath = appendToURLPath;
+  utils_common$2.setURLParameter = setURLParameter;
+  utils_common$2.getURLParameter = getURLParameter;
+  utils_common$2.setURLHost = setURLHost;
+  utils_common$2.getURLPath = getURLPath;
+  utils_common$2.getURLScheme = getURLScheme;
+  utils_common$2.getURLPathAndQuery = getURLPathAndQuery;
+  utils_common$2.getURLQueries = getURLQueries;
+  utils_common$2.appendToURLQuery = appendToURLQuery;
+  utils_common$2.truncatedISO8061Date = truncatedISO8061Date;
+  utils_common$2.base64encode = base64encode2;
+  utils_common$2.base64decode = base64decode2;
+  utils_common$2.generateBlockID = generateBlockID;
+  utils_common$2.delay = delay2;
+  utils_common$2.padStart = padStart;
+  utils_common$2.sanitizeURL = sanitizeURL;
+  utils_common$2.sanitizeHeaders = sanitizeHeaders;
+  utils_common$2.iEqual = iEqual;
+  utils_common$2.getAccountNameFromUrl = getAccountNameFromUrl;
+  utils_common$2.isIpEndpointStyle = isIpEndpointStyle;
+  utils_common$2.attachCredential = attachCredential;
+  utils_common$2.httpAuthorizationToString = httpAuthorizationToString;
+  utils_common$2.EscapePath = EscapePath;
+  utils_common$2.assertResponse = assertResponse;
   const core_rest_pipeline_1 = /* @__PURE__ */ requireCommonjs$7();
   const core_util_1 = /* @__PURE__ */ requireCommonjs$9();
-  const constants_js_1 = /* @__PURE__ */ requireConstants$1();
+  const constants_js_1 = /* @__PURE__ */ requireConstants$2();
   function escapeURLPath(url) {
     const urlParsed = new URL(url);
     let path2 = urlParsed.pathname;
@@ -39598,19 +37822,19 @@ function requireUtils_common$1() {
     }
     throw new TypeError(`Unexpected response object ${response2}`);
   }
-  return utils_common$1;
+  return utils_common$2;
 }
-var hasRequiredStorageBrowserPolicy$1;
-function requireStorageBrowserPolicy$1() {
-  if (hasRequiredStorageBrowserPolicy$1) return StorageBrowserPolicy$1;
-  hasRequiredStorageBrowserPolicy$1 = 1;
-  Object.defineProperty(StorageBrowserPolicy$1, "__esModule", { value: true });
-  StorageBrowserPolicy$1.StorageBrowserPolicy = void 0;
+var hasRequiredStorageBrowserPolicy;
+function requireStorageBrowserPolicy() {
+  if (hasRequiredStorageBrowserPolicy) return StorageBrowserPolicy;
+  hasRequiredStorageBrowserPolicy = 1;
+  Object.defineProperty(StorageBrowserPolicy, "__esModule", { value: true });
+  StorageBrowserPolicy.StorageBrowserPolicy = void 0;
   const RequestPolicy_js_1 = /* @__PURE__ */ requireRequestPolicy();
   const core_util_1 = /* @__PURE__ */ requireCommonjs$9();
-  const constants_js_1 = /* @__PURE__ */ requireConstants$1();
-  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
-  class StorageBrowserPolicy2 extends RequestPolicy_js_1.BaseRequestPolicy {
+  const constants_js_1 = /* @__PURE__ */ requireConstants$2();
+  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
+  let StorageBrowserPolicy$1 = class StorageBrowserPolicy extends RequestPolicy_js_1.BaseRequestPolicy {
     /**
      * Creates an instance of StorageBrowserPolicy.
      * @param nextPolicy -
@@ -39637,18 +37861,18 @@ function requireStorageBrowserPolicy$1() {
       request2.headers.remove(constants_js_1.HeaderConstants.CONTENT_LENGTH);
       return this._nextPolicy.sendRequest(request2);
     }
-  }
-  StorageBrowserPolicy$1.StorageBrowserPolicy = StorageBrowserPolicy2;
-  return StorageBrowserPolicy$1;
+  };
+  StorageBrowserPolicy.StorageBrowserPolicy = StorageBrowserPolicy$1;
+  return StorageBrowserPolicy;
 }
-var hasRequiredStorageBrowserPolicyFactory$1;
-function requireStorageBrowserPolicyFactory$1() {
-  if (hasRequiredStorageBrowserPolicyFactory$1) return StorageBrowserPolicyFactory$1;
-  hasRequiredStorageBrowserPolicyFactory$1 = 1;
+var hasRequiredStorageBrowserPolicyFactory;
+function requireStorageBrowserPolicyFactory() {
+  if (hasRequiredStorageBrowserPolicyFactory) return StorageBrowserPolicyFactory;
+  hasRequiredStorageBrowserPolicyFactory = 1;
   (function(exports$1) {
     Object.defineProperty(exports$1, "__esModule", { value: true });
     exports$1.StorageBrowserPolicyFactory = exports$1.StorageBrowserPolicy = void 0;
-    const StorageBrowserPolicy_js_1 = /* @__PURE__ */ requireStorageBrowserPolicy$1();
+    const StorageBrowserPolicy_js_1 = /* @__PURE__ */ requireStorageBrowserPolicy();
     Object.defineProperty(exports$1, "StorageBrowserPolicy", { enumerable: true, get: function() {
       return StorageBrowserPolicy_js_1.StorageBrowserPolicy;
     } });
@@ -39664,8 +37888,8 @@ function requireStorageBrowserPolicyFactory$1() {
       }
     }
     exports$1.StorageBrowserPolicyFactory = StorageBrowserPolicyFactory2;
-  })(StorageBrowserPolicyFactory$1);
-  return StorageBrowserPolicyFactory$1;
+  })(StorageBrowserPolicyFactory);
+  return StorageBrowserPolicyFactory;
 }
 var AnonymousCredential = {};
 var AnonymousCredentialPolicy = {};
@@ -39677,7 +37901,7 @@ function requireCredentialPolicy() {
   Object.defineProperty(CredentialPolicy, "__esModule", { value: true });
   CredentialPolicy.CredentialPolicy = void 0;
   const RequestPolicy_js_1 = /* @__PURE__ */ requireRequestPolicy();
-  let CredentialPolicy$12 = class CredentialPolicy extends RequestPolicy_js_1.BaseRequestPolicy {
+  let CredentialPolicy$1 = class CredentialPolicy extends RequestPolicy_js_1.BaseRequestPolicy {
     /**
      * Sends out request.
      *
@@ -39696,7 +37920,7 @@ function requireCredentialPolicy() {
       return request2;
     }
   };
-  CredentialPolicy.CredentialPolicy = CredentialPolicy$12;
+  CredentialPolicy.CredentialPolicy = CredentialPolicy$1;
   return CredentialPolicy;
 }
 var hasRequiredAnonymousCredentialPolicy;
@@ -39706,7 +37930,7 @@ function requireAnonymousCredentialPolicy() {
   Object.defineProperty(AnonymousCredentialPolicy, "__esModule", { value: true });
   AnonymousCredentialPolicy.AnonymousCredentialPolicy = void 0;
   const CredentialPolicy_js_1 = /* @__PURE__ */ requireCredentialPolicy();
-  let AnonymousCredentialPolicy$12 = class AnonymousCredentialPolicy extends CredentialPolicy_js_1.CredentialPolicy {
+  let AnonymousCredentialPolicy$1 = class AnonymousCredentialPolicy extends CredentialPolicy_js_1.CredentialPolicy {
     /**
      * Creates an instance of AnonymousCredentialPolicy.
      * @param nextPolicy -
@@ -39718,7 +37942,7 @@ function requireAnonymousCredentialPolicy() {
       super(nextPolicy, options2);
     }
   };
-  AnonymousCredentialPolicy.AnonymousCredentialPolicy = AnonymousCredentialPolicy$12;
+  AnonymousCredentialPolicy.AnonymousCredentialPolicy = AnonymousCredentialPolicy$1;
   return AnonymousCredentialPolicy;
 }
 var Credential = {};
@@ -39728,7 +37952,7 @@ function requireCredential() {
   hasRequiredCredential = 1;
   Object.defineProperty(Credential, "__esModule", { value: true });
   Credential.Credential = void 0;
-  let Credential$12 = class Credential {
+  let Credential$1 = class Credential {
     /**
      * Creates a RequestPolicy object.
      *
@@ -39739,7 +37963,7 @@ function requireCredential() {
       throw new Error("Method should be implemented in children classes.");
     }
   };
-  Credential.Credential = Credential$12;
+  Credential.Credential = Credential$1;
   return Credential;
 }
 var hasRequiredAnonymousCredential;
@@ -39750,7 +37974,7 @@ function requireAnonymousCredential() {
   AnonymousCredential.AnonymousCredential = void 0;
   const AnonymousCredentialPolicy_js_1 = /* @__PURE__ */ requireAnonymousCredentialPolicy();
   const Credential_js_1 = /* @__PURE__ */ requireCredential();
-  let AnonymousCredential$12 = class AnonymousCredential extends Credential_js_1.Credential {
+  let AnonymousCredential$1 = class AnonymousCredential extends Credential_js_1.Credential {
     /**
      * Creates an {@link AnonymousCredentialPolicy} object.
      *
@@ -39761,7 +37985,7 @@ function requireAnonymousCredential() {
       return new AnonymousCredentialPolicy_js_1.AnonymousCredentialPolicy(nextPolicy, options2);
     }
   };
-  AnonymousCredential.AnonymousCredential = AnonymousCredential$12;
+  AnonymousCredential.AnonymousCredential = AnonymousCredential$1;
   return AnonymousCredential;
 }
 var StorageSharedKeyCredential = {};
@@ -40204,11 +38428,11 @@ function requireStorageSharedKeyCredentialPolicy() {
   hasRequiredStorageSharedKeyCredentialPolicy = 1;
   Object.defineProperty(StorageSharedKeyCredentialPolicy, "__esModule", { value: true });
   StorageSharedKeyCredentialPolicy.StorageSharedKeyCredentialPolicy = void 0;
-  const constants_js_1 = /* @__PURE__ */ requireConstants$1();
-  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
+  const constants_js_1 = /* @__PURE__ */ requireConstants$2();
+  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
   const CredentialPolicy_js_1 = /* @__PURE__ */ requireCredentialPolicy();
   const SharedKeyComparator_js_1 = /* @__PURE__ */ requireSharedKeyComparator();
-  let StorageSharedKeyCredentialPolicy$12 = class StorageSharedKeyCredentialPolicy extends CredentialPolicy_js_1.CredentialPolicy {
+  let StorageSharedKeyCredentialPolicy$1 = class StorageSharedKeyCredentialPolicy extends CredentialPolicy_js_1.CredentialPolicy {
     /**
      * Reference to StorageSharedKeyCredential which generates StorageSharedKeyCredentialPolicy
      */
@@ -40253,7 +38477,7 @@ function requireStorageSharedKeyCredentialPolicy() {
     }
     /**
      * Retrieve header value according to shared key sign rules.
-     * @see https://learn.microsoft.com/en-us/rest/api/storageservices/authenticate-with-shared-key
+     * @see https://learn.microsoft.com/rest/api/storageservices/authenticate-with-shared-key
      *
      * @param request -
      * @param headerName -
@@ -40330,7 +38554,7 @@ ${key}:${decodeURIComponent(lowercaseQueries[key])}`;
       return canonicalizedResourceString;
     }
   };
-  StorageSharedKeyCredentialPolicy.StorageSharedKeyCredentialPolicy = StorageSharedKeyCredentialPolicy$12;
+  StorageSharedKeyCredentialPolicy.StorageSharedKeyCredentialPolicy = StorageSharedKeyCredentialPolicy$1;
   return StorageSharedKeyCredentialPolicy;
 }
 var hasRequiredStorageSharedKeyCredential;
@@ -40342,7 +38566,7 @@ function requireStorageSharedKeyCredential() {
   const node_crypto_1 = require$$0$f;
   const StorageSharedKeyCredentialPolicy_js_1 = /* @__PURE__ */ requireStorageSharedKeyCredentialPolicy();
   const Credential_js_1 = /* @__PURE__ */ requireCredential();
-  let StorageSharedKeyCredential$12 = class StorageSharedKeyCredential extends Credential_js_1.Credential {
+  let StorageSharedKeyCredential$1 = class StorageSharedKeyCredential extends Credential_js_1.Credential {
     /**
      * Azure Storage account name; readonly.
      */
@@ -40379,7 +38603,7 @@ function requireStorageSharedKeyCredential() {
       return (0, node_crypto_1.createHmac)("sha256", this.accountKey).update(stringToSign, "utf8").digest("base64");
     }
   };
-  StorageSharedKeyCredential.StorageSharedKeyCredential = StorageSharedKeyCredential$12;
+  StorageSharedKeyCredential.StorageSharedKeyCredential = StorageSharedKeyCredential$1;
   return StorageSharedKeyCredential;
 }
 var StorageRetryPolicyFactory = {};
@@ -40402,11 +38626,11 @@ function requireStorageRetryPolicyType() {
   hasRequiredStorageRetryPolicyType = 1;
   Object.defineProperty(StorageRetryPolicyType, "__esModule", { value: true });
   StorageRetryPolicyType.StorageRetryPolicyType = void 0;
-  var StorageRetryPolicyType$12;
+  var StorageRetryPolicyType$1;
   (function(StorageRetryPolicyType2) {
     StorageRetryPolicyType2[StorageRetryPolicyType2["EXPONENTIAL"] = 0] = "EXPONENTIAL";
     StorageRetryPolicyType2[StorageRetryPolicyType2["FIXED"] = 1] = "FIXED";
-  })(StorageRetryPolicyType$12 || (StorageRetryPolicyType.StorageRetryPolicyType = StorageRetryPolicyType$12 = {}));
+  })(StorageRetryPolicyType$1 || (StorageRetryPolicyType.StorageRetryPolicyType = StorageRetryPolicyType$1 = {}));
   return StorageRetryPolicyType;
 }
 var hasRequiredStorageRetryPolicy;
@@ -40418,14 +38642,14 @@ function requireStorageRetryPolicy() {
   StorageRetryPolicy.NewRetryPolicyFactory = NewRetryPolicyFactory;
   const abort_controller_1 = /* @__PURE__ */ requireCommonjs$a();
   const RequestPolicy_js_1 = /* @__PURE__ */ requireRequestPolicy();
-  const constants_js_1 = /* @__PURE__ */ requireConstants$1();
-  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
+  const constants_js_1 = /* @__PURE__ */ requireConstants$2();
+  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
   const log_js_1 = /* @__PURE__ */ requireLog();
   const StorageRetryPolicyType_js_1 = /* @__PURE__ */ requireStorageRetryPolicyType();
   function NewRetryPolicyFactory(retryOptions) {
     return {
       create: (nextPolicy, options2) => {
-        return new StorageRetryPolicy$12(nextPolicy, options2, retryOptions);
+        return new StorageRetryPolicy$1(nextPolicy, options2, retryOptions);
       }
     };
   }
@@ -40439,7 +38663,7 @@ function requireStorageRetryPolicy() {
     // Use server side default timeout strategy
   };
   const RETRY_ABORT_ERROR = new abort_controller_1.AbortError("The operation was aborted.");
-  let StorageRetryPolicy$12 = class StorageRetryPolicy extends RequestPolicy_js_1.BaseRequestPolicy {
+  let StorageRetryPolicy$1 = class StorageRetryPolicy extends RequestPolicy_js_1.BaseRequestPolicy {
     /**
      * RetryOptions.
      */
@@ -40594,7 +38818,7 @@ function requireStorageRetryPolicy() {
       return (0, utils_common_js_1.delay)(delayTimeInMs, abortSignal2, RETRY_ABORT_ERROR);
     }
   };
-  StorageRetryPolicy.StorageRetryPolicy = StorageRetryPolicy$12;
+  StorageRetryPolicy.StorageRetryPolicy = StorageRetryPolicy$1;
   return StorageRetryPolicy;
 }
 var hasRequiredStorageRetryPolicyFactory;
@@ -40635,390 +38859,6 @@ function requireStorageRetryPolicyFactory() {
   })(StorageRetryPolicyFactory);
   return StorageRetryPolicyFactory;
 }
-var StorageBrowserPolicyV2$1 = {};
-var hasRequiredStorageBrowserPolicyV2$1;
-function requireStorageBrowserPolicyV2$1() {
-  if (hasRequiredStorageBrowserPolicyV2$1) return StorageBrowserPolicyV2$1;
-  hasRequiredStorageBrowserPolicyV2$1 = 1;
-  (function(exports$1) {
-    Object.defineProperty(exports$1, "__esModule", { value: true });
-    exports$1.storageBrowserPolicyName = void 0;
-    exports$1.storageBrowserPolicy = storageBrowserPolicy;
-    const core_util_1 = /* @__PURE__ */ requireCommonjs$9();
-    const constants_js_1 = /* @__PURE__ */ requireConstants$1();
-    const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
-    exports$1.storageBrowserPolicyName = "storageBrowserPolicy";
-    function storageBrowserPolicy() {
-      return {
-        name: exports$1.storageBrowserPolicyName,
-        async sendRequest(request2, next) {
-          if (core_util_1.isNodeLike) {
-            return next(request2);
-          }
-          if (request2.method === "GET" || request2.method === "HEAD") {
-            request2.url = (0, utils_common_js_1.setURLParameter)(request2.url, constants_js_1.URLConstants.Parameters.FORCE_BROWSER_NO_CACHE, (/* @__PURE__ */ new Date()).getTime().toString());
-          }
-          request2.headers.delete(constants_js_1.HeaderConstants.COOKIE);
-          request2.headers.delete(constants_js_1.HeaderConstants.CONTENT_LENGTH);
-          return next(request2);
-        }
-      };
-    }
-  })(StorageBrowserPolicyV2$1);
-  return StorageBrowserPolicyV2$1;
-}
-var StorageCorrectContentLengthPolicy$1 = {};
-var hasRequiredStorageCorrectContentLengthPolicy$1;
-function requireStorageCorrectContentLengthPolicy$1() {
-  if (hasRequiredStorageCorrectContentLengthPolicy$1) return StorageCorrectContentLengthPolicy$1;
-  hasRequiredStorageCorrectContentLengthPolicy$1 = 1;
-  (function(exports$1) {
-    Object.defineProperty(exports$1, "__esModule", { value: true });
-    exports$1.storageCorrectContentLengthPolicyName = void 0;
-    exports$1.storageCorrectContentLengthPolicy = storageCorrectContentLengthPolicy;
-    const constants_js_1 = /* @__PURE__ */ requireConstants$1();
-    exports$1.storageCorrectContentLengthPolicyName = "StorageCorrectContentLengthPolicy";
-    function storageCorrectContentLengthPolicy() {
-      function correctContentLength(request2) {
-        if (request2.body && (typeof request2.body === "string" || Buffer.isBuffer(request2.body)) && request2.body.length > 0) {
-          request2.headers.set(constants_js_1.HeaderConstants.CONTENT_LENGTH, Buffer.byteLength(request2.body));
-        }
-      }
-      return {
-        name: exports$1.storageCorrectContentLengthPolicyName,
-        async sendRequest(request2, next) {
-          correctContentLength(request2);
-          return next(request2);
-        }
-      };
-    }
-  })(StorageCorrectContentLengthPolicy$1);
-  return StorageCorrectContentLengthPolicy$1;
-}
-var StorageRetryPolicyV2$1 = {};
-var hasRequiredStorageRetryPolicyV2$1;
-function requireStorageRetryPolicyV2$1() {
-  if (hasRequiredStorageRetryPolicyV2$1) return StorageRetryPolicyV2$1;
-  hasRequiredStorageRetryPolicyV2$1 = 1;
-  (function(exports$1) {
-    Object.defineProperty(exports$1, "__esModule", { value: true });
-    exports$1.storageRetryPolicyName = void 0;
-    exports$1.storageRetryPolicy = storageRetryPolicy;
-    const abort_controller_1 = /* @__PURE__ */ requireCommonjs$a();
-    const core_rest_pipeline_1 = /* @__PURE__ */ requireCommonjs$7();
-    const core_util_1 = /* @__PURE__ */ requireCommonjs$9();
-    const StorageRetryPolicyFactory_js_1 = /* @__PURE__ */ requireStorageRetryPolicyFactory();
-    const constants_js_1 = /* @__PURE__ */ requireConstants$1();
-    const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
-    const log_js_1 = /* @__PURE__ */ requireLog();
-    exports$1.storageRetryPolicyName = "storageRetryPolicy";
-    const DEFAULT_RETRY_OPTIONS = {
-      maxRetryDelayInMs: 120 * 1e3,
-      maxTries: 4,
-      retryDelayInMs: 4 * 1e3,
-      retryPolicyType: StorageRetryPolicyFactory_js_1.StorageRetryPolicyType.EXPONENTIAL,
-      secondaryHost: "",
-      tryTimeoutInMs: void 0
-      // Use server side default timeout strategy
-    };
-    const retriableErrors = [
-      "ETIMEDOUT",
-      "ESOCKETTIMEDOUT",
-      "ECONNREFUSED",
-      "ECONNRESET",
-      "ENOENT",
-      "ENOTFOUND",
-      "TIMEOUT",
-      "EPIPE",
-      "REQUEST_SEND_ERROR"
-    ];
-    const RETRY_ABORT_ERROR = new abort_controller_1.AbortError("The operation was aborted.");
-    function storageRetryPolicy(options2 = {}) {
-      const retryPolicyType = options2.retryPolicyType ?? DEFAULT_RETRY_OPTIONS.retryPolicyType;
-      const maxTries = options2.maxTries ?? DEFAULT_RETRY_OPTIONS.maxTries;
-      const retryDelayInMs = options2.retryDelayInMs ?? DEFAULT_RETRY_OPTIONS.retryDelayInMs;
-      const maxRetryDelayInMs = options2.maxRetryDelayInMs ?? DEFAULT_RETRY_OPTIONS.maxRetryDelayInMs;
-      const secondaryHost = options2.secondaryHost ?? DEFAULT_RETRY_OPTIONS.secondaryHost;
-      const tryTimeoutInMs = options2.tryTimeoutInMs ?? DEFAULT_RETRY_OPTIONS.tryTimeoutInMs;
-      function shouldRetry({ isPrimaryRetry, attempt, response: response2, error: error2 }) {
-        if (attempt >= maxTries) {
-          log_js_1.logger.info(`RetryPolicy: Attempt(s) ${attempt} >= maxTries ${maxTries}, no further try.`);
-          return false;
-        }
-        if (error2) {
-          for (const retriableError of retriableErrors) {
-            if (error2.name.toUpperCase().includes(retriableError) || error2.message.toUpperCase().includes(retriableError) || error2.code && error2.code.toString().toUpperCase() === retriableError) {
-              log_js_1.logger.info(`RetryPolicy: Network error ${retriableError} found, will retry.`);
-              return true;
-            }
-          }
-          if (error2?.code === "PARSE_ERROR" && error2?.message.startsWith(`Error "Error: Unclosed root tag`)) {
-            log_js_1.logger.info("RetryPolicy: Incomplete XML response likely due to service timeout, will retry.");
-            return true;
-          }
-        }
-        if (response2 || error2) {
-          const statusCode = response2?.status ?? error2?.statusCode ?? 0;
-          if (!isPrimaryRetry && statusCode === 404) {
-            log_js_1.logger.info(`RetryPolicy: Secondary access with 404, will retry.`);
-            return true;
-          }
-          if (statusCode === 503 || statusCode === 500) {
-            log_js_1.logger.info(`RetryPolicy: Will retry for status code ${statusCode}.`);
-            return true;
-          }
-        }
-        if (response2) {
-          if (response2?.status >= 400) {
-            const copySourceError = response2.headers.get(constants_js_1.HeaderConstants.X_MS_CopySourceErrorCode);
-            if (copySourceError !== void 0) {
-              switch (copySourceError) {
-                case "InternalError":
-                case "OperationTimedOut":
-                case "ServerBusy":
-                  return true;
-              }
-            }
-          }
-        }
-        return false;
-      }
-      function calculateDelay(isPrimaryRetry, attempt) {
-        let delayTimeInMs = 0;
-        if (isPrimaryRetry) {
-          switch (retryPolicyType) {
-            case StorageRetryPolicyFactory_js_1.StorageRetryPolicyType.EXPONENTIAL:
-              delayTimeInMs = Math.min((Math.pow(2, attempt - 1) - 1) * retryDelayInMs, maxRetryDelayInMs);
-              break;
-            case StorageRetryPolicyFactory_js_1.StorageRetryPolicyType.FIXED:
-              delayTimeInMs = retryDelayInMs;
-              break;
-          }
-        } else {
-          delayTimeInMs = Math.random() * 1e3;
-        }
-        log_js_1.logger.info(`RetryPolicy: Delay for ${delayTimeInMs}ms`);
-        return delayTimeInMs;
-      }
-      return {
-        name: exports$1.storageRetryPolicyName,
-        async sendRequest(request2, next) {
-          if (tryTimeoutInMs) {
-            request2.url = (0, utils_common_js_1.setURLParameter)(request2.url, constants_js_1.URLConstants.Parameters.TIMEOUT, String(Math.floor(tryTimeoutInMs / 1e3)));
-          }
-          const primaryUrl = request2.url;
-          const secondaryUrl = secondaryHost ? (0, utils_common_js_1.setURLHost)(request2.url, secondaryHost) : void 0;
-          let secondaryHas404 = false;
-          let attempt = 1;
-          let retryAgain = true;
-          let response2;
-          let error2;
-          while (retryAgain) {
-            const isPrimaryRetry = secondaryHas404 || !secondaryUrl || !["GET", "HEAD", "OPTIONS"].includes(request2.method) || attempt % 2 === 1;
-            request2.url = isPrimaryRetry ? primaryUrl : secondaryUrl;
-            response2 = void 0;
-            error2 = void 0;
-            try {
-              log_js_1.logger.info(`RetryPolicy: =====> Try=${attempt} ${isPrimaryRetry ? "Primary" : "Secondary"}`);
-              response2 = await next(request2);
-              secondaryHas404 = secondaryHas404 || !isPrimaryRetry && response2.status === 404;
-            } catch (e) {
-              if ((0, core_rest_pipeline_1.isRestError)(e)) {
-                log_js_1.logger.error(`RetryPolicy: Caught error, message: ${e.message}, code: ${e.code}`);
-                error2 = e;
-              } else {
-                log_js_1.logger.error(`RetryPolicy: Caught error, message: ${(0, core_util_1.getErrorMessage)(e)}`);
-                throw e;
-              }
-            }
-            retryAgain = shouldRetry({ isPrimaryRetry, attempt, response: response2, error: error2 });
-            if (retryAgain) {
-              await (0, utils_common_js_1.delay)(calculateDelay(isPrimaryRetry, attempt), request2.abortSignal, RETRY_ABORT_ERROR);
-            }
-            attempt++;
-          }
-          if (response2) {
-            return response2;
-          }
-          throw error2 ?? new core_rest_pipeline_1.RestError("RetryPolicy failed without known error.");
-        }
-      };
-    }
-  })(StorageRetryPolicyV2$1);
-  return StorageRetryPolicyV2$1;
-}
-var StorageSharedKeyCredentialPolicyV2$1 = {};
-var hasRequiredStorageSharedKeyCredentialPolicyV2$1;
-function requireStorageSharedKeyCredentialPolicyV2$1() {
-  if (hasRequiredStorageSharedKeyCredentialPolicyV2$1) return StorageSharedKeyCredentialPolicyV2$1;
-  hasRequiredStorageSharedKeyCredentialPolicyV2$1 = 1;
-  (function(exports$1) {
-    Object.defineProperty(exports$1, "__esModule", { value: true });
-    exports$1.storageSharedKeyCredentialPolicyName = void 0;
-    exports$1.storageSharedKeyCredentialPolicy = storageSharedKeyCredentialPolicy;
-    const node_crypto_1 = require$$0$f;
-    const constants_js_1 = /* @__PURE__ */ requireConstants$1();
-    const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
-    const SharedKeyComparator_js_1 = /* @__PURE__ */ requireSharedKeyComparator();
-    exports$1.storageSharedKeyCredentialPolicyName = "storageSharedKeyCredentialPolicy";
-    function storageSharedKeyCredentialPolicy(options2) {
-      function signRequest(request2) {
-        request2.headers.set(constants_js_1.HeaderConstants.X_MS_DATE, (/* @__PURE__ */ new Date()).toUTCString());
-        if (request2.body && (typeof request2.body === "string" || Buffer.isBuffer(request2.body)) && request2.body.length > 0) {
-          request2.headers.set(constants_js_1.HeaderConstants.CONTENT_LENGTH, Buffer.byteLength(request2.body));
-        }
-        const stringToSign = [
-          request2.method.toUpperCase(),
-          getHeaderValueToSign(request2, constants_js_1.HeaderConstants.CONTENT_LANGUAGE),
-          getHeaderValueToSign(request2, constants_js_1.HeaderConstants.CONTENT_ENCODING),
-          getHeaderValueToSign(request2, constants_js_1.HeaderConstants.CONTENT_LENGTH),
-          getHeaderValueToSign(request2, constants_js_1.HeaderConstants.CONTENT_MD5),
-          getHeaderValueToSign(request2, constants_js_1.HeaderConstants.CONTENT_TYPE),
-          getHeaderValueToSign(request2, constants_js_1.HeaderConstants.DATE),
-          getHeaderValueToSign(request2, constants_js_1.HeaderConstants.IF_MODIFIED_SINCE),
-          getHeaderValueToSign(request2, constants_js_1.HeaderConstants.IF_MATCH),
-          getHeaderValueToSign(request2, constants_js_1.HeaderConstants.IF_NONE_MATCH),
-          getHeaderValueToSign(request2, constants_js_1.HeaderConstants.IF_UNMODIFIED_SINCE),
-          getHeaderValueToSign(request2, constants_js_1.HeaderConstants.RANGE)
-        ].join("\n") + "\n" + getCanonicalizedHeadersString(request2) + getCanonicalizedResourceString(request2);
-        const signature = (0, node_crypto_1.createHmac)("sha256", options2.accountKey).update(stringToSign, "utf8").digest("base64");
-        request2.headers.set(constants_js_1.HeaderConstants.AUTHORIZATION, `SharedKey ${options2.accountName}:${signature}`);
-      }
-      function getHeaderValueToSign(request2, headerName) {
-        const value = request2.headers.get(headerName);
-        if (!value) {
-          return "";
-        }
-        if (headerName === constants_js_1.HeaderConstants.CONTENT_LENGTH && value === "0") {
-          return "";
-        }
-        return value;
-      }
-      function getCanonicalizedHeadersString(request2) {
-        let headersArray = [];
-        for (const [name, value] of request2.headers) {
-          if (name.toLowerCase().startsWith(constants_js_1.HeaderConstants.PREFIX_FOR_STORAGE)) {
-            headersArray.push({ name, value });
-          }
-        }
-        headersArray.sort((a, b) => {
-          return (0, SharedKeyComparator_js_1.compareHeader)(a.name.toLowerCase(), b.name.toLowerCase());
-        });
-        headersArray = headersArray.filter((value, index, array) => {
-          if (index > 0 && value.name.toLowerCase() === array[index - 1].name.toLowerCase()) {
-            return false;
-          }
-          return true;
-        });
-        let canonicalizedHeadersStringToSign = "";
-        headersArray.forEach((header) => {
-          canonicalizedHeadersStringToSign += `${header.name.toLowerCase().trimRight()}:${header.value.trimLeft()}
-`;
-        });
-        return canonicalizedHeadersStringToSign;
-      }
-      function getCanonicalizedResourceString(request2) {
-        const path2 = (0, utils_common_js_1.getURLPath)(request2.url) || "/";
-        let canonicalizedResourceString = "";
-        canonicalizedResourceString += `/${options2.accountName}${path2}`;
-        const queries = (0, utils_common_js_1.getURLQueries)(request2.url);
-        const lowercaseQueries = {};
-        if (queries) {
-          const queryKeys = [];
-          for (const key in queries) {
-            if (Object.prototype.hasOwnProperty.call(queries, key)) {
-              const lowercaseKey = key.toLowerCase();
-              lowercaseQueries[lowercaseKey] = queries[key];
-              queryKeys.push(lowercaseKey);
-            }
-          }
-          queryKeys.sort();
-          for (const key of queryKeys) {
-            canonicalizedResourceString += `
-${key}:${decodeURIComponent(lowercaseQueries[key])}`;
-          }
-        }
-        return canonicalizedResourceString;
-      }
-      return {
-        name: exports$1.storageSharedKeyCredentialPolicyName,
-        async sendRequest(request2, next) {
-          signRequest(request2);
-          return next(request2);
-        }
-      };
-    }
-  })(StorageSharedKeyCredentialPolicyV2$1);
-  return StorageSharedKeyCredentialPolicyV2$1;
-}
-var StorageRequestFailureDetailsParserPolicy = {};
-var hasRequiredStorageRequestFailureDetailsParserPolicy;
-function requireStorageRequestFailureDetailsParserPolicy() {
-  if (hasRequiredStorageRequestFailureDetailsParserPolicy) return StorageRequestFailureDetailsParserPolicy;
-  hasRequiredStorageRequestFailureDetailsParserPolicy = 1;
-  (function(exports$1) {
-    Object.defineProperty(exports$1, "__esModule", { value: true });
-    exports$1.storageRequestFailureDetailsParserPolicyName = void 0;
-    exports$1.storageRequestFailureDetailsParserPolicy = storageRequestFailureDetailsParserPolicy;
-    exports$1.storageRequestFailureDetailsParserPolicyName = "storageRequestFailureDetailsParserPolicy";
-    function storageRequestFailureDetailsParserPolicy() {
-      return {
-        name: exports$1.storageRequestFailureDetailsParserPolicyName,
-        async sendRequest(request2, next) {
-          try {
-            const response2 = await next(request2);
-            return response2;
-          } catch (err) {
-            if (typeof err === "object" && err !== null && err.response && err.response.parsedBody) {
-              if (err.response.parsedBody.code === "InvalidHeaderValue" && err.response.parsedBody.HeaderName === "x-ms-version") {
-                err.message = "The provided service version is not enabled on this storage account. Please see https://learn.microsoft.com/rest/api/storageservices/versioning-for-the-azure-storage-services for additional information.\n";
-              }
-            }
-            throw err;
-          }
-        }
-      };
-    }
-  })(StorageRequestFailureDetailsParserPolicy);
-  return StorageRequestFailureDetailsParserPolicy;
-}
-var hasRequiredCommonjs$2;
-function requireCommonjs$2() {
-  if (hasRequiredCommonjs$2) return commonjs$1;
-  hasRequiredCommonjs$2 = 1;
-  (function(exports$1) {
-    Object.defineProperty(exports$1, "__esModule", { value: true });
-    exports$1.BaseRequestPolicy = exports$1.getCachedDefaultHttpClient = void 0;
-    const tslib_1 = require$$0$2;
-    tslib_1.__exportStar(/* @__PURE__ */ requireBufferScheduler(), exports$1);
-    var cache_js_1 = /* @__PURE__ */ requireCache$2();
-    Object.defineProperty(exports$1, "getCachedDefaultHttpClient", { enumerable: true, get: function() {
-      return cache_js_1.getCachedDefaultHttpClient;
-    } });
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageBrowserPolicyFactory$1(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireAnonymousCredential(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireCredential(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredential(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyFactory(), exports$1);
-    var RequestPolicy_js_1 = /* @__PURE__ */ requireRequestPolicy();
-    Object.defineProperty(exports$1, "BaseRequestPolicy", { enumerable: true, get: function() {
-      return RequestPolicy_js_1.BaseRequestPolicy;
-    } });
-    tslib_1.__exportStar(/* @__PURE__ */ requireAnonymousCredentialPolicy(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireCredentialPolicy(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageBrowserPolicy$1(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageBrowserPolicyV2$1(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageCorrectContentLengthPolicy$1(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyType(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicy(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyV2$1(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredentialPolicy(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredentialPolicyV2$1(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyFactory(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRequestFailureDetailsParserPolicy(), exports$1);
-  })(commonjs$1);
-  return commonjs$1;
-}
 var StorageBrowserPolicyV2 = {};
 var hasRequiredStorageBrowserPolicyV2;
 function requireStorageBrowserPolicyV2() {
@@ -41051,6 +38891,34 @@ function requireStorageBrowserPolicyV2() {
   })(StorageBrowserPolicyV2);
   return StorageBrowserPolicyV2;
 }
+var StorageCorrectContentLengthPolicy = {};
+var hasRequiredStorageCorrectContentLengthPolicy;
+function requireStorageCorrectContentLengthPolicy() {
+  if (hasRequiredStorageCorrectContentLengthPolicy) return StorageCorrectContentLengthPolicy;
+  hasRequiredStorageCorrectContentLengthPolicy = 1;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.storageCorrectContentLengthPolicyName = void 0;
+    exports$1.storageCorrectContentLengthPolicy = storageCorrectContentLengthPolicy;
+    const constants_js_1 = /* @__PURE__ */ requireConstants$2();
+    exports$1.storageCorrectContentLengthPolicyName = "StorageCorrectContentLengthPolicy";
+    function storageCorrectContentLengthPolicy() {
+      function correctContentLength(request2) {
+        if (request2.body && (typeof request2.body === "string" || Buffer.isBuffer(request2.body)) && request2.body.length > 0) {
+          request2.headers.set(constants_js_1.HeaderConstants.CONTENT_LENGTH, Buffer.byteLength(request2.body));
+        }
+      }
+      return {
+        name: exports$1.storageCorrectContentLengthPolicyName,
+        async sendRequest(request2, next) {
+          correctContentLength(request2);
+          return next(request2);
+        }
+      };
+    }
+  })(StorageCorrectContentLengthPolicy);
+  return StorageCorrectContentLengthPolicy;
+}
 var StorageRetryPolicyV2 = {};
 var hasRequiredStorageRetryPolicyV2;
 function requireStorageRetryPolicyV2() {
@@ -41063,10 +38931,10 @@ function requireStorageRetryPolicyV2() {
     const abort_controller_1 = /* @__PURE__ */ requireCommonjs$a();
     const core_rest_pipeline_1 = /* @__PURE__ */ requireCommonjs$7();
     const core_util_1 = /* @__PURE__ */ requireCommonjs$9();
-    const StorageRetryPolicyFactory_js_1 = /* @__PURE__ */ requireStorageRetryPolicyFactory$1();
+    const StorageRetryPolicyFactory_js_1 = /* @__PURE__ */ requireStorageRetryPolicyFactory();
     const constants_js_1 = /* @__PURE__ */ requireConstants$2();
     const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
-    const log_js_1 = /* @__PURE__ */ requireLog$1();
+    const log_js_1 = /* @__PURE__ */ requireLog();
     exports$1.storageRetryPolicyName = "storageRetryPolicy";
     const DEFAULT_RETRY_OPTIONS = {
       maxRetryDelayInMs: 120 * 1e3,
@@ -41215,7 +39083,7 @@ function requireStorageSharedKeyCredentialPolicyV2() {
     const node_crypto_1 = require$$0$f;
     const constants_js_1 = /* @__PURE__ */ requireConstants$2();
     const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
-    const SharedKeyComparator_js_1 = /* @__PURE__ */ requireSharedKeyComparator$1();
+    const SharedKeyComparator_js_1 = /* @__PURE__ */ requireSharedKeyComparator();
     exports$1.storageSharedKeyCredentialPolicyName = "storageSharedKeyCredentialPolicy";
     function storageSharedKeyCredentialPolicy(options2) {
       function signRequest(request2) {
@@ -41307,102 +39175,346 @@ ${key}:${decodeURIComponent(lowercaseQueries[key])}`;
   })(StorageSharedKeyCredentialPolicyV2);
   return StorageSharedKeyCredentialPolicyV2;
 }
-var StorageBrowserPolicyFactory = {};
-var StorageBrowserPolicy = {};
-var hasRequiredStorageBrowserPolicy;
-function requireStorageBrowserPolicy() {
-  if (hasRequiredStorageBrowserPolicy) return StorageBrowserPolicy;
-  hasRequiredStorageBrowserPolicy = 1;
-  Object.defineProperty(StorageBrowserPolicy, "__esModule", { value: true });
-  StorageBrowserPolicy.StorageBrowserPolicy = void 0;
-  const RequestPolicy_js_1 = /* @__PURE__ */ requireRequestPolicy$1();
-  const core_util_1 = /* @__PURE__ */ requireCommonjs$9();
-  const constants_js_1 = /* @__PURE__ */ requireConstants$2();
-  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
-  let StorageBrowserPolicy$12 = class StorageBrowserPolicy extends RequestPolicy_js_1.BaseRequestPolicy {
-    /**
-     * Creates an instance of StorageBrowserPolicy.
-     * @param nextPolicy -
-     * @param options -
-     */
-    // The base class has a protected constructor. Adding a public one to enable constructing of this class.
-    /* eslint-disable-next-line @typescript-eslint/no-useless-constructor*/
-    constructor(nextPolicy, options2) {
-      super(nextPolicy, options2);
-    }
-    /**
-     * Sends out request.
-     *
-     * @param request -
-     */
-    async sendRequest(request2) {
-      if (core_util_1.isNodeLike) {
-        return this._nextPolicy.sendRequest(request2);
-      }
-      if (request2.method.toUpperCase() === "GET" || request2.method.toUpperCase() === "HEAD") {
-        request2.url = (0, utils_common_js_1.setURLParameter)(request2.url, constants_js_1.URLConstants.Parameters.FORCE_BROWSER_NO_CACHE, (/* @__PURE__ */ new Date()).getTime().toString());
-      }
-      request2.headers.remove(constants_js_1.HeaderConstants.COOKIE);
-      request2.headers.remove(constants_js_1.HeaderConstants.CONTENT_LENGTH);
-      return this._nextPolicy.sendRequest(request2);
-    }
-  };
-  StorageBrowserPolicy.StorageBrowserPolicy = StorageBrowserPolicy$12;
-  return StorageBrowserPolicy;
-}
-var hasRequiredStorageBrowserPolicyFactory;
-function requireStorageBrowserPolicyFactory() {
-  if (hasRequiredStorageBrowserPolicyFactory) return StorageBrowserPolicyFactory;
-  hasRequiredStorageBrowserPolicyFactory = 1;
+var StorageRequestFailureDetailsParserPolicy = {};
+var hasRequiredStorageRequestFailureDetailsParserPolicy;
+function requireStorageRequestFailureDetailsParserPolicy() {
+  if (hasRequiredStorageRequestFailureDetailsParserPolicy) return StorageRequestFailureDetailsParserPolicy;
+  hasRequiredStorageRequestFailureDetailsParserPolicy = 1;
   (function(exports$1) {
     Object.defineProperty(exports$1, "__esModule", { value: true });
-    exports$1.StorageBrowserPolicyFactory = exports$1.StorageBrowserPolicy = void 0;
-    const StorageBrowserPolicy_js_1 = /* @__PURE__ */ requireStorageBrowserPolicy();
-    Object.defineProperty(exports$1, "StorageBrowserPolicy", { enumerable: true, get: function() {
-      return StorageBrowserPolicy_js_1.StorageBrowserPolicy;
-    } });
-    class StorageBrowserPolicyFactory2 {
-      /**
-       * Creates a StorageBrowserPolicyFactory object.
-       *
-       * @param nextPolicy -
-       * @param options -
-       */
-      create(nextPolicy, options2) {
-        return new StorageBrowserPolicy_js_1.StorageBrowserPolicy(nextPolicy, options2);
-      }
-    }
-    exports$1.StorageBrowserPolicyFactory = StorageBrowserPolicyFactory2;
-  })(StorageBrowserPolicyFactory);
-  return StorageBrowserPolicyFactory;
-}
-var StorageCorrectContentLengthPolicy = {};
-var hasRequiredStorageCorrectContentLengthPolicy;
-function requireStorageCorrectContentLengthPolicy() {
-  if (hasRequiredStorageCorrectContentLengthPolicy) return StorageCorrectContentLengthPolicy;
-  hasRequiredStorageCorrectContentLengthPolicy = 1;
-  (function(exports$1) {
-    Object.defineProperty(exports$1, "__esModule", { value: true });
-    exports$1.storageCorrectContentLengthPolicyName = void 0;
-    exports$1.storageCorrectContentLengthPolicy = storageCorrectContentLengthPolicy;
-    const constants_js_1 = /* @__PURE__ */ requireConstants$2();
-    exports$1.storageCorrectContentLengthPolicyName = "StorageCorrectContentLengthPolicy";
-    function storageCorrectContentLengthPolicy() {
-      function correctContentLength(request2) {
-        if (request2.body && (typeof request2.body === "string" || Buffer.isBuffer(request2.body)) && request2.body.length > 0) {
-          request2.headers.set(constants_js_1.HeaderConstants.CONTENT_LENGTH, Buffer.byteLength(request2.body));
-        }
-      }
+    exports$1.storageRequestFailureDetailsParserPolicyName = void 0;
+    exports$1.storageRequestFailureDetailsParserPolicy = storageRequestFailureDetailsParserPolicy;
+    exports$1.storageRequestFailureDetailsParserPolicyName = "storageRequestFailureDetailsParserPolicy";
+    function storageRequestFailureDetailsParserPolicy() {
       return {
-        name: exports$1.storageCorrectContentLengthPolicyName,
+        name: exports$1.storageRequestFailureDetailsParserPolicyName,
         async sendRequest(request2, next) {
-          correctContentLength(request2);
-          return next(request2);
+          try {
+            const response2 = await next(request2);
+            return response2;
+          } catch (err) {
+            if (typeof err === "object" && err !== null && err.response && err.response.parsedBody) {
+              if (err.response.parsedBody.code === "InvalidHeaderValue" && err.response.parsedBody.HeaderName === "x-ms-version") {
+                err.message = "The provided service version is not enabled on this storage account. Please see https://learn.microsoft.com/rest/api/storageservices/versioning-for-the-azure-storage-services for additional information.\n";
+              }
+            }
+            throw err;
+          }
         }
       };
     }
-  })(StorageCorrectContentLengthPolicy);
-  return StorageCorrectContentLengthPolicy;
+  })(StorageRequestFailureDetailsParserPolicy);
+  return StorageRequestFailureDetailsParserPolicy;
+}
+var UserDelegationKeyCredential = {};
+var hasRequiredUserDelegationKeyCredential;
+function requireUserDelegationKeyCredential() {
+  if (hasRequiredUserDelegationKeyCredential) return UserDelegationKeyCredential;
+  hasRequiredUserDelegationKeyCredential = 1;
+  Object.defineProperty(UserDelegationKeyCredential, "__esModule", { value: true });
+  UserDelegationKeyCredential.UserDelegationKeyCredential = void 0;
+  const node_crypto_1 = require$$0$f;
+  let UserDelegationKeyCredential$1 = class UserDelegationKeyCredential {
+    /**
+     * Azure Storage account name; readonly.
+     */
+    accountName;
+    /**
+     * Azure Storage user delegation key; readonly.
+     */
+    userDelegationKey;
+    /**
+     * Key value in Buffer type.
+     */
+    key;
+    /**
+     * Creates an instance of UserDelegationKeyCredential.
+     * @param accountName -
+     * @param userDelegationKey -
+     */
+    constructor(accountName, userDelegationKey) {
+      this.accountName = accountName;
+      this.userDelegationKey = userDelegationKey;
+      this.key = Buffer.from(userDelegationKey.value, "base64");
+    }
+    /**
+     * Generates a hash signature for an HTTP request or for a SAS.
+     *
+     * @param stringToSign -
+     */
+    computeHMACSHA256(stringToSign) {
+      return (0, node_crypto_1.createHmac)("sha256", this.key).update(stringToSign, "utf8").digest("base64");
+    }
+  };
+  UserDelegationKeyCredential.UserDelegationKeyCredential = UserDelegationKeyCredential$1;
+  return UserDelegationKeyCredential;
+}
+var hasRequiredCommonjs$2;
+function requireCommonjs$2() {
+  if (hasRequiredCommonjs$2) return commonjs$1;
+  hasRequiredCommonjs$2 = 1;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.BaseRequestPolicy = exports$1.getCachedDefaultHttpClient = void 0;
+    const tslib_1 = require$$0$2;
+    tslib_1.__exportStar(/* @__PURE__ */ requireBufferScheduler(), exports$1);
+    var cache_js_1 = /* @__PURE__ */ requireCache$2();
+    Object.defineProperty(exports$1, "getCachedDefaultHttpClient", { enumerable: true, get: function() {
+      return cache_js_1.getCachedDefaultHttpClient;
+    } });
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageBrowserPolicyFactory(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireAnonymousCredential(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireCredential(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredential(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyFactory(), exports$1);
+    var RequestPolicy_js_1 = /* @__PURE__ */ requireRequestPolicy();
+    Object.defineProperty(exports$1, "BaseRequestPolicy", { enumerable: true, get: function() {
+      return RequestPolicy_js_1.BaseRequestPolicy;
+    } });
+    tslib_1.__exportStar(/* @__PURE__ */ requireAnonymousCredentialPolicy(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireCredentialPolicy(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageBrowserPolicy(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageBrowserPolicyV2(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageCorrectContentLengthPolicy(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyType(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicy(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyV2(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredentialPolicy(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredentialPolicyV2(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyFactory(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRequestFailureDetailsParserPolicy(), exports$1);
+    tslib_1.__exportStar(/* @__PURE__ */ requireUserDelegationKeyCredential(), exports$1);
+  })(commonjs$1);
+  return commonjs$1;
+}
+var constants$1 = {};
+var hasRequiredConstants$1;
+function requireConstants$1() {
+  if (hasRequiredConstants$1) return constants$1;
+  hasRequiredConstants$1 = 1;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", { value: true });
+    exports$1.PathStylePorts = exports$1.BlobDoesNotUseCustomerSpecifiedEncryption = exports$1.BlobUsesCustomerSpecifiedEncryptionMsg = exports$1.StorageBlobLoggingAllowedQueryParameters = exports$1.StorageBlobLoggingAllowedHeaderNames = exports$1.DevelopmentConnectionString = exports$1.EncryptionAlgorithmAES25 = exports$1.HTTP_VERSION_1_1 = exports$1.HTTP_LINE_ENDING = exports$1.BATCH_MAX_PAYLOAD_IN_BYTES = exports$1.BATCH_MAX_REQUEST = exports$1.SIZE_1_MB = exports$1.ETagAny = exports$1.ETagNone = exports$1.HeaderConstants = exports$1.HTTPURLConnection = exports$1.URLConstants = exports$1.StorageOAuthScopes = exports$1.REQUEST_TIMEOUT = exports$1.DEFAULT_MAX_DOWNLOAD_RETRY_REQUESTS = exports$1.DEFAULT_BLOB_DOWNLOAD_BLOCK_BYTES = exports$1.DEFAULT_BLOCK_BUFFER_SIZE_BYTES = exports$1.BLOCK_BLOB_MAX_BLOCKS = exports$1.BLOCK_BLOB_MAX_STAGE_BLOCK_BYTES = exports$1.BLOCK_BLOB_MAX_UPLOAD_BLOB_BYTES = exports$1.SERVICE_VERSION = exports$1.SDK_VERSION = void 0;
+    exports$1.SDK_VERSION = "12.30.0";
+    exports$1.SERVICE_VERSION = "2026-02-06";
+    exports$1.BLOCK_BLOB_MAX_UPLOAD_BLOB_BYTES = 256 * 1024 * 1024;
+    exports$1.BLOCK_BLOB_MAX_STAGE_BLOCK_BYTES = 4e3 * 1024 * 1024;
+    exports$1.BLOCK_BLOB_MAX_BLOCKS = 5e4;
+    exports$1.DEFAULT_BLOCK_BUFFER_SIZE_BYTES = 8 * 1024 * 1024;
+    exports$1.DEFAULT_BLOB_DOWNLOAD_BLOCK_BYTES = 4 * 1024 * 1024;
+    exports$1.DEFAULT_MAX_DOWNLOAD_RETRY_REQUESTS = 5;
+    exports$1.REQUEST_TIMEOUT = 100 * 1e3;
+    exports$1.StorageOAuthScopes = "https://storage.azure.com/.default";
+    exports$1.URLConstants = {
+      Parameters: {
+        FORCE_BROWSER_NO_CACHE: "_",
+        SIGNATURE: "sig",
+        SNAPSHOT: "snapshot",
+        VERSIONID: "versionid",
+        TIMEOUT: "timeout"
+      }
+    };
+    exports$1.HTTPURLConnection = {
+      HTTP_ACCEPTED: 202,
+      HTTP_CONFLICT: 409,
+      HTTP_NOT_FOUND: 404,
+      HTTP_PRECON_FAILED: 412,
+      HTTP_RANGE_NOT_SATISFIABLE: 416
+    };
+    exports$1.HeaderConstants = {
+      AUTHORIZATION: "Authorization",
+      AUTHORIZATION_SCHEME: "Bearer",
+      CONTENT_ENCODING: "Content-Encoding",
+      CONTENT_ID: "Content-ID",
+      CONTENT_LANGUAGE: "Content-Language",
+      CONTENT_LENGTH: "Content-Length",
+      CONTENT_MD5: "Content-Md5",
+      CONTENT_TRANSFER_ENCODING: "Content-Transfer-Encoding",
+      CONTENT_TYPE: "Content-Type",
+      COOKIE: "Cookie",
+      DATE: "date",
+      IF_MATCH: "if-match",
+      IF_MODIFIED_SINCE: "if-modified-since",
+      IF_NONE_MATCH: "if-none-match",
+      IF_UNMODIFIED_SINCE: "if-unmodified-since",
+      PREFIX_FOR_STORAGE: "x-ms-",
+      RANGE: "Range",
+      USER_AGENT: "User-Agent",
+      X_MS_CLIENT_REQUEST_ID: "x-ms-client-request-id",
+      X_MS_COPY_SOURCE: "x-ms-copy-source",
+      X_MS_DATE: "x-ms-date",
+      X_MS_ERROR_CODE: "x-ms-error-code",
+      X_MS_VERSION: "x-ms-version",
+      X_MS_CopySourceErrorCode: "x-ms-copy-source-error-code"
+    };
+    exports$1.ETagNone = "";
+    exports$1.ETagAny = "*";
+    exports$1.SIZE_1_MB = 1 * 1024 * 1024;
+    exports$1.BATCH_MAX_REQUEST = 256;
+    exports$1.BATCH_MAX_PAYLOAD_IN_BYTES = 4 * exports$1.SIZE_1_MB;
+    exports$1.HTTP_LINE_ENDING = "\r\n";
+    exports$1.HTTP_VERSION_1_1 = "HTTP/1.1";
+    exports$1.EncryptionAlgorithmAES25 = "AES256";
+    exports$1.DevelopmentConnectionString = `DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;`;
+    exports$1.StorageBlobLoggingAllowedHeaderNames = [
+      "Access-Control-Allow-Origin",
+      "Cache-Control",
+      "Content-Length",
+      "Content-Type",
+      "Date",
+      "Request-Id",
+      "traceparent",
+      "Transfer-Encoding",
+      "User-Agent",
+      "x-ms-client-request-id",
+      "x-ms-date",
+      "x-ms-error-code",
+      "x-ms-request-id",
+      "x-ms-return-client-request-id",
+      "x-ms-version",
+      "Accept-Ranges",
+      "Content-Disposition",
+      "Content-Encoding",
+      "Content-Language",
+      "Content-MD5",
+      "Content-Range",
+      "ETag",
+      "Last-Modified",
+      "Server",
+      "Vary",
+      "x-ms-content-crc64",
+      "x-ms-copy-action",
+      "x-ms-copy-completion-time",
+      "x-ms-copy-id",
+      "x-ms-copy-progress",
+      "x-ms-copy-status",
+      "x-ms-has-immutability-policy",
+      "x-ms-has-legal-hold",
+      "x-ms-lease-state",
+      "x-ms-lease-status",
+      "x-ms-range",
+      "x-ms-request-server-encrypted",
+      "x-ms-server-encrypted",
+      "x-ms-snapshot",
+      "x-ms-source-range",
+      "If-Match",
+      "If-Modified-Since",
+      "If-None-Match",
+      "If-Unmodified-Since",
+      "x-ms-access-tier",
+      "x-ms-access-tier-change-time",
+      "x-ms-access-tier-inferred",
+      "x-ms-account-kind",
+      "x-ms-archive-status",
+      "x-ms-blob-append-offset",
+      "x-ms-blob-cache-control",
+      "x-ms-blob-committed-block-count",
+      "x-ms-blob-condition-appendpos",
+      "x-ms-blob-condition-maxsize",
+      "x-ms-blob-content-disposition",
+      "x-ms-blob-content-encoding",
+      "x-ms-blob-content-language",
+      "x-ms-blob-content-length",
+      "x-ms-blob-content-md5",
+      "x-ms-blob-content-type",
+      "x-ms-blob-public-access",
+      "x-ms-blob-sequence-number",
+      "x-ms-blob-type",
+      "x-ms-copy-destination-snapshot",
+      "x-ms-creation-time",
+      "x-ms-default-encryption-scope",
+      "x-ms-delete-snapshots",
+      "x-ms-delete-type-permanent",
+      "x-ms-deny-encryption-scope-override",
+      "x-ms-encryption-algorithm",
+      "x-ms-if-sequence-number-eq",
+      "x-ms-if-sequence-number-le",
+      "x-ms-if-sequence-number-lt",
+      "x-ms-incremental-copy",
+      "x-ms-lease-action",
+      "x-ms-lease-break-period",
+      "x-ms-lease-duration",
+      "x-ms-lease-id",
+      "x-ms-lease-time",
+      "x-ms-page-write",
+      "x-ms-proposed-lease-id",
+      "x-ms-range-get-content-md5",
+      "x-ms-rehydrate-priority",
+      "x-ms-sequence-number-action",
+      "x-ms-sku-name",
+      "x-ms-source-content-md5",
+      "x-ms-source-if-match",
+      "x-ms-source-if-modified-since",
+      "x-ms-source-if-none-match",
+      "x-ms-source-if-unmodified-since",
+      "x-ms-tag-count",
+      "x-ms-encryption-key-sha256",
+      "x-ms-copy-source-error-code",
+      "x-ms-copy-source-status-code",
+      "x-ms-if-tags",
+      "x-ms-source-if-tags"
+    ];
+    exports$1.StorageBlobLoggingAllowedQueryParameters = [
+      "comp",
+      "maxresults",
+      "rscc",
+      "rscd",
+      "rsce",
+      "rscl",
+      "rsct",
+      "se",
+      "si",
+      "sip",
+      "sp",
+      "spr",
+      "sr",
+      "srt",
+      "ss",
+      "st",
+      "sv",
+      "include",
+      "marker",
+      "prefix",
+      "copyid",
+      "restype",
+      "blockid",
+      "blocklisttype",
+      "delimiter",
+      "prevsnapshot",
+      "ske",
+      "skoid",
+      "sks",
+      "skt",
+      "sktid",
+      "skv",
+      "snapshot"
+    ];
+    exports$1.BlobUsesCustomerSpecifiedEncryptionMsg = "BlobUsesCustomerSpecifiedEncryption";
+    exports$1.BlobDoesNotUseCustomerSpecifiedEncryption = "BlobDoesNotUseCustomerSpecifiedEncryption";
+    exports$1.PathStylePorts = [
+      "10000",
+      "10001",
+      "10002",
+      "10003",
+      "10004",
+      "10100",
+      "10101",
+      "10102",
+      "10103",
+      "10104",
+      "11000",
+      "11001",
+      "11002",
+      "11003",
+      "11004",
+      "11100",
+      "11101",
+      "11102",
+      "11103",
+      "11104"
+    ];
+  })(constants$1);
+  return constants$1;
 }
 var hasRequiredPipeline;
 function requirePipeline() {
@@ -41421,19 +39533,11 @@ function requirePipeline() {
     const core_xml_1 = /* @__PURE__ */ requireCommonjs$3();
     const core_auth_1 = /* @__PURE__ */ requireCommonjs$6();
     const log_js_1 = /* @__PURE__ */ requireLog$1();
-    const StorageRetryPolicyFactory_js_1 = /* @__PURE__ */ requireStorageRetryPolicyFactory$1();
-    const StorageSharedKeyCredential_js_1 = /* @__PURE__ */ requireStorageSharedKeyCredential$1();
-    const AnonymousCredential_js_1 = /* @__PURE__ */ requireAnonymousCredential$1();
-    const constants_js_1 = /* @__PURE__ */ requireConstants$2();
+    const storage_common_1 = /* @__PURE__ */ requireCommonjs$2();
+    const constants_js_1 = /* @__PURE__ */ requireConstants$1();
     Object.defineProperty(exports$1, "StorageOAuthScopes", { enumerable: true, get: function() {
       return constants_js_1.StorageOAuthScopes;
     } });
-    const storage_common_1 = /* @__PURE__ */ requireCommonjs$2();
-    const StorageBrowserPolicyV2_js_1 = /* @__PURE__ */ requireStorageBrowserPolicyV2();
-    const StorageRetryPolicyV2_js_1 = /* @__PURE__ */ requireStorageRetryPolicyV2();
-    const StorageSharedKeyCredentialPolicyV2_js_1 = /* @__PURE__ */ requireStorageSharedKeyCredentialPolicyV2();
-    const StorageBrowserPolicyFactory_js_1 = /* @__PURE__ */ requireStorageBrowserPolicyFactory();
-    const StorageCorrectContentLengthPolicy_js_1 = /* @__PURE__ */ requireStorageCorrectContentLengthPolicy();
     function isPipelineLike(pipeline2) {
       if (!pipeline2 || typeof pipeline2 !== "object") {
         return false;
@@ -41476,7 +39580,7 @@ function requirePipeline() {
     exports$1.Pipeline = Pipeline2;
     function newPipeline(credential, pipelineOptions = {}) {
       if (!credential) {
-        credential = new AnonymousCredential_js_1.AnonymousCredential();
+        credential = new storage_common_1.AnonymousCredential();
       }
       const pipeline2 = new Pipeline2([], pipelineOptions);
       pipeline2._credential = credential;
@@ -41550,10 +39654,10 @@ function requirePipeline() {
         });
         corePipeline.removePolicy({ phase: "Retry" });
         corePipeline.removePolicy({ name: core_rest_pipeline_1.decompressResponsePolicyName });
-        corePipeline.addPolicy((0, StorageCorrectContentLengthPolicy_js_1.storageCorrectContentLengthPolicy)());
-        corePipeline.addPolicy((0, StorageRetryPolicyV2_js_1.storageRetryPolicy)(restOptions.retryOptions), { phase: "Retry" });
+        corePipeline.addPolicy((0, storage_common_1.storageCorrectContentLengthPolicy)());
+        corePipeline.addPolicy((0, storage_common_1.storageRetryPolicy)(restOptions.retryOptions), { phase: "Retry" });
         corePipeline.addPolicy((0, storage_common_1.storageRequestFailureDetailsParserPolicy)());
-        corePipeline.addPolicy((0, StorageBrowserPolicyV2_js_1.storageBrowserPolicy)());
+        corePipeline.addPolicy((0, storage_common_1.storageBrowserPolicy)());
         const downlevelResults = processDownlevelPipeline(pipeline2);
         if (downlevelResults) {
           corePipeline.addPolicy(downlevelResults.wrappedPolicies, downlevelResults.afterRetry ? { afterPhase: "Retry" } : void 0);
@@ -41565,8 +39669,8 @@ function requirePipeline() {
             scopes: restOptions.audience ?? constants_js_1.StorageOAuthScopes,
             challengeCallbacks: { authorizeRequestOnChallenge: core_client_1.authorizeRequestOnTenantChallenge }
           }), { phase: "Sign" });
-        } else if (credential instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential) {
-          corePipeline.addPolicy((0, StorageSharedKeyCredentialPolicyV2_js_1.storageSharedKeyCredentialPolicy)({
+        } else if (credential instanceof storage_common_1.StorageSharedKeyCredential) {
+          corePipeline.addPolicy((0, storage_common_1.storageSharedKeyCredentialPolicy)({
             accountName: credential.accountName,
             accountKey: credential.accountKey
           }), { phase: "Sign" });
@@ -41584,7 +39688,7 @@ function requirePipeline() {
       if (pipeline2._credential) {
         return pipeline2._credential;
       }
-      let credential = new AnonymousCredential_js_1.AnonymousCredential();
+      let credential = new storage_common_1.AnonymousCredential();
       for (const factory of pipeline2.factories) {
         if ((0, core_auth_1.isTokenCredential)(factory.credential)) {
           credential = factory.credential;
@@ -41595,13 +39699,13 @@ function requirePipeline() {
       return credential;
     }
     function isStorageSharedKeyCredential(factory) {
-      if (factory instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential) {
+      if (factory instanceof storage_common_1.StorageSharedKeyCredential) {
         return true;
       }
       return factory.constructor.name === "StorageSharedKeyCredential";
     }
     function isAnonymousCredential(factory) {
-      if (factory instanceof AnonymousCredential_js_1.AnonymousCredential) {
+      if (factory instanceof storage_common_1.AnonymousCredential) {
         return true;
       }
       return factory.constructor.name === "AnonymousCredential";
@@ -41610,13 +39714,13 @@ function requirePipeline() {
       return (0, core_auth_1.isTokenCredential)(factory.credential);
     }
     function isStorageBrowserPolicyFactory(factory) {
-      if (factory instanceof StorageBrowserPolicyFactory_js_1.StorageBrowserPolicyFactory) {
+      if (factory instanceof storage_common_1.StorageBrowserPolicyFactory) {
         return true;
       }
       return factory.constructor.name === "StorageBrowserPolicyFactory";
     }
     function isStorageRetryPolicyFactory(factory) {
-      if (factory instanceof StorageRetryPolicyFactory_js_1.StorageRetryPolicyFactory) {
+      if (factory instanceof storage_common_1.StorageRetryPolicyFactory) {
         return true;
       }
       return factory.constructor.name === "StorageRetryPolicyFactory";
@@ -50151,8 +48255,8 @@ function requireParameters() {
   hasRequiredParameters = 1;
   Object.defineProperty(parameters, "__esModule", { value: true });
   parameters.action3 = parameters.action2 = parameters.leaseId1 = parameters.action1 = parameters.proposedLeaseId = parameters.duration = parameters.action = parameters.comp10 = parameters.sourceLeaseId = parameters.sourceContainerName = parameters.comp9 = parameters.deletedContainerVersion = parameters.deletedContainerName = parameters.comp8 = parameters.containerAcl = parameters.comp7 = parameters.comp6 = parameters.ifUnmodifiedSince = parameters.ifModifiedSince = parameters.leaseId = parameters.preventEncryptionScopeOverride = parameters.defaultEncryptionScope = parameters.access = parameters.metadata = parameters.restype2 = parameters.where = parameters.comp5 = parameters.multipartContentType = parameters.contentLength = parameters.comp4 = parameters.body = parameters.restype1 = parameters.comp3 = parameters.keyInfo = parameters.include = parameters.maxPageSize = parameters.marker = parameters.prefix = parameters.comp2 = parameters.comp1 = parameters.accept1 = parameters.requestId = parameters.version = parameters.timeoutInSeconds = parameters.comp = parameters.restype = parameters.url = parameters.accept = parameters.blobServiceProperties = parameters.contentType = void 0;
-  parameters.fileRequestIntent = parameters.copySourceTags = parameters.copySourceAuthorization = parameters.sourceContentMD5 = parameters.xMsRequiresSync = parameters.legalHold1 = parameters.sealBlob = parameters.blobTagsString = parameters.copySource = parameters.sourceIfTags = parameters.sourceIfNoneMatch = parameters.sourceIfMatch = parameters.sourceIfUnmodifiedSince = parameters.sourceIfModifiedSince = parameters.rehydratePriority = parameters.tier = parameters.comp14 = parameters.encryptionScope = parameters.legalHold = parameters.comp13 = parameters.immutabilityPolicyMode = parameters.immutabilityPolicyExpiry = parameters.comp12 = parameters.blobContentDisposition = parameters.blobContentLanguage = parameters.blobContentEncoding = parameters.blobContentMD5 = parameters.blobContentType = parameters.blobCacheControl = parameters.expiresOn = parameters.expiryOptions = parameters.comp11 = parameters.blobDeleteType = parameters.deleteSnapshots = parameters.ifTags = parameters.ifNoneMatch = parameters.ifMatch = parameters.encryptionAlgorithm = parameters.encryptionKeySha256 = parameters.encryptionKey = parameters.rangeGetContentCRC64 = parameters.rangeGetContentMD5 = parameters.range = parameters.versionId = parameters.snapshot = parameters.delimiter = parameters.include1 = parameters.proposedLeaseId1 = parameters.action4 = parameters.breakPeriod = void 0;
-  parameters.listType = parameters.comp25 = parameters.blocks = parameters.blockId = parameters.comp24 = parameters.copySourceBlobProperties = parameters.blobType2 = parameters.comp23 = parameters.sourceRange1 = parameters.appendPosition = parameters.maxSize = parameters.comp22 = parameters.blobType1 = parameters.comp21 = parameters.sequenceNumberAction = parameters.prevSnapshotUrl = parameters.prevsnapshot = parameters.comp20 = parameters.range1 = parameters.sourceContentCrc64 = parameters.sourceRange = parameters.sourceUrl = parameters.pageWrite1 = parameters.ifSequenceNumberEqualTo = parameters.ifSequenceNumberLessThan = parameters.ifSequenceNumberLessThanOrEqualTo = parameters.pageWrite = parameters.comp19 = parameters.accept2 = parameters.body1 = parameters.contentType1 = parameters.blobSequenceNumber = parameters.blobContentLength = parameters.blobType = parameters.transactionalContentCrc64 = parameters.transactionalContentMD5 = parameters.tags = parameters.comp18 = parameters.comp17 = parameters.queryRequest = parameters.tier1 = parameters.comp16 = parameters.copyId = parameters.copyActionAbortConstant = parameters.comp15 = void 0;
+  parameters.copySourceTags = parameters.copySourceAuthorization = parameters.sourceContentMD5 = parameters.xMsRequiresSync = parameters.legalHold1 = parameters.sealBlob = parameters.blobTagsString = parameters.copySource = parameters.sourceIfTags = parameters.sourceIfNoneMatch = parameters.sourceIfMatch = parameters.sourceIfUnmodifiedSince = parameters.sourceIfModifiedSince = parameters.rehydratePriority = parameters.tier = parameters.comp14 = parameters.encryptionScope = parameters.legalHold = parameters.comp13 = parameters.immutabilityPolicyMode = parameters.immutabilityPolicyExpiry = parameters.comp12 = parameters.blobContentDisposition = parameters.blobContentLanguage = parameters.blobContentEncoding = parameters.blobContentMD5 = parameters.blobContentType = parameters.blobCacheControl = parameters.expiresOn = parameters.expiryOptions = parameters.comp11 = parameters.blobDeleteType = parameters.deleteSnapshots = parameters.ifTags = parameters.ifNoneMatch = parameters.ifMatch = parameters.encryptionAlgorithm = parameters.encryptionKeySha256 = parameters.encryptionKey = parameters.rangeGetContentCRC64 = parameters.rangeGetContentMD5 = parameters.range = parameters.versionId = parameters.snapshot = parameters.delimiter = parameters.startFrom = parameters.include1 = parameters.proposedLeaseId1 = parameters.action4 = parameters.breakPeriod = void 0;
+  parameters.listType = parameters.comp25 = parameters.blocks = parameters.blockId = parameters.comp24 = parameters.copySourceBlobProperties = parameters.blobType2 = parameters.comp23 = parameters.sourceRange1 = parameters.appendPosition = parameters.maxSize = parameters.comp22 = parameters.blobType1 = parameters.comp21 = parameters.sequenceNumberAction = parameters.prevSnapshotUrl = parameters.prevsnapshot = parameters.comp20 = parameters.range1 = parameters.sourceContentCrc64 = parameters.sourceRange = parameters.sourceUrl = parameters.pageWrite1 = parameters.ifSequenceNumberEqualTo = parameters.ifSequenceNumberLessThan = parameters.ifSequenceNumberLessThanOrEqualTo = parameters.pageWrite = parameters.comp19 = parameters.accept2 = parameters.body1 = parameters.contentType1 = parameters.blobSequenceNumber = parameters.blobContentLength = parameters.blobType = parameters.transactionalContentCrc64 = parameters.transactionalContentMD5 = parameters.tags = parameters.ifNoneMatch1 = parameters.ifMatch1 = parameters.ifUnmodifiedSince1 = parameters.ifModifiedSince1 = parameters.comp18 = parameters.comp17 = parameters.queryRequest = parameters.tier1 = parameters.comp16 = parameters.copyId = parameters.copyActionAbortConstant = parameters.comp15 = parameters.fileRequestIntent = void 0;
   const mappers_js_1 = /* @__PURE__ */ requireMappers();
   parameters.contentType = {
     parameterPath: ["options", "contentType"],
@@ -50230,7 +48334,7 @@ function requireParameters() {
   parameters.version = {
     parameterPath: "version",
     mapper: {
-      defaultValue: "2025-11-05",
+      defaultValue: "2026-02-06",
       isConstant: true,
       serializedName: "x-ms-version",
       type: {
@@ -50764,6 +48868,16 @@ function requireParameters() {
       }
     },
     collectionFormat: "CSV"
+  };
+  parameters.startFrom = {
+    parameterPath: ["options", "startFrom"],
+    mapper: {
+      serializedName: "startFrom",
+      xmlName: "startFrom",
+      type: {
+        name: "String"
+      }
+    }
   };
   parameters.delimiter = {
     parameterPath: "delimiter",
@@ -51360,6 +49474,50 @@ function requireParameters() {
       defaultValue: "tags",
       isConstant: true,
       serializedName: "comp",
+      type: {
+        name: "String"
+      }
+    }
+  };
+  parameters.ifModifiedSince1 = {
+    parameterPath: ["options", "blobModifiedAccessConditions", "ifModifiedSince"],
+    mapper: {
+      serializedName: "x-ms-blob-if-modified-since",
+      xmlName: "x-ms-blob-if-modified-since",
+      type: {
+        name: "DateTimeRfc1123"
+      }
+    }
+  };
+  parameters.ifUnmodifiedSince1 = {
+    parameterPath: [
+      "options",
+      "blobModifiedAccessConditions",
+      "ifUnmodifiedSince"
+    ],
+    mapper: {
+      serializedName: "x-ms-blob-if-unmodified-since",
+      xmlName: "x-ms-blob-if-unmodified-since",
+      type: {
+        name: "DateTimeRfc1123"
+      }
+    }
+  };
+  parameters.ifMatch1 = {
+    parameterPath: ["options", "blobModifiedAccessConditions", "ifMatch"],
+    mapper: {
+      serializedName: "x-ms-blob-if-match",
+      xmlName: "x-ms-blob-if-match",
+      type: {
+        name: "String"
+      }
+    }
+  };
+  parameters.ifNoneMatch1 = {
+    parameterPath: ["options", "blobModifiedAccessConditions", "ifNoneMatch"],
+    mapper: {
+      serializedName: "x-ms-blob-if-none-match",
+      xmlName: "x-ms-blob-if-none-match",
       type: {
         name: "String"
       }
@@ -52743,7 +50901,8 @@ function requireContainer$1() {
       Parameters.marker,
       Parameters.maxPageSize,
       Parameters.restype2,
-      Parameters.include1
+      Parameters.include1,
+      Parameters.startFrom
     ],
     urlParameters: [Parameters.url],
     headerParameters: [
@@ -52775,6 +50934,7 @@ function requireContainer$1() {
       Parameters.maxPageSize,
       Parameters.restype2,
       Parameters.include1,
+      Parameters.startFrom,
       Parameters.delimiter
     ],
     urlParameters: [Parameters.url],
@@ -53800,7 +51960,11 @@ function requireBlob$1() {
       Parameters.requestId,
       Parameters.accept1,
       Parameters.leaseId,
-      Parameters.ifTags
+      Parameters.ifTags,
+      Parameters.ifModifiedSince1,
+      Parameters.ifUnmodifiedSince1,
+      Parameters.ifMatch1,
+      Parameters.ifNoneMatch1
     ],
     isXML: true,
     serializer: xmlSerializer
@@ -53831,6 +51995,10 @@ function requireBlob$1() {
       Parameters.requestId,
       Parameters.leaseId,
       Parameters.ifTags,
+      Parameters.ifModifiedSince1,
+      Parameters.ifUnmodifiedSince1,
+      Parameters.ifMatch1,
+      Parameters.ifNoneMatch1,
       Parameters.transactionalContentMD5,
       Parameters.transactionalContentCrc64
     ],
@@ -54949,7 +53117,7 @@ function requireStorageClient$1() {
       const defaults = {
         requestContentType: "application/json; charset=utf-8"
       };
-      const packageDetails = `azsdk-js-azure-storage-blob/12.29.1`;
+      const packageDetails = `azsdk-js-azure-storage-blob/12.30.0`;
       const userAgentPrefix = options2.userAgentOptions && options2.userAgentOptions.userAgentPrefix ? `${options2.userAgentOptions.userAgentPrefix} ${packageDetails}` : `${packageDetails}`;
       const optionsWithDefaults = {
         ...defaults,
@@ -54961,7 +53129,7 @@ function requireStorageClient$1() {
       };
       super(optionsWithDefaults);
       this.url = url;
-      this.version = options2.version || "2025-11-05";
+      this.version = options2.version || "2026-02-06";
       this.service = new index_js_1.ServiceImpl(this);
       this.container = new index_js_1.ContainerImpl(this);
       this.blob = new index_js_1.BlobImpl(this);
@@ -55080,6 +53248,558 @@ function requireStorageContextClient() {
   StorageContextClient.StorageContextClient = StorageContextClient$1;
   return StorageContextClient;
 }
+var utils_common$1 = {};
+var hasRequiredUtils_common$1;
+function requireUtils_common$1() {
+  if (hasRequiredUtils_common$1) return utils_common$1;
+  hasRequiredUtils_common$1 = 1;
+  Object.defineProperty(utils_common$1, "__esModule", { value: true });
+  utils_common$1.escapeURLPath = escapeURLPath;
+  utils_common$1.getValueInConnString = getValueInConnString;
+  utils_common$1.extractConnectionStringParts = extractConnectionStringParts;
+  utils_common$1.appendToURLPath = appendToURLPath;
+  utils_common$1.setURLParameter = setURLParameter;
+  utils_common$1.getURLParameter = getURLParameter;
+  utils_common$1.setURLHost = setURLHost;
+  utils_common$1.getURLPath = getURLPath;
+  utils_common$1.getURLScheme = getURLScheme;
+  utils_common$1.getURLPathAndQuery = getURLPathAndQuery;
+  utils_common$1.getURLQueries = getURLQueries;
+  utils_common$1.appendToURLQuery = appendToURLQuery;
+  utils_common$1.truncatedISO8061Date = truncatedISO8061Date;
+  utils_common$1.base64encode = base64encode2;
+  utils_common$1.base64decode = base64decode2;
+  utils_common$1.generateBlockID = generateBlockID;
+  utils_common$1.delay = delay2;
+  utils_common$1.padStart = padStart;
+  utils_common$1.sanitizeURL = sanitizeURL;
+  utils_common$1.sanitizeHeaders = sanitizeHeaders;
+  utils_common$1.iEqual = iEqual;
+  utils_common$1.getAccountNameFromUrl = getAccountNameFromUrl;
+  utils_common$1.isIpEndpointStyle = isIpEndpointStyle;
+  utils_common$1.toBlobTagsString = toBlobTagsString;
+  utils_common$1.toBlobTags = toBlobTags;
+  utils_common$1.toTags = toTags;
+  utils_common$1.toQuerySerialization = toQuerySerialization;
+  utils_common$1.parseObjectReplicationRecord = parseObjectReplicationRecord;
+  utils_common$1.attachCredential = attachCredential;
+  utils_common$1.httpAuthorizationToString = httpAuthorizationToString;
+  utils_common$1.BlobNameToString = BlobNameToString;
+  utils_common$1.ConvertInternalResponseOfListBlobFlat = ConvertInternalResponseOfListBlobFlat;
+  utils_common$1.ConvertInternalResponseOfListBlobHierarchy = ConvertInternalResponseOfListBlobHierarchy;
+  utils_common$1.ExtractPageRangeInfoItems = ExtractPageRangeInfoItems;
+  utils_common$1.EscapePath = EscapePath;
+  utils_common$1.assertResponse = assertResponse;
+  const core_rest_pipeline_1 = /* @__PURE__ */ requireCommonjs$7();
+  const core_util_1 = /* @__PURE__ */ requireCommonjs$9();
+  const constants_js_1 = /* @__PURE__ */ requireConstants$1();
+  function escapeURLPath(url) {
+    const urlParsed = new URL(url);
+    let path2 = urlParsed.pathname;
+    path2 = path2 || "/";
+    path2 = escape(path2);
+    urlParsed.pathname = path2;
+    return urlParsed.toString();
+  }
+  function getProxyUriFromDevConnString(connectionString) {
+    let proxyUri = "";
+    if (connectionString.search("DevelopmentStorageProxyUri=") !== -1) {
+      const matchCredentials = connectionString.split(";");
+      for (const element of matchCredentials) {
+        if (element.trim().startsWith("DevelopmentStorageProxyUri=")) {
+          proxyUri = element.trim().match("DevelopmentStorageProxyUri=(.*)")[1];
+        }
+      }
+    }
+    return proxyUri;
+  }
+  function getValueInConnString(connectionString, argument) {
+    const elements = connectionString.split(";");
+    for (const element of elements) {
+      if (element.trim().startsWith(argument)) {
+        return element.trim().match(argument + "=(.*)")[1];
+      }
+    }
+    return "";
+  }
+  function extractConnectionStringParts(connectionString) {
+    let proxyUri = "";
+    if (connectionString.startsWith("UseDevelopmentStorage=true")) {
+      proxyUri = getProxyUriFromDevConnString(connectionString);
+      connectionString = constants_js_1.DevelopmentConnectionString;
+    }
+    let blobEndpoint = getValueInConnString(connectionString, "BlobEndpoint");
+    blobEndpoint = blobEndpoint.endsWith("/") ? blobEndpoint.slice(0, -1) : blobEndpoint;
+    if (connectionString.search("DefaultEndpointsProtocol=") !== -1 && connectionString.search("AccountKey=") !== -1) {
+      let defaultEndpointsProtocol = "";
+      let accountName = "";
+      let accountKey = Buffer.from("accountKey", "base64");
+      let endpointSuffix = "";
+      accountName = getValueInConnString(connectionString, "AccountName");
+      accountKey = Buffer.from(getValueInConnString(connectionString, "AccountKey"), "base64");
+      if (!blobEndpoint) {
+        defaultEndpointsProtocol = getValueInConnString(connectionString, "DefaultEndpointsProtocol");
+        const protocol = defaultEndpointsProtocol.toLowerCase();
+        if (protocol !== "https" && protocol !== "http") {
+          throw new Error("Invalid DefaultEndpointsProtocol in the provided Connection String. Expecting 'https' or 'http'");
+        }
+        endpointSuffix = getValueInConnString(connectionString, "EndpointSuffix");
+        if (!endpointSuffix) {
+          throw new Error("Invalid EndpointSuffix in the provided Connection String");
+        }
+        blobEndpoint = `${defaultEndpointsProtocol}://${accountName}.blob.${endpointSuffix}`;
+      }
+      if (!accountName) {
+        throw new Error("Invalid AccountName in the provided Connection String");
+      } else if (accountKey.length === 0) {
+        throw new Error("Invalid AccountKey in the provided Connection String");
+      }
+      return {
+        kind: "AccountConnString",
+        url: blobEndpoint,
+        accountName,
+        accountKey,
+        proxyUri
+      };
+    } else {
+      let accountSas = getValueInConnString(connectionString, "SharedAccessSignature");
+      let accountName = getValueInConnString(connectionString, "AccountName");
+      if (!accountName) {
+        accountName = getAccountNameFromUrl(blobEndpoint);
+      }
+      if (!blobEndpoint) {
+        throw new Error("Invalid BlobEndpoint in the provided SAS Connection String");
+      } else if (!accountSas) {
+        throw new Error("Invalid SharedAccessSignature in the provided SAS Connection String");
+      }
+      if (accountSas.startsWith("?")) {
+        accountSas = accountSas.substring(1);
+      }
+      return { kind: "SASConnString", url: blobEndpoint, accountName, accountSas };
+    }
+  }
+  function escape(text) {
+    return encodeURIComponent(text).replace(/%2F/g, "/").replace(/'/g, "%27").replace(/\+/g, "%20").replace(/%25/g, "%");
+  }
+  function appendToURLPath(url, name) {
+    const urlParsed = new URL(url);
+    let path2 = urlParsed.pathname;
+    path2 = path2 ? path2.endsWith("/") ? `${path2}${name}` : `${path2}/${name}` : name;
+    urlParsed.pathname = path2;
+    return urlParsed.toString();
+  }
+  function setURLParameter(url, name, value) {
+    const urlParsed = new URL(url);
+    const encodedName = encodeURIComponent(name);
+    const encodedValue = value ? encodeURIComponent(value) : void 0;
+    const searchString = urlParsed.search === "" ? "?" : urlParsed.search;
+    const searchPieces = [];
+    for (const pair of searchString.slice(1).split("&")) {
+      if (pair) {
+        const [key] = pair.split("=", 2);
+        if (key !== encodedName) {
+          searchPieces.push(pair);
+        }
+      }
+    }
+    if (encodedValue) {
+      searchPieces.push(`${encodedName}=${encodedValue}`);
+    }
+    urlParsed.search = searchPieces.length ? `?${searchPieces.join("&")}` : "";
+    return urlParsed.toString();
+  }
+  function getURLParameter(url, name) {
+    const urlParsed = new URL(url);
+    return urlParsed.searchParams.get(name) ?? void 0;
+  }
+  function setURLHost(url, host) {
+    const urlParsed = new URL(url);
+    urlParsed.hostname = host;
+    return urlParsed.toString();
+  }
+  function getURLPath(url) {
+    try {
+      const urlParsed = new URL(url);
+      return urlParsed.pathname;
+    } catch (e) {
+      return void 0;
+    }
+  }
+  function getURLScheme(url) {
+    try {
+      const urlParsed = new URL(url);
+      return urlParsed.protocol.endsWith(":") ? urlParsed.protocol.slice(0, -1) : urlParsed.protocol;
+    } catch (e) {
+      return void 0;
+    }
+  }
+  function getURLPathAndQuery(url) {
+    const urlParsed = new URL(url);
+    const pathString = urlParsed.pathname;
+    if (!pathString) {
+      throw new RangeError("Invalid url without valid path.");
+    }
+    let queryString = urlParsed.search || "";
+    queryString = queryString.trim();
+    if (queryString !== "") {
+      queryString = queryString.startsWith("?") ? queryString : `?${queryString}`;
+    }
+    return `${pathString}${queryString}`;
+  }
+  function getURLQueries(url) {
+    let queryString = new URL(url).search;
+    if (!queryString) {
+      return {};
+    }
+    queryString = queryString.trim();
+    queryString = queryString.startsWith("?") ? queryString.substring(1) : queryString;
+    let querySubStrings = queryString.split("&");
+    querySubStrings = querySubStrings.filter((value) => {
+      const indexOfEqual = value.indexOf("=");
+      const lastIndexOfEqual = value.lastIndexOf("=");
+      return indexOfEqual > 0 && indexOfEqual === lastIndexOfEqual && lastIndexOfEqual < value.length - 1;
+    });
+    const queries = {};
+    for (const querySubString of querySubStrings) {
+      const splitResults = querySubString.split("=");
+      const key = splitResults[0];
+      const value = splitResults[1];
+      queries[key] = value;
+    }
+    return queries;
+  }
+  function appendToURLQuery(url, queryParts) {
+    const urlParsed = new URL(url);
+    let query = urlParsed.search;
+    if (query) {
+      query += "&" + queryParts;
+    } else {
+      query = queryParts;
+    }
+    urlParsed.search = query;
+    return urlParsed.toString();
+  }
+  function truncatedISO8061Date(date, withMilliseconds = true) {
+    const dateString = date.toISOString();
+    return withMilliseconds ? dateString.substring(0, dateString.length - 1) + "0000Z" : dateString.substring(0, dateString.length - 5) + "Z";
+  }
+  function base64encode2(content) {
+    return !core_util_1.isNodeLike ? btoa(content) : Buffer.from(content).toString("base64");
+  }
+  function base64decode2(encodedString) {
+    return !core_util_1.isNodeLike ? atob(encodedString) : Buffer.from(encodedString, "base64").toString();
+  }
+  function generateBlockID(blockIDPrefix, blockIndex) {
+    const maxSourceStringLength = 48;
+    const maxBlockIndexLength = 6;
+    const maxAllowedBlockIDPrefixLength = maxSourceStringLength - maxBlockIndexLength;
+    if (blockIDPrefix.length > maxAllowedBlockIDPrefixLength) {
+      blockIDPrefix = blockIDPrefix.slice(0, maxAllowedBlockIDPrefixLength);
+    }
+    const res = blockIDPrefix + padStart(blockIndex.toString(), maxSourceStringLength - blockIDPrefix.length, "0");
+    return base64encode2(res);
+  }
+  async function delay2(timeInMs, aborter, abortError) {
+    return new Promise((resolve, reject) => {
+      let timeout;
+      const abortHandler = () => {
+        if (timeout !== void 0) {
+          clearTimeout(timeout);
+        }
+        reject(abortError);
+      };
+      const resolveHandler = () => {
+        if (aborter !== void 0) {
+          aborter.removeEventListener("abort", abortHandler);
+        }
+        resolve();
+      };
+      timeout = setTimeout(resolveHandler, timeInMs);
+      if (aborter !== void 0) {
+        aborter.addEventListener("abort", abortHandler);
+      }
+    });
+  }
+  function padStart(currentString, targetLength, padString = " ") {
+    if (String.prototype.padStart) {
+      return currentString.padStart(targetLength, padString);
+    }
+    padString = padString || " ";
+    if (currentString.length > targetLength) {
+      return currentString;
+    } else {
+      targetLength = targetLength - currentString.length;
+      if (targetLength > padString.length) {
+        padString += padString.repeat(targetLength / padString.length);
+      }
+      return padString.slice(0, targetLength) + currentString;
+    }
+  }
+  function sanitizeURL(url) {
+    let safeURL = url;
+    if (getURLParameter(safeURL, constants_js_1.URLConstants.Parameters.SIGNATURE)) {
+      safeURL = setURLParameter(safeURL, constants_js_1.URLConstants.Parameters.SIGNATURE, "*****");
+    }
+    return safeURL;
+  }
+  function sanitizeHeaders(originalHeader) {
+    const headers2 = (0, core_rest_pipeline_1.createHttpHeaders)();
+    for (const [name, value] of originalHeader) {
+      if (name.toLowerCase() === constants_js_1.HeaderConstants.AUTHORIZATION.toLowerCase()) {
+        headers2.set(name, "*****");
+      } else if (name.toLowerCase() === constants_js_1.HeaderConstants.X_MS_COPY_SOURCE) {
+        headers2.set(name, sanitizeURL(value));
+      } else {
+        headers2.set(name, value);
+      }
+    }
+    return headers2;
+  }
+  function iEqual(str1, str2) {
+    return str1.toLocaleLowerCase() === str2.toLocaleLowerCase();
+  }
+  function getAccountNameFromUrl(url) {
+    const parsedUrl = new URL(url);
+    let accountName;
+    try {
+      if (parsedUrl.hostname.split(".")[1] === "blob") {
+        accountName = parsedUrl.hostname.split(".")[0];
+      } else if (isIpEndpointStyle(parsedUrl)) {
+        accountName = parsedUrl.pathname.split("/")[1];
+      } else {
+        accountName = "";
+      }
+      return accountName;
+    } catch (error2) {
+      throw new Error("Unable to extract accountName with provided information.");
+    }
+  }
+  function isIpEndpointStyle(parsedUrl) {
+    const host = parsedUrl.host;
+    return /^.*:.*:.*$|^(localhost|host.docker.internal)(:[0-9]+)?$|^(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])(\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])){3}(:[0-9]+)?$/.test(host) || Boolean(parsedUrl.port) && constants_js_1.PathStylePorts.includes(parsedUrl.port);
+  }
+  function toBlobTagsString(tags) {
+    if (tags === void 0) {
+      return void 0;
+    }
+    const tagPairs = [];
+    for (const key in tags) {
+      if (Object.prototype.hasOwnProperty.call(tags, key)) {
+        const value = tags[key];
+        tagPairs.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
+      }
+    }
+    return tagPairs.join("&");
+  }
+  function toBlobTags(tags) {
+    if (tags === void 0) {
+      return void 0;
+    }
+    const res = {
+      blobTagSet: []
+    };
+    for (const key in tags) {
+      if (Object.prototype.hasOwnProperty.call(tags, key)) {
+        const value = tags[key];
+        res.blobTagSet.push({
+          key,
+          value
+        });
+      }
+    }
+    return res;
+  }
+  function toTags(tags) {
+    if (tags === void 0) {
+      return void 0;
+    }
+    const res = {};
+    for (const blobTag of tags.blobTagSet) {
+      res[blobTag.key] = blobTag.value;
+    }
+    return res;
+  }
+  function toQuerySerialization(textConfiguration) {
+    if (textConfiguration === void 0) {
+      return void 0;
+    }
+    switch (textConfiguration.kind) {
+      case "csv":
+        return {
+          format: {
+            type: "delimited",
+            delimitedTextConfiguration: {
+              columnSeparator: textConfiguration.columnSeparator || ",",
+              fieldQuote: textConfiguration.fieldQuote || "",
+              recordSeparator: textConfiguration.recordSeparator,
+              escapeChar: textConfiguration.escapeCharacter || "",
+              headersPresent: textConfiguration.hasHeaders || false
+            }
+          }
+        };
+      case "json":
+        return {
+          format: {
+            type: "json",
+            jsonTextConfiguration: {
+              recordSeparator: textConfiguration.recordSeparator
+            }
+          }
+        };
+      case "arrow":
+        return {
+          format: {
+            type: "arrow",
+            arrowConfiguration: {
+              schema: textConfiguration.schema
+            }
+          }
+        };
+      case "parquet":
+        return {
+          format: {
+            type: "parquet"
+          }
+        };
+      default:
+        throw Error("Invalid BlobQueryTextConfiguration.");
+    }
+  }
+  function parseObjectReplicationRecord(objectReplicationRecord) {
+    if (!objectReplicationRecord) {
+      return void 0;
+    }
+    if ("policy-id" in objectReplicationRecord) {
+      return void 0;
+    }
+    const orProperties = [];
+    for (const key in objectReplicationRecord) {
+      const ids = key.split("_");
+      const policyPrefix = "or-";
+      if (ids[0].startsWith(policyPrefix)) {
+        ids[0] = ids[0].substring(policyPrefix.length);
+      }
+      const rule = {
+        ruleId: ids[1],
+        replicationStatus: objectReplicationRecord[key]
+      };
+      const policyIndex = orProperties.findIndex((policy) => policy.policyId === ids[0]);
+      if (policyIndex > -1) {
+        orProperties[policyIndex].rules.push(rule);
+      } else {
+        orProperties.push({
+          policyId: ids[0],
+          rules: [rule]
+        });
+      }
+    }
+    return orProperties;
+  }
+  function attachCredential(thing, credential) {
+    thing.credential = credential;
+    return thing;
+  }
+  function httpAuthorizationToString(httpAuthorization) {
+    return httpAuthorization ? httpAuthorization.scheme + " " + httpAuthorization.value : void 0;
+  }
+  function BlobNameToString(name) {
+    if (name.encoded) {
+      return decodeURIComponent(name.content);
+    } else {
+      return name.content;
+    }
+  }
+  function ConvertInternalResponseOfListBlobFlat(internalResponse) {
+    return {
+      ...internalResponse,
+      segment: {
+        blobItems: internalResponse.segment.blobItems.map((blobItemInteral) => {
+          const blobItem = {
+            ...blobItemInteral,
+            name: BlobNameToString(blobItemInteral.name)
+          };
+          return blobItem;
+        })
+      }
+    };
+  }
+  function ConvertInternalResponseOfListBlobHierarchy(internalResponse) {
+    return {
+      ...internalResponse,
+      segment: {
+        blobPrefixes: internalResponse.segment.blobPrefixes?.map((blobPrefixInternal) => {
+          const blobPrefix = {
+            ...blobPrefixInternal,
+            name: BlobNameToString(blobPrefixInternal.name)
+          };
+          return blobPrefix;
+        }),
+        blobItems: internalResponse.segment.blobItems.map((blobItemInteral) => {
+          const blobItem = {
+            ...blobItemInteral,
+            name: BlobNameToString(blobItemInteral.name)
+          };
+          return blobItem;
+        })
+      }
+    };
+  }
+  function* ExtractPageRangeInfoItems(getPageRangesSegment) {
+    let pageRange = [];
+    let clearRange = [];
+    if (getPageRangesSegment.pageRange)
+      pageRange = getPageRangesSegment.pageRange;
+    if (getPageRangesSegment.clearRange)
+      clearRange = getPageRangesSegment.clearRange;
+    let pageRangeIndex = 0;
+    let clearRangeIndex = 0;
+    while (pageRangeIndex < pageRange.length && clearRangeIndex < clearRange.length) {
+      if (pageRange[pageRangeIndex].start < clearRange[clearRangeIndex].start) {
+        yield {
+          start: pageRange[pageRangeIndex].start,
+          end: pageRange[pageRangeIndex].end,
+          isClear: false
+        };
+        ++pageRangeIndex;
+      } else {
+        yield {
+          start: clearRange[clearRangeIndex].start,
+          end: clearRange[clearRangeIndex].end,
+          isClear: true
+        };
+        ++clearRangeIndex;
+      }
+    }
+    for (; pageRangeIndex < pageRange.length; ++pageRangeIndex) {
+      yield {
+        start: pageRange[pageRangeIndex].start,
+        end: pageRange[pageRangeIndex].end,
+        isClear: false
+      };
+    }
+    for (; clearRangeIndex < clearRange.length; ++clearRangeIndex) {
+      yield {
+        start: clearRange[clearRangeIndex].start,
+        end: clearRange[clearRangeIndex].end,
+        isClear: true
+      };
+    }
+  }
+  function EscapePath(blobName) {
+    const split = blobName.split("/");
+    for (let i = 0; i < split.length; i++) {
+      split[i] = encodeURIComponent(split[i]);
+    }
+    return split.join("/");
+  }
+  function assertResponse(response2) {
+    if (`_response` in response2) {
+      return response2;
+    }
+    throw new TypeError(`Unexpected response object ${response2}`);
+  }
+  return utils_common$1;
+}
 var hasRequiredStorageClient;
 function requireStorageClient() {
   if (hasRequiredStorageClient) return StorageClient;
@@ -55088,7 +53808,7 @@ function requireStorageClient() {
   StorageClient.StorageClient = void 0;
   const StorageContextClient_js_1 = /* @__PURE__ */ requireStorageContextClient();
   const Pipeline_js_1 = /* @__PURE__ */ requirePipeline();
-  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
+  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
   let StorageClient$1 = class StorageClient {
     /**
      * Encoded URL string value.
@@ -55140,7 +53860,7 @@ function requireTracing() {
   Object.defineProperty(tracing, "__esModule", { value: true });
   tracing.tracingClient = void 0;
   const core_tracing_1 = /* @__PURE__ */ requireCommonjs$8();
-  const constants_js_1 = /* @__PURE__ */ requireConstants$2();
+  const constants_js_1 = /* @__PURE__ */ requireConstants$1();
   tracing.tracingClient = (0, core_tracing_1.createTracingClient)({
     packageName: "@azure/storage-blob",
     packageVersion: constants_js_1.SDK_VERSION,
@@ -55559,49 +54279,6 @@ function requireContainerSASPermissions() {
   ContainerSASPermissions.ContainerSASPermissions = ContainerSASPermissions$1;
   return ContainerSASPermissions;
 }
-var UserDelegationKeyCredential = {};
-var hasRequiredUserDelegationKeyCredential;
-function requireUserDelegationKeyCredential() {
-  if (hasRequiredUserDelegationKeyCredential) return UserDelegationKeyCredential;
-  hasRequiredUserDelegationKeyCredential = 1;
-  Object.defineProperty(UserDelegationKeyCredential, "__esModule", { value: true });
-  UserDelegationKeyCredential.UserDelegationKeyCredential = void 0;
-  const node_crypto_1 = require$$0$f;
-  let UserDelegationKeyCredential$1 = class UserDelegationKeyCredential {
-    /**
-     * Azure Storage account name; readonly.
-     */
-    accountName;
-    /**
-     * Azure Storage user delegation key; readonly.
-     */
-    userDelegationKey;
-    /**
-     * Key value in Buffer type.
-     */
-    key;
-    /**
-     * Creates an instance of UserDelegationKeyCredential.
-     * @param accountName -
-     * @param userDelegationKey -
-     */
-    constructor(accountName, userDelegationKey) {
-      this.accountName = accountName;
-      this.userDelegationKey = userDelegationKey;
-      this.key = Buffer.from(userDelegationKey.value, "base64");
-    }
-    /**
-     * Generates a hash signature for an HTTP request or for a SAS.
-     *
-     * @param stringToSign -
-     */
-    computeHMACSHA256(stringToSign) {
-      return (0, node_crypto_1.createHmac)("sha256", this.key).update(stringToSign, "utf8").digest("base64");
-    }
-  };
-  UserDelegationKeyCredential.UserDelegationKeyCredential = UserDelegationKeyCredential$1;
-  return UserDelegationKeyCredential;
-}
 var SasIPRange = {};
 var hasRequiredSasIPRange;
 function requireSasIPRange() {
@@ -55622,7 +54299,7 @@ function requireSASQueryParameters() {
   Object.defineProperty(SASQueryParameters, "__esModule", { value: true });
   SASQueryParameters.SASQueryParameters = SASQueryParameters.SASProtocol = void 0;
   const SasIPRange_js_1 = /* @__PURE__ */ requireSasIPRange();
-  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
+  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
   var SASProtocol;
   (function(SASProtocol2) {
     SASProtocol2["Https"] = "https";
@@ -55667,6 +54344,12 @@ function requireSASQueryParameters() {
      * @see https://learn.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy
      */
     identifier;
+    /**
+     * Optional. Beginning in version 2025-07-05, this value specifies the Entra ID of the user would is authorized to
+     * use the resulting SAS URL.  The resulting SAS URL must be used in conjunction with an Entra ID token that has been
+     * issued to the user specified in this value.
+     */
+    delegatedUserObjectId;
     /**
      * Optional. Encryption scope to use when sending requests authorized with this SAS URI.
      */
@@ -55760,7 +54443,7 @@ function requireSASQueryParameters() {
       }
       return void 0;
     }
-    constructor(version2, signature, permissionsOrOptions, services, resourceTypes, protocol, startsOn, expiresOn, ipRange, identifier, resource, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType, userDelegationKey, preauthorizedAgentObjectId, correlationId, encryptionScope) {
+    constructor(version2, signature, permissionsOrOptions, services, resourceTypes, protocol, startsOn, expiresOn, ipRange, identifier, resource, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType, userDelegationKey, preauthorizedAgentObjectId, correlationId, encryptionScope, delegatedUserObjectId) {
       this.version = version2;
       this.signature = signature;
       if (permissionsOrOptions !== void 0 && typeof permissionsOrOptions !== "string") {
@@ -55772,6 +54455,7 @@ function requireSASQueryParameters() {
         this.expiresOn = permissionsOrOptions.expiresOn;
         this.ipRangeInner = permissionsOrOptions.ipRange;
         this.identifier = permissionsOrOptions.identifier;
+        this.delegatedUserObjectId = permissionsOrOptions.delegatedUserObjectId;
         this.encryptionScope = permissionsOrOptions.encryptionScope;
         this.resource = permissionsOrOptions.resource;
         this.cacheControl = permissionsOrOptions.cacheControl;
@@ -55797,6 +54481,7 @@ function requireSASQueryParameters() {
         this.protocol = protocol;
         this.startsOn = startsOn;
         this.ipRangeInner = ipRange;
+        this.delegatedUserObjectId = delegatedUserObjectId;
         this.encryptionScope = encryptionScope;
         this.identifier = identifier;
         this.resource = resource;
@@ -55853,7 +54538,9 @@ function requireSASQueryParameters() {
         "rscl",
         "rsct",
         "saoid",
-        "scid"
+        "scid",
+        "sduoid"
+        // Signed key user delegation object ID
       ];
       const queries = [];
       for (const param of params) {
@@ -55933,6 +54620,9 @@ function requireSASQueryParameters() {
           case "scid":
             this.tryAppendQueryParameter(queries, param, this.correlationId);
             break;
+          case "sduoid":
+            this.tryAppendQueryParameter(queries, param, this.delegatedUserObjectId);
+            break;
         }
       }
       return queries.join("&");
@@ -55967,21 +54657,21 @@ function requireBlobSASSignatureValues() {
   BlobSASSignatureValues.generateBlobSASQueryParametersInternal = generateBlobSASQueryParametersInternal;
   const BlobSASPermissions_js_1 = /* @__PURE__ */ requireBlobSASPermissions();
   const ContainerSASPermissions_js_1 = /* @__PURE__ */ requireContainerSASPermissions();
-  const StorageSharedKeyCredential_js_1 = /* @__PURE__ */ requireStorageSharedKeyCredential$1();
-  const UserDelegationKeyCredential_js_1 = /* @__PURE__ */ requireUserDelegationKeyCredential();
+  const storage_common_1 = /* @__PURE__ */ requireCommonjs$2();
   const SasIPRange_js_1 = /* @__PURE__ */ requireSasIPRange();
   const SASQueryParameters_js_1 = /* @__PURE__ */ requireSASQueryParameters();
-  const constants_js_1 = /* @__PURE__ */ requireConstants$2();
-  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
+  const constants_js_1 = /* @__PURE__ */ requireConstants$1();
+  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
+  const storage_common_2 = /* @__PURE__ */ requireCommonjs$2();
   function generateBlobSASQueryParameters(blobSASSignatureValues, sharedKeyCredentialOrUserDelegationKey, accountName) {
     return generateBlobSASQueryParametersInternal(blobSASSignatureValues, sharedKeyCredentialOrUserDelegationKey, accountName).sasQueryParameters;
   }
   function generateBlobSASQueryParametersInternal(blobSASSignatureValues, sharedKeyCredentialOrUserDelegationKey, accountName) {
     const version2 = blobSASSignatureValues.version ? blobSASSignatureValues.version : constants_js_1.SERVICE_VERSION;
-    const sharedKeyCredential = sharedKeyCredentialOrUserDelegationKey instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential ? sharedKeyCredentialOrUserDelegationKey : void 0;
+    const sharedKeyCredential = sharedKeyCredentialOrUserDelegationKey instanceof storage_common_1.StorageSharedKeyCredential ? sharedKeyCredentialOrUserDelegationKey : void 0;
     let userDelegationKeyCredential;
     if (sharedKeyCredential === void 0 && accountName !== void 0) {
-      userDelegationKeyCredential = new UserDelegationKeyCredential_js_1.UserDelegationKeyCredential(accountName, sharedKeyCredentialOrUserDelegationKey);
+      userDelegationKeyCredential = new storage_common_2.UserDelegationKeyCredential(accountName, sharedKeyCredentialOrUserDelegationKey);
     }
     if (sharedKeyCredential === void 0 && userDelegationKeyCredential === void 0) {
       throw TypeError("Invalid sharedKeyCredential, userDelegationKey or accountName.");
@@ -56356,8 +55046,7 @@ function requireBlobSASSignatureValues() {
       blobSASSignatureValues.correlationId,
       void 0,
       // SignedKeyDelegatedUserTenantId, will be added in a future release.
-      void 0,
-      // SignedDelegatedUserObjectId, will be added in future release.
+      blobSASSignatureValues.delegatedUserObjectId,
       blobSASSignatureValues.ipRange ? (0, SasIPRange_js_1.ipRangeToString)(blobSASSignatureValues.ipRange) : "",
       blobSASSignatureValues.protocol ? blobSASSignatureValues.protocol : "",
       blobSASSignatureValues.version,
@@ -56372,7 +55061,7 @@ function requireBlobSASSignatureValues() {
     ].join("\n");
     const signature = userDelegationKeyCredential.computeHMACSHA256(stringToSign);
     return {
-      sasQueryParameters: new SASQueryParameters_js_1.SASQueryParameters(blobSASSignatureValues.version, signature, verifiedPermissions, void 0, void 0, blobSASSignatureValues.protocol, blobSASSignatureValues.startsOn, blobSASSignatureValues.expiresOn, blobSASSignatureValues.ipRange, blobSASSignatureValues.identifier, resource, blobSASSignatureValues.cacheControl, blobSASSignatureValues.contentDisposition, blobSASSignatureValues.contentEncoding, blobSASSignatureValues.contentLanguage, blobSASSignatureValues.contentType, userDelegationKeyCredential.userDelegationKey, blobSASSignatureValues.preauthorizedAgentObjectId, blobSASSignatureValues.correlationId, blobSASSignatureValues.encryptionScope),
+      sasQueryParameters: new SASQueryParameters_js_1.SASQueryParameters(blobSASSignatureValues.version, signature, verifiedPermissions, void 0, void 0, blobSASSignatureValues.protocol, blobSASSignatureValues.startsOn, blobSASSignatureValues.expiresOn, blobSASSignatureValues.ipRange, blobSASSignatureValues.identifier, resource, blobSASSignatureValues.cacheControl, blobSASSignatureValues.contentDisposition, blobSASSignatureValues.contentEncoding, blobSASSignatureValues.contentLanguage, blobSASSignatureValues.contentType, userDelegationKeyCredential.userDelegationKey, blobSASSignatureValues.preauthorizedAgentObjectId, blobSASSignatureValues.correlationId, blobSASSignatureValues.encryptionScope, blobSASSignatureValues.delegatedUserObjectId),
       stringToSign
     };
   }
@@ -56434,9 +55123,9 @@ function requireBlobLeaseClient() {
   Object.defineProperty(BlobLeaseClient, "__esModule", { value: true });
   BlobLeaseClient.BlobLeaseClient = void 0;
   const core_util_1 = /* @__PURE__ */ requireCommonjs$9();
-  const constants_js_1 = /* @__PURE__ */ requireConstants$2();
+  const constants_js_1 = /* @__PURE__ */ requireConstants$1();
   const tracing_js_1 = /* @__PURE__ */ requireTracing();
-  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
+  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
   let BlobLeaseClient$1 = class BlobLeaseClient {
     _leaseId;
     _url;
@@ -58274,7 +56963,7 @@ function requireModels() {
   models.toAccessTier = toAccessTier;
   models.ensureCpkIfSpecified = ensureCpkIfSpecified;
   models.getBlobServiceAccountAudience = getBlobServiceAccountAudience;
-  const constants_js_1 = /* @__PURE__ */ requireConstants$2();
+  const constants_js_1 = /* @__PURE__ */ requireConstants$1();
   var BlockBlobTier;
   (function(BlockBlobTier2) {
     BlockBlobTier2["Hot"] = "Hot";
@@ -59772,7 +58461,7 @@ function requireUtils() {
   const tslib_1 = require$$0$2;
   const node_fs_1 = tslib_1.__importDefault(require$$1$a);
   const node_util_1 = tslib_1.__importDefault(require$$1$5);
-  const constants_js_1 = /* @__PURE__ */ requireConstants$2();
+  const constants_js_1 = /* @__PURE__ */ requireConstants$1();
   async function streamToBuffer(stream, buffer, offset, end, encoding2) {
     let pos = 0;
     const count = end - offset;
@@ -59874,8 +58563,7 @@ function requireClients() {
   const core_util_2 = /* @__PURE__ */ requireCommonjs$9();
   const BlobDownloadResponse_js_1 = /* @__PURE__ */ requireBlobDownloadResponse();
   const BlobQueryResponse_js_1 = /* @__PURE__ */ requireBlobQueryResponse();
-  const AnonymousCredential_js_1 = /* @__PURE__ */ requireAnonymousCredential$1();
-  const StorageSharedKeyCredential_js_1 = /* @__PURE__ */ requireStorageSharedKeyCredential$1();
+  const storage_common_1 = /* @__PURE__ */ requireCommonjs$2();
   const models_js_1 = /* @__PURE__ */ requireModels();
   const PageBlobRangeResponse_js_1 = /* @__PURE__ */ requirePageBlobRangeResponse();
   const Pipeline_js_1 = /* @__PURE__ */ requirePipeline();
@@ -59883,10 +58571,10 @@ function requireClients() {
   const Range_js_1 = /* @__PURE__ */ requireRange();
   const StorageClient_js_1 = /* @__PURE__ */ requireStorageClient();
   const Batch_js_1 = /* @__PURE__ */ requireBatch();
-  const storage_common_1 = /* @__PURE__ */ requireCommonjs$2();
-  const constants_js_1 = /* @__PURE__ */ requireConstants$2();
+  const storage_common_2 = /* @__PURE__ */ requireCommonjs$2();
+  const constants_js_1 = /* @__PURE__ */ requireConstants$1();
   const tracing_js_1 = /* @__PURE__ */ requireTracing();
-  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
+  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
   const utils_js_1 = /* @__PURE__ */ requireUtils();
   const BlobSASSignatureValues_js_1 = /* @__PURE__ */ requireBlobSASSignatureValues();
   const BlobLeaseClient_js_1 = /* @__PURE__ */ requireBlobLeaseClient();
@@ -59918,7 +58606,7 @@ function requireClients() {
       if ((0, Pipeline_js_1.isPipelineLike)(credentialOrPipelineOrContainerName)) {
         url = urlOrConnectionString;
         pipeline2 = credentialOrPipelineOrContainerName;
-      } else if (core_util_1.isNodeLike && credentialOrPipelineOrContainerName instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential || credentialOrPipelineOrContainerName instanceof AnonymousCredential_js_1.AnonymousCredential || (0, core_auth_1.isTokenCredential)(credentialOrPipelineOrContainerName)) {
+      } else if (core_util_1.isNodeLike && credentialOrPipelineOrContainerName instanceof storage_common_1.StorageSharedKeyCredential || credentialOrPipelineOrContainerName instanceof storage_common_1.AnonymousCredential || (0, core_auth_1.isTokenCredential)(credentialOrPipelineOrContainerName)) {
         url = urlOrConnectionString;
         options2 = blobNameOrOptions;
         pipeline2 = (0, Pipeline_js_1.newPipeline)(credentialOrPipelineOrContainerName, options2);
@@ -59927,14 +58615,14 @@ function requireClients() {
         if (blobNameOrOptions && typeof blobNameOrOptions !== "string") {
           options2 = blobNameOrOptions;
         }
-        pipeline2 = (0, Pipeline_js_1.newPipeline)(new AnonymousCredential_js_1.AnonymousCredential(), options2);
+        pipeline2 = (0, Pipeline_js_1.newPipeline)(new storage_common_1.AnonymousCredential(), options2);
       } else if (credentialOrPipelineOrContainerName && typeof credentialOrPipelineOrContainerName === "string" && blobNameOrOptions && typeof blobNameOrOptions === "string") {
         const containerName = credentialOrPipelineOrContainerName;
         const blobName = blobNameOrOptions;
         const extractedCreds = (0, utils_common_js_1.extractConnectionStringParts)(urlOrConnectionString);
         if (extractedCreds.kind === "AccountConnString") {
           if (core_util_1.isNodeLike) {
-            const sharedKeyCredential = new StorageSharedKeyCredential_js_1.StorageSharedKeyCredential(extractedCreds.accountName, extractedCreds.accountKey);
+            const sharedKeyCredential = new storage_common_1.StorageSharedKeyCredential(extractedCreds.accountName, extractedCreds.accountKey);
             url = (0, utils_common_js_1.appendToURLPath)((0, utils_common_js_1.appendToURLPath)(extractedCreds.url, encodeURIComponent(containerName)), encodeURIComponent(blobName));
             if (!options2.proxyOptions) {
               options2.proxyOptions = (0, core_rest_pipeline_1.getDefaultProxySettings)(extractedCreds.proxyUri);
@@ -59945,7 +58633,7 @@ function requireClients() {
           }
         } else if (extractedCreds.kind === "SASConnString") {
           url = (0, utils_common_js_1.appendToURLPath)((0, utils_common_js_1.appendToURLPath)(extractedCreds.url, encodeURIComponent(containerName)), encodeURIComponent(blobName)) + "?" + extractedCreds.accountSas;
-          pipeline2 = (0, Pipeline_js_1.newPipeline)(new AnonymousCredential_js_1.AnonymousCredential(), options2);
+          pipeline2 = (0, Pipeline_js_1.newPipeline)(new storage_common_1.AnonymousCredential(), options2);
         } else {
           throw new Error("Connection string must be either an Account connection string or a SAS connection string");
         }
@@ -60366,6 +59054,7 @@ function requireClients() {
             ...options2.conditions,
             ifTags: options2.conditions?.tagConditions
           },
+          blobModifiedAccessConditions: options2.conditions,
           tracingOptions: updatedOptions.tracingOptions,
           tags: (0, utils_common_js_1.toBlobTags)(tags)
         }));
@@ -60385,6 +59074,7 @@ function requireClients() {
             ...options2.conditions,
             ifTags: options2.conditions?.tagConditions
           },
+          blobModifiedAccessConditions: options2.conditions,
           tracingOptions: updatedOptions.tracingOptions
         }));
         const wrappedResponse = {
@@ -60793,7 +59483,7 @@ function requireClients() {
      */
     generateSasUrl(options2) {
       return new Promise((resolve) => {
-        if (!(this.credential instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential)) {
+        if (!(this.credential instanceof storage_common_1.StorageSharedKeyCredential)) {
           throw new RangeError("Can only generate the SAS when the client is initialized with a shared key credential");
         }
         const sas = (0, BlobSASSignatureValues_js_1.generateBlobSASQueryParameters)({
@@ -60819,7 +59509,7 @@ function requireClients() {
      */
     /* eslint-disable-next-line @azure/azure-sdk/ts-naming-options*/
     generateSasStringToSign(options2) {
-      if (!(this.credential instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential)) {
+      if (!(this.credential instanceof storage_common_1.StorageSharedKeyCredential)) {
         throw new RangeError("Can only generate the SAS when the client is initialized with a shared key credential");
       }
       return (0, BlobSASSignatureValues_js_1.generateBlobSASQueryParametersInternal)({
@@ -60944,20 +59634,20 @@ function requireClients() {
       if ((0, Pipeline_js_1.isPipelineLike)(credentialOrPipelineOrContainerName)) {
         url = urlOrConnectionString;
         pipeline2 = credentialOrPipelineOrContainerName;
-      } else if (core_util_1.isNodeLike && credentialOrPipelineOrContainerName instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential || credentialOrPipelineOrContainerName instanceof AnonymousCredential_js_1.AnonymousCredential || (0, core_auth_1.isTokenCredential)(credentialOrPipelineOrContainerName)) {
+      } else if (core_util_1.isNodeLike && credentialOrPipelineOrContainerName instanceof storage_common_1.StorageSharedKeyCredential || credentialOrPipelineOrContainerName instanceof storage_common_1.AnonymousCredential || (0, core_auth_1.isTokenCredential)(credentialOrPipelineOrContainerName)) {
         url = urlOrConnectionString;
         options2 = blobNameOrOptions;
         pipeline2 = (0, Pipeline_js_1.newPipeline)(credentialOrPipelineOrContainerName, options2);
       } else if (!credentialOrPipelineOrContainerName && typeof credentialOrPipelineOrContainerName !== "string") {
         url = urlOrConnectionString;
-        pipeline2 = (0, Pipeline_js_1.newPipeline)(new AnonymousCredential_js_1.AnonymousCredential(), options2);
+        pipeline2 = (0, Pipeline_js_1.newPipeline)(new storage_common_1.AnonymousCredential(), options2);
       } else if (credentialOrPipelineOrContainerName && typeof credentialOrPipelineOrContainerName === "string" && blobNameOrOptions && typeof blobNameOrOptions === "string") {
         const containerName = credentialOrPipelineOrContainerName;
         const blobName = blobNameOrOptions;
         const extractedCreds = (0, utils_common_js_1.extractConnectionStringParts)(urlOrConnectionString);
         if (extractedCreds.kind === "AccountConnString") {
           if (core_util_1.isNodeLike) {
-            const sharedKeyCredential = new StorageSharedKeyCredential_js_1.StorageSharedKeyCredential(extractedCreds.accountName, extractedCreds.accountKey);
+            const sharedKeyCredential = new storage_common_1.StorageSharedKeyCredential(extractedCreds.accountName, extractedCreds.accountKey);
             url = (0, utils_common_js_1.appendToURLPath)((0, utils_common_js_1.appendToURLPath)(extractedCreds.url, encodeURIComponent(containerName)), encodeURIComponent(blobName));
             if (!options2.proxyOptions) {
               options2.proxyOptions = (0, core_rest_pipeline_1.getDefaultProxySettings)(extractedCreds.proxyUri);
@@ -60968,7 +59658,7 @@ function requireClients() {
           }
         } else if (extractedCreds.kind === "SASConnString") {
           url = (0, utils_common_js_1.appendToURLPath)((0, utils_common_js_1.appendToURLPath)(extractedCreds.url, encodeURIComponent(containerName)), encodeURIComponent(blobName)) + "?" + extractedCreds.accountSas;
-          pipeline2 = (0, Pipeline_js_1.newPipeline)(new AnonymousCredential_js_1.AnonymousCredential(), options2);
+          pipeline2 = (0, Pipeline_js_1.newPipeline)(new storage_common_1.AnonymousCredential(), options2);
         } else {
           throw new Error("Connection string must be either an Account connection string or a SAS connection string");
         }
@@ -61217,7 +59907,7 @@ function requireClients() {
       if ((0, Pipeline_js_1.isPipelineLike)(credentialOrPipelineOrContainerName)) {
         url = urlOrConnectionString;
         pipeline2 = credentialOrPipelineOrContainerName;
-      } else if (core_util_1.isNodeLike && credentialOrPipelineOrContainerName instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential || credentialOrPipelineOrContainerName instanceof AnonymousCredential_js_1.AnonymousCredential || (0, core_auth_1.isTokenCredential)(credentialOrPipelineOrContainerName)) {
+      } else if (core_util_1.isNodeLike && credentialOrPipelineOrContainerName instanceof storage_common_1.StorageSharedKeyCredential || credentialOrPipelineOrContainerName instanceof storage_common_1.AnonymousCredential || (0, core_auth_1.isTokenCredential)(credentialOrPipelineOrContainerName)) {
         url = urlOrConnectionString;
         options2 = blobNameOrOptions;
         pipeline2 = (0, Pipeline_js_1.newPipeline)(credentialOrPipelineOrContainerName, options2);
@@ -61226,14 +59916,14 @@ function requireClients() {
         if (blobNameOrOptions && typeof blobNameOrOptions !== "string") {
           options2 = blobNameOrOptions;
         }
-        pipeline2 = (0, Pipeline_js_1.newPipeline)(new AnonymousCredential_js_1.AnonymousCredential(), options2);
+        pipeline2 = (0, Pipeline_js_1.newPipeline)(new storage_common_1.AnonymousCredential(), options2);
       } else if (credentialOrPipelineOrContainerName && typeof credentialOrPipelineOrContainerName === "string" && blobNameOrOptions && typeof blobNameOrOptions === "string") {
         const containerName = credentialOrPipelineOrContainerName;
         const blobName = blobNameOrOptions;
         const extractedCreds = (0, utils_common_js_1.extractConnectionStringParts)(urlOrConnectionString);
         if (extractedCreds.kind === "AccountConnString") {
           if (core_util_1.isNodeLike) {
-            const sharedKeyCredential = new StorageSharedKeyCredential_js_1.StorageSharedKeyCredential(extractedCreds.accountName, extractedCreds.accountKey);
+            const sharedKeyCredential = new storage_common_1.StorageSharedKeyCredential(extractedCreds.accountName, extractedCreds.accountKey);
             url = (0, utils_common_js_1.appendToURLPath)((0, utils_common_js_1.appendToURLPath)(extractedCreds.url, encodeURIComponent(containerName)), encodeURIComponent(blobName));
             if (!options2.proxyOptions) {
               options2.proxyOptions = (0, core_rest_pipeline_1.getDefaultProxySettings)(extractedCreds.proxyUri);
@@ -61244,7 +59934,7 @@ function requireClients() {
           }
         } else if (extractedCreds.kind === "SASConnString") {
           url = (0, utils_common_js_1.appendToURLPath)((0, utils_common_js_1.appendToURLPath)(extractedCreds.url, encodeURIComponent(containerName)), encodeURIComponent(blobName)) + "?" + extractedCreds.accountSas;
-          pipeline2 = (0, Pipeline_js_1.newPipeline)(new AnonymousCredential_js_1.AnonymousCredential(), options2);
+          pipeline2 = (0, Pipeline_js_1.newPipeline)(new storage_common_1.AnonymousCredential(), options2);
         } else {
           throw new Error("Connection string must be either an Account connection string or a SAS connection string");
         }
@@ -61783,7 +60473,7 @@ function requireClients() {
         const blockIDPrefix = (0, core_util_2.randomUUID)();
         let transferProgress = 0;
         const blockList = [];
-        const scheduler = new storage_common_1.BufferScheduler(
+        const scheduler = new storage_common_2.BufferScheduler(
           stream,
           bufferSize,
           maxConcurrency,
@@ -61829,20 +60519,20 @@ function requireClients() {
       if ((0, Pipeline_js_1.isPipelineLike)(credentialOrPipelineOrContainerName)) {
         url = urlOrConnectionString;
         pipeline2 = credentialOrPipelineOrContainerName;
-      } else if (core_util_1.isNodeLike && credentialOrPipelineOrContainerName instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential || credentialOrPipelineOrContainerName instanceof AnonymousCredential_js_1.AnonymousCredential || (0, core_auth_1.isTokenCredential)(credentialOrPipelineOrContainerName)) {
+      } else if (core_util_1.isNodeLike && credentialOrPipelineOrContainerName instanceof storage_common_1.StorageSharedKeyCredential || credentialOrPipelineOrContainerName instanceof storage_common_1.AnonymousCredential || (0, core_auth_1.isTokenCredential)(credentialOrPipelineOrContainerName)) {
         url = urlOrConnectionString;
         options2 = blobNameOrOptions;
         pipeline2 = (0, Pipeline_js_1.newPipeline)(credentialOrPipelineOrContainerName, options2);
       } else if (!credentialOrPipelineOrContainerName && typeof credentialOrPipelineOrContainerName !== "string") {
         url = urlOrConnectionString;
-        pipeline2 = (0, Pipeline_js_1.newPipeline)(new AnonymousCredential_js_1.AnonymousCredential(), options2);
+        pipeline2 = (0, Pipeline_js_1.newPipeline)(new storage_common_1.AnonymousCredential(), options2);
       } else if (credentialOrPipelineOrContainerName && typeof credentialOrPipelineOrContainerName === "string" && blobNameOrOptions && typeof blobNameOrOptions === "string") {
         const containerName = credentialOrPipelineOrContainerName;
         const blobName = blobNameOrOptions;
         const extractedCreds = (0, utils_common_js_1.extractConnectionStringParts)(urlOrConnectionString);
         if (extractedCreds.kind === "AccountConnString") {
           if (core_util_1.isNodeLike) {
-            const sharedKeyCredential = new StorageSharedKeyCredential_js_1.StorageSharedKeyCredential(extractedCreds.accountName, extractedCreds.accountKey);
+            const sharedKeyCredential = new storage_common_1.StorageSharedKeyCredential(extractedCreds.accountName, extractedCreds.accountKey);
             url = (0, utils_common_js_1.appendToURLPath)((0, utils_common_js_1.appendToURLPath)(extractedCreds.url, encodeURIComponent(containerName)), encodeURIComponent(blobName));
             if (!options2.proxyOptions) {
               options2.proxyOptions = (0, core_rest_pipeline_1.getDefaultProxySettings)(extractedCreds.proxyUri);
@@ -61853,7 +60543,7 @@ function requireClients() {
           }
         } else if (extractedCreds.kind === "SASConnString") {
           url = (0, utils_common_js_1.appendToURLPath)((0, utils_common_js_1.appendToURLPath)(extractedCreds.url, encodeURIComponent(containerName)), encodeURIComponent(blobName)) + "?" + extractedCreds.accountSas;
-          pipeline2 = (0, Pipeline_js_1.newPipeline)(new AnonymousCredential_js_1.AnonymousCredential(), options2);
+          pipeline2 = (0, Pipeline_js_1.newPipeline)(new storage_common_1.AnonymousCredential(), options2);
         } else {
           throw new Error("Connection string must be either an Account connection string or a SAS connection string");
         }
@@ -62560,7 +61250,7 @@ function requireBatchUtils() {
   BatchUtils.getBodyAsText = getBodyAsText;
   BatchUtils.utf8ByteLength = utf8ByteLength;
   const utils_js_1 = /* @__PURE__ */ requireUtils();
-  const constants_js_1 = /* @__PURE__ */ requireConstants$2();
+  const constants_js_1 = /* @__PURE__ */ requireConstants$1();
   async function getBodyAsText(batchResponse) {
     let buffer = Buffer.alloc(constants_js_1.BATCH_MAX_PAYLOAD_IN_BYTES);
     const responseLength = await (0, utils_js_1.streamToBuffer2)(batchResponse.readableStreamBody, buffer);
@@ -62580,7 +61270,7 @@ function requireBatchResponseParser() {
   BatchResponseParser.BatchResponseParser = void 0;
   const core_rest_pipeline_1 = /* @__PURE__ */ requireCommonjs$7();
   const core_http_compat_1 = /* @__PURE__ */ requireCommonjs$4();
-  const constants_js_1 = /* @__PURE__ */ requireConstants$2();
+  const constants_js_1 = /* @__PURE__ */ requireConstants$1();
   const BatchUtils_js_1 = /* @__PURE__ */ requireBatchUtils();
   const log_js_1 = /* @__PURE__ */ requireLog$1();
   const HTTP_HEADER_DELIMITER = ": ";
@@ -62764,17 +61454,15 @@ function requireBlobBatch() {
   const core_auth_1 = /* @__PURE__ */ requireCommonjs$6();
   const core_rest_pipeline_1 = /* @__PURE__ */ requireCommonjs$7();
   const core_util_2 = /* @__PURE__ */ requireCommonjs$9();
-  const AnonymousCredential_js_1 = /* @__PURE__ */ requireAnonymousCredential$1();
+  const storage_common_1 = /* @__PURE__ */ requireCommonjs$2();
   const Clients_js_1 = /* @__PURE__ */ requireClients();
   const Mutex_js_1 = /* @__PURE__ */ requireMutex();
   const Pipeline_js_1 = /* @__PURE__ */ requirePipeline();
-  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
+  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
   const core_xml_1 = /* @__PURE__ */ requireCommonjs$3();
-  const constants_js_1 = /* @__PURE__ */ requireConstants$2();
-  const StorageSharedKeyCredential_js_1 = /* @__PURE__ */ requireStorageSharedKeyCredential$1();
+  const constants_js_1 = /* @__PURE__ */ requireConstants$1();
   const tracing_js_1 = /* @__PURE__ */ requireTracing();
   const core_client_1 = /* @__PURE__ */ requireCommonjs$5();
-  const StorageSharedKeyCredentialPolicyV2_js_1 = /* @__PURE__ */ requireStorageSharedKeyCredentialPolicyV2();
   let BlobBatch$1 = class BlobBatch {
     batchRequest;
     batch = "batch";
@@ -62823,7 +61511,7 @@ function requireBlobBatch() {
     async deleteBlob(urlOrBlobClient, credentialOrOptions, options2) {
       let url;
       let credential;
-      if (typeof urlOrBlobClient === "string" && (core_util_2.isNodeLike && credentialOrOptions instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential || credentialOrOptions instanceof AnonymousCredential_js_1.AnonymousCredential || (0, core_auth_1.isTokenCredential)(credentialOrOptions))) {
+      if (typeof urlOrBlobClient === "string" && (core_util_2.isNodeLike && credentialOrOptions instanceof storage_common_1.StorageSharedKeyCredential || credentialOrOptions instanceof storage_common_1.AnonymousCredential || (0, core_auth_1.isTokenCredential)(credentialOrOptions))) {
         url = urlOrBlobClient;
         credential = credentialOrOptions;
       } else if (urlOrBlobClient instanceof Clients_js_1.BlobClient) {
@@ -62850,7 +61538,7 @@ function requireBlobBatch() {
       let url;
       let credential;
       let tier;
-      if (typeof urlOrBlobClient === "string" && (core_util_2.isNodeLike && credentialOrTier instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential || credentialOrTier instanceof AnonymousCredential_js_1.AnonymousCredential || (0, core_auth_1.isTokenCredential)(credentialOrTier))) {
+      if (typeof urlOrBlobClient === "string" && (core_util_2.isNodeLike && credentialOrTier instanceof storage_common_1.StorageSharedKeyCredential || credentialOrTier instanceof storage_common_1.AnonymousCredential || (0, core_auth_1.isTokenCredential)(credentialOrTier))) {
         url = urlOrBlobClient;
         credential = credentialOrTier;
         tier = tierOrOptions;
@@ -62920,8 +61608,8 @@ function requireBlobBatch() {
           scopes: constants_js_1.StorageOAuthScopes,
           challengeCallbacks: { authorizeRequestOnChallenge: core_client_1.authorizeRequestOnTenantChallenge }
         }), { phase: "Sign" });
-      } else if (credential instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential) {
-        corePipeline.addPolicy((0, StorageSharedKeyCredentialPolicyV2_js_1.storageSharedKeyCredentialPolicy)({
+      } else if (credential instanceof storage_common_1.StorageSharedKeyCredential) {
+        corePipeline.addPolicy((0, storage_common_1.storageSharedKeyCredentialPolicy)({
           accountName: credential.accountName,
           accountKey: credential.accountKey
         }), { phase: "Sign" });
@@ -63013,10 +61701,10 @@ function requireBlobBatchClient() {
   const BatchUtils_js_1 = /* @__PURE__ */ requireBatchUtils();
   const BlobBatch_js_1 = /* @__PURE__ */ requireBlobBatch();
   const tracing_js_1 = /* @__PURE__ */ requireTracing();
-  const AnonymousCredential_js_1 = /* @__PURE__ */ requireAnonymousCredential$1();
+  const storage_common_1 = /* @__PURE__ */ requireCommonjs$2();
   const StorageContextClient_js_1 = /* @__PURE__ */ requireStorageContextClient();
   const Pipeline_js_1 = /* @__PURE__ */ requirePipeline();
-  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
+  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
   let BlobBatchClient$1 = class BlobBatchClient {
     serviceOrContainerContext;
     constructor(url, credentialOrPipeline, options2) {
@@ -63024,7 +61712,7 @@ function requireBlobBatchClient() {
       if ((0, Pipeline_js_1.isPipelineLike)(credentialOrPipeline)) {
         pipeline2 = credentialOrPipeline;
       } else if (!credentialOrPipeline) {
-        pipeline2 = (0, Pipeline_js_1.newPipeline)(new AnonymousCredential_js_1.AnonymousCredential(), options2);
+        pipeline2 = (0, Pipeline_js_1.newPipeline)(new storage_common_1.AnonymousCredential(), options2);
       } else {
         pipeline2 = (0, Pipeline_js_1.newPipeline)(credentialOrPipeline, options2);
       }
@@ -63167,12 +61855,11 @@ function requireContainerClient() {
   const core_rest_pipeline_1 = /* @__PURE__ */ requireCommonjs$7();
   const core_util_1 = /* @__PURE__ */ requireCommonjs$9();
   const core_auth_1 = /* @__PURE__ */ requireCommonjs$6();
-  const AnonymousCredential_js_1 = /* @__PURE__ */ requireAnonymousCredential$1();
-  const StorageSharedKeyCredential_js_1 = /* @__PURE__ */ requireStorageSharedKeyCredential$1();
+  const storage_common_1 = /* @__PURE__ */ requireCommonjs$2();
   const Pipeline_js_1 = /* @__PURE__ */ requirePipeline();
   const StorageClient_js_1 = /* @__PURE__ */ requireStorageClient();
   const tracing_js_1 = /* @__PURE__ */ requireTracing();
-  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
+  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
   const BlobSASSignatureValues_js_1 = /* @__PURE__ */ requireBlobSASSignatureValues();
   const BlobLeaseClient_js_1 = /* @__PURE__ */ requireBlobLeaseClient();
   const Clients_js_1 = /* @__PURE__ */ requireClients();
@@ -63196,18 +61883,18 @@ function requireContainerClient() {
       if ((0, Pipeline_js_1.isPipelineLike)(credentialOrPipelineOrContainerName)) {
         url = urlOrConnectionString;
         pipeline2 = credentialOrPipelineOrContainerName;
-      } else if (core_util_1.isNodeLike && credentialOrPipelineOrContainerName instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential || credentialOrPipelineOrContainerName instanceof AnonymousCredential_js_1.AnonymousCredential || (0, core_auth_1.isTokenCredential)(credentialOrPipelineOrContainerName)) {
+      } else if (core_util_1.isNodeLike && credentialOrPipelineOrContainerName instanceof storage_common_1.StorageSharedKeyCredential || credentialOrPipelineOrContainerName instanceof storage_common_1.AnonymousCredential || (0, core_auth_1.isTokenCredential)(credentialOrPipelineOrContainerName)) {
         url = urlOrConnectionString;
         pipeline2 = (0, Pipeline_js_1.newPipeline)(credentialOrPipelineOrContainerName, options2);
       } else if (!credentialOrPipelineOrContainerName && typeof credentialOrPipelineOrContainerName !== "string") {
         url = urlOrConnectionString;
-        pipeline2 = (0, Pipeline_js_1.newPipeline)(new AnonymousCredential_js_1.AnonymousCredential(), options2);
+        pipeline2 = (0, Pipeline_js_1.newPipeline)(new storage_common_1.AnonymousCredential(), options2);
       } else if (credentialOrPipelineOrContainerName && typeof credentialOrPipelineOrContainerName === "string") {
         const containerName = credentialOrPipelineOrContainerName;
         const extractedCreds = (0, utils_common_js_1.extractConnectionStringParts)(urlOrConnectionString);
         if (extractedCreds.kind === "AccountConnString") {
           if (core_util_1.isNodeLike) {
-            const sharedKeyCredential = new StorageSharedKeyCredential_js_1.StorageSharedKeyCredential(extractedCreds.accountName, extractedCreds.accountKey);
+            const sharedKeyCredential = new storage_common_1.StorageSharedKeyCredential(extractedCreds.accountName, extractedCreds.accountKey);
             url = (0, utils_common_js_1.appendToURLPath)(extractedCreds.url, encodeURIComponent(containerName));
             if (!options2.proxyOptions) {
               options2.proxyOptions = (0, core_rest_pipeline_1.getDefaultProxySettings)(extractedCreds.proxyUri);
@@ -63218,7 +61905,7 @@ function requireContainerClient() {
           }
         } else if (extractedCreds.kind === "SASConnString") {
           url = (0, utils_common_js_1.appendToURLPath)(extractedCreds.url, encodeURIComponent(containerName)) + "?" + extractedCreds.accountSas;
-          pipeline2 = (0, Pipeline_js_1.newPipeline)(new AnonymousCredential_js_1.AnonymousCredential(), options2);
+          pipeline2 = (0, Pipeline_js_1.newPipeline)(new storage_common_1.AnonymousCredential(), options2);
         } else {
           throw new Error("Connection string must be either an Account connection string or a SAS connection string");
         }
@@ -64331,7 +63018,7 @@ function requireContainerClient() {
      */
     generateSasUrl(options2) {
       return new Promise((resolve) => {
-        if (!(this.credential instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential)) {
+        if (!(this.credential instanceof storage_common_1.StorageSharedKeyCredential)) {
           throw new RangeError("Can only generate the SAS when the client is initialized with a shared key credential");
         }
         const sas = (0, BlobSASSignatureValues_js_1.generateBlobSASQueryParameters)({
@@ -64354,7 +63041,7 @@ function requireContainerClient() {
      */
     /* eslint-disable-next-line @azure/azure-sdk/ts-naming-options*/
     generateSasStringToSign(options2) {
-      if (!(this.credential instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential)) {
+      if (!(this.credential instanceof storage_common_1.StorageSharedKeyCredential)) {
         throw new RangeError("Can only generate the SAS when the client is initialized with a shared key credential");
       }
       return (0, BlobSASSignatureValues_js_1.generateBlobSASQueryParametersInternal)({
@@ -64788,8 +63475,8 @@ function requireAccountSASSignatureValues() {
   const AccountSASServices_js_1 = /* @__PURE__ */ requireAccountSASServices();
   const SasIPRange_js_1 = /* @__PURE__ */ requireSasIPRange();
   const SASQueryParameters_js_1 = /* @__PURE__ */ requireSASQueryParameters();
-  const constants_js_1 = /* @__PURE__ */ requireConstants$2();
-  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
+  const constants_js_1 = /* @__PURE__ */ requireConstants$1();
+  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
   function generateAccountSASQueryParameters(accountSASSignatureValues, sharedKeyCredential) {
     return generateAccountSASQueryParametersInternal(accountSASSignatureValues, sharedKeyCredential).sasQueryParameters;
   }
@@ -64866,10 +63553,9 @@ function requireBlobServiceClient() {
   const core_util_1 = /* @__PURE__ */ requireCommonjs$9();
   const Pipeline_js_1 = /* @__PURE__ */ requirePipeline();
   const ContainerClient_js_1 = /* @__PURE__ */ requireContainerClient();
-  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
-  const StorageSharedKeyCredential_js_1 = /* @__PURE__ */ requireStorageSharedKeyCredential$1();
-  const AnonymousCredential_js_1 = /* @__PURE__ */ requireAnonymousCredential$1();
-  const utils_common_js_2 = /* @__PURE__ */ requireUtils_common$2();
+  const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$1();
+  const storage_common_1 = /* @__PURE__ */ requireCommonjs$2();
+  const utils_common_js_2 = /* @__PURE__ */ requireUtils_common$1();
   const tracing_js_1 = /* @__PURE__ */ requireTracing();
   const BlobBatchClient_js_1 = /* @__PURE__ */ requireBlobBatchClient();
   const StorageClient_js_1 = /* @__PURE__ */ requireStorageClient();
@@ -64898,7 +63584,7 @@ function requireBlobServiceClient() {
       const extractedCreds = (0, utils_common_js_1.extractConnectionStringParts)(connectionString);
       if (extractedCreds.kind === "AccountConnString") {
         if (core_util_1.isNodeLike) {
-          const sharedKeyCredential = new StorageSharedKeyCredential_js_1.StorageSharedKeyCredential(extractedCreds.accountName, extractedCreds.accountKey);
+          const sharedKeyCredential = new storage_common_1.StorageSharedKeyCredential(extractedCreds.accountName, extractedCreds.accountKey);
           if (!options2.proxyOptions) {
             options2.proxyOptions = (0, core_rest_pipeline_1.getDefaultProxySettings)(extractedCreds.proxyUri);
           }
@@ -64908,7 +63594,7 @@ function requireBlobServiceClient() {
           throw new Error("Account connection string is only supported in Node.js environment");
         }
       } else if (extractedCreds.kind === "SASConnString") {
-        const pipeline2 = (0, Pipeline_js_1.newPipeline)(new AnonymousCredential_js_1.AnonymousCredential(), options2);
+        const pipeline2 = (0, Pipeline_js_1.newPipeline)(new storage_common_1.AnonymousCredential(), options2);
         return new BlobServiceClient2(extractedCreds.url + "?" + extractedCreds.accountSas, pipeline2);
       } else {
         throw new Error("Connection string must be either an Account connection string or a SAS connection string");
@@ -64918,10 +63604,10 @@ function requireBlobServiceClient() {
       let pipeline2;
       if ((0, Pipeline_js_1.isPipelineLike)(credentialOrPipeline)) {
         pipeline2 = credentialOrPipeline;
-      } else if (core_util_1.isNodeLike && credentialOrPipeline instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential || credentialOrPipeline instanceof AnonymousCredential_js_1.AnonymousCredential || (0, core_auth_1.isTokenCredential)(credentialOrPipeline)) {
+      } else if (core_util_1.isNodeLike && credentialOrPipeline instanceof storage_common_1.StorageSharedKeyCredential || credentialOrPipeline instanceof storage_common_1.AnonymousCredential || (0, core_auth_1.isTokenCredential)(credentialOrPipeline)) {
         pipeline2 = (0, Pipeline_js_1.newPipeline)(credentialOrPipeline, options2);
       } else {
-        pipeline2 = (0, Pipeline_js_1.newPipeline)(new AnonymousCredential_js_1.AnonymousCredential(), options2);
+        pipeline2 = (0, Pipeline_js_1.newPipeline)(new storage_common_1.AnonymousCredential(), options2);
       }
       super(url, pipeline2);
       this.serviceContext = this.storageClientContext.service;
@@ -65495,7 +64181,7 @@ function requireBlobServiceClient() {
      * @returns An account SAS URI consisting of the URI to the resource represented by this client, followed by the generated SAS token.
      */
     generateAccountSasUrl(expiresOn, permissions = AccountSASPermissions_js_1.AccountSASPermissions.parse("r"), resourceTypes = "sco", options2 = {}) {
-      if (!(this.credential instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential)) {
+      if (!(this.credential instanceof storage_common_1.StorageSharedKeyCredential)) {
         throw RangeError("Can only generate the account SAS when the client is initialized with a shared key credential");
       }
       if (expiresOn === void 0) {
@@ -65526,7 +64212,7 @@ function requireBlobServiceClient() {
      * @returns An account SAS URI consisting of the URI to the resource represented by this client, followed by the generated SAS token.
      */
     generateSasStringToSign(expiresOn, permissions = AccountSASPermissions_js_1.AccountSASPermissions.parse("r"), resourceTypes = "sco", options2 = {}) {
-      if (!(this.credential instanceof StorageSharedKeyCredential_js_1.StorageSharedKeyCredential)) {
+      if (!(this.credential instanceof storage_common_1.StorageSharedKeyCredential)) {
         throw RangeError("Can only generate the account SAS when the client is initialized with a shared key credential");
       }
       if (expiresOn === void 0) {
@@ -65572,7 +64258,7 @@ function requireCommonjs() {
   hasRequiredCommonjs = 1;
   (function(exports$1) {
     Object.defineProperty(exports$1, "__esModule", { value: true });
-    exports$1.logger = exports$1.RestError = exports$1.BaseRequestPolicy = exports$1.StorageOAuthScopes = exports$1.newPipeline = exports$1.isPipelineLike = exports$1.Pipeline = exports$1.getBlobServiceAccountAudience = exports$1.StorageBlobAudience = exports$1.PremiumPageBlobTier = exports$1.BlockBlobTier = exports$1.generateBlobSASQueryParameters = exports$1.generateAccountSASQueryParameters = void 0;
+    exports$1.logger = exports$1.RestError = exports$1.StorageBrowserPolicyFactory = exports$1.StorageBrowserPolicy = exports$1.StorageSharedKeyCredentialPolicy = exports$1.StorageSharedKeyCredential = exports$1.StorageRetryPolicyFactory = exports$1.StorageRetryPolicy = exports$1.StorageRetryPolicyType = exports$1.Credential = exports$1.CredentialPolicy = exports$1.BaseRequestPolicy = exports$1.AnonymousCredentialPolicy = exports$1.AnonymousCredential = exports$1.StorageOAuthScopes = exports$1.newPipeline = exports$1.isPipelineLike = exports$1.Pipeline = exports$1.getBlobServiceAccountAudience = exports$1.StorageBlobAudience = exports$1.PremiumPageBlobTier = exports$1.BlockBlobTier = exports$1.generateBlobSASQueryParameters = exports$1.generateAccountSASQueryParameters = void 0;
     const tslib_1 = require$$0$2;
     const core_rest_pipeline_1 = /* @__PURE__ */ requireCommonjs$7();
     Object.defineProperty(exports$1, "RestError", { enumerable: true, get: function() {
@@ -65597,11 +64283,7 @@ function requireCommonjs() {
     Object.defineProperty(exports$1, "generateBlobSASQueryParameters", { enumerable: true, get: function() {
       return BlobSASSignatureValues_js_1.generateBlobSASQueryParameters;
     } });
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageBrowserPolicyFactory(), exports$1);
     tslib_1.__exportStar(/* @__PURE__ */ requireContainerSASPermissions(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireAnonymousCredential$1(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireCredential$1(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredential$1(), exports$1);
     var models_js_1 = /* @__PURE__ */ requireModels();
     Object.defineProperty(exports$1, "BlockBlobTier", { enumerable: true, get: function() {
       return models_js_1.BlockBlobTier;
@@ -65628,15 +64310,43 @@ function requireCommonjs() {
     Object.defineProperty(exports$1, "StorageOAuthScopes", { enumerable: true, get: function() {
       return Pipeline_js_1.StorageOAuthScopes;
     } });
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyFactory$1(), exports$1);
-    var RequestPolicy_js_1 = /* @__PURE__ */ requireRequestPolicy$1();
-    Object.defineProperty(exports$1, "BaseRequestPolicy", { enumerable: true, get: function() {
-      return RequestPolicy_js_1.BaseRequestPolicy;
+    var storage_common_1 = /* @__PURE__ */ requireCommonjs$2();
+    Object.defineProperty(exports$1, "AnonymousCredential", { enumerable: true, get: function() {
+      return storage_common_1.AnonymousCredential;
     } });
-    tslib_1.__exportStar(/* @__PURE__ */ requireAnonymousCredentialPolicy$1(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireCredentialPolicy$1(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageRetryPolicyFactory$1(), exports$1);
-    tslib_1.__exportStar(/* @__PURE__ */ requireStorageSharedKeyCredentialPolicy$1(), exports$1);
+    Object.defineProperty(exports$1, "AnonymousCredentialPolicy", { enumerable: true, get: function() {
+      return storage_common_1.AnonymousCredentialPolicy;
+    } });
+    Object.defineProperty(exports$1, "BaseRequestPolicy", { enumerable: true, get: function() {
+      return storage_common_1.BaseRequestPolicy;
+    } });
+    Object.defineProperty(exports$1, "CredentialPolicy", { enumerable: true, get: function() {
+      return storage_common_1.CredentialPolicy;
+    } });
+    Object.defineProperty(exports$1, "Credential", { enumerable: true, get: function() {
+      return storage_common_1.Credential;
+    } });
+    Object.defineProperty(exports$1, "StorageRetryPolicyType", { enumerable: true, get: function() {
+      return storage_common_1.StorageRetryPolicyType;
+    } });
+    Object.defineProperty(exports$1, "StorageRetryPolicy", { enumerable: true, get: function() {
+      return storage_common_1.StorageRetryPolicy;
+    } });
+    Object.defineProperty(exports$1, "StorageRetryPolicyFactory", { enumerable: true, get: function() {
+      return storage_common_1.StorageRetryPolicyFactory;
+    } });
+    Object.defineProperty(exports$1, "StorageSharedKeyCredential", { enumerable: true, get: function() {
+      return storage_common_1.StorageSharedKeyCredential;
+    } });
+    Object.defineProperty(exports$1, "StorageSharedKeyCredentialPolicy", { enumerable: true, get: function() {
+      return storage_common_1.StorageSharedKeyCredentialPolicy;
+    } });
+    Object.defineProperty(exports$1, "StorageBrowserPolicy", { enumerable: true, get: function() {
+      return storage_common_1.StorageBrowserPolicy;
+    } });
+    Object.defineProperty(exports$1, "StorageBrowserPolicyFactory", { enumerable: true, get: function() {
+      return storage_common_1.StorageBrowserPolicyFactory;
+    } });
     tslib_1.__exportStar(/* @__PURE__ */ requireSASQueryParameters(), exports$1);
     tslib_1.__exportStar(/* @__PURE__ */ requireGeneratedModels(), exports$1);
     var log_js_1 = /* @__PURE__ */ requireLog$1();
@@ -65652,7 +64362,7 @@ function requireErrors() {
   if (hasRequiredErrors) return errors;
   hasRequiredErrors = 1;
   Object.defineProperty(errors, "__esModule", { value: true });
-  errors.UsageError = errors.NetworkError = errors.GHESNotSupportedError = errors.CacheNotFoundError = errors.InvalidResponseError = errors.FilesNotFoundError = void 0;
+  errors.RateLimitError = errors.UsageError = errors.NetworkError = errors.GHESNotSupportedError = errors.CacheNotFoundError = errors.InvalidResponseError = errors.FilesNotFoundError = void 0;
   class FilesNotFoundError extends Error {
     constructor(files = []) {
       let message = "No files were found to upload";
@@ -65721,6 +64431,13 @@ More info on storage limits: https://docs.github.com/en/billing/managing-billing
       return false;
     return msg.includes("insufficient usage");
   };
+  class RateLimitError extends Error {
+    constructor(message) {
+      super(message);
+      this.name = "RateLimitError";
+    }
+  }
+  errors.RateLimitError = RateLimitError;
   return errors;
 }
 var hasRequiredUploadUtils;
@@ -66745,7 +65462,7 @@ function requireConfig() {
   return config;
 }
 var userAgent = {};
-const version = "5.0.2";
+const version = "5.0.3";
 const require$$0$1 = {
   version
 };
@@ -71415,11 +70132,24 @@ function requireCacheTwirpClient() {
               }
               errorMessage = `${errorMessage}: ${body2.msg}`;
             }
+            if (statusCode === http_client_1.HttpCodes.TooManyRequests) {
+              const retryAfterHeader = response2.message.headers["retry-after"];
+              if (retryAfterHeader) {
+                const parsedSeconds = parseInt(retryAfterHeader, 10);
+                if (!isNaN(parsedSeconds) && parsedSeconds > 0) {
+                  (0, core_1.warning)(`You've hit a rate limit, your rate limit will reset in ${parsedSeconds} seconds`);
+                }
+              }
+              throw new errors_1.RateLimitError(`Rate limited: ${errorMessage}`);
+            }
           } catch (error2) {
             if (error2 instanceof SyntaxError) {
               (0, core_1.debug)(`Raw Body: ${rawBody}`);
             }
             if (error2 instanceof errors_1.UsageError) {
+              throw error2;
+            }
+            if (error2 instanceof errors_1.RateLimitError) {
               throw error2;
             }
             if (errors_1.NetworkError.isNetworkErrorCode(error2 === null || error2 === void 0 ? void 0 : error2.code)) {
@@ -71454,8 +70184,7 @@ function requireCacheTwirpClient() {
         http_client_1.HttpCodes.BadGateway,
         http_client_1.HttpCodes.GatewayTimeout,
         http_client_1.HttpCodes.InternalServerError,
-        http_client_1.HttpCodes.ServiceUnavailable,
-        http_client_1.HttpCodes.TooManyRequests
+        http_client_1.HttpCodes.ServiceUnavailable
       ];
       return retryableStatusCodes.includes(statusCode);
     }
