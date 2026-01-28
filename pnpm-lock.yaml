@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@actions-rs-plus/core':
-        specifier: 0.5.6
-        version: 0.5.6
+        specifier: 0.5.7
+        version: 0.5.7
       '@actions/core':
         specifier: 2.0.3
         version: 2.0.3
@@ -141,12 +141,12 @@ importers:
 
 packages:
 
-  '@actions-rs-plus/core@0.5.6':
-    resolution: {integrity: sha512-fFTR0Iq6RqcchyYcMWnqimTH8/TjTbYnAe7c2bgIruYW7GLHNlvljgpyIgU2TFegG1DfzyZ9qJh5LedD9sDvCg==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.5.6/b45dfc5f41f4f914baeebfdde131e0a8fba0fb5d}
-    engines: {node: 24.12.0, pnpm: 10.27.0}
+  '@actions-rs-plus/core@0.5.7':
+    resolution: {integrity: sha512-w9/48aL4/DSI+oPVasCakcWekbH5AEXnki9vJEgoStMbYSBlQ0PAV7oLVGRRQTDJUFo+P4fk4I+216YgTzOTDw==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.5.7/de33bf0773244271b06537dbc6980cc9f8a3a363}
+    engines: {node: 24.13.0, pnpm: 10.28.2}
 
-  '@actions/cache@5.0.3':
-    resolution: {integrity: sha512-9joY8Oup+nIpksSBlkuf9/mltnhWx3lydk1tA2PVnXaxFLIIrKqrWDN2CZXlJ+PEErcBARKYn4mHiUCTyMh4Vg==}
+  '@actions/cache@5.0.5':
+    resolution: {integrity: sha512-jiQSg0gfd+C2KPgcmdCOq7dCuCIQQWQ4b1YfGIRaaA9w7PJbRwTOcCz4LiFEUnqZGf0ha/8OKL3BeNwetHzYsQ==}
 
   '@actions/core@1.11.1':
     resolution: {integrity: sha512-hXJCSrkwfA46Vd9Z3q4cpEpHB1rL5NG04+/rbqW9d3+CSvtB1tYe8UTpAlixa1vj0m/ULglfEK2UKxMGxCxv5A==}
@@ -163,17 +163,14 @@ packages:
   '@actions/github@6.0.1':
     resolution: {integrity: sha512-xbZVcaqD4XnQAe35qSQqskb3SqIAfRyLBrHMd/8TuL7hJSz2QtbDwnNM8zWx4zO5l2fnGtseNE3MbEvD7BxVMw==}
 
-  '@actions/github@7.0.0':
-    resolution: {integrity: sha512-PyGODO938aoBTZd/IfN/+e+Pd5hUcVpyf+thm4CPESLeqhdSkq5QwMTGX9v84XHE1ifmHWBQ60KB8kIgm96opw==}
+  '@actions/github@9.0.0':
+    resolution: {integrity: sha512-yJ0RoswsAaKcvkmpCE4XxBRiy/whH2SdTBHWzs0gi4wkqTDhXMChjSdqBz/F4AeiDlP28rQqL33iHb+kjAMX6w==}
 
-  '@actions/glob@0.5.0':
-    resolution: {integrity: sha512-tST2rjPvJLRZLuT9NMUtyBjvj9Yo0MiJS3ow004slMvm8GFM+Zv9HvMJ7HWzfUyJnGrJvDsYkWBaaG3YKXRtCw==}
+  '@actions/glob@0.5.1':
+    resolution: {integrity: sha512-+dv/t2aKQdKp9WWSp+1yIXVJzH5Q38M0Mta26pzIbeec14EcIleMB7UU6N7sNgbEuYfyuVGpE5pOKjl6j1WXkA==}
 
   '@actions/http-client@2.2.3':
     resolution: {integrity: sha512-mx8hyJi/hjFvbPokCg4uRd4ZX78t+YyRPtnKWwIl+RzNaVuFpQHfmlGVfsKEJN8LwTCvL+DfVgAM04XaHkm6bA==}
-
-  '@actions/http-client@3.0.1':
-    resolution: {integrity: sha512-SbGS8c/vySbNO3kjFgSW77n83C4MQx/Yoe+b1hAdpuvfHxnkHzDq2pWljUpAA56Si1Gae/7zjeZsV0CYjmLo/w==}
 
   '@actions/http-client@3.0.2':
     resolution: {integrity: sha512-JP38FYYpyqvUsz+Igqlc/JG6YO9PaKuvqjM3iGvaLqFnJ7TFmcLyy2IDrY0bI0qCQug8E9K+elv5ZNfw62ZJzA==}
@@ -184,8 +181,8 @@ packages:
   '@actions/io@2.0.0':
     resolution: {integrity: sha512-Jv33IN09XLO+0HS79aaODsvIRyduiF7NY/F6LYeK5oeUmrsz7aFdRphQjFoESF4jS7lMauDOttKALcpapVDIAg==}
 
-  '@actions/tool-cache@3.0.0':
-    resolution: {integrity: sha512-JBx8gEWuu8Lqaqx/hEnL6QdKvF06suBR4y+dBDi9vJbHx1r+p6QtmBKhQYhiKjDUYIoDX1bUrbyAYPChoPK+XA==}
+  '@actions/tool-cache@3.0.1':
+    resolution: {integrity: sha512-euK7sID37jMg1yWGkdXkLPI5Te7x/+2QMUPeHXogcpzUZ81mqlDZ+CgYhQo3LtB8LpVnnQyjs+hTTU0Ir4Y0RQ==}
 
   '@azure/abort-controller@1.1.0':
     resolution: {integrity: sha512-TrRLIoSQVzfAJX9H1JeFjzAoDGcoK1IYX1UImfceTZpsyYfWr09Ss1aHW1y5TrrR3iq6RZLBwJ3E24uwPhwahw==}
@@ -640,6 +637,12 @@ packages:
     engines: {node: '>= 18'}
     peerDependencies:
       '@octokit/core': '5'
+
+  '@octokit/plugin-rest-endpoint-methods@17.0.0':
+    resolution: {integrity: sha512-B5yCyIlOJFPqUUeiD0cnBJwWJO8lkJs5d8+ze9QDP6SvfiXSz1BF+91+0MeI1d2yxgOhU/O+CvtiZ9jSkHhFAw==}
+    engines: {node: '>= 20'}
+    peerDependencies:
+      '@octokit/core': '>=6'
 
   '@octokit/plugin-retry@8.0.3':
     resolution: {integrity: sha512-vKGx1i3MC0za53IzYBSBXcrhmd+daQDzuZfYDd52X5S0M2otf3kVZTVP8bLA3EkU0lTvd1WEC2OlNNa4G+dohA==}
@@ -3604,25 +3607,25 @@ packages:
 
 snapshots:
 
-  '@actions-rs-plus/core@0.5.6':
+  '@actions-rs-plus/core@0.5.7':
     dependencies:
-      '@actions/cache': 5.0.3
+      '@actions/cache': 5.0.5
       '@actions/core': 2.0.3
       '@actions/exec': 2.0.0
-      '@actions/github': 7.0.0
-      '@actions/http-client': 3.0.1
+      '@actions/github': 9.0.0
+      '@actions/http-client': 3.0.2
       '@actions/io': 2.0.0
-      '@actions/tool-cache': 3.0.0
+      '@actions/tool-cache': 3.0.1
       semver: 7.7.3
     transitivePeerDependencies:
       - supports-color
 
-  '@actions/cache@5.0.3':
+  '@actions/cache@5.0.5':
     dependencies:
       '@actions/core': 2.0.3
       '@actions/exec': 2.0.0
-      '@actions/glob': 0.5.0
-      '@actions/http-client': 3.0.1
+      '@actions/glob': 0.5.1
+      '@actions/http-client': 3.0.2
       '@actions/io': 2.0.0
       '@azure/abort-controller': 1.1.0
       '@azure/core-rest-pipeline': 1.22.2
@@ -3660,27 +3663,22 @@ snapshots:
       '@octokit/request-error': 5.1.1
       undici: 5.29.0
 
-  '@actions/github@7.0.0':
+  '@actions/github@9.0.0':
     dependencies:
-      '@actions/http-client': 3.0.1
-      '@octokit/core': 5.2.2
-      '@octokit/plugin-paginate-rest': 9.2.2(@octokit/core@5.2.2)
-      '@octokit/plugin-rest-endpoint-methods': 10.4.1(@octokit/core@5.2.2)
-      '@octokit/request': 8.4.1
-      '@octokit/request-error': 5.1.1
-      undici: 5.29.0
+      '@actions/http-client': 3.0.2
+      '@octokit/core': 7.0.6
+      '@octokit/plugin-paginate-rest': 14.0.0(@octokit/core@7.0.6)
+      '@octokit/plugin-rest-endpoint-methods': 17.0.0(@octokit/core@7.0.6)
+      '@octokit/request': 10.0.7
+      '@octokit/request-error': 7.1.0
+      undici: 6.23.0
 
-  '@actions/glob@0.5.0':
+  '@actions/glob@0.5.1':
     dependencies:
-      '@actions/core': 1.11.1
+      '@actions/core': 2.0.3
       minimatch: 3.1.2
 
   '@actions/http-client@2.2.3':
-    dependencies:
-      tunnel: 0.0.6
-      undici: 5.29.0
-
-  '@actions/http-client@3.0.1':
     dependencies:
       tunnel: 0.0.6
       undici: 5.29.0
@@ -3694,11 +3692,11 @@ snapshots:
 
   '@actions/io@2.0.0': {}
 
-  '@actions/tool-cache@3.0.0':
+  '@actions/tool-cache@3.0.1':
     dependencies:
       '@actions/core': 2.0.3
       '@actions/exec': 2.0.0
-      '@actions/http-client': 3.0.1
+      '@actions/http-client': 3.0.2
       '@actions/io': 2.0.0
       semver: 6.3.1
 
@@ -4197,6 +4195,11 @@ snapshots:
     dependencies:
       '@octokit/core': 5.2.2
       '@octokit/types': 12.6.0
+
+  '@octokit/plugin-rest-endpoint-methods@17.0.0(@octokit/core@7.0.6)':
+    dependencies:
+      '@octokit/core': 7.0.6
+      '@octokit/types': 16.0.0
 
   '@octokit/plugin-retry@8.0.3(@octokit/core@7.0.6)':
     dependencies:
