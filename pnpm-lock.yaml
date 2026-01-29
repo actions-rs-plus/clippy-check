@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@actions-rs-plus/core':
-        specifier: 0.5.9
-        version: 0.5.9
+        specifier: 0.5.10
+        version: 0.5.10
       '@actions/core':
         specifier: 3.0.0
         version: 3.0.0
@@ -141,8 +141,8 @@ importers:
 
 packages:
 
-  '@actions-rs-plus/core@0.5.9':
-    resolution: {integrity: sha512-qurxp9LqN6s/3+H1aYIf/PYcLp3xY0l5NGS2hVITPZNAkovFbD7LTLBg5kZnMTl+09hjfoRcD/+L/6QL/qzotw==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.5.9/9c183a8b4f82afc3b0fac8822118252c421f6306}
+  '@actions-rs-plus/core@0.5.10':
+    resolution: {integrity: sha512-v29YR7iIv0eH8CyFW0Hkymvh3DqnO55KcmmC+PzOZMaCrMrn6nBP3sj7j/ZKueg6EhyPymQrLcMGbaN33MNQ5Q==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.5.10/7b1218425bf7a7691c01a7259ab45ab19436b8f0}
     engines: {node: 24.13.0, pnpm: 10.28.2}
 
   '@actions/cache@5.0.5':
@@ -193,8 +193,8 @@ packages:
   '@actions/io@3.0.2':
     resolution: {integrity: sha512-nRBchcMM+QK1pdjO7/idu86rbJI5YHUKCvKs0KxnSYbVe3F51UfGxuZX4Qy/fWlp6l7gWFwIkrOzN+oUK03kfw==}
 
-  '@actions/tool-cache@3.0.1':
-    resolution: {integrity: sha512-euK7sID37jMg1yWGkdXkLPI5Te7x/+2QMUPeHXogcpzUZ81mqlDZ+CgYhQo3LtB8LpVnnQyjs+hTTU0Ir4Y0RQ==}
+  '@actions/tool-cache@4.0.0':
+    resolution: {integrity: sha512-L8P9HbXvpvqjZDveb/fdsa55IVC0trfPgQ4ZwGo6r5af6YDVdM9vMGPZ7rgY2fAT9gGj4PSYd6bYlg3p3jD78A==}
 
   '@azure/abort-controller@1.1.0':
     resolution: {integrity: sha512-TrRLIoSQVzfAJX9H1JeFjzAoDGcoK1IYX1UImfceTZpsyYfWr09Ss1aHW1y5TrrR3iq6RZLBwJ3E24uwPhwahw==}
@@ -3576,7 +3576,7 @@ packages:
 
 snapshots:
 
-  '@actions-rs-plus/core@0.5.9':
+  '@actions-rs-plus/core@0.5.10':
     dependencies:
       '@actions/cache': 5.0.5
       '@actions/core': 3.0.0
@@ -3584,7 +3584,7 @@ snapshots:
       '@actions/github': 9.0.0
       '@actions/http-client': 4.0.0
       '@actions/io': 3.0.2
-      '@actions/tool-cache': 3.0.1
+      '@actions/tool-cache': 4.0.0
       semver: 7.7.3
     transitivePeerDependencies:
       - supports-color
@@ -3677,13 +3677,13 @@ snapshots:
 
   '@actions/io@3.0.2': {}
 
-  '@actions/tool-cache@3.0.1':
+  '@actions/tool-cache@4.0.0':
     dependencies:
-      '@actions/core': 2.0.3
-      '@actions/exec': 2.0.0
-      '@actions/http-client': 3.0.2
-      '@actions/io': 2.0.0
-      semver: 6.3.1
+      '@actions/core': 3.0.0
+      '@actions/exec': 3.0.0
+      '@actions/http-client': 4.0.0
+      '@actions/io': 3.0.2
+      semver: 7.7.3
 
   '@azure/abort-controller@1.1.0':
     dependencies:
