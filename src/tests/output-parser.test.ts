@@ -1,6 +1,6 @@
 import os from "node:os";
 
-import core from "@actions/core";
+import * as core from "@actions/core";
 import { describe, expect, it, vi } from "vitest";
 
 import { OutputParser } from "@/output-parser.ts";
