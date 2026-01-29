@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@actions-rs-plus/core':
-        specifier: 0.5.8
-        version: 0.5.8
+        specifier: 0.5.9
+        version: 0.5.9
       '@actions/core':
         specifier: 2.0.3
         version: 2.0.3
@@ -141,8 +141,8 @@ importers:
 
 packages:
 
-  '@actions-rs-plus/core@0.5.8':
-    resolution: {integrity: sha512-qX++ldYENmXrZyyK3Tb9LxdAsLEHCA8Z9tV/TSjxeGtJmE8kvMWCIKicewY/YArXn8DRO83ru8uppPTfaB26dw==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.5.8/4be426073721b3d4d837407d36202c7e8cac740b}
+  '@actions-rs-plus/core@0.5.9':
+    resolution: {integrity: sha512-qurxp9LqN6s/3+H1aYIf/PYcLp3xY0l5NGS2hVITPZNAkovFbD7LTLBg5kZnMTl+09hjfoRcD/+L/6QL/qzotw==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.5.9/9c183a8b4f82afc3b0fac8822118252c421f6306}
     engines: {node: 24.13.0, pnpm: 10.28.2}
 
   '@actions/cache@5.0.5':
@@ -153,6 +153,9 @@ packages:
 
   '@actions/core@2.0.3':
     resolution: {integrity: sha512-Od9Thc3T1mQJYddvVPM4QGiLUewdh+3txmDYHHxoNdkqysR1MbCT+rFOtNUxYAz+7+6RIsqipVahY2GJqGPyxA==}
+
+  '@actions/core@3.0.0':
+    resolution: {integrity: sha512-zYt6cz+ivnTmiT/ksRVriMBOiuoUpDCJJlZ5KPl2/FRdvwU3f7MPh9qftvbkXJThragzUZieit2nyHUyw53Seg==}
 
   '@actions/exec@1.1.1':
     resolution: {integrity: sha512-+sCcHHbVdk93a0XT19ECtO/gIXoxvdsgQLzb2fE2/5sIZmWQuluYyjPQtrtTHdU1YzTZ7bAPN4sITq2xi1679w==}
@@ -3573,10 +3576,10 @@ packages:
 
 snapshots:
 
-  '@actions-rs-plus/core@0.5.8':
+  '@actions-rs-plus/core@0.5.9':
     dependencies:
       '@actions/cache': 5.0.5
-      '@actions/core': 2.0.3
+      '@actions/core': 3.0.0
       '@actions/exec': 3.0.0
       '@actions/github': 9.0.0
       '@actions/http-client': 4.0.0
@@ -3610,6 +3613,11 @@ snapshots:
     dependencies:
       '@actions/exec': 2.0.0
       '@actions/http-client': 3.0.2
+
+  '@actions/core@3.0.0':
+    dependencies:
+      '@actions/exec': 3.0.0
+      '@actions/http-client': 4.0.0
 
   '@actions/exec@1.1.1':
     dependencies:
