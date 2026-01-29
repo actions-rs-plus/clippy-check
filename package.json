@@ -52,7 +52,7 @@
         "string-argv": "0.3.2"
     },
     "devDependencies": {
-        "@actions/io": "2.0.0",
+        "@actions/io": "3.0.2",
         "@codecov/vite-plugin": "1.9.1",
         "@eslint-community/eslint-plugin-eslint-comments": "4.6.0",
         "@eslint/js": "9.39.2",
