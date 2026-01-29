@@ -10,7 +10,7 @@ import path__default from "path";
 import * as fs from "fs";
 import fs__default, { constants as constants$b, promises } from "fs";
 import require$$6$1, { setTimeout as setTimeout$1 } from "timers";
-import require$$0$9 from "crypto";
+import crypto$1 from "crypto";
 import * as http from "http";
 import http__default from "http";
 import * as https from "https";
@@ -43,9 +43,9 @@ import * as require$$1$1 from "node:os";
 import require$$1__default from "node:os";
 import require$$2$2 from "node:process";
 import require$$2$3 from "node:https";
-import require$$0$a from "net";
+import require$$0$9 from "net";
 import require$$1$7 from "tty";
-import require$$0$b from "node:crypto";
+import require$$0$a from "node:crypto";
 import require$$2$4 from "buffer";
 import require$$1$8 from "node:fs";
 var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
@@ -21269,7 +21269,7 @@ function requireFileCommand() {
   Object.defineProperty(fileCommand, "__esModule", { value: true });
   fileCommand.issueFileCommand = issueFileCommand;
   fileCommand.prepareKeyValueMessage = prepareKeyValueMessage;
-  const crypto2 = __importStar2(require$$0$9);
+  const crypto2 = __importStar2(crypto$1);
   const fs2 = __importStar2(fs__default);
   const os2 = __importStar2(os__default);
   const utils_1 = /* @__PURE__ */ requireUtils$2();
@@ -25157,7 +25157,7 @@ function requireInternalHashFiles() {
   };
   Object.defineProperty(internalHashFiles, "__esModule", { value: true });
   internalHashFiles.hashFiles = hashFiles;
-  const crypto2 = __importStar2(require$$0$9);
+  const crypto2 = __importStar2(crypto$1);
   const core2 = __importStar2(/* @__PURE__ */ requireCore());
   const fs2 = __importStar2(fs__default);
   const stream = __importStar2(require$$3$1);
@@ -26562,7 +26562,7 @@ function requireCacheUtils() {
   const exec2 = __importStar2(/* @__PURE__ */ requireExec());
   const glob2 = __importStar2(/* @__PURE__ */ requireGlob());
   const io2 = __importStar2(/* @__PURE__ */ requireIo());
-  const crypto2 = __importStar2(require$$0$9);
+  const crypto2 = __importStar2(crypto$1);
   const fs2 = __importStar2(fs__default);
   const path2 = __importStar2(path__default);
   const semver2 = __importStar2(/* @__PURE__ */ requireSemver());
@@ -30008,7 +30008,7 @@ function requireDist$2() {
     };
     Object.defineProperty(exports$1, "__esModule", { value: true });
     exports$1.Agent = void 0;
-    const net = __importStar2(require$$0$a);
+    const net = __importStar2(require$$0$9);
     const http2 = __importStar2(http__default);
     const https_1 = https__default;
     __exportStar2(/* @__PURE__ */ requireHelpers(), exports$1);
@@ -30260,7 +30260,7 @@ function requireDist$1() {
   };
   Object.defineProperty(dist$2, "__esModule", { value: true });
   dist$2.HttpsProxyAgent = void 0;
-  const net = __importStar2(require$$0$a);
+  const net = __importStar2(require$$0$9);
   const tls = __importStar2(require$$1$2);
   const assert_1 = __importDefault2(require$$2$1);
   const debug_1 = __importDefault2(/* @__PURE__ */ requireSrc$1());
@@ -30410,7 +30410,7 @@ function requireDist() {
   };
   Object.defineProperty(dist, "__esModule", { value: true });
   dist.HttpProxyAgent = void 0;
-  const net = __importStar2(require$$0$a);
+  const net = __importStar2(require$$0$9);
   const tls = __importStar2(require$$1$2);
   const debug_1 = __importDefault2(/* @__PURE__ */ requireSrc$1());
   const events_1 = events__default;
@@ -32181,7 +32181,7 @@ function requireSha256() {
   Object.defineProperty(sha256, "__esModule", { value: true });
   sha256.computeSha256Hmac = computeSha256Hmac;
   sha256.computeSha256Hash = computeSha256Hash;
-  const node_crypto_1 = require$$0$b;
+  const node_crypto_1 = require$$0$a;
   async function computeSha256Hmac(key, stringToSign, encoding2) {
     const decodedKey = Buffer.from(key, "base64");
     return (0, node_crypto_1.createHmac)("sha256", decodedKey).update(stringToSign).digest(encoding2);
@@ -39115,7 +39115,7 @@ function requireStorageSharedKeyCredential() {
   hasRequiredStorageSharedKeyCredential = 1;
   Object.defineProperty(StorageSharedKeyCredential, "__esModule", { value: true });
   StorageSharedKeyCredential.StorageSharedKeyCredential = void 0;
-  const node_crypto_1 = require$$0$b;
+  const node_crypto_1 = require$$0$a;
   const StorageSharedKeyCredentialPolicy_js_1 = /* @__PURE__ */ requireStorageSharedKeyCredentialPolicy();
   const Credential_js_1 = /* @__PURE__ */ requireCredential();
   let StorageSharedKeyCredential$1 = class StorageSharedKeyCredential extends Credential_js_1.Credential {
@@ -39632,7 +39632,7 @@ function requireStorageSharedKeyCredentialPolicyV2() {
     Object.defineProperty(exports$1, "__esModule", { value: true });
     exports$1.storageSharedKeyCredentialPolicyName = void 0;
     exports$1.storageSharedKeyCredentialPolicy = storageSharedKeyCredentialPolicy;
-    const node_crypto_1 = require$$0$b;
+    const node_crypto_1 = require$$0$a;
     const constants_js_1 = /* @__PURE__ */ requireConstants$2();
     const utils_common_js_1 = /* @__PURE__ */ requireUtils_common$2();
     const SharedKeyComparator_js_1 = /* @__PURE__ */ requireSharedKeyComparator();
@@ -39765,7 +39765,7 @@ function requireUserDelegationKeyCredential() {
   hasRequiredUserDelegationKeyCredential = 1;
   Object.defineProperty(UserDelegationKeyCredential, "__esModule", { value: true });
   UserDelegationKeyCredential.UserDelegationKeyCredential = void 0;
-  const node_crypto_1 = require$$0$b;
+  const node_crypto_1 = require$$0$a;
   let UserDelegationKeyCredential$1 = class UserDelegationKeyCredential {
     /**
      * Azure Storage account name; readonly.
