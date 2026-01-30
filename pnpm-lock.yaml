@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@actions-rs-plus/core':
-        specifier: 0.5.10
-        version: 0.5.10
+        specifier: 0.5.11
+        version: 0.5.11
       '@actions/core':
         specifier: 3.0.0
         version: 3.0.0
@@ -141,12 +141,12 @@ importers:
 
 packages:
 
-  '@actions-rs-plus/core@0.5.10':
-    resolution: {integrity: sha512-v29YR7iIv0eH8CyFW0Hkymvh3DqnO55KcmmC+PzOZMaCrMrn6nBP3sj7j/ZKueg6EhyPymQrLcMGbaN33MNQ5Q==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.5.10/7b1218425bf7a7691c01a7259ab45ab19436b8f0}
+  '@actions-rs-plus/core@0.5.11':
+    resolution: {integrity: sha512-hXPg1asgA3QHwfoxwaX/D10hjJwZjjqk16x+kv45OUfrUd9lvZlW5imSqgEXSHOToa6X8Mx/7/+n+DPlC2MGvA==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.5.11/f0e0b387961e512fe77ef5e19a1baf4f9dd3df1a}
     engines: {node: 24.13.0, pnpm: 10.28.2}
 
-  '@actions/cache@5.0.5':
-    resolution: {integrity: sha512-jiQSg0gfd+C2KPgcmdCOq7dCuCIQQWQ4b1YfGIRaaA9w7PJbRwTOcCz4LiFEUnqZGf0ha/8OKL3BeNwetHzYsQ==}
+  '@actions/cache@6.0.0':
+    resolution: {integrity: sha512-+tCs634SyGBQJ3KU1rtAVabmN/gYiT9WgzTSJzWwdPCLmM3zWrdbysaErKv8HyI6OozClrxNvDgPjJimbHZZvw==}
 
   '@actions/core@1.11.1':
     resolution: {integrity: sha512-hXJCSrkwfA46Vd9Z3q4cpEpHB1rL5NG04+/rbqW9d3+CSvtB1tYe8UTpAlixa1vj0m/ULglfEK2UKxMGxCxv5A==}
@@ -172,8 +172,8 @@ packages:
   '@actions/github@9.0.0':
     resolution: {integrity: sha512-yJ0RoswsAaKcvkmpCE4XxBRiy/whH2SdTBHWzs0gi4wkqTDhXMChjSdqBz/F4AeiDlP28rQqL33iHb+kjAMX6w==}
 
-  '@actions/glob@0.5.1':
-    resolution: {integrity: sha512-+dv/t2aKQdKp9WWSp+1yIXVJzH5Q38M0Mta26pzIbeec14EcIleMB7UU6N7sNgbEuYfyuVGpE5pOKjl6j1WXkA==}
+  '@actions/glob@0.6.1':
+    resolution: {integrity: sha512-K4+2Ac5ILcf2ySdJCha+Pop9NcKjxqCL4xL4zI50dgB2PbXgC0+AcP011xfH4Of6b4QEJJg8dyZYv7zl4byTsw==}
 
   '@actions/http-client@2.2.3':
     resolution: {integrity: sha512-mx8hyJi/hjFvbPokCg4uRd4ZX78t+YyRPtnKWwIl+RzNaVuFpQHfmlGVfsKEJN8LwTCvL+DfVgAM04XaHkm6bA==}
@@ -195,10 +195,6 @@ packages:
 
   '@actions/tool-cache@4.0.0':
     resolution: {integrity: sha512-L8P9HbXvpvqjZDveb/fdsa55IVC0trfPgQ4ZwGo6r5af6YDVdM9vMGPZ7rgY2fAT9gGj4PSYd6bYlg3p3jD78A==}
-
-  '@azure/abort-controller@1.1.0':
-    resolution: {integrity: sha512-TrRLIoSQVzfAJX9H1JeFjzAoDGcoK1IYX1UImfceTZpsyYfWr09Ss1aHW1y5TrrR3iq6RZLBwJ3E24uwPhwahw==}
-    engines: {node: '>=12.0.0'}
 
   '@azure/abort-controller@2.1.2':
     resolution: {integrity: sha512-nBrLsEWm4J2u5LpAPjxADTlq3trDgVZZXHNKabeXZtpq3d3AbN/KGO82R87rdDz5/lYB024rtEf10/q0urNgsA==}
@@ -3576,9 +3572,9 @@ packages:
 
 snapshots:
 
-  '@actions-rs-plus/core@0.5.10':
+  '@actions-rs-plus/core@0.5.11':
     dependencies:
-      '@actions/cache': 5.0.5
+      '@actions/cache': 6.0.0
       '@actions/core': 3.0.0
       '@actions/exec': 3.0.0
       '@actions/github': 9.0.0
@@ -3589,18 +3585,17 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@actions/cache@5.0.5':
+  '@actions/cache@6.0.0':
     dependencies:
-      '@actions/core': 2.0.3
-      '@actions/exec': 2.0.0
-      '@actions/glob': 0.5.1
-      '@actions/http-client': 3.0.2
-      '@actions/io': 2.0.0
-      '@azure/abort-controller': 1.1.0
+      '@actions/core': 3.0.0
+      '@actions/exec': 3.0.0
+      '@actions/glob': 0.6.1
+      '@actions/http-client': 4.0.0
+      '@actions/io': 3.0.2
       '@azure/core-rest-pipeline': 1.22.2
       '@azure/storage-blob': 12.30.0
       '@protobuf-ts/runtime-rpc': 2.11.1
-      semver: 6.3.1
+      semver: 7.7.3
     transitivePeerDependencies:
       - supports-color
 
@@ -3651,9 +3646,9 @@ snapshots:
       '@octokit/request-error': 7.1.0
       undici: 6.23.0
 
-  '@actions/glob@0.5.1':
+  '@actions/glob@0.6.1':
     dependencies:
-      '@actions/core': 2.0.3
+      '@actions/core': 3.0.0
       minimatch: 3.1.2
 
   '@actions/http-client@2.2.3':
@@ -3684,10 +3679,6 @@ snapshots:
       '@actions/http-client': 4.0.0
       '@actions/io': 3.0.2
       semver: 7.7.3
-
-  '@azure/abort-controller@1.1.0':
-    dependencies:
-      tslib: 2.8.1
 
   '@azure/abort-controller@2.1.2':
     dependencies:
