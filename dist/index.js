@@ -30718,8 +30718,8 @@ class OrderedObjParser {
       "copyright": { regex: /&(copy|#169);/g, val: "©" },
       "reg": { regex: /&(reg|#174);/g, val: "®" },
       "inr": { regex: /&(inr|#8377);/g, val: "₹" },
-      "num_dec": { regex: /&#([0-9]{1,7});/g, val: (_, str) => String.fromCodePoint(Number.parseInt(str, 10)) },
-      "num_hex": { regex: /&#x([0-9a-fA-F]{1,6});/g, val: (_, str) => String.fromCodePoint(Number.parseInt(str, 16)) }
+      "num_dec": { regex: /&#([0-9]{1,7});/g, val: (_, str) => fromCodePoint(str, 10, "&#") },
+      "num_hex": { regex: /&#x([0-9a-fA-F]{1,6});/g, val: (_, str) => fromCodePoint(str, 16, "&#x") }
     };
     this.addExternalEntities = addExternalEntities;
     this.parseXml = parseXml;
@@ -31195,6 +31195,14 @@ function parseValue(val, shouldParse, options) {
     } else {
       return "";
     }
+  }
+}
+function fromCodePoint(str, base, prefix2) {
+  const codePoint = Number.parseInt(str, base);
+  if (codePoint >= 0 && codePoint <= 1114111) {
+    return String.fromCodePoint(codePoint);
+  } else {
+    return prefix2 + str + ";";
   }
 }
 const METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
