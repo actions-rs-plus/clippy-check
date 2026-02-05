@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@actions-rs-plus/core':
-        specifier: 0.5.11
-        version: 0.5.11
+        specifier: 0.5.12
+        version: 0.5.12
       '@actions/core':
         specifier: 3.0.0
         version: 3.0.0
@@ -141,8 +141,8 @@ importers:
 
 packages:
 
-  '@actions-rs-plus/core@0.5.11':
-    resolution: {integrity: sha512-hXPg1asgA3QHwfoxwaX/D10hjJwZjjqk16x+kv45OUfrUd9lvZlW5imSqgEXSHOToa6X8Mx/7/+n+DPlC2MGvA==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.5.11/f0e0b387961e512fe77ef5e19a1baf4f9dd3df1a}
+  '@actions-rs-plus/core@0.5.12':
+    resolution: {integrity: sha512-JNNgEzWpPPo7AC2/6WJAYYWqwtSBLcuc352yn8RI1KK9Z9sNT2e+lNVWtuuh/phEcrJu2dsID9NOf4bS9jGiow==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.5.12/9084d30f04bc57f9ab4636da189931456573b6ca}
     engines: {node: 24.13.0, pnpm: 10.28.2}
 
   '@actions/cache@6.0.0':
@@ -2935,6 +2935,11 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  semver@7.7.4:
+    resolution: {integrity: sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA==}
+    engines: {node: '>=10'}
+    hasBin: true
+
   set-function-length@1.2.2:
     resolution: {integrity: sha512-pgRc4hJ4/sNjWCSS9AmnS40x3bNMDTknHgL5UaMBTMyJnU90EgWh1Rz+MC9eFu4BuN/UwZjKQuY/1v3rM7HMfg==}
     engines: {node: '>= 0.4'}
@@ -3575,7 +3580,7 @@ packages:
 
 snapshots:
 
-  '@actions-rs-plus/core@0.5.11':
+  '@actions-rs-plus/core@0.5.12':
     dependencies:
       '@actions/cache': 6.0.0
       '@actions/core': 3.0.0
@@ -3584,7 +3589,7 @@ snapshots:
       '@actions/http-client': 4.0.0
       '@actions/io': 3.0.2
       '@actions/tool-cache': 4.0.0
-      semver: 7.7.3
+      semver: 7.7.4
     transitivePeerDependencies:
       - supports-color
 
@@ -6592,6 +6597,8 @@ snapshots:
   semver@6.3.1: {}
 
   semver@7.7.3: {}
+
+  semver@7.7.4: {}
 
   set-function-length@1.2.2:
     dependencies:
