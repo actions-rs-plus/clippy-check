@@ -30337,11 +30337,13 @@ class DocTypeReader {
             i += 7;
             let entityName, val;
             [entityName, val, i] = this.readEntityExp(xmlData, i + 1, this.suppressValidationErr);
-            if (val.indexOf("&") === -1)
+            if (val.indexOf("&") === -1) {
+              const escaped = entityName.replace(/[.\-+*:]/g, "\\.");
               entities[entityName] = {
-                regx: RegExp(`&${entityName};`, "g"),
+                regx: RegExp(`&${escaped};`, "g"),
                 val
               };
+            }
           } else if (hasBody && hasSeq(xmlData, "!ELEMENT", i)) {
             i += 8;
             const { index } = this.readElementExp(xmlData, i + 1);
@@ -30751,8 +30753,9 @@ function addExternalEntities(externalEntities) {
   const entKeys = Object.keys(externalEntities);
   for (let i = 0; i < entKeys.length; i++) {
     const ent = entKeys[i];
+    const escaped = ent.replace(/[.\-+*:]/g, "\\.");
     this.lastEntities[ent] = {
-      regex: new RegExp("&" + ent + ";", "g"),
+      regex: new RegExp("&" + escaped + ";", "g"),
       val: externalEntities[ent]
     };
   }
