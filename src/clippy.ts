@@ -95,7 +95,7 @@ async function runClippy(actionInput: input.ParsedInput, program: BaseProgram): 
         options.cwd = path.join(process.cwd(), actionInput.workingDirectory);
     }
 
-    let exitCode = 0;
+    let exitCode: number;
 
     try {
         core.startGroup("Executing cargo clippy (JSON output)");
