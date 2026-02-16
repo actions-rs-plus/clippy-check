@@ -58935,7 +58935,7 @@ async function runClippy(actionInput, program) {
   if (actionInput.workingDirectory !== void 0 && actionInput.workingDirectory !== "") {
     options.cwd = path$1.join(process.cwd(), actionInput.workingDirectory);
   }
-  let exitCode = 0;
+  let exitCode;
   try {
     startGroup("Executing cargo clippy (JSON output)");
     exitCode = await program.call(arguments_, options);
