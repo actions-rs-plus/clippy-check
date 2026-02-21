@@ -263,7 +263,9 @@ describe("outputParser", () => {
     });
 
     it("normalizes Windows paths", () => {
-        vi.spyOn(os, "platform").mockImplementationOnce(() => "win32");
+        vi.spyOn(os, "platform").mockImplementationOnce(() => {
+            return "win32";
+        });
 
         const outputParser = new OutputParser();
 
@@ -287,7 +289,9 @@ describe("outputParser", () => {
     });
 
     it("don't normalize Windows paths on Linux", () => {
-        vi.spyOn(os, "platform").mockImplementationOnce(() => "linux");
+        vi.spyOn(os, "platform").mockImplementationOnce(() => {
+            return "linux";
+        });
 
         const outputParser = new OutputParser();
 
