@@ -21020,6 +21020,7 @@ function requireMinimatch() {
             re2 += c;
             continue;
           }
+          if (c === "*" && stateChar === "*") continue;
           self2.debug("call clearStateChar %j", stateChar);
           clearStateChar();
           stateChar = c;
