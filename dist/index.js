@@ -20863,6 +20863,7 @@ function requireMinimatch() {
       pattern = pattern.split(path2.sep).join("/");
     }
     this.options = options;
+    this.maxGlobstarRecursion = options.maxGlobstarRecursion !== void 0 ? options.maxGlobstarRecursion : 200;
     this.set = [];
     this.pattern = pattern;
     this.regexp = null;
@@ -21258,50 +21259,147 @@ function requireMinimatch() {
     return this.negate;
   };
   Minimatch2.prototype.matchOne = function(file2, pattern, partial) {
-    var options = this.options;
-    this.debug(
-      "matchOne",
-      { "this": this, file: file2, pattern }
+    if (pattern.indexOf(GLOBSTAR) !== -1) {
+      return this._matchGlobstar(file2, pattern, partial, 0, 0);
+    }
+    return this._matchOne(file2, pattern, partial, 0, 0);
+  };
+  Minimatch2.prototype._matchGlobstar = function(file2, pattern, partial, fileIndex, patternIndex) {
+    var i;
+    var firstgs = -1;
+    for (i = patternIndex; i < pattern.length; i++) {
+      if (pattern[i] === GLOBSTAR) {
+        firstgs = i;
+        break;
+      }
+    }
+    var lastgs = -1;
+    for (i = pattern.length - 1; i >= 0; i--) {
+      if (pattern[i] === GLOBSTAR) {
+        lastgs = i;
+        break;
+      }
+    }
+    var head = pattern.slice(patternIndex, firstgs);
+    var body2 = partial ? pattern.slice(firstgs + 1) : pattern.slice(firstgs + 1, lastgs);
+    var tail = partial ? [] : pattern.slice(lastgs + 1);
+    if (head.length) {
+      var fileHead = file2.slice(fileIndex, fileIndex + head.length);
+      if (!this._matchOne(fileHead, head, partial, 0, 0)) {
+        return false;
+      }
+      fileIndex += head.length;
+    }
+    var fileTailMatch = 0;
+    if (tail.length) {
+      if (tail.length + fileIndex > file2.length) return false;
+      var tailStart = file2.length - tail.length;
+      if (this._matchOne(file2, tail, partial, tailStart, 0)) {
+        fileTailMatch = tail.length;
+      } else {
+        if (file2[file2.length - 1] !== "" || fileIndex + tail.length === file2.length) {
+          return false;
+        }
+        tailStart--;
+        if (!this._matchOne(file2, tail, partial, tailStart, 0)) {
+          return false;
+        }
+        fileTailMatch = tail.length + 1;
+      }
+    }
+    if (!body2.length) {
+      var sawSome = !!fileTailMatch;
+      for (i = fileIndex; i < file2.length - fileTailMatch; i++) {
+        var f = String(file2[i]);
+        sawSome = true;
+        if (f === "." || f === ".." || !this.options.dot && f.charAt(0) === ".") {
+          return false;
+        }
+      }
+      return partial || sawSome;
+    }
+    var bodySegments = [[[], 0]];
+    var currentBody = bodySegments[0];
+    var nonGsParts = 0;
+    var nonGsPartsSums = [0];
+    for (var bi = 0; bi < body2.length; bi++) {
+      var b = body2[bi];
+      if (b === GLOBSTAR) {
+        nonGsPartsSums.push(nonGsParts);
+        currentBody = [[], 0];
+        bodySegments.push(currentBody);
+      } else {
+        currentBody[0].push(b);
+        nonGsParts++;
+      }
+    }
+    var idx = bodySegments.length - 1;
+    var fileLength = file2.length - fileTailMatch;
+    for (var si = 0; si < bodySegments.length; si++) {
+      bodySegments[si][1] = fileLength - (nonGsPartsSums[idx--] + bodySegments[si][0].length);
+    }
+    return !!this._matchGlobStarBodySections(
+      file2,
+      bodySegments,
+      fileIndex,
+      0,
+      partial,
+      0,
+      !!fileTailMatch
     );
-    this.debug("matchOne", file2.length, pattern.length);
-    for (var fi = 0, pi = 0, fl = file2.length, pl = pattern.length; fi < fl && pi < pl; fi++, pi++) {
+  };
+  Minimatch2.prototype._matchGlobStarBodySections = function(file2, bodySegments, fileIndex, bodyIndex, partial, globStarDepth, sawTail) {
+    var bs = bodySegments[bodyIndex];
+    if (!bs) {
+      for (var i = fileIndex; i < file2.length; i++) {
+        sawTail = true;
+        var f = file2[i];
+        if (f === "." || f === ".." || !this.options.dot && f.charAt(0) === ".") {
+          return false;
+        }
+      }
+      return sawTail;
+    }
+    var body2 = bs[0];
+    var after = bs[1];
+    while (fileIndex <= after) {
+      var m = this._matchOne(
+        file2.slice(0, fileIndex + body2.length),
+        body2,
+        partial,
+        fileIndex,
+        0
+      );
+      if (m && globStarDepth < this.maxGlobstarRecursion) {
+        var sub = this._matchGlobStarBodySections(
+          file2,
+          bodySegments,
+          fileIndex + body2.length,
+          bodyIndex + 1,
+          partial,
+          globStarDepth + 1,
+          sawTail
+        );
+        if (sub !== false) {
+          return sub;
+        }
+      }
+      var f = file2[fileIndex];
+      if (f === "." || f === ".." || !this.options.dot && f.charAt(0) === ".") {
+        return false;
+      }
+      fileIndex++;
+    }
+    return partial || null;
+  };
+  Minimatch2.prototype._matchOne = function(file2, pattern, partial, fileIndex, patternIndex) {
+    var fi, pi, fl, pl;
+    for (fi = fileIndex, pi = patternIndex, fl = file2.length, pl = pattern.length; fi < fl && pi < pl; fi++, pi++) {
       this.debug("matchOne loop");
       var p = pattern[pi];
       var f = file2[fi];
       this.debug(pattern, p, f);
-      if (p === false) return false;
-      if (p === GLOBSTAR) {
-        this.debug("GLOBSTAR", [pattern, p, f]);
-        var fr = fi;
-        var pr = pi + 1;
-        if (pr === pl) {
-          this.debug("** at the end");
-          for (; fi < fl; fi++) {
-            if (file2[fi] === "." || file2[fi] === ".." || !options.dot && file2[fi].charAt(0) === ".") return false;
-          }
-          return true;
-        }
-        while (fr < fl) {
-          var swallowee = file2[fr];
-          this.debug("\nglobstar while", file2, fr, pattern, pr, swallowee);
-          if (this.matchOne(file2.slice(fr), pattern.slice(pr), partial)) {
-            this.debug("globstar found match!", fr, fl, swallowee);
-            return true;
-          } else {
-            if (swallowee === "." || swallowee === ".." || !options.dot && swallowee.charAt(0) === ".") {
-              this.debug("dot detected!", file2, fr, pattern, pr);
-              break;
-            }
-            this.debug("globstar swallow a segment, and continue");
-            fr++;
-          }
-        }
-        if (partial) {
-          this.debug("\n>>> no match, partial?", file2, fr, pattern, pr);
-          if (fr === fl) return true;
-        }
-        return false;
-      }
+      if (p === false || p === GLOBSTAR) return false;
       var hit;
       if (typeof p === "string") {
         hit = f === p;
@@ -30175,7 +30273,7 @@ function validateAttributeString(attrStr, options) {
     if (!validateAttrName(attrName)) {
       return getErrorObject("InvalidAttr", "Attribute '" + attrName + "' is an invalid name.", getPositionFromMatch(matches[i]));
     }
-    if (!attrNames.hasOwnProperty(attrName)) {
+    if (!Object.prototype.hasOwnProperty.call(attrNames, attrName)) {
       attrNames[attrName] = 1;
     } else {
       return getErrorObject("InvalidAttr", "Attribute '" + attrName + "' is repeated.", getPositionFromMatch(matches[i]));
@@ -30285,7 +30383,9 @@ const defaultOptions$1 = {
     return tagName;
   },
   // skipEmptyListItem: false
-  captureMetaData: false
+  captureMetaData: false,
+  maxNestedTags: 100,
+  strictReservedNames: true
 };
 function normalizeProcessEntities(value) {
   if (typeof value === "boolean") {
@@ -30329,7 +30429,7 @@ class XmlNode {
   constructor(tagname) {
     this.tagname = tagname;
     this.child = [];
-    this[":@"] = {};
+    this[":@"] = /* @__PURE__ */ Object.create(null);
   }
   add(key, val) {
     if (key === "__proto__") key = "#__proto__";
@@ -30357,7 +30457,7 @@ class DocTypeReader {
     this.options = options;
   }
   readDocType(xmlData, i) {
-    const entities = {};
+    const entities = /* @__PURE__ */ Object.create(null);
     if (xmlData[i + 3] === "O" && xmlData[i + 4] === "C" && xmlData[i + 5] === "T" && xmlData[i + 6] === "Y" && xmlData[i + 7] === "P" && xmlData[i + 8] === "E") {
       i = i + 9;
       let angleBracketsCount = 1;
@@ -30711,7 +30811,7 @@ function parse_int(numStr, base) {
   else if (window && window.parseInt) return window.parseInt(numStr, base);
   else throw new Error("parseInt, Number.parseInt, window.parseInt are not supported");
 }
-function getIgnoreAttributesFn(ignoreAttributes) {
+function getIgnoreAttributesFn$1(ignoreAttributes) {
   if (typeof ignoreAttributes === "function") {
     return ignoreAttributes;
   }
@@ -30769,7 +30869,7 @@ class OrderedObjParser {
     this.readStopNodeData = readStopNodeData;
     this.saveTextToParentTag = saveTextToParentTag;
     this.addChild = addChild;
-    this.ignoreAttributesFn = getIgnoreAttributesFn(this.options.ignoreAttributes);
+    this.ignoreAttributesFn = getIgnoreAttributesFn$1(this.options.ignoreAttributes);
     this.entityExpansionCount = 0;
     this.currentExpandedLength = 0;
     if (this.options.stopNodes && this.options.stopNodes.length > 0) {
@@ -30981,6 +31081,9 @@ const parseXml = function(xmlData) {
           }
           tagName = newTagName;
         }
+        if (this.options.strictReservedNames && (tagName === this.options.commentPropName || tagName === this.options.cdataPropName)) {
+          throw new Error(`Invalid tag name: ${tagName}`);
+        }
         if (currentNode && textData) {
           if (currentNode.tagname !== "!xml") {
             textData = this.saveTextToParentTag(textData, currentNode, jPath, false);
@@ -31046,8 +31149,20 @@ const parseXml = function(xmlData) {
             }
             this.addChild(currentNode, childNode, jPath, startIndex);
             jPath = jPath.substr(0, jPath.lastIndexOf("."));
+          } else if (this.options.unpairedTags.indexOf(tagName) !== -1) {
+            const childNode = new XmlNode(tagName);
+            if (tagName !== tagExp && attrExpPresent) {
+              childNode[":@"] = this.buildAttributesMap(tagExp, jPath);
+            }
+            this.addChild(currentNode, childNode, jPath, startIndex);
+            jPath = jPath.substr(0, jPath.lastIndexOf("."));
+            i = result.closeIndex;
+            continue;
           } else {
             const childNode = new XmlNode(tagName);
+            if (this.tagsNodeStack.length > this.options.maxNestedTags) {
+              throw new Error("Maximum nested tags exceeded");
+            }
             this.tagsNodeStack.push(currentNode);
             if (tagName !== tagExp && attrExpPresent) {
               childNode[":@"] = this.buildAttributesMap(tagExp, jPath, tagName);
@@ -31131,19 +31246,19 @@ const replaceEntitiesValue$1 = function(val, tagName, jPath) {
   val = val.replace(this.ampEntity.regex, this.ampEntity.val);
   return val;
 };
-function saveTextToParentTag(textData, currentNode, jPath, isLeafNode) {
+function saveTextToParentTag(textData, parentNode, jPath, isLeafNode) {
   if (textData) {
-    if (isLeafNode === void 0) isLeafNode = currentNode.child.length === 0;
+    if (isLeafNode === void 0) isLeafNode = parentNode.child.length === 0;
     textData = this.parseTextData(
       textData,
-      currentNode.tagname,
+      parentNode.tagname,
       jPath,
       false,
-      currentNode[":@"] ? Object.keys(currentNode[":@"]).length !== 0 : false,
+      parentNode[":@"] ? Object.keys(parentNode[":@"]).length !== 0 : false,
       isLeafNode
     );
     if (textData !== void 0 && textData !== "")
-      currentNode.add(this.options.textNodeName, textData);
+      parentNode.add(this.options.textNodeName, textData);
     textData = "";
   }
   return textData;
@@ -31301,9 +31416,6 @@ function compress(arr, options, jPath) {
     } else if (tagObj[property]) {
       let val = compress(tagObj[property], options, newJpath);
       const isLeaf = isLeafTag(val, options);
-      if (tagObj[METADATA_SYMBOL] !== void 0) {
-        val[METADATA_SYMBOL] = tagObj[METADATA_SYMBOL];
-      }
       if (tagObj[":@"]) {
         assignAttributes(val, tagObj[":@"], newJpath, options);
       } else if (Object.keys(val).length === 1 && val[options.textNodeName] !== void 0 && !options.alwaysCreateTextNode) {
@@ -31312,7 +31424,10 @@ function compress(arr, options, jPath) {
         if (options.alwaysCreateTextNode) val[options.textNodeName] = "";
         else val = "";
       }
-      if (compressedObj[property] !== void 0 && compressedObj.hasOwnProperty(property)) {
+      if (tagObj[METADATA_SYMBOL] !== void 0 && typeof val === "object" && val !== null) {
+        val[METADATA_SYMBOL] = tagObj[METADATA_SYMBOL];
+      }
+      if (compressedObj[property] !== void 0 && Object.prototype.hasOwnProperty.call(compressedObj, property)) {
         if (!Array.isArray(compressedObj[property])) {
           compressedObj[property] = [compressedObj[property]];
         }
@@ -31433,6 +31548,14 @@ function toXml(jArray, options) {
 function arrToStr(arr, options, jPath, indentation) {
   let xmlStr = "";
   let isPreviousElementTag = false;
+  if (!Array.isArray(arr)) {
+    if (arr !== void 0 && arr !== null) {
+      let text = arr.toString();
+      text = replaceEntitiesValue(text, options);
+      return text;
+    }
+    return "";
+  }
   for (let i = 0; i < arr.length; i++) {
     const tagObj = arr[i];
     const tagName = propName(tagObj);
@@ -31503,7 +31626,7 @@ function propName(obj) {
   const keys = Object.keys(obj);
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
-    if (!obj.hasOwnProperty(key)) continue;
+    if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
     if (key !== ":@") return key;
   }
 }
@@ -31511,7 +31634,7 @@ function attr_to_str(attrMap, options) {
   let attrStr = "";
   if (attrMap && !options.ignoreAttributes) {
     for (let attr in attrMap) {
-      if (!attrMap.hasOwnProperty(attr)) continue;
+      if (!Object.prototype.hasOwnProperty.call(attrMap, attr)) continue;
       let attrVal = options.attributeValueProcessor(attr, attrMap[attr]);
       attrVal = replaceEntitiesValue(attrVal, options);
       if (attrVal === true && options.suppressBooleanAttributes) {
@@ -31539,6 +31662,24 @@ function replaceEntitiesValue(textValue, options) {
     }
   }
   return textValue;
+}
+function getIgnoreAttributesFn(ignoreAttributes) {
+  if (typeof ignoreAttributes === "function") {
+    return ignoreAttributes;
+  }
+  if (Array.isArray(ignoreAttributes)) {
+    return (attrName) => {
+      for (const pattern of ignoreAttributes) {
+        if (typeof pattern === "string" && attrName === pattern) {
+          return true;
+        }
+        if (pattern instanceof RegExp && pattern.test(attrName)) {
+          return true;
+        }
+      }
+    };
+  }
+  return () => false;
 }
 const defaultOptions = {
   attributeNamePrefix: "@_",
