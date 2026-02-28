@@ -1,35 +1,50 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-name: "CodeQL Advanced"
+name: "CodeQL"
 
 on:
+  #   dynamic:
   push:
     branches: ["main"]
   pull_request:
     branches: ["main"]
   schedule:
-    - cron: "32 23 * * 5"
+    - cron: "32 20 * * 5"
 
 jobs:
   analyze:
-    name: Analyze (${{ matrix.language }})
-    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    name: Analyze (${{ matrix.language }} - ${{ matrix.analysis-kinds }})
+    runs-on: "ubuntu-latest"
     permissions:
-      # required for all workflows
+      actions: read
+      contents: read
+      packages: read
       security-events: write
 
     strategy:
       fail-fast: false
       matrix:
         include:
-          - language: actions
+          - analysis-kinds: code-scanning
+            language: actions
+            category: /language:actions
             config: actions.yaml
             build-mode: none
-          - language: javascript-typescript
+            queries: "security-extended,security-and-quality"
+            upload-database: true
+          - analysis-kinds: code-scanning
+            language: javascript-typescript
+            category: /language:javascript-typescript
             config: typescript.yaml
             build-mode: none
-        #   - language: rust
-        #     build-mode: none
-
+            queries: "security-extended,security-and-quality"
+            upload-database: true
+          - analysis-kinds: code-quality
+            language: javascript-typescript
+            category: /language:javascript-typescript
+            config: typescript.yaml
+            build-mode: none
+            queries: ""
+            upload-database: false
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -39,12 +54,15 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@89a39a4e59826350b863aa6b6252a07ad50cf83e # v4.32.4
         with:
+          analysis-kinds: ${{ matrix.analysis-kinds }}
           config-file: .github/codeql/${{ matrix.config }}
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
-          queries: security-extended,security-and-quality
+          queries: ${{ matrix.queries }}
+          dependency-caching: ${{ runner.environment == 'github-hosted' }}
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@89a39a4e59826350b863aa6b6252a07ad50cf83e # v4.32.4
         with:
-          category: "/language:${{matrix.language}}"
+          category: ${{ matrix.category }}
+          upload-database: ${{ matrix.upload-database }}
