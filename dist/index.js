@@ -30722,8 +30722,10 @@ const consider = {
   // oct: false,
   leadingZeros: true,
   decimalPoint: ".",
-  eNotation: true
-  //skipLike: /regex/
+  eNotation: true,
+  //skipLike: /regex/,
+  infinity: "original"
+  // "null", "infinity" (Infinity type), "string" ("Infinity" (the string literal))
 };
 function toNumber(str, options = {}) {
   options = Object.assign({}, consider, options);
@@ -30733,6 +30735,8 @@ function toNumber(str, options = {}) {
   else if (str === "0") return 0;
   else if (options.hex && hexRegex.test(trimmedStr)) {
     return parse_int(trimmedStr, 16);
+  } else if (!isFinite(trimmedStr)) {
+    return handleInfinity(str, Number(trimmedStr), options);
   } else if (trimmedStr.includes("e") || trimmedStr.includes("E")) {
     return resolveEnotation(str, trimmedStr, options);
   } else {
@@ -30810,6 +30814,21 @@ function parse_int(numStr, base) {
   else if (Number.parseInt) return Number.parseInt(numStr, base);
   else if (window && window.parseInt) return window.parseInt(numStr, base);
   else throw new Error("parseInt, Number.parseInt, window.parseInt are not supported");
+}
+function handleInfinity(str, num, options) {
+  const isPositive = num === Infinity;
+  switch (options.infinity.toLowerCase()) {
+    case "null":
+      return null;
+    case "infinity":
+      return num;
+    // Return Infinity or -Infinity
+    case "string":
+      return isPositive ? "Infinity" : "-Infinity";
+    case "original":
+    default:
+      return str;
+  }
 }
 function getIgnoreAttributesFn$1(ignoreAttributes) {
   if (typeof ignoreAttributes === "function") {
