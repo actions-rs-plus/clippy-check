@@ -54,7 +54,7 @@
     "devDependencies": {
         "@actions/io": "3.0.2",
         "@codecov/vite-plugin": "1.9.1",
-        "@eslint-community/eslint-plugin-eslint-comments": "4.7.0",
+        "@eslint-community/eslint-plugin-eslint-comments": "4.7.1",
         "@eslint/config-helpers": "0.5.2",
         "@eslint/js": "10.0.1",
         "@stylistic/eslint-plugin": "5.9.0",
