@@ -1,4 +1,4 @@
-import { defineConfig } from "@eslint/config-helpers";
+import { defineConfig, globalIgnores } from "@eslint/config-helpers";
 import js from "@eslint/js";
 import commentsPlugin from "@eslint-community/eslint-plugin-eslint-comments";
 import stylistic from "@stylistic/eslint-plugin";
@@ -54,6 +54,8 @@ const sharedRules = {
     ],
 
     "sort-keys": ["off"],
+
+    "unicorn/no-array-sort": ["off"],
     "unicorn/no-null": ["off"],
     "unicorn/prefer-ternary": ["off"],
 
@@ -83,10 +85,10 @@ const sharedRules = {
 
 export default defineConfig(
     prettier,
+    globalIgnores([".local/*"]),
     js.configs.recommended,
     importPluginsFlatConfigs.recommended,
     importPluginsFlatConfigs.typescript,
-
     {
         ignores: ["dist/**", "reports/**", "coverage/**"],
     },
