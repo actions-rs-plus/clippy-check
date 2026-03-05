@@ -67,7 +67,7 @@
         "@vercel/ncc": "0.38.4",
         "@vitest/coverage-istanbul": "4.0.18",
         "@vitest/ui": "4.0.18",
-        "conventional-changelog-conventionalcommits": "9.2.0",
+        "conventional-changelog-conventionalcommits": "9.3.0",
         "dependency-cruiser": "17.3.8",
         "eslint": "10.0.2",
         "eslint-config-love": "151.0.0",
