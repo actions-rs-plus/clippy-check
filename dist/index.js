@@ -25147,20 +25147,27 @@ function logPolicy$1(options = {}) {
 const redirectPolicyName$1 = "redirectPolicy";
 const allowedRedirect = ["GET", "HEAD"];
 function redirectPolicy$1(options = {}) {
-  const { maxRetries = 20 } = options;
+  const { maxRetries = 20, allowCrossOriginRedirects = false } = options;
   return {
     name: redirectPolicyName$1,
     async sendRequest(request2, next) {
       const response2 = await next(request2);
-      return handleRedirect(next, response2, maxRetries);
+      return handleRedirect(next, response2, maxRetries, allowCrossOriginRedirects);
     }
   };
 }
-async function handleRedirect(next, response2, maxRetries, currentRetries = 0) {
+async function handleRedirect(next, response2, maxRetries, allowCrossOriginRedirects, currentRetries = 0) {
   const { request: request2, status, headers: headers2 } = response2;
   const locationHeader = headers2.get("location");
   if (locationHeader && (status === 300 || status === 301 && allowedRedirect.includes(request2.method) || status === 302 && allowedRedirect.includes(request2.method) || status === 303 && request2.method === "POST" || status === 307) && currentRetries < maxRetries) {
     const url2 = new URL(locationHeader, request2.url);
+    if (!allowCrossOriginRedirects) {
+      const originalUrl = new URL(request2.url);
+      if (url2.origin !== originalUrl.origin) {
+        logger$4.verbose(`Skipping cross-origin redirect from ${originalUrl.origin} to ${url2.origin}.`);
+        return response2;
+      }
+    }
     request2.url = url2.toString();
     if (status === 303) {
       request2.method = "GET";
@@ -25169,7 +25176,7 @@ async function handleRedirect(next, response2, maxRetries, currentRetries = 0) {
     }
     request2.headers.delete("Authorization");
     const res = await next(request2);
-    return handleRedirect(next, res, maxRetries, currentRetries + 1);
+    return handleRedirect(next, res, maxRetries, allowCrossOriginRedirects, currentRetries + 1);
   }
   return response2;
 }
@@ -27205,7 +27212,7 @@ async function setPlatformSpecificData(map) {
     }
   }
 }
-const SDK_VERSION$1 = "1.22.2";
+const SDK_VERSION$1 = "1.22.3";
 function getUserAgentString$1(telemetryInfo) {
   const parts = [];
   for (const [key, value] of telemetryInfo) {
@@ -30396,6 +30403,7 @@ function normalizeProcessEntities(value) {
       maxExpansionDepth: 10,
       maxTotalExpansions: 1e3,
       maxExpandedLength: 1e5,
+      maxEntityCount: 100,
       allowedTags: null,
       tagFilter: null
     };
@@ -30408,6 +30416,7 @@ function normalizeProcessEntities(value) {
       maxExpansionDepth: value.maxExpansionDepth ?? 10,
       maxTotalExpansions: value.maxTotalExpansions ?? 1e3,
       maxExpandedLength: value.maxExpandedLength ?? 1e5,
+      maxEntityCount: value.maxEntityCount ?? 100,
       allowedTags: value.allowedTags ?? null,
       tagFilter: value.tagFilter ?? null
     };
@@ -30458,6 +30467,7 @@ class DocTypeReader {
   }
   readDocType(xmlData, i) {
     const entities = /* @__PURE__ */ Object.create(null);
+    let entityCount = 0;
     if (xmlData[i + 3] === "O" && xmlData[i + 4] === "C" && xmlData[i + 5] === "T" && xmlData[i + 6] === "Y" && xmlData[i + 7] === "P" && xmlData[i + 8] === "E") {
       i = i + 9;
       let angleBracketsCount = 1;
@@ -30469,11 +30479,17 @@ class DocTypeReader {
             let entityName, val;
             [entityName, val, i] = this.readEntityExp(xmlData, i + 1, this.suppressValidationErr);
             if (val.indexOf("&") === -1) {
+              if (this.options.enabled !== false && this.options.maxEntityCount && entityCount >= this.options.maxEntityCount) {
+                throw new Error(
+                  `Entity count (${entityCount + 1}) exceeds maximum allowed (${this.options.maxEntityCount})`
+                );
+              }
               const escaped = entityName.replace(/[.\-+*:]/g, "\\.");
               entities[entityName] = {
                 regx: RegExp(`&${escaped};`, "g"),
                 val
               };
+              entityCount++;
             }
           } else if (hasBody && hasSeq(xmlData, "!ELEMENT", i)) {
             i += 8;
