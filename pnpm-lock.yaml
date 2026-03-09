@@ -145,7 +145,7 @@ importers:
 packages:
 
   '@actions-rs-plus/core@0.5.13':
-    resolution: {integrity: sha512-oEKDiD1sxnoqJ6XIJ6SPtOfcijgwK56Vkzw6/XuMhYwRbPXFWvMWSwwnG+UBr/uvxi47Cg4BE8ZhK5RXhDK4wg==}
+    resolution: {integrity: sha512-oEKDiD1sxnoqJ6XIJ6SPtOfcijgwK56Vkzw6/XuMhYwRbPXFWvMWSwwnG+UBr/uvxi47Cg4BE8ZhK5RXhDK4wg==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.5.13/1f7e729b79c098086e7f5bb5c8acdfb41ca11111}
     engines: {node: 24.14.0, pnpm: 10.30.3}
 
   '@actions/cache@6.0.0':
