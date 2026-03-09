@@ -8,6 +8,5 @@
             "hostType": "npm",
             "token": "{{ secrets.NPM_TOKEN }}"
         }
-    ],
-    "npmrc": "@actions-rs-plus:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/"
+    ]
 }
