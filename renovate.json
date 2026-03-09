@@ -9,5 +9,5 @@
             "token": "{{ secrets.NPM_TOKEN }}"
         }
     ],
-    "npmrc": "@actions-rs-plus:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/"
+    "npmrc": "@actions-rs-plus:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken={{ secrets.NPM_TOKEN }}"
 }

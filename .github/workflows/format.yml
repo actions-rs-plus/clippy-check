@@ -33,6 +33,7 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
           registry-url: https://npm.pkg.github.com
+          scope: "@actions-rs-plus"
 
       - name: Install dependencies
         shell: bash
