@@ -9,14 +9,13 @@ import assert$1, { ok } from "assert";
 import * as fs from "fs";
 import { constants as constants$6, promises, writeFileSync, existsSync } from "fs";
 import { setTimeout as setTimeout$1 } from "timers";
-import * as crypto$1 from "crypto";
-import * as util$8 from "util";
-import util__default from "util";
 import * as http from "http";
 import http__default from "http";
 import * as https from "https";
 import https__default from "https";
 import require$$1 from "tls";
+import * as util$8 from "util";
+import util__default from "util";
 import require$$0$5 from "node:assert";
 import require$$0$2 from "node:net";
 import http$1 from "node:http";
@@ -36,6 +35,7 @@ import require$$5$2 from "node:async_hooks";
 import require$$1$3 from "node:console";
 import require$$1$4 from "node:dns";
 import require$$5$3 from "string_decoder";
+import * as crypto$1 from "crypto";
 import require$$5$4, { URL as URL$1 } from "url";
 import * as buffer from "buffer";
 import { Buffer as Buffer$1 } from "buffer";
@@ -20321,6 +20321,12 @@ function setSecret(secret) {
 }
 function getInput$1(name, options) {
   const val = process.env[`INPUT_${name.replace(/ /g, "_").toUpperCase()}`] || "";
+  if (options && options.required && !val) {
+    throw new Error(`Input required and not supplied: ${name}`);
+  }
+  if (options && options.trimWhitespace === false) {
+    return val;
+  }
   return val.trim();
 }
 function setFailed(message) {
@@ -20351,7 +20357,17 @@ function startGroup(name) {
 function endGroup() {
   issue("endgroup");
 }
-class BaseProgram {
+var __defProp = Object.defineProperty;
+var __exportAll = (all, no_symbols) => {
+  let target = {};
+  for (var name in all) __defProp(target, name, {
+    get: all[name],
+    enumerable: true
+  });
+  __defProp(target, Symbol.toStringTag, { value: "Module" });
+  return target;
+};
+var BaseProgram = class {
   path;
   constructor(path2) {
     this.path = path2;
@@ -20359,6 +20375,14 @@ class BaseProgram {
   call(arguments_, options) {
     return exec(this.path, arguments_, options);
   }
+};
+async function resolveVersion(crate) {
+  const url2 = `https://crates.io/api/v1/crates/${crate}`;
+  const response2 = await new HttpClient("@actions-rs-plus (https://github.com/actions-rs-plus/)").getJson(url2);
+  if (response2.result === null) throw new Error(`Unable to fetch latest crate version of "${crate}"`);
+  if ("errors" in response2.result) throw new Error(`Unable to fetch latest crate version of "${crate}", server returned ${JSON.stringify(response2.result, null, 2)}`);
+  if (response2.result.crate?.newest_version === void 0) throw new Error(`Unable to fetch latest crate version of "${crate}"`);
+  return response2.result.crate.newest_version;
 }
 function getOptions(copy) {
   const result = {
@@ -58681,67 +58705,43 @@ function saveCacheV2(paths_1, key_1, options_1) {
     return cacheId;
   });
 }
-async function resolveVersion(crate) {
-  const url2 = `https://crates.io/api/v1/crates/${crate}`;
-  const client2 = new HttpClient("@actions-rs-plus (https://github.com/actions-rs-plus/)");
-  const response2 = await client2.getJson(url2);
-  if (response2.result === null) {
-    throw new Error(`Unable to fetch latest crate version of "${crate}"`);
-  }
-  if ("errors" in response2.result) {
-    throw new Error(
-      `Unable to fetch latest crate version of "${crate}", server returned ${JSON.stringify(response2.result, null, 2)}`
-    );
-  }
-  if (response2.result.crate?.newest_version === void 0) {
-    throw new Error(`Unable to fetch latest crate version of "${crate}"`);
-  }
-  return response2.result.crate.newest_version;
-}
-class Cargo extends BaseProgram {
+var Cargo = class Cargo2 extends BaseProgram {
   constructor(pathToCargo) {
     super(pathToCargo);
   }
   static async get() {
     try {
-      const pathToCargo = await which("cargo", true);
-      return new Cargo(pathToCargo);
+      return new Cargo2(await which("cargo", true));
     } catch (error$1) {
-      error(
-        "cargo is not installed by default for some virtual environments, see https://help.github.com/en/articles/software-in-virtual-environments-for-github-actions"
-      );
+      error("cargo is not installed by default for some virtual environments, see https://help.github.com/en/articles/software-in-virtual-environments-for-github-actions");
       error("To install it, use this action: https://github.com/actions-rs/toolchain");
       throw error$1;
     }
   }
   /**
-   * Executes `cargo install ${program}`.
-   *
-   * TODO: Caching ability implementation is blocked,
-   * see https://github.com/actions-rs/core/issues/31
-   * As for now it acts just like an stub and simply installs the program
-   * on each call.
-   *
-   * `version` argument could be either actual program version or `"latest"` string,
-   * which can be provided by user input.
-   *
-   * If `version` is `undefined` or `"latest"`, this method could call the Crates.io API,
-   * fetch the latest version and search for it in cache.
-   * TODO: Actually implement this.
-   *
-   * ## Returns
-   *
-   * Path to the installed program.
-   * As the $PATH should be already tuned properly at this point,
-   * returned value at the moment is simply equal to the `program` argument.
-   */
+  * Executes `cargo install ${program}`.
+  *
+  * TODO: Caching ability implementation is blocked,
+  * see https://github.com/actions-rs/core/issues/31
+  * As for now it acts just like an stub and simply installs the program
+  * on each call.
+  *
+  * `version` argument could be either actual program version or `"latest"` string,
+  * which can be provided by user input.
+  *
+  * If `version` is `undefined` or `"latest"`, this method could call the Crates.io API,
+  * fetch the latest version and search for it in cache.
+  * TODO: Actually implement this.
+  *
+  * ## Returns
+  *
+  * Path to the installed program.
+  * As the $PATH should be already tuned properly at this point,
+  * returned value at the moment is simply equal to the `program` argument.
+  */
   async installCached(program, version2, primaryKey, restoreKeys = []) {
-    if (version2 === "latest") {
-      version2 = await resolveVersion(program);
-    }
-    if (primaryKey === void 0) {
-      return this.install(program, version2);
-    }
+    if (version2 === "latest") version2 = await resolveVersion(program);
+    if (primaryKey === void 0) return this.install(program, version2);
     const paths = [path$1.join(path$1.dirname(this.path), program)];
     const versionForKey = version2 === void 0 ? "" : `-${version2}`;
     const programKey = `${program}${versionForKey}-${primaryKey}`;
@@ -58759,24 +58759,16 @@ class Cargo extends BaseProgram {
       await saveCache(paths, programKey);
     } catch (error2) {
       if (error2 instanceof Error) {
-        if (error2.name === ValidationError.name) {
-          throw error2;
-        } else if (error2.name === ReserveCacheError.name) {
-          warning(error2.message);
-        }
-      } else if (typeof error2 === "string") {
-        warning(error2);
-      } else {
-        throw error2;
-      }
+        if (error2.name === ValidationError.name) throw error2;
+        else if (error2.name === ReserveCacheError.name) warning(error2.message);
+      } else if (typeof error2 === "string") warning(error2);
+      else throw error2;
     }
     return result;
   }
   async install(program, version2) {
     const arguments_ = ["install"];
-    if (version2 !== void 0 && version2 !== "latest") {
-      arguments_.push("--version", version2);
-    }
+    if (version2 !== void 0 && version2 !== "latest") arguments_.push("--version", version2);
     arguments_.push(program);
     try {
       startGroup(`Installing "${program} = ${version2 ?? "latest"}"`);
@@ -58787,61 +58779,74 @@ class Cargo extends BaseProgram {
     return program;
   }
   /**
-   * Find the cargo sub-command or install it
-   */
+  * Find the cargo sub-command or install it
+  */
   async findOrInstall(program, version2) {
     try {
-      void await which(program, true);
+      await which(program, true);
       return program;
     } catch {
       info(`${program} is not installed, installing it now`);
     }
     return this.installCached(program, version2);
   }
-}
-class Cross extends BaseProgram {
+};
+var Cross = class Cross2 extends BaseProgram {
   constructor(path2) {
     super(path2);
   }
   static async getOrInstall() {
     try {
-      return await Cross.get();
+      return await Cross2.get();
     } catch (error2) {
       debug(String(error2));
-      return Cross.install();
+      return Cross2.install();
     }
   }
   static async get() {
-    const path2 = await which("cross", true);
-    return new Cross(path2);
+    return new Cross2(await which("cross", true));
   }
   static async install(version2) {
     const cargo = await Cargo.get();
     const cwd = process.cwd();
     process.chdir(os$1.tmpdir());
     try {
-      const crossPath = await cargo.installCached("cross", version2);
-      return new Cross(crossPath);
+      return new Cross2(await cargo.installCached("cross", version2));
     } finally {
       process.chdir(cwd);
     }
   }
-}
+};
+var input_exports = /* @__PURE__ */ __exportAll({
+  getInput: () => getInput,
+  getInputAsArray: () => getInputAsArray,
+  getInputBool: () => getInputBool,
+  getInputList: () => getInputList
+});
 function getInput(name, options) {
   const inputFullName = name.replaceAll("-", "_");
-  const value = getInput$1(inputFullName);
-  if (value.length > 0) {
-    return value;
-  }
-  return getInput$1(name);
+  const value = getInput$1(inputFullName, options);
+  if (value.length > 0) return value;
+  return getInput$1(name, options);
 }
 function getInputBool(name, options) {
-  const value = getInput(name);
-  if (value === "true" || value === "1") {
-    return true;
-  } else {
-    return false;
-  }
+  const value = getInput(name, options);
+  if (value === "true" || value === "1") return true;
+  else return false;
+}
+function getInputList(name, options) {
+  return getInput(name, options).split(",").map((item) => {
+    return item.trim();
+  }).filter((item) => {
+    return item.length > 0;
+  });
+}
+function getInputAsArray(name, options) {
+  return getInput(name, options).split("\n").map((s) => {
+    return s.trim();
+  }).filter((x) => {
+    return x !== "";
+  });
 }
 var AnnotationLevel = /* @__PURE__ */ ((AnnotationLevel2) => {
   AnnotationLevel2[AnnotationLevel2["Error"] = 0] = "Error";
@@ -59186,14 +59191,14 @@ function firstString() {
   }
 }
 function get() {
-  let toolchain = getInput("toolchain");
+  let toolchain = input_exports.getInput("toolchain");
   if (toolchain.startsWith("+")) {
     toolchain = toolchain.slice(1);
   }
-  const workingDirectory = getInput("working-directory");
+  const workingDirectory = input_exports.getInput("working-directory");
   return {
-    args: parseArgsStringToArgv(getInput("args")),
-    useCross: getInputBool("use-cross"),
+    args: parseArgsStringToArgv(input_exports.getInput("args")),
+    useCross: input_exports.getInputBool("use-cross"),
     workingDirectory: workingDirectory === "" ? void 0 : workingDirectory,
     toolchain: toolchain === "" ? void 0 : toolchain
   };
