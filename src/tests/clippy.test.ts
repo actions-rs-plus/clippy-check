@@ -34,9 +34,9 @@ describe("clippy", () => {
 
         await expect(run(actionInput)).resolves.toBeUndefined();
 
-        expect(whichSpy).toBeCalledWith("cargo", true);
+        expect(whichSpy).toHaveBeenCalledWith("cargo", true);
 
-        expect(execSpy).toBeCalledTimes(4);
+        expect(execSpy).toHaveBeenCalledTimes(4);
     });
 
     it("runs with cross", async () => {
@@ -55,9 +55,9 @@ describe("clippy", () => {
 
         await expect(run(actionInput)).resolves.toBeUndefined();
 
-        expect(execSpy).toBeCalledTimes(4);
+        expect(execSpy).toHaveBeenCalledTimes(4);
 
-        expect(whichSpy).toBeCalledWith("cross", true);
+        expect(whichSpy).toHaveBeenCalledWith("cross", true);
     });
 
     it("reports when clippy fails", async () => {
@@ -89,7 +89,7 @@ describe("clippy", () => {
 
         await expect(run(actionInput)).rejects.toThrow(/Clippy had exited with the (\d)+ exit code/);
 
-        expect(whichSpy).toBeCalledWith("cargo", true);
+        expect(whichSpy).toHaveBeenCalledWith("cargo", true);
     });
 
     it("records versions with toolchain", async () => {
@@ -123,13 +123,13 @@ describe("clippy", () => {
 
         await expect(run(actionInput)).resolves.toBeUndefined();
 
-        expect(reportSpy).toBeCalledWith({ error: 0, help: 0, ice: 0, note: 0, warning: 0 }, [], {
+        expect(reportSpy).toHaveBeenCalledWith({ error: 0, help: 0, ice: 0, note: 0, warning: 0 }, [], {
             cargo: "cargo version",
             clippy: "clippy version",
             rustc: "rustc version",
         });
 
-        expect(whichSpy).toBeCalledWith("cargo", true);
+        expect(whichSpy).toHaveBeenCalledWith("cargo", true);
     });
 
     it("records versions", async () => {
@@ -163,9 +163,9 @@ describe("clippy", () => {
 
         await expect(run(actionInput)).resolves.toBeUndefined();
 
-        expect(whichSpy).toBeCalledWith("cargo", true);
+        expect(whichSpy).toHaveBeenCalledWith("cargo", true);
 
-        expect(reportSpy).toBeCalledWith({ error: 0, help: 0, ice: 0, note: 0, warning: 0 }, [], {
+        expect(reportSpy).toHaveBeenCalledWith({ error: 0, help: 0, ice: 0, note: 0, warning: 0 }, [], {
             cargo: "cargo version",
             clippy: "clippy version",
             rustc: "rustc version",
@@ -224,7 +224,7 @@ describe("clippy", () => {
 
         await expect(run(actionInput)).resolves.toBeUndefined();
 
-        expect(reportSpy).toBeCalledWith(
+        expect(reportSpy).toHaveBeenCalledWith(
             { error: 0, help: 0, ice: 0, note: 0, warning: 1 },
             [
                 {
@@ -247,6 +247,6 @@ describe("clippy", () => {
             },
         );
 
-        expect(whichSpy).toBeCalledWith("cargo", true);
+        expect(whichSpy).toHaveBeenCalledWith("cargo", true);
     });
 });
