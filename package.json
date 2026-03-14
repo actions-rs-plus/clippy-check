@@ -5,9 +5,9 @@
   "author": "actions-rs-plus",
   "license": "MIT",
   "description": "Run clippy and annotate the diff with errors and warnings",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
   "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist/**/*.js",
     "dist/**/*.js.map",
@@ -17,20 +17,6 @@
   "engines": {
     "node": "24.14.0",
     "pnpm": "10.32.1"
-  },
-  "scripts": {
-    "build": "vite build && mkdir -p dist/.matchers && cp matchers/rust.json dist/.matchers/rust.json",
-    "watch": "vite build --watch",
-    "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "npm run lint --fix",
-    "format": "prettier --write .",
-    "clean": "rm -rf ./dist/* && rm tsconfig.tsbuildinfo && npm run build",
-    "test": "vitest --coverage.enabled=true",
-    "deps:ci": "depcruise --config dependency-cruiser.config.mjs --output-type err src",
-    "deps:graph": "depcruise --config dependency-cruiser.config.mjs --output-type dot src | dot -T svg > dependency-graph.svg",
-    "deps:report": "depcruise --config dependency-cruiser.config.mjs --output-type err-html --output-to dependency-report.html src",
-    "postversion": "cp package.json pnpm-lock.yaml ..",
-    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -43,6 +29,29 @@
   ],
   "bugs": {
     "url": "https://github.com/actions-rs-plus/clippy-check/issues"
+  },
+  "scripts": {
+    "build": "vite build && mkdir -p dist/.matchers && cp matchers/rust.json dist/.matchers/rust.json",
+    "watch": "vite build --watch",
+    "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "pnpm run lint --fix",
+    "format": "prettier --write .",
+    "clean": "rm -rf ./dist/* && rm tsconfig.tsbuildinfo && pnpm run build",
+    "test": "vitest --coverage.enabled=true",
+    "deps:ci": "depcruise --config dependency-cruiser.config.mjs --output-type err src",
+    "deps:graph": "depcruise --config dependency-cruiser.config.mjs --output-type dot src | dot -T svg > dependency-graph.svg",
+    "deps:report": "depcruise --config dependency-cruiser.config.mjs --output-type err-html --output-to dependency-report.html src",
+    "postversion": "cp package.json pnpm-lock.yaml ..",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "depcruise --config dependency-cruiser.config.mjs --validate -- "
+    ],
+    "*": [
+      "eslint -- ",
+      "prettier --ignore-unknown --"
+    ]
   },
   "dependencies": {
     "@actions-rs-plus/core": "0.6.2",
@@ -58,7 +67,6 @@
     "@eslint/config-helpers": "0.5.3",
     "@eslint/js": "10.0.1",
     "@stylistic/eslint-plugin": "5.10.0",
-    "@stylistic/eslint-plugin-ts": "4.4.1",
     "@types/eslint": "9.6.1",
     "@types/node": "24.12.0",
     "@types/semver": "7.7.1",
@@ -89,16 +97,10 @@
     "vite-tsconfig-paths": "6.1.1",
     "vitest": "4.1.0"
   },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "depcruise --config dependency-cruiser.config.mjs --validate -- "
-    ],
-    "*": [
-      "eslint -- ",
-      "prettier --ignore-unknown --"
-    ]
-  },
   "pnpm": {
-    "overrides": {}
+    "overrides": {
+      "@codecov/vite-plugin>vite": "^8.0.0",
+      "undici": "^7.24.2"
+    }
   }
 }
