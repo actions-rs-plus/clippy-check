@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@actions-rs-plus/core':
-        specifier: 0.6.0
-        version: 0.6.0
+        specifier: 0.6.2
+        version: 0.6.2
       '@actions/core':
         specifier: 3.0.0
         version: 3.0.0
@@ -135,8 +135,8 @@ importers:
 
 packages:
 
-  '@actions-rs-plus/core@0.6.0':
-    resolution: {integrity: sha512-LpEsvyvem6t9fsvSCvDojwxZWuXUnU4i7IjBuxqLig348H1xoyKz9hoAbHEKEjONbaZ+/PHvGA7lTHShX+0E3g==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.6.0/0d4132c6526d820233aa2bda722879ac1e030b39}
+  '@actions-rs-plus/core@0.6.2':
+    resolution: {integrity: sha512-XmqC4ylOqc6ejpnq7ecjA1o892rkSE+hHkApc747xxjo8CyFghxvXuZOOsJjIxfFHYD1OziXUI43k17N9F1h3A==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.6.2/0ef8c33caa98dca6a1584a93de7eb07ca4a92f15}
     engines: {node: 24.14.0, pnpm: 10.32.1}
 
   '@actions/cache@6.0.0':
@@ -2528,7 +2528,7 @@ packages:
 
 snapshots:
 
-  '@actions-rs-plus/core@0.6.0':
+  '@actions-rs-plus/core@0.6.2':
     dependencies:
       '@actions/cache': 6.0.0
       '@actions/core': 3.0.0
@@ -2537,6 +2537,7 @@ snapshots:
       '@actions/http-client': 4.0.0
       '@actions/io': 3.0.2
       '@actions/tool-cache': 4.0.0
+      lint-staged: 16.3.3
       semver: 7.7.4
     transitivePeerDependencies:
       - supports-color
