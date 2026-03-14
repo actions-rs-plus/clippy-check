@@ -1,0 +1,2 @@
+CI=true pnpm run test
+pnpm lint-staged

@@ -17,7 +17,6 @@ import buffer from "node:buffer";
 import util, { inspect } from "node:util";
 import zlib from "node:zlib";
 import { createHmac } from "node:crypto";
-import "string_decoder";
 import * as child from "child_process";
 import { setTimeout as setTimeout$1 } from "timers";
 import path from "node:path";

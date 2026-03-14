@@ -1,25 +1,37 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      prerelease:
+        description: "Pre-release type"
+        type: choice
+        # default: rc
+        default: none
+        options:
+          - none
+          # - alpha
+          # - beta
+          # - rc
+      force-bump:
+        description: "Select the version increment level"
+        type: choice
+        default: auto
+        options:
+          - auto
+          - patch
+          - minor
+          - major
 
 concurrency:
   group: "${{ github.workflow }}"
   cancel-in-progress: true # only last step is important, which runs or doesn't
 
-on:
-  workflow_dispatch: # releasing is manual as we don't want to release every time
-
 permissions:
-  contents: write # to write tags
-  packages: write # to write tags to Docker registry
+  contents: write # to create branches
   issues: write
   pull-requests: write
-  id-token: write # to enable use of OIDC for npm provenance
-
-env:
-  # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
-  NPM_CONFIG_FUND: "false"
-  # Use docker.io for Docker Hub if empty
-  REGISTRY: ghcr.io
 
 jobs:
   release:
@@ -27,7 +39,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Only on main
-        if: github.ref != 'refs/heads/main'
+        if: |
+          github.ref != 'refs/heads/main'
         shell: bash
         run: |
           echo "Only to be executed on main"
@@ -36,37 +49,99 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          token: ${{ secrets.TOKEN_TO_TRIGGER_SUBSEQUENT_WORKFLOWS }}
+          fetch-depth: 0
           show-progress: false
+          token: ${{ secrets.TOKEN_TO_TRIGGER_SUBSEQUENT_WORKFLOWS }}
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
-
-      - name: Set up node
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+      - name: Install git-cliff to generate changelog & next version number
+        uses: taiki-e/install-action@5ab5d1729c22acd8f798b267eadcfe5e5be6f5c2 # v2.68.27
         with:
-          node-version-file: package.json
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
-          registry-url: https://npm.pkg.github.com
-          scope: "@actions-rs-plus"
+          tool: git-cliff
 
-      - name: Download dependencies
+      - name: Compute version, generate changelog, create branch and open PR
+        shell: bash
+        id: release
+        run: |
+          git config --global user.name github-actions[bot]
+          git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
+
+          version=$(git-cliff --bumped-version --unreleased --bump ${{ inputs.force-bump }} --github-token ${{ secrets.GITHUB_TOKEN }})
+
+          # Strip any pre-release suffix git-cliff may have picked up (keep only vX.Y.Z)
+          [[ "$version" =~ ^(v[0-9]+\.[0-9]+\.[0-9]+) ]] && version="${BASH_REMATCH[1]}"
+          echo "version=$version" >> "${GITHUB_OUTPUT}"
+
+          prerelease="${{ inputs.prerelease }}"
+
+          if [ "${prerelease}" != "none" ]; then
+            # Determine the next pre-release number by finding the highest existing tag with this suffix
+            latest_pre=$(git tag --list "${version}-${prerelease}.*" | sort --field-separator . --key 4 --numeric-sort | tail -1)
+
+            if [ -n "$latest_pre" ]; then
+              pre_number=$(( ${latest_pre##*-${prerelease}.} + 1 ))
+            else
+              pre_number=1
+            fi
+
+            release_version="${version}-${prerelease}.${pre_number}"
+          else
+            release_version="${version}"
+          fi
+
+          echo "release_version=$release_version" >> "${GITHUB_OUTPUT}"
+
+          branch="release/${release_version}"
+          echo "branch=$branch" >> "${GITHUB_OUTPUT}"
+
+          # Create or reset the branch to current main
+          if git ls-remote --exit-code --heads origin "${branch}" > /dev/null 2>&1; then
+            git checkout -B "${branch}" origin/main
+          else
+            git checkout -b "${branch}"
+          fi
+
+          commit_message="chore(release): Release ${release_version}"
+
+          git-cliff --output CHANGELOG.md --bump ${{ inputs.force-bump }} --with-commit "${commit_message}" --github-token ${{ secrets.GITHUB_TOKEN }}
+
+          git add CHANGELOG.md
+
+          git commit --message "${commit_message}"
+
+          git push --set-upstream origin "${branch}" --force
+
+          git-cliff --output diff-CHANGELOG.md --unreleased --tag "${release_version}" --github-token ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Open or update pull request
         shell: bash
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.TOKEN_TO_TRIGGER_SUBSEQUENT_WORKFLOWS }}
         run: |
-          pnpm install --frozen-lockfile
+          branch="${{ steps.release.outputs.branch }}"
+          release_version="${{ steps.release.outputs.release_version }}"
 
-      - name: Build
-        shell: bash
-        run: |
-          pnpm run build
+          # Truncate diff-CHANGELOG.md if it exceeds GitHub's PR character body limit
+          max_length=65536
+          truncation_message=$'\n\n---\n\n> **Note:** Changelog was truncated because it exceeded GitHub'"'"'s 65,536 character limit.'
+          file_length=$(wc --chars < diff-CHANGELOG.md)
 
-      - name: Release
-        shell: bash
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_TO_TRIGGER_SUBSEQUENT_WORKFLOWS }}
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          pnpm run release
+          if [ "$file_length" -gt "$max_length" ]; then
+            truncated_length=$(( max_length - ${#truncation_message} ))
+            head --bytes="$truncated_length" diff-CHANGELOG.md > diff-CHANGELOG-truncated.md
+            printf '%s' "$truncation_message" >> diff-CHANGELOG-truncated.md
+            mv diff-CHANGELOG-truncated.md diff-CHANGELOG.md
+          fi
+
+          # Check if a PR already exists for this branch
+          existing_pr=$(gh pr list --head "${branch}" --state open --json number --jq '.[0].number // empty')
+
+          if [ -n "$existing_pr" ]; then
+            gh pr edit "$existing_pr" \
+              --body-file diff-CHANGELOG.md
+          else
+            gh pr create \
+              --base main \
+              --head "${branch}" \
+              --title "chore(release): Release ${release_version}" \
+              --body-file diff-CHANGELOG.md
+          fi
