@@ -25,6 +25,7 @@ jobs:
   changes:
     name: Detect changes
     runs-on: ubuntu-latest
+    if: ${{ !startsWith(github.head_ref, 'release/') }}
     permissions:
       pull-requests: read
     outputs:
@@ -45,6 +46,7 @@ jobs:
   warm-up-cache:
     name: Warm up the cache
     runs-on: ubuntu-latest
+    if: ${{ !startsWith(github.head_ref, 'release/') }}
     permissions:
       packages: read
     steps:
@@ -74,6 +76,7 @@ jobs:
   npm-build:
     name: Build the code
     runs-on: ubuntu-latest
+    if: ${{ !startsWith(github.head_ref, 'release/') }}
     needs:
       - warm-up-cache
     steps:
@@ -148,6 +151,7 @@ jobs:
   npm-lint:
     name: Lint the code
     runs-on: ubuntu-latest
+    if: ${{ !startsWith(github.head_ref, 'release/') }}
     permissions:
       checks: write
     needs:
@@ -182,6 +186,7 @@ jobs:
   npm-test:
     name: Test the code
     runs-on: ubuntu-latest
+    if: ${{ !startsWith(github.head_ref, 'release/') }}
     needs:
       - warm-up-cache
     permissions:
@@ -274,6 +279,7 @@ jobs:
   npm-dependencies:
     name: Validate dependencies
     runs-on: ubuntu-latest
+    if: ${{ !startsWith(github.head_ref, 'release/') }}
     needs:
       - warm-up-cache
     steps:
