@@ -1,0 +1,110 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Graduate Release
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+permissions:
+  contents: write # to create tags
+  pull-requests: write # to close stale release PRs
+
+jobs:
+  graduate:
+    name: Graduate Release
+    runs-on: ubuntu-latest
+    if: |
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.head.ref, 'release/v')
+    steps:
+      - name: Extract tag from branch name
+        shell: bash
+        id: release
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          # release/v0.0.3-rc.1 -> v0.0.3-rc.1
+          # release/v0.0.3-alpha.1 -> v0.0.3-alpha.1
+          # release/v0.0.3 -> v0.0.3
+          tag="${BRANCH#release/}"
+          echo "tag=$tag" >> "${GITHUB_OUTPUT}"
+
+          if [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "prerelease=false" >> "${GITHUB_OUTPUT}"
+          else
+            echo "prerelease=true" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          show-progress: false
+          token: ${{ secrets.TOKEN_TO_TRIGGER_SUBSEQUENT_WORKFLOWS }}
+
+      - name: Create tag
+        shell: bash
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          git config --global user.name github-actions[bot]
+          git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
+
+          git tag "${TAG}" --message "chore(release): Release ${TAG}"
+          git push origin "${TAG}"
+
+      - name: Install git-cliff to generate changelog
+        uses: taiki-e/install-action@5ab5d1729c22acd8f798b267eadcfe5e5be6f5c2 # v2.68.27
+        with:
+          tool: git-cliff
+
+      - name: Generate release notes
+        shell: bash
+        run: |
+          git-cliff --output release-notes.md --current --github-token ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create GitHub release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN_TO_TRIGGER_SUBSEQUENT_WORKFLOWS }}
+          TAG: ${{ steps.release.outputs.tag }}
+          PRERELEASE: ${{ steps.release.outputs.prerelease }}
+        run: |
+          # Truncate release-notes.md if it exceeds GitHub Release character body limit
+          max_length=125000
+          truncation_message=$'\n\n---\n\n> **Note:** Release notes were truncated because they exceeded GitHub'"'"'s 125,000 character limit.'
+          file_length=$(wc --chars < release-notes.md)
+
+          if [ "$file_length" -gt "$max_length" ]; then
+            truncated_length=$(( max_length - ${#truncation_message} ))
+            head --bytes="$truncated_length" release-notes.md > release-notes-truncated.md
+            printf '%s' "$truncation_message" >> release-notes-truncated.md
+            mv release-notes-truncated.md release-notes.md
+          fi
+
+          prerelease_flag=""
+          if [ "${PRERELEASE}" == "true" ]; then
+            prerelease_flag="--prerelease"
+          fi
+
+          gh release create "${TAG}" \
+            --notes-file release-notes.md \
+            --title "${TAG}" \
+            ${prerelease_flag}
+
+      - name: Close stale release PRs
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Close all other open PRs from release/* branches
+          gh pr list \
+            --state open \
+            --json number,headRefName \
+            --jq '.[] | select(.headRefName | startswith("release/v")) | .number' \
+          | while IFS= read -r pr_number; do
+            gh pr close "$pr_number" --delete-branch
+          done
