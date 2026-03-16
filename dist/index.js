@@ -37912,7 +37912,7 @@ function convertHttpClient(requestPolicyClient) {
 	} };
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.3/node_modules/fast-xml-parser/src/util.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.5/node_modules/fast-xml-parser/src/util.js
 var nameStartChar = ":A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD";
 nameStartChar + "";
 var nameRegexp = "[" + nameStartChar + "][:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040]*";
@@ -37937,8 +37937,25 @@ var isName = function(string) {
 function isExist(v) {
 	return typeof v !== "undefined";
 }
+/**
+* Dangerous property names that could lead to prototype pollution or security issues
+*/
+var DANGEROUS_PROPERTY_NAMES = [
+	"hasOwnProperty",
+	"toString",
+	"valueOf",
+	"__defineGetter__",
+	"__defineSetter__",
+	"__lookupGetter__",
+	"__lookupSetter__"
+];
+var criticalProperties = [
+	"__proto__",
+	"constructor",
+	"prototype"
+];
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.3/node_modules/fast-xml-parser/src/validator.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.5/node_modules/fast-xml-parser/src/validator.js
 var defaultOptions$2 = {
 	allowBooleanAttributes: false,
 	unpairedTags: []
@@ -38176,7 +38193,11 @@ function getPositionFromMatch(match) {
 	return match.startIndex + match[1].length;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.3/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.5/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
+var defaultOnDangerousProperty = (name) => {
+	if (DANGEROUS_PROPERTY_NAMES.includes(name)) return "__" + name;
+	return name;
+};
 var defaultOptions$1 = {
 	preserveOrder: false,
 	attributeNamePrefix: "@_",
@@ -38217,8 +38238,21 @@ var defaultOptions$1 = {
 	captureMetaData: false,
 	maxNestedTags: 100,
 	strictReservedNames: true,
-	jPath: true
+	jPath: true,
+	onDangerousProperty: defaultOnDangerousProperty
 };
+/**
+* Validates that a property name is safe to use
+* @param {string} propertyName - The property name to validate
+* @param {string} optionName - The option field name (for error message)
+* @throws {Error} If property name is dangerous
+*/
+function validatePropertyName(propertyName, optionName) {
+	if (typeof propertyName !== "string") return;
+	const normalized = propertyName.toLowerCase();
+	if (DANGEROUS_PROPERTY_NAMES.some((dangerous) => normalized === dangerous.toLowerCase())) throw new Error(`[SECURITY] Invalid ${optionName}: "${propertyName}" is a reserved JavaScript keyword that could cause prototype pollution`);
+	if (criticalProperties.some((dangerous) => normalized === dangerous.toLowerCase())) throw new Error(`[SECURITY] Invalid ${optionName}: "${propertyName}" is a reserved JavaScript keyword that could cause prototype pollution`);
+}
 /**
 * Normalizes processEntities option for backward compatibility
 * @param {boolean|object} value 
@@ -38249,6 +38283,30 @@ function normalizeProcessEntities(value) {
 }
 var buildOptions = function(options) {
 	const built = Object.assign({}, defaultOptions$1, options);
+	const propertyNameOptions = [
+		{
+			value: built.attributeNamePrefix,
+			name: "attributeNamePrefix"
+		},
+		{
+			value: built.attributesGroupName,
+			name: "attributesGroupName"
+		},
+		{
+			value: built.textNodeName,
+			name: "textNodeName"
+		},
+		{
+			value: built.cdataPropName,
+			name: "cdataPropName"
+		},
+		{
+			value: built.commentPropName,
+			name: "commentPropName"
+		}
+	];
+	for (const { value, name } of propertyNameOptions) if (value) validatePropertyName(value, name);
+	if (built.onDangerousProperty === null) built.onDangerousProperty = defaultOnDangerousProperty;
 	built.processEntities = normalizeProcessEntities(built.processEntities);
 	if (built.stopNodes && Array.isArray(built.stopNodes)) built.stopNodes = built.stopNodes.map((node) => {
 		if (typeof node === "string" && node.startsWith("*.")) return ".." + node.substring(2);
@@ -38257,7 +38315,7 @@ var buildOptions = function(options) {
 	return built;
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.3/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.5/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
 var METADATA_SYMBOL$1;
 if (typeof Symbol !== "function") METADATA_SYMBOL$1 = "@@xmlMetadata";
 else METADATA_SYMBOL$1 = Symbol("XML Node Metadata");
@@ -38286,7 +38344,7 @@ var XmlNode = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.3/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.5/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
 var DocTypeReader = class {
 	constructor(options) {
 		this.suppressValidationErr = !options;
@@ -38623,7 +38681,7 @@ function handleInfinity(str, num, options) {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.3/node_modules/fast-xml-parser/src/ignoreAttributes.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.5/node_modules/fast-xml-parser/src/ignoreAttributes.js
 function getIgnoreAttributesFn$1(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -39065,7 +39123,7 @@ var Matcher = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.3/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.5/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
 /**
 * Extract raw attributes (without prefix) from prefixed attribute map
 * @param {object} prefixedAttrs - Attributes with prefix from buildAttributesMap
@@ -39261,7 +39319,7 @@ function buildAttributesMap(attrStr, jPath, tagName) {
 			let aName = this.options.attributeNamePrefix + attrName;
 			if (attrName.length) {
 				if (this.options.transformAttributeName) aName = this.options.transformAttributeName(aName);
-				if (aName === "__proto__") aName = "#__proto__";
+				aName = sanitizeName(aName, this.options);
 				if (oldVal !== void 0) {
 					if (this.options.trimValues) oldVal = oldVal.trim();
 					oldVal = this.replaceEntitiesValue(oldVal, tagName, jPath);
@@ -39298,7 +39356,7 @@ var parseXml = function(xmlData) {
 			const colonIndex = tagName.indexOf(":");
 			if (colonIndex !== -1) tagName = tagName.substr(colonIndex + 1);
 		}
-		if (this.options.transformTagName) tagName = this.options.transformTagName(tagName);
+		tagName = transformTagName(this.options.transformTagName, tagName, "", this.options).tagName;
 		if (currentNode) textData = this.saveTextToParentTag(textData, currentNode, this.matcher);
 		const lastTagName = this.matcher.getCurrentTag();
 		if (tagName && this.options.unpairedTags.indexOf(tagName) !== -1) throw new Error(`Unpaired tag can not be used as closing tag: </${tagName}>`);
@@ -39354,11 +39412,7 @@ var parseXml = function(xmlData) {
 		let tagExp = result.tagExp;
 		let attrExpPresent = result.attrExpPresent;
 		let closeIndex = result.closeIndex;
-		if (this.options.transformTagName) {
-			const newTagName = this.options.transformTagName(tagName);
-			if (tagExp === tagName) tagExp = newTagName;
-			tagName = newTagName;
-		}
+		({tagName, tagExp} = transformTagName(this.options.transformTagName, tagName, tagExp, this.options));
 		if (this.options.strictReservedNames && (tagName === this.options.commentPropName || tagName === this.options.cdataPropName)) throw new Error(`Invalid tag name: ${tagName}`);
 		if (currentNode && textData) {
 			if (currentNode.tagname !== "!xml") textData = this.saveTextToParentTag(textData, currentNode, this.matcher, false);
@@ -39405,11 +39459,7 @@ var parseXml = function(xmlData) {
 			this.addChild(currentNode, childNode, this.matcher, startIndex);
 		} else {
 			if (isSelfClosing) {
-				if (this.options.transformTagName) {
-					const newTagName = this.options.transformTagName(tagName);
-					if (tagExp === tagName) tagExp = newTagName;
-					tagName = newTagName;
-				}
+				({tagName, tagExp} = transformTagName(this.options.transformTagName, tagName, tagExp, this.options));
 				const childNode = new XmlNode(tagName);
 				if (prefixedAttrs) childNode[":@"] = prefixedAttrs;
 				this.addChild(currentNode, childNode, this.matcher, startIndex);
@@ -39612,8 +39662,25 @@ function fromCodePoint(str, base, prefix) {
 	if (codePoint >= 0 && codePoint <= 1114111) return String.fromCodePoint(codePoint);
 	else return prefix + str + ";";
 }
+function transformTagName(fn, tagName, tagExp, options) {
+	if (fn) {
+		const newTagName = fn(tagName);
+		if (tagExp === tagName) tagExp = newTagName;
+		tagName = newTagName;
+	}
+	tagName = sanitizeName(tagName, options);
+	return {
+		tagName,
+		tagExp
+	};
+}
+function sanitizeName(name, options) {
+	if (criticalProperties.includes(name)) throw new Error(`[SECURITY] Invalid name: "${name}" is a reserved JavaScript keyword that could cause prototype pollution`);
+	else if (DANGEROUS_PROPERTY_NAMES.includes(name)) return options.onDangerousProperty(name);
+	return name;
+}
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.3/node_modules/fast-xml-parser/src/xmlparser/node2json.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.5/node_modules/fast-xml-parser/src/xmlparser/node2json.js
 var METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
 /**
 * Helper function to strip attribute prefix from attribute map
@@ -39713,7 +39780,7 @@ function isLeafTag(obj, options) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.3/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.5/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
 var XMLParser = class {
 	constructor(options) {
 		this.externalEntities = {};
@@ -39764,7 +39831,7 @@ var XMLParser = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.1.2/node_modules/fast-xml-builder/src/orderedJs2Xml.js
+//#region node_modules/.pnpm/fast-xml-builder@1.1.3/node_modules/fast-xml-builder/src/orderedJs2Xml.js
 var EOL$2 = "\n";
 /**
 * 
@@ -39946,7 +40013,7 @@ function replaceEntitiesValue(textValue, options) {
 	return textValue;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.1.2/node_modules/fast-xml-builder/src/ignoreAttributes.js
+//#region node_modules/.pnpm/fast-xml-builder@1.1.3/node_modules/fast-xml-builder/src/ignoreAttributes.js
 function getIgnoreAttributesFn(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -39958,7 +40025,7 @@ function getIgnoreAttributesFn(ignoreAttributes) {
 	return () => false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.1.2/node_modules/fast-xml-builder/src/fxb.js
+//#region node_modules/.pnpm/fast-xml-builder@1.1.3/node_modules/fast-xml-builder/src/fxb.js
 var defaultOptions = {
 	attributeNamePrefix: "@_",
 	attributesGroupName: false,
@@ -40269,10 +40336,10 @@ function isAttribute(name) {
 	else return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.3/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.5/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
 var json2xml_default = Builder;
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.3/node_modules/fast-xml-parser/src/fxp.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.5/node_modules/fast-xml-parser/src/fxp.js
 var XMLValidator = { validate };
 //#endregion
 //#region node_modules/.pnpm/@azure+core-xml@1.5.0/node_modules/@azure/core-xml/dist/esm/xml.js
