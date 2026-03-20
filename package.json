@@ -75,7 +75,7 @@
     "@vitest/coverage-v8": "4.1.0",
     "@vitest/ui": "4.1.0",
     "dependency-cruiser": "17.3.9",
-    "eslint": "10.0.3",
+    "eslint": "10.1.0",
     "eslint-config-love": "151.0.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-import-resolver-node": "0.3.9",
