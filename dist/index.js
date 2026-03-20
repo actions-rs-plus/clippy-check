@@ -26889,7 +26889,7 @@ function withDefaults$2(oldDefaults, newDefaults) {
 }
 var endpoint = withDefaults$2(null, DEFAULTS);
 //#endregion
-//#region node_modules/.pnpm/json-with-bigint@3.5.7/node_modules/json-with-bigint/json-with-bigint.js
+//#region node_modules/.pnpm/json-with-bigint@3.5.8/node_modules/json-with-bigint/json-with-bigint.js
 var import_fast_content_type_parse = (/* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var NullObject = function NullObject() {};
 	NullObject.prototype = Object.create(null);
@@ -27007,13 +27007,25 @@ var originalParse = JSON.parse;
 var customFormat = /^-?\d+n$/;
 var bigIntsStringify = /([\[:])?"(-?\d+)n"($|([\\n]|\s)*(\s|[\\n])*[,\}\]])/g;
 var noiseStringify = /([\[:])?("-?\d+n+)n("$|"([\\n]|\s)*(\s|[\\n])*[,\}\]])/g;
-/** @typedef {(key: string, value: any, context?: { source: string }) => any} Reviver */
 /**
-* Function to serialize value to a JSON string.
-* Converts BigInt values to a custom format (strings with digits and "n" at the end) and then converts them to proper big integers in a JSON string.
-* @param {*} value - The value to convert to a JSON string.
-* @param {(Function|Array<string>|null)} [replacer] - A function that alters the behavior of the stringification process, or an array of strings to indicate properties to exclude.
-* @param {(string|number)} [space] - A string or number to specify indentation or pretty-printing.
+* @typedef {(this: any, key: string | number | undefined, value: any) => any} Replacer
+* @typedef {(key: string | number | undefined, value: any, context?: { source: string }) => any} Reviver
+*/
+/**
+* Converts a JavaScript value to a JSON string.
+*
+* Supports serialization of BigInt values using two strategies:
+* 1. Custom format "123n" → "123" (universal fallback)
+* 2. Native JSON.rawJSON() (Node.js 22+, fastest) when available
+*
+* All other values are serialized exactly like native JSON.stringify().
+*
+* @param {*} value The value to convert to a JSON string.
+* @param {Replacer | Array<string | number> | null} [replacer]
+*   A function that alters the behavior of the stringification process,
+*   or an array of strings/numbers to indicate properties to exclude.
+* @param {string | number} [space]
+*   A string or number to specify indentation or pretty-printing.
 * @returns {string} The JSON string representation.
 */
 var JSONStringify = (value, replacer, space) => {
@@ -27025,32 +27037,60 @@ var JSONStringify = (value, replacer, space) => {
 	}, space);
 	if (!value) return originalStringify(value, replacer, space);
 	return originalStringify(value, (key, value) => {
-		if (typeof value === "string" && Boolean(value.match(noiseValue))) return value.toString() + "n";
+		if (typeof value === "string" && noiseValue.test(value)) return value.toString() + "n";
 		if (typeof value === "bigint") return value.toString() + "n";
 		if (typeof replacer === "function") return replacer(key, value);
 		if (Array.isArray(replacer) && replacer.includes(key)) return value;
 		return value;
 	}, space).replace(bigIntsStringify, "$1$2$3").replace(noiseStringify, "$1$2$3");
 };
+var featureCache = /* @__PURE__ */ new Map();
 /**
-* Support for JSON.parse's context.source feature detection.
-* @type {boolean}
+* Detects if the current JSON.parse implementation supports the context.source feature.
+*
+* Uses toString() fingerprinting to cache results and automatically detect runtime
+* replacements of JSON.parse (polyfills, mocks, etc.).
+*
+* @returns {boolean} true if context.source is supported, false otherwise.
 */
-var isContextSourceSupported = () => JSON.parse("1", (_, __, context) => !!context && context.source === "1");
+var isContextSourceSupported = () => {
+	const parseFingerprint = JSON.parse.toString();
+	if (featureCache.has(parseFingerprint)) return featureCache.get(parseFingerprint);
+	try {
+		const result = JSON.parse("1", (_, __, context) => !!context?.source && context.source === "1");
+		featureCache.set(parseFingerprint, result);
+		return result;
+	} catch {
+		featureCache.set(parseFingerprint, false);
+		return false;
+	}
+};
 /**
-* Convert marked big numbers to BigInt
-* @type {Reviver}
+* Reviver function that converts custom-format BigInt strings back to BigInt values.
+* Also handles "noise" strings that accidentally match the BigInt format.
+*
+* @param {string | number | undefined} key The object key.
+* @param {*} value The value being parsed.
+* @param {object} [context] Parse context (if supported by JSON.parse).
+* @param {Reviver} [userReviver] User's custom reviver function.
+* @returns {any} The transformed value.
 */
 var convertMarkedBigIntsReviver = (key, value, context, userReviver) => {
-	if (typeof value === "string" && value.match(customFormat)) return BigInt(value.slice(0, -1));
-	if (typeof value === "string" && value.match(noiseValue)) return value.slice(0, -1);
+	if (typeof value === "string" && customFormat.test(value)) return BigInt(value.slice(0, -1));
+	if (typeof value === "string" && noiseValue.test(value)) return value.slice(0, -1);
 	if (typeof userReviver !== "function") return value;
 	return userReviver(key, value, context);
 };
 /**
-* Faster (2x) and simpler function to parse JSON.
-* Based on JSON.parse's context.source feature, which is not universally available now.
-* Does not support the legacy custom format, used in the first version of this library.
+* Fast JSON.parse implementation (~2x faster than classic fallback).
+* Uses JSON.parse's context.source feature to detect integers and convert
+* large numbers directly to BigInt without string manipulation.
+*
+* Does not support legacy custom format from v1 of this library.
+*
+* @param {string} text JSON string to parse.
+* @param {Reviver} [reviver] Transform function to apply to each value.
+* @returns {any} Parsed JavaScript value.
 */
 var JSONParseV2 = (text, reviver) => {
 	return JSON.parse(text, (key, value, context) => {
@@ -27066,16 +27106,28 @@ var MAX_DIGITS = MAX_INT.length;
 var stringsOrLargeNumbers = /"(?:\\.|[^"])*"|-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?/g;
 var noiseValueWithQuotes = /^"-?\d+n+"$/;
 /**
-* Function to parse JSON.
-* If JSON has number values greater than Number.MAX_SAFE_INTEGER, we convert those values to a custom format, then parse them to BigInt values.
-* Other types of values are not affected and parsed as native JSON.parse() would parse them.
+* Converts a JSON string into a JavaScript value.
+*
+* Supports parsing of large integers using two strategies:
+* 1. Classic fallback: Marks large numbers with "123n" format, then converts to BigInt
+* 2. Fast path (JSONParseV2): Uses context.source feature (~2x faster) when available
+*
+* All other JSON values are parsed exactly like native JSON.parse().
+*
+* @param {string} text A valid JSON string.
+* @param {Reviver} [reviver]
+*   A function that transforms the results. This function is called for each member
+*   of the object. If a member contains nested objects, the nested objects are
+*   transformed before the parent object is.
+* @returns {any} The parsed JavaScript value.
+* @throws {SyntaxError} If text is not valid JSON.
 */
 var JSONParse = (text, reviver) => {
 	if (!text) return originalParse(text, reviver);
 	if (isContextSourceSupported()) return JSONParseV2(text, reviver);
 	return originalParse(text.replace(stringsOrLargeNumbers, (text, digits, fractional, exponential) => {
 		const isString = text[0] === "\"";
-		if (isString && Boolean(text.match(noiseValueWithQuotes))) return text.substring(0, text.length - 1) + "n\"";
+		if (isString && noiseValueWithQuotes.test(text)) return text.substring(0, text.length - 1) + "n\"";
 		const isFractionalOrExponential = fractional || exponential;
 		const isLessThanMaxSafeInt = digits && (digits.length < MAX_DIGITS || digits.length === MAX_DIGITS && digits <= MAX_INT);
 		if (isString || isFractionalOrExponential || isLessThanMaxSafeInt) return text;
@@ -37915,7 +37967,7 @@ function convertHttpClient(requestPolicyClient) {
 	} };
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.6/node_modules/fast-xml-parser/src/util.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.8/node_modules/fast-xml-parser/src/util.js
 var nameStartChar = ":A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD";
 nameStartChar + "";
 var nameRegexp = "[" + nameStartChar + "][:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040]*";
@@ -37958,7 +38010,7 @@ var criticalProperties = [
 	"prototype"
 ];
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.6/node_modules/fast-xml-parser/src/validator.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.8/node_modules/fast-xml-parser/src/validator.js
 var defaultOptions$2 = {
 	allowBooleanAttributes: false,
 	unpairedTags: []
@@ -38196,7 +38248,7 @@ function getPositionFromMatch(match) {
 	return match.startIndex + match[1].length;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.6/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.8/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
 var defaultOnDangerousProperty = (name) => {
 	if (DANGEROUS_PROPERTY_NAMES.includes(name)) return "__" + name;
 	return name;
@@ -38274,11 +38326,11 @@ function normalizeProcessEntities(value) {
 	};
 	if (typeof value === "object" && value !== null) return {
 		enabled: value.enabled !== false,
-		maxEntitySize: value.maxEntitySize ?? 1e4,
-		maxExpansionDepth: value.maxExpansionDepth ?? 10,
-		maxTotalExpansions: value.maxTotalExpansions ?? 1e3,
-		maxExpandedLength: value.maxExpandedLength ?? 1e5,
-		maxEntityCount: value.maxEntityCount ?? 100,
+		maxEntitySize: Math.max(1, value.maxEntitySize ?? 1e4),
+		maxExpansionDepth: Math.max(1, value.maxExpansionDepth ?? 10),
+		maxTotalExpansions: Math.max(1, value.maxTotalExpansions ?? 1e3),
+		maxExpandedLength: Math.max(1, value.maxExpandedLength ?? 1e5),
+		maxEntityCount: Math.max(1, value.maxEntityCount ?? 100),
 		allowedTags: value.allowedTags ?? null,
 		tagFilter: value.tagFilter ?? null
 	};
@@ -38318,7 +38370,7 @@ var buildOptions = function(options) {
 	return built;
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.6/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.8/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
 var METADATA_SYMBOL$1;
 if (typeof Symbol !== "function") METADATA_SYMBOL$1 = "@@xmlMetadata";
 else METADATA_SYMBOL$1 = Symbol("XML Node Metadata");
@@ -38347,7 +38399,7 @@ var XmlNode = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.6/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.8/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
 var DocTypeReader = class {
 	constructor(options) {
 		this.suppressValidationErr = !options;
@@ -38367,7 +38419,7 @@ var DocTypeReader = class {
 					let entityName, val;
 					[entityName, val, i] = this.readEntityExp(xmlData, i + 1, this.suppressValidationErr);
 					if (val.indexOf("&") === -1) {
-						if (this.options.enabled !== false && this.options.maxEntityCount && entityCount >= this.options.maxEntityCount) throw new Error(`Entity count (${entityCount + 1}) exceeds maximum allowed (${this.options.maxEntityCount})`);
+						if (this.options.enabled !== false && this.options.maxEntityCount != null && entityCount >= this.options.maxEntityCount) throw new Error(`Entity count (${entityCount + 1}) exceeds maximum allowed (${this.options.maxEntityCount})`);
 						const escaped = entityName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 						entities[entityName] = {
 							regx: RegExp(`&${escaped};`, "g"),
@@ -38407,11 +38459,9 @@ var DocTypeReader = class {
 	}
 	readEntityExp(xmlData, i) {
 		i = skipWhitespace(xmlData, i);
-		let entityName = "";
-		while (i < xmlData.length && !/\s/.test(xmlData[i]) && xmlData[i] !== "\"" && xmlData[i] !== "'") {
-			entityName += xmlData[i];
-			i++;
-		}
+		const startIndex = i;
+		while (i < xmlData.length && !/\s/.test(xmlData[i]) && xmlData[i] !== "\"" && xmlData[i] !== "'") i++;
+		let entityName = xmlData.substring(startIndex, i);
 		validateEntityName(entityName);
 		i = skipWhitespace(xmlData, i);
 		if (!this.suppressValidationErr) {
@@ -38420,7 +38470,7 @@ var DocTypeReader = class {
 		}
 		let entityValue = "";
 		[i, entityValue] = this.readIdentifierVal(xmlData, i, "entity");
-		if (this.options.enabled !== false && this.options.maxEntitySize && entityValue.length > this.options.maxEntitySize) throw new Error(`Entity "${entityName}" size (${entityValue.length}) exceeds maximum allowed size (${this.options.maxEntitySize})`);
+		if (this.options.enabled !== false && this.options.maxEntitySize != null && entityValue.length > this.options.maxEntitySize) throw new Error(`Entity "${entityName}" size (${entityValue.length}) exceeds maximum allowed size (${this.options.maxEntitySize})`);
 		i--;
 		return [
 			entityName,
@@ -38430,11 +38480,9 @@ var DocTypeReader = class {
 	}
 	readNotationExp(xmlData, i) {
 		i = skipWhitespace(xmlData, i);
-		let notationName = "";
-		while (i < xmlData.length && !/\s/.test(xmlData[i])) {
-			notationName += xmlData[i];
-			i++;
-		}
+		const startIndex = i;
+		while (i < xmlData.length && !/\s/.test(xmlData[i])) i++;
+		let notationName = xmlData.substring(startIndex, i);
 		!this.suppressValidationErr && validateEntityName(notationName);
 		i = skipWhitespace(xmlData, i);
 		const identifierType = xmlData.substring(i, i + 6).toUpperCase();
@@ -38463,21 +38511,18 @@ var DocTypeReader = class {
 		const startChar = xmlData[i];
 		if (startChar !== "\"" && startChar !== "'") throw new Error(`Expected quoted string, found "${startChar}"`);
 		i++;
-		while (i < xmlData.length && xmlData[i] !== startChar) {
-			identifierVal += xmlData[i];
-			i++;
-		}
+		const startIndex = i;
+		while (i < xmlData.length && xmlData[i] !== startChar) i++;
+		identifierVal = xmlData.substring(startIndex, i);
 		if (xmlData[i] !== startChar) throw new Error(`Unterminated ${type} value`);
 		i++;
 		return [i, identifierVal];
 	}
 	readElementExp(xmlData, i) {
 		i = skipWhitespace(xmlData, i);
-		let elementName = "";
-		while (i < xmlData.length && !/\s/.test(xmlData[i])) {
-			elementName += xmlData[i];
-			i++;
-		}
+		const startIndex = i;
+		while (i < xmlData.length && !/\s/.test(xmlData[i])) i++;
+		let elementName = xmlData.substring(startIndex, i);
 		if (!this.suppressValidationErr && !isName(elementName)) throw new Error(`Invalid element name: "${elementName}"`);
 		i = skipWhitespace(xmlData, i);
 		let contentModel = "";
@@ -38485,10 +38530,9 @@ var DocTypeReader = class {
 		else if (xmlData[i] === "A" && hasSeq(xmlData, "NY", i)) i += 2;
 		else if (xmlData[i] === "(") {
 			i++;
-			while (i < xmlData.length && xmlData[i] !== ")") {
-				contentModel += xmlData[i];
-				i++;
-			}
+			const startIndex = i;
+			while (i < xmlData.length && xmlData[i] !== ")") i++;
+			contentModel = xmlData.substring(startIndex, i);
 			if (xmlData[i] !== ")") throw new Error("Unterminated content model");
 		} else if (!this.suppressValidationErr) throw new Error(`Invalid Element Expression, found "${xmlData[i]}"`);
 		return {
@@ -38499,18 +38543,14 @@ var DocTypeReader = class {
 	}
 	readAttlistExp(xmlData, i) {
 		i = skipWhitespace(xmlData, i);
-		let elementName = "";
-		while (i < xmlData.length && !/\s/.test(xmlData[i])) {
-			elementName += xmlData[i];
-			i++;
-		}
+		let startIndex = i;
+		while (i < xmlData.length && !/\s/.test(xmlData[i])) i++;
+		let elementName = xmlData.substring(startIndex, i);
 		validateEntityName(elementName);
 		i = skipWhitespace(xmlData, i);
-		let attributeName = "";
-		while (i < xmlData.length && !/\s/.test(xmlData[i])) {
-			attributeName += xmlData[i];
-			i++;
-		}
+		startIndex = i;
+		while (i < xmlData.length && !/\s/.test(xmlData[i])) i++;
+		let attributeName = xmlData.substring(startIndex, i);
 		if (!validateEntityName(attributeName)) throw new Error(`Invalid attribute name: "${attributeName}"`);
 		i = skipWhitespace(xmlData, i);
 		let attributeType = "";
@@ -38522,11 +38562,9 @@ var DocTypeReader = class {
 			i++;
 			let allowedNotations = [];
 			while (i < xmlData.length && xmlData[i] !== ")") {
-				let notation = "";
-				while (i < xmlData.length && xmlData[i] !== "|" && xmlData[i] !== ")") {
-					notation += xmlData[i];
-					i++;
-				}
+				const startIndex = i;
+				while (i < xmlData.length && xmlData[i] !== "|" && xmlData[i] !== ")") i++;
+				let notation = xmlData.substring(startIndex, i);
 				notation = notation.trim();
 				if (!validateEntityName(notation)) throw new Error(`Invalid notation name: "${notation}"`);
 				allowedNotations.push(notation);
@@ -38539,10 +38577,9 @@ var DocTypeReader = class {
 			i++;
 			attributeType += " (" + allowedNotations.join("|") + ")";
 		} else {
-			while (i < xmlData.length && !/\s/.test(xmlData[i])) {
-				attributeType += xmlData[i];
-				i++;
-			}
+			const startIndex = i;
+			while (i < xmlData.length && !/\s/.test(xmlData[i])) i++;
+			attributeType += xmlData.substring(startIndex, i);
 			if (!this.suppressValidationErr && ![
 				"CDATA",
 				"ID",
@@ -38585,7 +38622,7 @@ function validateEntityName(name) {
 	else throw new Error(`Invalid entity name ${name}`);
 }
 //#endregion
-//#region node_modules/.pnpm/strnum@2.2.0/node_modules/strnum/strnum.js
+//#region node_modules/.pnpm/strnum@2.2.1/node_modules/strnum/strnum.js
 var hexRegex = /^[-+]?0x[a-fA-F0-9]+$/;
 var numRegex = /^([\-\+])?(0*)([0-9]*(\.[0-9]*)?)$/;
 var consider = {
@@ -38640,10 +38677,11 @@ function resolveEnotation(str, trimmedStr, options) {
 		const eAdjacentToLeadingZeros = sign ? str[leadingZeros.length + 1] === eChar : str[leadingZeros.length] === eChar;
 		if (leadingZeros.length > 1 && eAdjacentToLeadingZeros) return str;
 		else if (leadingZeros.length === 1 && (notation[3].startsWith(`.${eChar}`) || notation[3][0] === eChar)) return Number(trimmedStr);
-		else if (options.leadingZeros && !eAdjacentToLeadingZeros) {
+		else if (leadingZeros.length > 0) if (options.leadingZeros && !eAdjacentToLeadingZeros) {
 			trimmedStr = (notation[1] || "") + notation[3];
 			return Number(trimmedStr);
 		} else return str;
+		else return Number(trimmedStr);
 	} else return str;
 }
 /**
@@ -38684,7 +38722,7 @@ function handleInfinity(str, num, options) {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.6/node_modules/fast-xml-parser/src/ignoreAttributes.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.8/node_modules/fast-xml-parser/src/ignoreAttributes.js
 function getIgnoreAttributesFn$1(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -38696,7 +38734,7 @@ function getIgnoreAttributesFn$1(ignoreAttributes) {
 	return () => false;
 }
 //#endregion
-//#region node_modules/.pnpm/path-expression-matcher@1.1.3/node_modules/path-expression-matcher/src/Expression.js
+//#region node_modules/.pnpm/path-expression-matcher@1.2.0/node_modules/path-expression-matcher/src/Expression.js
 /**
 * Expression - Parses and stores a tag pattern expression
 * 
@@ -38847,7 +38885,7 @@ var Expression = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/path-expression-matcher@1.1.3/node_modules/path-expression-matcher/src/Matcher.js
+//#region node_modules/.pnpm/path-expression-matcher@1.2.0/node_modules/path-expression-matcher/src/Matcher.js
 /**
 * Matcher - Tracks current path in XML/JSON tree and matches against Expressions
 * 
@@ -38864,6 +38902,18 @@ var Expression = class {
 * const expr = new Expression("root.users.user");
 * matcher.matches(expr); // true
 */
+/**
+* Names of methods that mutate Matcher state.
+* Any attempt to call these on a read-only view throws a TypeError.
+* @type {Set<string>}
+*/
+var MUTATING_METHODS = new Set([
+	"push",
+	"pop",
+	"reset",
+	"updateCurrent",
+	"restore"
+]);
 var Matcher = class {
 	/**
 	* Create a new Matcher
@@ -39124,9 +39174,49 @@ var Matcher = class {
 		this.path = snapshot.path.map((node) => ({ ...node }));
 		this.siblingStacks = snapshot.siblingStacks.map((map) => new Map(map));
 	}
+	/**
+	* Return a read-only view of this matcher.
+	*
+	* The returned object exposes all query/inspection methods but throws a
+	* TypeError if any state-mutating method is called (`push`, `pop`, `reset`,
+	* `updateCurrent`, `restore`).  Property reads (e.g. `.path`, `.separator`)
+	* are allowed but the returned arrays/objects are frozen so callers cannot
+	* mutate internal state through them either.
+	*
+	* @returns {ReadOnlyMatcher} A proxy that forwards read operations and blocks writes.
+	*
+	* @example
+	* const matcher = new Matcher();
+	* matcher.push("root", {});
+	*
+	* const ro = matcher.readOnly();
+	* ro.matches(expr);      // ✓ works
+	* ro.getCurrentTag();    // ✓ works
+	* ro.push("child", {}); // ✗ throws TypeError
+	* ro.reset();            // ✗ throws TypeError
+	*/
+	readOnly() {
+		return new Proxy(this, {
+			get(target, prop, receiver) {
+				if (MUTATING_METHODS.has(prop)) return () => {
+					throw new TypeError(`Cannot call '${prop}' on a read-only Matcher. Obtain a writable instance to mutate state.`);
+				};
+				const value = Reflect.get(target, prop, receiver);
+				if (prop === "path" || prop === "siblingStacks") return Object.freeze(Array.isArray(value) ? value.map((item) => item instanceof Map ? Object.freeze(new Map(item)) : Object.freeze({ ...item })) : value);
+				if (typeof value === "function") return value.bind(target);
+				return value;
+			},
+			set(_target, prop) {
+				throw new TypeError(`Cannot set property '${String(prop)}' on a read-only Matcher.`);
+			},
+			deleteProperty(_target, prop) {
+				throw new TypeError(`Cannot delete property '${String(prop)}' from a read-only Matcher.`);
+			}
+		});
+	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.6/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.8/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
 /**
 * Extract raw attributes (without prefix) from prefixed attribute map
 * @param {object} prefixedAttrs - Attributes with prefix from buildAttributesMap
@@ -39241,6 +39331,7 @@ var OrderedObjParser = class {
 		this.entityExpansionCount = 0;
 		this.currentExpandedLength = 0;
 		this.matcher = new Matcher();
+		this.readonlyMatcher = this.matcher.readOnly();
 		this.isCurrentNodeStopNode = false;
 		if (this.options.stopNodes && this.options.stopNodes.length > 0) {
 			this.stopNodeExpressions = [];
@@ -39309,14 +39400,14 @@ function buildAttributesMap(attrStr, jPath, tagName) {
 			if (attrName.length && oldVal !== void 0) {
 				let parsedVal = oldVal;
 				if (this.options.trimValues) parsedVal = parsedVal.trim();
-				parsedVal = this.replaceEntitiesValue(parsedVal, tagName, jPath);
+				parsedVal = this.replaceEntitiesValue(parsedVal, tagName, this.readonlyMatcher);
 				rawAttrsForMatcher[attrName] = parsedVal;
 			}
 		}
 		if (Object.keys(rawAttrsForMatcher).length > 0 && typeof jPath === "object" && jPath.updateCurrent) jPath.updateCurrent(rawAttrsForMatcher);
 		for (let i = 0; i < len; i++) {
 			const attrName = this.resolveNameSpace(matches[i][1]);
-			const jPathStr = this.options.jPath ? jPath.toString() : jPath;
+			const jPathStr = this.options.jPath ? jPath.toString() : this.readonlyMatcher;
 			if (this.ignoreAttributesFn(attrName, jPathStr)) continue;
 			let oldVal = matches[i][4];
 			let aName = this.options.attributeNamePrefix + attrName;
@@ -39325,8 +39416,8 @@ function buildAttributesMap(attrStr, jPath, tagName) {
 				aName = sanitizeName(aName, this.options);
 				if (oldVal !== void 0) {
 					if (this.options.trimValues) oldVal = oldVal.trim();
-					oldVal = this.replaceEntitiesValue(oldVal, tagName, jPath);
-					const jPathOrMatcher = this.options.jPath ? jPath.toString() : jPath;
+					oldVal = this.replaceEntitiesValue(oldVal, tagName, this.readonlyMatcher);
+					const jPathOrMatcher = this.options.jPath ? jPath.toString() : this.readonlyMatcher;
 					const newVal = this.options.attributeValueProcessor(attrName, oldVal, jPathOrMatcher);
 					if (newVal === null || newVal === void 0) attrs[aName] = oldVal;
 					else if (typeof newVal !== typeof oldVal || newVal !== oldVal) attrs[aName] = newVal;
@@ -39360,7 +39451,7 @@ var parseXml = function(xmlData) {
 			if (colonIndex !== -1) tagName = tagName.substr(colonIndex + 1);
 		}
 		tagName = transformTagName(this.options.transformTagName, tagName, "", this.options).tagName;
-		if (currentNode) textData = this.saveTextToParentTag(textData, currentNode, this.matcher);
+		if (currentNode) textData = this.saveTextToParentTag(textData, currentNode, this.readonlyMatcher);
 		const lastTagName = this.matcher.getCurrentTag();
 		if (tagName && this.options.unpairedTags.indexOf(tagName) !== -1) throw new Error(`Unpaired tag can not be used as closing tag: </${tagName}>`);
 		if (lastTagName && this.options.unpairedTags.indexOf(lastTagName) !== -1) {
@@ -39375,19 +39466,19 @@ var parseXml = function(xmlData) {
 	} else if (xmlData[i + 1] === "?") {
 		let tagData = readTagExp(xmlData, i, false, "?>");
 		if (!tagData) throw new Error("Pi Tag is not closed.");
-		textData = this.saveTextToParentTag(textData, currentNode, this.matcher);
+		textData = this.saveTextToParentTag(textData, currentNode, this.readonlyMatcher);
 		if (this.options.ignoreDeclaration && tagData.tagName === "?xml" || this.options.ignorePiTags) {} else {
 			const childNode = new XmlNode(tagData.tagName);
 			childNode.add(this.options.textNodeName, "");
 			if (tagData.tagName !== tagData.tagExp && tagData.attrExpPresent) childNode[":@"] = this.buildAttributesMap(tagData.tagExp, this.matcher, tagData.tagName);
-			this.addChild(currentNode, childNode, this.matcher, i);
+			this.addChild(currentNode, childNode, this.readonlyMatcher, i);
 		}
 		i = tagData.closeIndex + 1;
 	} else if (xmlData.substr(i + 1, 3) === "!--") {
 		const endIndex = findClosingIndex(xmlData, "-->", i + 4, "Comment is not closed.");
 		if (this.options.commentPropName) {
 			const comment = xmlData.substring(i + 4, endIndex - 2);
-			textData = this.saveTextToParentTag(textData, currentNode, this.matcher);
+			textData = this.saveTextToParentTag(textData, currentNode, this.readonlyMatcher);
 			currentNode.add(this.options.commentPropName, [{ [this.options.textNodeName]: comment }]);
 		}
 		i = endIndex;
@@ -39398,8 +39489,8 @@ var parseXml = function(xmlData) {
 	} else if (xmlData.substr(i + 1, 2) === "![") {
 		const closeIndex = findClosingIndex(xmlData, "]]>", i, "CDATA is not closed.") - 2;
 		const tagExp = xmlData.substring(i + 9, closeIndex);
-		textData = this.saveTextToParentTag(textData, currentNode, this.matcher);
-		let val = this.parseTextData(tagExp, currentNode.tagname, this.matcher, true, false, true, true);
+		textData = this.saveTextToParentTag(textData, currentNode, this.readonlyMatcher);
+		let val = this.parseTextData(tagExp, currentNode.tagname, this.readonlyMatcher, true, false, true, true);
 		if (val == void 0) val = "";
 		if (this.options.cdataPropName) currentNode.add(this.options.cdataPropName, [{ [this.options.textNodeName]: tagExp }]);
 		else currentNode.add(this.options.textNodeName, val);
@@ -39416,9 +39507,9 @@ var parseXml = function(xmlData) {
 		let attrExpPresent = result.attrExpPresent;
 		let closeIndex = result.closeIndex;
 		({tagName, tagExp} = transformTagName(this.options.transformTagName, tagName, tagExp, this.options));
-		if (this.options.strictReservedNames && (tagName === this.options.commentPropName || tagName === this.options.cdataPropName)) throw new Error(`Invalid tag name: ${tagName}`);
+		if (this.options.strictReservedNames && (tagName === this.options.commentPropName || tagName === this.options.cdataPropName || tagName === this.options.textNodeName || tagName === this.options.attributesGroupName)) throw new Error(`Invalid tag name: ${tagName}`);
 		if (currentNode && textData) {
-			if (currentNode.tagname !== "!xml") textData = this.saveTextToParentTag(textData, currentNode, this.matcher, false);
+			if (currentNode.tagname !== "!xml") textData = this.saveTextToParentTag(textData, currentNode, this.readonlyMatcher, false);
 		}
 		const lastTag = currentNode;
 		if (lastTag && this.options.unpairedTags.indexOf(lastTag.tagname) !== -1) {
@@ -39459,19 +39550,19 @@ var parseXml = function(xmlData) {
 			childNode.add(this.options.textNodeName, tagContent);
 			this.matcher.pop();
 			this.isCurrentNodeStopNode = false;
-			this.addChild(currentNode, childNode, this.matcher, startIndex);
+			this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
 		} else {
 			if (isSelfClosing) {
 				({tagName, tagExp} = transformTagName(this.options.transformTagName, tagName, tagExp, this.options));
 				const childNode = new XmlNode(tagName);
 				if (prefixedAttrs) childNode[":@"] = prefixedAttrs;
-				this.addChild(currentNode, childNode, this.matcher, startIndex);
+				this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
 				this.matcher.pop();
 				this.isCurrentNodeStopNode = false;
 			} else if (this.options.unpairedTags.indexOf(tagName) !== -1) {
 				const childNode = new XmlNode(tagName);
 				if (prefixedAttrs) childNode[":@"] = prefixedAttrs;
-				this.addChild(currentNode, childNode, this.matcher, startIndex);
+				this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
 				this.matcher.pop();
 				this.isCurrentNodeStopNode = false;
 				i = result.closeIndex;
@@ -39481,7 +39572,7 @@ var parseXml = function(xmlData) {
 				if (this.tagsNodeStack.length > this.options.maxNestedTags) throw new Error("Maximum nested tags exceeded");
 				this.tagsNodeStack.push(currentNode);
 				if (prefixedAttrs) childNode[":@"] = prefixedAttrs;
-				this.addChild(currentNode, childNode, this.matcher, startIndex);
+				this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
 				currentNode = childNode;
 			}
 			textData = "";
@@ -39692,7 +39783,7 @@ function sanitizeName(name, options) {
 	return name;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.6/node_modules/fast-xml-parser/src/xmlparser/node2json.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.8/node_modules/fast-xml-parser/src/xmlparser/node2json.js
 var METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
 /**
 * Helper function to strip attribute prefix from attribute map
@@ -39717,17 +39808,16 @@ function stripAttributePrefix(attrs, prefix) {
 * @param {Matcher} matcher - Path matcher instance
 * @returns 
 */
-function prettify(node, options, matcher) {
-	return compress(node, options, matcher);
+function prettify(node, options, matcher, readonlyMatcher) {
+	return compress(node, options, matcher, readonlyMatcher);
 }
 /**
-* 
 * @param {array} arr 
 * @param {object} options 
 * @param {Matcher} matcher - Path matcher instance
 * @returns object
 */
-function compress(arr, options, matcher) {
+function compress(arr, options, matcher, readonlyMatcher) {
 	let text;
 	const compressedObj = {};
 	for (let i = 0; i < arr.length; i++) {
@@ -39741,9 +39831,9 @@ function compress(arr, options, matcher) {
 		else text += "" + tagObj[property];
 		else if (property === void 0) continue;
 		else if (tagObj[property]) {
-			let val = compress(tagObj[property], options, matcher);
+			let val = compress(tagObj[property], options, matcher, readonlyMatcher);
 			const isLeaf = isLeafTag(val, options);
-			if (tagObj[":@"]) assignAttributes(val, tagObj[":@"], matcher, options);
+			if (tagObj[":@"]) assignAttributes(val, tagObj[":@"], readonlyMatcher, options);
 			else if (Object.keys(val).length === 1 && val[options.textNodeName] !== void 0 && !options.alwaysCreateTextNode) val = val[options.textNodeName];
 			else if (Object.keys(val).length === 0) if (options.alwaysCreateTextNode) val[options.textNodeName] = "";
 			else val = "";
@@ -39752,7 +39842,7 @@ function compress(arr, options, matcher) {
 				if (!Array.isArray(compressedObj[property])) compressedObj[property] = [compressedObj[property]];
 				compressedObj[property].push(val);
 			} else {
-				const jPathOrMatcher = options.jPath ? matcher.toString() : matcher;
+				const jPathOrMatcher = options.jPath ? readonlyMatcher.toString() : readonlyMatcher;
 				if (options.isArray(property, jPathOrMatcher, isLeaf)) compressedObj[property] = [val];
 				else compressedObj[property] = val;
 			}
@@ -39771,14 +39861,14 @@ function propName$1(obj) {
 		if (key !== ":@") return key;
 	}
 }
-function assignAttributes(obj, attrMap, matcher, options) {
+function assignAttributes(obj, attrMap, readonlyMatcher, options) {
 	if (attrMap) {
 		const keys = Object.keys(attrMap);
 		const len = keys.length;
 		for (let i = 0; i < len; i++) {
 			const atrrName = keys[i];
 			const rawAttrName = atrrName.startsWith(options.attributeNamePrefix) ? atrrName.substring(options.attributeNamePrefix.length) : atrrName;
-			const jPathOrMatcher = options.jPath ? matcher.toString() + "." + rawAttrName : matcher;
+			const jPathOrMatcher = options.jPath ? readonlyMatcher.toString() + "." + rawAttrName : readonlyMatcher;
 			if (options.isArray(atrrName, jPathOrMatcher, true, true)) obj[atrrName] = [attrMap[atrrName]];
 			else obj[atrrName] = attrMap[atrrName];
 		}
@@ -39792,7 +39882,7 @@ function isLeafTag(obj, options) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.6/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.8/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
 var XMLParser = class {
 	constructor(options) {
 		this.externalEntities = {};
@@ -39815,7 +39905,7 @@ var XMLParser = class {
 		orderedObjParser.addExternalEntities(this.externalEntities);
 		const orderedResult = orderedObjParser.parseXml(xmlData);
 		if (this.options.preserveOrder || orderedResult === void 0) return orderedResult;
-		else return prettify(orderedResult, this.options, orderedObjParser.matcher);
+		else return prettify(orderedResult, this.options, orderedObjParser.matcher, orderedObjParser.readonlyMatcher);
 	}
 	/**
 	* Add Entity which is not by default supported by this library
@@ -40351,10 +40441,10 @@ function isAttribute(name) {
 	else return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.6/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.8/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
 var json2xml_default = Builder;
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.6/node_modules/fast-xml-parser/src/fxp.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.8/node_modules/fast-xml-parser/src/fxp.js
 var XMLValidator = { validate };
 //#endregion
 //#region node_modules/.pnpm/@azure+core-xml@1.5.0/node_modules/@azure/core-xml/dist/esm/xml.js
