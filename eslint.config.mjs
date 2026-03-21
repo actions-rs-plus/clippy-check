@@ -64,8 +64,8 @@ const sharedRules = {
         "ignorePackages",
         {
             json: "always",
-            ts: "always",
-            tsx: "always",
+            ts: "never",
+            tsx: "never",
         },
     ],
     "import-x/newline-after-import": ["error"],

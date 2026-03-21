@@ -1,6 +1,6 @@
 {
-    "jest.autoRevealOutput": "on-run",
-    "jest.jestCommandLine": "node_modules/.bin/jest",
-    "jest.showCoverageOnLoad": true,
-    "typescript.tsdk": "node_modules/typescript/lib"
+    "js/ts.preferences.importModuleSpecifier": "relative",
+    "js/ts.preferences.importModuleSpecifierEnding": "minimal",
+    "js/ts.tsdk.path": "node_modules/typescript/lib",
+    "prettier.configPath": "./prettier.config.mjs"
 }

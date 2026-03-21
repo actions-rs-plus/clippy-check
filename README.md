@@ -2,7 +2,8 @@
 
 ![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)
 ![GitHub Discussions](https://img.shields.io/github/discussions/actions-rs-plus/clippy-check)
-![Build](https://img.shields.io/github/actions/workflow/status/actions-rs-plus/clippy-check/build.yml?branch=main)
+![Build](https://img.shields.io/github/actions/workflow/status/actions-rs-plus/clippy-check/ci.yml?branch=main)
+[![codecov](https://codecov.io/gh/actions-rs-plus/clippy-check/graph/badge.svg?token=G686HR4JHH)](https://codecov.io/gh/actions-rs-plus/clippy-check)
 
 > Clippy lints in your Pull Requests
 
