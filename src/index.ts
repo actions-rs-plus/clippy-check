@@ -2,8 +2,8 @@ import "source-map-support/register";
 
 import * as core from "@actions/core";
 
-import { run } from "@/clippy.ts";
-import * as input from "@/input.ts";
+import { run } from "./clippy";
+import * as input from "./input";
 
 async function main(): Promise<void> {
     try {
