@@ -72,8 +72,8 @@
         "@types/semver": "7.7.1",
         "@types/source-map-support": "0.5.10",
         "@typescript-eslint/parser": "8.57.1",
-        "@vitest/coverage-v8": "4.1.0",
-        "@vitest/ui": "4.1.0",
+        "@vitest/coverage-v8": "4.1.1",
+        "@vitest/ui": "4.1.1",
         "dependency-cruiser": "17.3.9",
         "eslint": "10.1.0",
         "eslint-config-love": "151.0.0",
@@ -95,7 +95,7 @@
         "vite": "8.0.2",
         "vite-plugin-checker": "0.12.0",
         "vite-tsconfig-paths": "6.1.1",
-        "vitest": "4.1.0"
+        "vitest": "4.1.1"
     },
     "pnpm": {
         "overrides": {
