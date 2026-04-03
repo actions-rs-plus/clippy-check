@@ -6,7 +6,7 @@ settings:
 
 overrides:
   '@codecov/vite-plugin>vite': 8.0.3
-  undici: 8.0.0
+  undici: 8.0.1
 
 importers:
 
@@ -2284,8 +2284,8 @@ packages:
   undici-types@7.16.0:
     resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
 
-  undici@8.0.0:
-    resolution: {integrity: sha512-RGabV5g1ggSX5mU4k+B8BLWgb418gDbg0wAVFeiU00iOxtw4ufGsE6GFsuSd2uqOKooWSLf71JGapOFYpE8f+A==}
+  undici@8.0.1:
+    resolution: {integrity: sha512-6qdTUr+jabXmYKeYkv/+pIvO7d0bs1k9uy+5PFnXr4segNVwILH1KExhwRh3/iGa6gSLmySK3hTnSs3k7ZPnjQ==}
     engines: {node: '>=22.19.0'}
 
   unicorn-magic@0.3.0:
@@ -2551,7 +2551,7 @@ snapshots:
       '@octokit/plugin-rest-endpoint-methods': 10.4.1(@octokit/core@5.2.2)
       '@octokit/request': 8.4.1
       '@octokit/request-error': 5.1.1
-      undici: 8.0.0
+      undici: 8.0.1
 
   '@actions/github@9.0.0':
     dependencies:
@@ -2561,7 +2561,7 @@ snapshots:
       '@octokit/plugin-rest-endpoint-methods': 17.0.0(@octokit/core@7.0.6)
       '@octokit/request': 10.0.8
       '@octokit/request-error': 7.1.0
-      undici: 8.0.0
+      undici: 8.0.1
 
   '@actions/glob@0.6.1':
     dependencies:
@@ -2571,17 +2571,17 @@ snapshots:
   '@actions/http-client@2.2.3':
     dependencies:
       tunnel: 0.0.6
-      undici: 8.0.0
+      undici: 8.0.1
 
   '@actions/http-client@3.0.2':
     dependencies:
       tunnel: 0.0.6
-      undici: 8.0.0
+      undici: 8.0.1
 
   '@actions/http-client@4.0.0':
     dependencies:
       tunnel: 0.0.6
-      undici: 8.0.0
+      undici: 8.0.1
 
   '@actions/io@1.1.3': {}
 
@@ -4898,7 +4898,7 @@ snapshots:
 
   undici-types@7.16.0: {}
 
-  undici@8.0.0: {}
+  undici@8.0.1: {}
 
   unicorn-magic@0.3.0: {}
 
