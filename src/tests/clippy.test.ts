@@ -87,7 +87,7 @@ describe("clippy", () => {
             workingDirectory: undefined,
         };
 
-        await expect(run(actionInput)).rejects.toThrow(/Clippy had exited with the (\d)+ exit code/);
+        await expect(run(actionInput)).rejects.toThrow(/Clippy had exited with the (?<exit_code>\d)+ exit code/v);
 
         expect(whichSpy).toHaveBeenCalledWith("cargo", true);
     });

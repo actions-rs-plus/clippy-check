@@ -48,12 +48,11 @@
     },
     "exclude": ["dist/"],
     "include": [
+        "**/*.d.ts",
         "**/*.ts",
-        "*.ts",
-        "*.js",
-        "*.cjs",
+        "**/*.js",
         "dependency-cruiser.config.mjs",
-        "eslint.config.mjs",
-        "prettier.config.mjs"
+        "eslint.config.ts",
+        "prettier.config.ts"
     ]
 }
