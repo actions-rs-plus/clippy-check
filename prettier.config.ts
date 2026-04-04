@@ -1,6 +1,6 @@
-/** @type {import("prettier").Config} */
+import type { Config } from "prettier";
 
-export default {
+const config: Config = {
     arrowParens: "always",
     bracketSpacing: true,
     printWidth: 120,
@@ -42,3 +42,5 @@ export default {
         // "prettier-plugin-toml",
     ],
 };
+
+export default config;

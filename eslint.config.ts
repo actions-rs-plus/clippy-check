@@ -1,10 +1,11 @@
 import { defineConfig, globalIgnores } from "@eslint/config-helpers";
+import type { RulesConfig } from "@eslint/core";
 import js from "@eslint/js";
 import commentsPlugin from "@eslint-community/eslint-plugin-eslint-comments";
 import stylistic from "@stylistic/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import love from "eslint-config-love";
-import { configs as importPluginConfigs, flatConfigs as importPluginsFlatConfigs } from "eslint-plugin-import-x";
+import { flatConfigs as importPluginsFlatConfigs } from "eslint-plugin-import-x";
 import nPlugin from "eslint-plugin-n";
 import perfectionist from "eslint-plugin-perfectionist";
 import prettier from "eslint-plugin-prettier/recommended";
@@ -12,7 +13,7 @@ import promise from "eslint-plugin-promise";
 import eslintPluginUnicorn from "eslint-plugin-unicorn";
 import { configs as tseslintConfigs } from "typescript-eslint";
 
-const sharedRules = {
+const sharedRules: RulesConfig = {
     "arrow-body-style": ["error", "always"],
     complexity: ["off"],
     curly: ["error", "all"],
@@ -83,7 +84,7 @@ const sharedRules = {
     "import-x/prefer-default-export": ["off"],
 };
 
-export default defineConfig(
+const config: ReturnType<typeof defineConfig> = defineConfig(
     prettier,
     globalIgnores([".local/*"]),
     js.configs.recommended,
@@ -92,7 +93,7 @@ export default defineConfig(
     {
         ignores: ["dist/**", "reports/**", "coverage/**"],
     },
-    eslintPluginUnicorn.configs["all"],
+    eslintPluginUnicorn.configs.all,
     {
         languageOptions: {
             parser: tsParser,
@@ -112,15 +113,12 @@ export default defineConfig(
                 },
             },
         },
-        extends: [eslintPluginUnicorn.configs["recommended"]],
+        extends: [eslintPluginUnicorn.configs.recommended],
         rules: {
-            ...importPluginConfigs.recommended.rules,
-
             ...sharedRules,
         },
     },
     {
-        ...love,
         files: ["**/*.ts", "**/*.tsx"],
         ignores: ["**/*.mjs"],
         languageOptions: {
@@ -136,13 +134,13 @@ export default defineConfig(
             "@stylistic/ts": stylistic,
             n: nPlugin,
             "eslint-comments": commentsPlugin,
-            promise,
             perfectionist,
         },
         extends: [
+            [love],
             tseslintConfigs.strictTypeChecked,
-            tseslintConfigs.recommendedTypeChecked,
             tseslintConfigs.stylisticTypeChecked,
+            promise.configs["flat/recommended"],
         ],
         settings: {
             "import-x/resolver": {
@@ -153,9 +151,6 @@ export default defineConfig(
             },
         },
         rules: {
-            ...importPluginConfigs.typescript.rules,
-            ...importPluginConfigs.recommended.rules,
-
             ...sharedRules,
 
             "no-restricted-imports": ["off"],
@@ -225,3 +220,5 @@ export default defineConfig(
         rules: {},
     },
 );
+
+export default config;

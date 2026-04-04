@@ -143,7 +143,7 @@ describe("outputParser", () => {
 
         expect(() => {
             outputParser.tryParseClippyLine(JSON.stringify(output));
-        }).toThrow(/Unable to find primary span for message/);
+        }).toThrow(/Unable to find primary span for message/v);
     });
 
     it("parses annotations into AnnotationWithMessageAndLevel different `line_start` and `line_end`", () => {
