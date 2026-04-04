@@ -38065,7 +38065,7 @@ function convertHttpClient(requestPolicyClient) {
 	} };
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.9/node_modules/fast-xml-parser/src/util.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/util.js
 var nameStartChar = ":A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD";
 nameStartChar + "";
 var nameRegexp = "[" + nameStartChar + "][:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040]*";
@@ -38108,7 +38108,7 @@ var criticalProperties = [
 	"prototype"
 ];
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.9/node_modules/fast-xml-parser/src/validator.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/validator.js
 var defaultOptions$2 = {
 	allowBooleanAttributes: false,
 	unpairedTags: []
@@ -38346,7 +38346,7 @@ function getPositionFromMatch(match) {
 	return match.startIndex + match[1].length;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.9/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
 var defaultOnDangerousProperty = (name) => {
 	if (DANGEROUS_PROPERTY_NAMES.includes(name)) return "__" + name;
 	return name;
@@ -38425,10 +38425,10 @@ function normalizeProcessEntities(value) {
 	if (typeof value === "object" && value !== null) return {
 		enabled: value.enabled !== false,
 		maxEntitySize: Math.max(1, value.maxEntitySize ?? 1e4),
-		maxExpansionDepth: Math.max(1, value.maxExpansionDepth ?? 10),
-		maxTotalExpansions: Math.max(1, value.maxTotalExpansions ?? 1e3),
+		maxExpansionDepth: Math.max(1, value.maxExpansionDepth ?? 1e4),
+		maxTotalExpansions: Math.max(1, value.maxTotalExpansions ?? Infinity),
 		maxExpandedLength: Math.max(1, value.maxExpandedLength ?? 1e5),
-		maxEntityCount: Math.max(1, value.maxEntityCount ?? 100),
+		maxEntityCount: Math.max(1, value.maxEntityCount ?? 1e3),
 		allowedTags: value.allowedTags ?? null,
 		tagFilter: value.tagFilter ?? null
 	};
@@ -38468,7 +38468,7 @@ var buildOptions = function(options) {
 	return built;
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.9/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
 var METADATA_SYMBOL$1;
 if (typeof Symbol !== "function") METADATA_SYMBOL$1 = "@@xmlMetadata";
 else METADATA_SYMBOL$1 = Symbol("XML Node Metadata");
@@ -38497,7 +38497,7 @@ var XmlNode = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.9/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
 var DocTypeReader = class {
 	constructor(options) {
 		this.suppressValidationErr = !options;
@@ -38821,7 +38821,7 @@ function handleInfinity(str, num, options) {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.9/node_modules/fast-xml-parser/src/ignoreAttributes.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/ignoreAttributes.js
 function getIgnoreAttributesFn$1(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -38833,7 +38833,7 @@ function getIgnoreAttributesFn$1(ignoreAttributes) {
 	return () => false;
 }
 //#endregion
-//#region node_modules/.pnpm/path-expression-matcher@1.2.0/node_modules/path-expression-matcher/src/Expression.js
+//#region node_modules/.pnpm/path-expression-matcher@1.2.1/node_modules/path-expression-matcher/src/Expression.js
 /**
 * Expression - Parses and stores a tag pattern expression
 * 
@@ -38984,7 +38984,7 @@ var Expression = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/path-expression-matcher@1.2.0/node_modules/path-expression-matcher/src/Matcher.js
+//#region node_modules/.pnpm/path-expression-matcher@1.2.1/node_modules/path-expression-matcher/src/Matcher.js
 /**
 * Matcher - Tracks current path in XML/JSON tree and matches against Expressions
 * 
@@ -39031,6 +39031,7 @@ var Matcher = class {
 	* @param {string} namespace - Namespace for the tag (optional)
 	*/
 	push(tagName, attrValues = null, namespace = null) {
+		this._pathStringCache = null;
 		if (this.path.length > 0) {
 			const prev = this.path[this.path.length - 1];
 			prev.values = void 0;
@@ -39058,6 +39059,7 @@ var Matcher = class {
 	*/
 	pop() {
 		if (this.path.length === 0) return;
+		this._pathStringCache = null;
 		const node = this.path.pop();
 		if (this.siblingStacks.length > this.path.length + 1) this.siblingStacks.length = this.path.length + 1;
 		return node;
@@ -39145,10 +39147,13 @@ var Matcher = class {
 	*/
 	toString(separator, includeNamespace = true) {
 		const sep = separator || this.separator;
-		return this.path.map((n) => {
-			if (includeNamespace && n.namespace) return `${n.namespace}:${n.tag}`;
-			return n.tag;
-		}).join(sep);
+		if (sep === this.separator && includeNamespace === true) {
+			if (this._pathStringCache !== null && this._pathStringCache !== void 0) return this._pathStringCache;
+			const result = this.path.map((n) => includeNamespace && n.namespace ? `${n.namespace}:${n.tag}` : n.tag).join(sep);
+			this._pathStringCache = result;
+			return result;
+		}
+		return this.path.map((n) => includeNamespace && n.namespace ? `${n.namespace}:${n.tag}` : n.tag).join(sep);
 	}
 	/**
 	* Get path as array of tag names
@@ -39161,6 +39166,7 @@ var Matcher = class {
 	* Reset the path to empty
 	*/
 	reset() {
+		this._pathStringCache = null;
 		this.path = [];
 		this.siblingStacks = [];
 	}
@@ -39270,6 +39276,7 @@ var Matcher = class {
 	* @param {Object} snapshot - State snapshot
 	*/
 	restore(snapshot) {
+		this._pathStringCache = null;
 		this.path = snapshot.path.map((node) => ({ ...node }));
 		this.siblingStacks = snapshot.siblingStacks.map((map) => new Map(map));
 	}
@@ -39315,7 +39322,7 @@ var Matcher = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.9/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
 /**
 * Extract raw attributes (without prefix) from prefixed attribute map
 * @param {object} prefixedAttrs - Attributes with prefix from buildAttributesMap
@@ -39492,39 +39499,45 @@ function buildAttributesMap(attrStr, jPath, tagName) {
 		const matches = getAllMatches(attrStr, attrsRegx);
 		const len = matches.length;
 		const attrs = {};
+		const processedVals = new Array(len);
+		let hasRawAttrs = false;
 		const rawAttrsForMatcher = {};
 		for (let i = 0; i < len; i++) {
 			const attrName = this.resolveNameSpace(matches[i][1]);
 			const oldVal = matches[i][4];
 			if (attrName.length && oldVal !== void 0) {
-				let parsedVal = oldVal;
-				if (this.options.trimValues) parsedVal = parsedVal.trim();
-				parsedVal = this.replaceEntitiesValue(parsedVal, tagName, this.readonlyMatcher);
-				rawAttrsForMatcher[attrName] = parsedVal;
+				let val = oldVal;
+				if (this.options.trimValues) val = val.trim();
+				val = this.replaceEntitiesValue(val, tagName, this.readonlyMatcher);
+				processedVals[i] = val;
+				rawAttrsForMatcher[attrName] = val;
+				hasRawAttrs = true;
 			}
 		}
-		if (Object.keys(rawAttrsForMatcher).length > 0 && typeof jPath === "object" && jPath.updateCurrent) jPath.updateCurrent(rawAttrsForMatcher);
+		if (hasRawAttrs && typeof jPath === "object" && jPath.updateCurrent) jPath.updateCurrent(rawAttrsForMatcher);
+		const jPathStr = this.options.jPath ? jPath.toString() : this.readonlyMatcher;
+		let hasAttrs = false;
 		for (let i = 0; i < len; i++) {
 			const attrName = this.resolveNameSpace(matches[i][1]);
-			const jPathStr = this.options.jPath ? jPath.toString() : this.readonlyMatcher;
 			if (this.ignoreAttributesFn(attrName, jPathStr)) continue;
-			let oldVal = matches[i][4];
 			let aName = this.options.attributeNamePrefix + attrName;
 			if (attrName.length) {
 				if (this.options.transformAttributeName) aName = this.options.transformAttributeName(aName);
 				aName = sanitizeName(aName, this.options);
-				if (oldVal !== void 0) {
-					if (this.options.trimValues) oldVal = oldVal.trim();
-					oldVal = this.replaceEntitiesValue(oldVal, tagName, this.readonlyMatcher);
-					const jPathOrMatcher = this.options.jPath ? jPath.toString() : this.readonlyMatcher;
-					const newVal = this.options.attributeValueProcessor(attrName, oldVal, jPathOrMatcher);
+				if (matches[i][4] !== void 0) {
+					const oldVal = processedVals[i];
+					const newVal = this.options.attributeValueProcessor(attrName, oldVal, jPathStr);
 					if (newVal === null || newVal === void 0) attrs[aName] = oldVal;
 					else if (typeof newVal !== typeof oldVal || newVal !== oldVal) attrs[aName] = newVal;
 					else attrs[aName] = parseValue(oldVal, this.options.parseAttributeValue, this.options.numberParseOptions);
-				} else if (this.options.allowBooleanAttributes) attrs[aName] = true;
+					hasAttrs = true;
+				} else if (this.options.allowBooleanAttributes) {
+					attrs[aName] = true;
+					hasAttrs = true;
+				}
 			}
 		}
-		if (!Object.keys(attrs).length) return;
+		if (!hasAttrs) return;
 		if (this.options.attributesGroupName) {
 			const attrCollection = {};
 			attrCollection[this.options.attributesGroupName] = attrs;
@@ -39720,6 +39733,7 @@ function replaceEntitiesValue$1(val, tagName, jPath) {
 			}
 		}
 	}
+	if (val.indexOf("&") === -1) return val;
 	for (const entityName of Object.keys(this.lastEntities)) {
 		const entity = this.lastEntities[entityName];
 		const matches = val.match(entity.regex);
@@ -39882,7 +39896,7 @@ function sanitizeName(name, options) {
 	return name;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.9/node_modules/fast-xml-parser/src/xmlparser/node2json.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/xmlparser/node2json.js
 var METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
 /**
 * Helper function to strip attribute prefix from attribute map
@@ -39981,7 +39995,7 @@ function isLeafTag(obj, options) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.9/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
 var XMLParser = class {
 	constructor(options) {
 		this.externalEntities = {};
@@ -40540,10 +40554,10 @@ function isAttribute(name) {
 	else return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.9/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
 var json2xml_default = Builder;
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.9/node_modules/fast-xml-parser/src/fxp.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/fxp.js
 var XMLValidator = { validate };
 //#endregion
 //#region node_modules/.pnpm/@azure+core-xml@1.5.0/node_modules/@azure/core-xml/dist/esm/xml.js
@@ -65792,19 +65806,19 @@ async function buildContext(program, toolchain) {
 	await Promise.all([
 		exec("rustc", buildToolchainArguments(toolchain, ["-V"]), {
 			listeners: { stdout: (buffer) => {
-				return context.rustc = buffer.toString().trim();
+				context.rustc = buffer.toString().trim();
 			} },
 			silent: false
 		}),
 		program.call(buildToolchainArguments(toolchain, ["-V"]), {
 			listeners: { stdout: (buffer) => {
-				return context.cargo = buffer.toString().trim();
+				context.cargo = buffer.toString().trim();
 			} },
 			silent: false
 		}),
 		program.call(buildToolchainArguments(toolchain, ["clippy", "-V"]), {
 			listeners: { stdout: (buffer) => {
-				return context.clippy = buffer.toString().trim();
+				context.clippy = buffer.toString().trim();
 			} },
 			silent: false
 		})
