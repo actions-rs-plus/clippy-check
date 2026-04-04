@@ -104,7 +104,7 @@
     "pnpm": {
         "overrides": {
             "@codecov/vite-plugin>vite": "8.0.3",
-            "undici": "8.0.1"
+            "undici": "8.0.2"
         },
         "ignoredBuiltDependencies": [
             "unrs-resolver"
