@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@codecov/vite-plugin>vite': 8.0.4
+  '@codecov/vite-plugin>vite': 8.0.5
   undici: 8.0.2
 
 importers:
@@ -282,7 +282,7 @@ packages:
     resolution: {integrity: sha512-S6Yne7comVulJ1jD3T7rCfYFHPR0zUjAYoLjUDPXNJCUrdzWJdf/ak/UepE7TicqQG+yBa6eb5WusqcPgg+1AQ==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
-      vite: 8.0.4
+      vite: 8.0.5
 
   '@emnapi/core@1.9.2':
     resolution: {integrity: sha512-UC+ZhH3XtczQYfOlu3lNEkdW/p4dsJ1r/bP7H8+rhao3TTTMO1ATq/4DdIi23XuGoFY+Cz0JmCbdVl0hz9jZcA==}
