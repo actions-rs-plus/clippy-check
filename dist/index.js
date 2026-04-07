@@ -26778,13 +26778,12 @@ var before_after_hook_default = {
 };
 //#endregion
 //#region node_modules/.pnpm/@octokit+endpoint@11.0.3/node_modules/@octokit/endpoint/dist-bundle/index.js
-var userAgent = `octokit-endpoint.js/0.0.0-development ${getUserAgent()}`;
 var DEFAULTS = {
 	method: "GET",
 	baseUrl: "https://api.github.com",
 	headers: {
 		accept: "application/vnd.github.v3+json",
-		"user-agent": userAgent
+		"user-agent": `octokit-endpoint.js/0.0.0-development ${getUserAgent()}`
 	},
 	mediaType: { format: "" }
 };
@@ -27274,8 +27273,7 @@ var RequestError = class extends Error {
 };
 //#endregion
 //#region node_modules/.pnpm/@octokit+request@10.0.8/node_modules/@octokit/request/dist-bundle/index.js
-var VERSION$4 = "10.0.8";
-var defaults_default = { headers: { "user-agent": `octokit-request.js/${VERSION$4} ${getUserAgent()}` } };
+var defaults_default = { headers: { "user-agent": `octokit-request.js/10.0.8 ${getUserAgent()}` } };
 function isPlainObject(value) {
 	if (typeof value !== "object" || value === null) return false;
 	if (Object.prototype.toString.call(value) !== "[object Object]") return false;
@@ -29764,6 +29762,7 @@ var import_minimatch = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((
 				continue;
 			}
 			switch (c) {
+				/* istanbul ignore next */
 				case "/": return false;
 				case "\\":
 					clearStateChar();
@@ -31627,6 +31626,7 @@ var require_min_version = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						break;
 					case "<":
 					case "<=": break;
+					/* istanbul ignore next */
 					default: throw new Error(`Unexpected operation: ${comparator.operator}`);
 				}
 			});
