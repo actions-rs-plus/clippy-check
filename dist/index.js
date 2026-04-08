@@ -25936,7 +25936,7 @@ function endGroup() {
 	issue("endgroup");
 }
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.6.5/node_modules/@actions-rs-plus/core/dist/_virtual/_rolldown/runtime.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.6.6/node_modules/@actions-rs-plus/core/dist/_virtual/_rolldown/runtime.js
 var __defProp = Object.defineProperty;
 var __exportAll = (all, no_symbols) => {
 	let target = {};
@@ -25948,7 +25948,7 @@ var __exportAll = (all, no_symbols) => {
 	return target;
 };
 //#endregion
-//#region node_modules/.pnpm/@actions+github@9.0.0/node_modules/@actions/github/lib/context.js
+//#region node_modules/.pnpm/@actions+github@9.1.0/node_modules/@actions/github/lib/context.js
 var Context = class {
 	/**
 	* Hydrate the context from the environment
@@ -26048,7 +26048,7 @@ var require_proxy = /* @__PURE__ */ __commonJSMin(((exports) => {
 	};
 }));
 //#endregion
-//#region node_modules/.pnpm/@actions+github@9.0.0/node_modules/@actions/github/lib/internal/utils.js
+//#region node_modules/.pnpm/@actions+github@9.1.0/node_modules/@actions/github/lib/internal/utils.js
 var import_lib = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exports) => {
 	var __createBinding = exports && exports.__createBinding || (Object.create ? (function(o, m, k, k2) {
 		if (k2 === void 0) k2 = k;
@@ -29117,7 +29117,7 @@ var defaults = {
 Octokit.plugin(restEndpointMethods, paginateRest).defaults(defaults);
 new Context();
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.6.5/node_modules/@actions-rs-plus/core/dist/commands/base-program.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.6.6/node_modules/@actions-rs-plus/core/dist/commands/base-program.js
 var BaseProgram = class {
 	path;
 	constructor(path) {
@@ -29128,7 +29128,7 @@ var BaseProgram = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.6.5/node_modules/@actions-rs-plus/core/dist/commands/crates.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.6.6/node_modules/@actions-rs-plus/core/dist/commands/crates.js
 async function resolveVersion(crate) {
 	const url = `https://crates.io/api/v1/crates/${crate}`;
 	const response = await new HttpClient("@actions-rs-plus (https://github.com/actions-rs-plus/)").getJson(url);
@@ -65501,7 +65501,7 @@ function saveCacheV2(paths_1, key_1, options_1) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.6.5/node_modules/@actions-rs-plus/core/dist/commands/cargo.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.6.6/node_modules/@actions-rs-plus/core/dist/commands/cargo.js
 var Cargo = class Cargo extends BaseProgram {
 	constructor(pathToCargo) {
 		super(pathToCargo);
@@ -65588,7 +65588,7 @@ var Cargo = class Cargo extends BaseProgram {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.6.5/node_modules/@actions-rs-plus/core/dist/commands/cross.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.6.6/node_modules/@actions-rs-plus/core/dist/commands/cross.js
 var Cross = class Cross extends BaseProgram {
 	constructor(path) {
 		super(path);
@@ -65618,7 +65618,7 @@ var Cross = class Cross extends BaseProgram {
 process.platform;
 process.platform;
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.6.5/node_modules/@actions-rs-plus/core/dist/input.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.6.6/node_modules/@actions-rs-plus/core/dist/input.js
 var input_exports = /* @__PURE__ */ __exportAll({
 	getInput: () => getInput,
 	getInputAsArray: () => getInputAsArray,
