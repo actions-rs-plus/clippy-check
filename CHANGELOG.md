@@ -1,4 +1,45 @@
 <!-- header goes here -->
+## [2.5.1](https://github.com/actions-rs-plus/clippy-check/compare/v2.5.0..v2.5.1) - 2026-04-08
+
+### 🐛 Bug Fixes
+
+- *(deps)* Update @actions-rs-plus/core (npm) to v0.6.3 by @renovate[bot] ([`9c4fb53`](https://github.com/actions-rs-plus/clippy-check/commit/9c4fb53885255774c8ee358393ef21776957ffa8))
+- *(deps)* Update @actions-rs-plus/core (npm) to v0.6.4 by @renovate[bot] ([`cd508ff`](https://github.com/actions-rs-plus/clippy-check/commit/cd508ff888374126b19569c994ea7dfa88bae731))
+- *(deps)* Update @actions-rs-plus/core (npm) to v0.6.5 by @renovate[bot] ([`1613550`](https://github.com/actions-rs-plus/clippy-check/commit/16135507d3699cb0a63b21bbbe6efac28a7a6307))
+- *(deps)* Update @actions-rs-plus/core (npm) to v0.6.6 by @renovate[bot] ([`82149ce`](https://github.com/actions-rs-plus/clippy-check/commit/82149ce3a6b759f5dcf1fbf8abe911a034b5d5b0))
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* Release v2.5.1
+- Can't set `automatic_copilot_code_review_enabled` with probot by @kristof-mattei ([`d2ddb35`](https://github.com/actions-rs-plus/clippy-check/commit/d2ddb3548490cb6a9ce1af60e32da520c85c1572))
+- Lint commits and Format now must pass, and other jobs don't run when making a release by @kristof-mattei ([`69917ef`](https://github.com/actions-rs-plus/clippy-check/commit/69917ef6510af13f4110219be7885f7ef37e3b2b))
+- Copy over package.json updates from /core by @kristof-mattei ([`fe6f8f9`](https://github.com/actions-rs-plus/clippy-check/commit/fe6f8f9719b5bd7d357b885201e6add26a6266d7))
+- Commiting changes in dist/. See #2113 by @github-actions[bot] ([`a6ea570`](https://github.com/actions-rs-plus/clippy-check/commit/a6ea570757c96cf7bababf93d90015d9fcb19954))
+- Commiting changes in dist/. See #2116 by @github-actions[bot] ([`9afeacf`](https://github.com/actions-rs-plus/clippy-check/commit/9afeacf8852518e466e7b4af026952908fccd867))
+- Pin package manager by @kristof-mattei ([`7d53caa`](https://github.com/actions-rs-plus/clippy-check/commit/7d53caaf08fee99bcff8a9d5681bfa0dcd2019d7))
+- Commiting changes in dist/. See #2120 by @github-actions[bot] ([`d940eac`](https://github.com/actions-rs-plus/clippy-check/commit/d940eac74648847b0c969cf928a5bbe1715bc29b))
+- Commiting changes in dist/. See #2123 by @github-actions[bot] ([`4ed5552`](https://github.com/actions-rs-plus/clippy-check/commit/4ed55523f3b8b6925ab8df898ba3d852b0d0c714))
+- Commiting changes in dist/. See #2131 by @github-actions[bot] ([`76ced49`](https://github.com/actions-rs-plus/clippy-check/commit/76ced49f0c78fdfd5e79fccdc5bcdfbcc9e5a1c7))
+- Commiting changes in dist/. See #2133 by @github-actions[bot] ([`14d777e`](https://github.com/actions-rs-plus/clippy-check/commit/14d777e097e799e7fe4a1c03520f437d17276718))
+- Commiting changes in dist/. See #2142 by @github-actions[bot] ([`965d602`](https://github.com/actions-rs-plus/clippy-check/commit/965d602b9f5253ab25a4078ed436bc2f2c243990))
+- Commiting changes in dist/. See #2140 by @github-actions[bot] ([`59595b1`](https://github.com/actions-rs-plus/clippy-check/commit/59595b1f14e9cf295b749c7722d89269bb3480b4))
+- Remove caret by @kristof-mattei ([`e1af2c6`](https://github.com/actions-rs-plus/clippy-check/commit/e1af2c6389fdfc0100db3cd8c1d83b8ce96780ba))
+- Commiting changes in dist/. See #2149 by @github-actions[bot] ([`be9ee2c`](https://github.com/actions-rs-plus/clippy-check/commit/be9ee2ca727d86d3a6cd2d9e16a4ebc74b8887a9))
+- Commiting changes in dist/. See #2154 by @github-actions[bot] ([`77fdad3`](https://github.com/actions-rs-plus/clippy-check/commit/77fdad336a064fc5d8ed47b87c15b757ea209fd8))
+- Super strict with ts 6 by @kristof-mattei ([`747ba6f`](https://github.com/actions-rs-plus/clippy-check/commit/747ba6faca0706b2390a56d35b0bd02ee4e64b8a))
+- Align fmt by @kristof-mattei ([`0b23341`](https://github.com/actions-rs-plus/clippy-check/commit/0b2334191d152eed0a829ed4fd1d05157d79e09a))
+- Commiting changes in dist/. See #2166 by @github-actions[bot] ([`04d3c48`](https://github.com/actions-rs-plus/clippy-check/commit/04d3c485f294b373eefa0d4f8074deaa3630670b))
+- Commiting changes in dist/. See #2175 by @github-actions[bot] ([`52181d9`](https://github.com/actions-rs-plus/clippy-check/commit/52181d9cbbff36b41fd69e09c9c52b9f25118de4))
+- Commiting changes in dist/. See #2193 by @github-actions[bot] ([`b424a10`](https://github.com/actions-rs-plus/clippy-check/commit/b424a101552708886493429089c0beb38fd93e36))
+- Commiting changes in dist/. See #2200 by @github-actions[bot] ([`8dcee8e`](https://github.com/actions-rs-plus/clippy-check/commit/8dcee8ecea49e8552d475d1eabd2bd8ea1c42864))
+- Commiting changes in dist/. See #2207 by @github-actions[bot] ([`19561c9`](https://github.com/actions-rs-plus/clippy-check/commit/19561c9da53faa830cd0af455273f670df90a20d))
+- Commiting changes in dist/. See #2209 by @github-actions[bot] ([`963fee1`](https://github.com/actions-rs-plus/clippy-check/commit/963fee14b19354dcb1211a1f82fa5179dd17a15f))
+- Eslint as tslint by @kristof-mattei ([`d976fdb`](https://github.com/actions-rs-plus/clippy-check/commit/d976fdb03a31d8042b975d0a68eef439f8ddda13))
+- Commiting changes in dist/. See #2215 by @github-actions[bot] ([`ba0f7ea`](https://github.com/actions-rs-plus/clippy-check/commit/ba0f7ea291addc27bea9edd571170fed17ac428f))
+- Commiting changes in dist/. See #2217 by @github-actions[bot] ([`6c75310`](https://github.com/actions-rs-plus/clippy-check/commit/6c75310fd4d29f56cea00d0f284d4743671de886))
+- Commiting changes in dist/. See #2230 by @github-actions[bot] ([`3b4ed5f`](https://github.com/actions-rs-plus/clippy-check/commit/3b4ed5f28d336710c435907c7536cc9bfc6a4080))
+- Use $vite to make sure the same version is used by @kristof-mattei ([`773a29d`](https://github.com/actions-rs-plus/clippy-check/commit/773a29d9e80b72100b8ca4af8b440f136894ec32))
+- Commiting changes in dist/. See #2240 by @github-actions[bot] ([`4224a79`](https://github.com/actions-rs-plus/clippy-check/commit/4224a794ab349ca86cdf71bda21e66a42e201dcb))
 ## [2.5.0](https://github.com/actions-rs-plus/clippy-check/compare/v2.4.2..v2.5.0) - 2026-03-14
 
 ### 🚀 Features
@@ -38,7 +79,7 @@
 
 ### ⚙️ Miscellaneous Tasks
 
-- *(release)* Release v2.5.0
+- *(release)* Release v2.5.0 by @github-actions[bot] ([`61b611f`](https://github.com/actions-rs-plus/clippy-check/commit/61b611fc2eafe1fe4ae5568ecc18fcad76459c18))
 - Commiting changes in dist/. See #1855 by @kristof-mattei ([`1eeeb02`](https://github.com/actions-rs-plus/clippy-check/commit/1eeeb02b02fc1924997786e4fb946d2fd0dcdc21))
 - Commiting changes in dist/. See #1856 by @github-actions[bot] ([`ffee19d`](https://github.com/actions-rs-plus/clippy-check/commit/ffee19d3b30bda42b83268a99919d74858299eac))
 - Commiting changes in dist/. See #1871 by @github-actions[bot] ([`e5e93da`](https://github.com/actions-rs-plus/clippy-check/commit/e5e93dad72c43c115045b38a935b9ae5fd97c107))
