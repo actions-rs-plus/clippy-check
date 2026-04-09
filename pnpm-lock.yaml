@@ -80,8 +80,8 @@ importers:
         specifier: 10.2.0
         version: 10.2.0(jiti@2.6.1)
       eslint-config-love:
-        specifier: 151.0.0
-        version: 151.0.0(@typescript-eslint/parser@8.58.1(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
+        specifier: 152.0.0
+        version: 152.0.0(@typescript-eslint/parser@8.58.1(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       eslint-config-prettier:
         specifier: 10.1.8
         version: 10.1.8(eslint@10.2.0(jiti@2.6.1))
@@ -1201,8 +1201,8 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
-  eslint-config-love@151.0.0:
-    resolution: {integrity: sha512-1D0OA2pby/nVdjgaksLONAkgMJJXTz3IQYB6rClnNpp+Bug5ACWHDiXnnzWHQ+fLL+zrcFLn6V5vc9tj3Zd4PA==}
+  eslint-config-love@152.0.0:
+    resolution: {integrity: sha512-MWIW2ntyJTf5tj9H8T4sLOVxvzoA7tgqIDnJGJoHzBAp64/9DZXeHh7KLsO2Oanhl3BmP8FhRt+F2aizCeRKVw==}
     peerDependencies:
       eslint: ^9.35.0
       typescript: '*'
@@ -3797,10 +3797,10 @@ snapshots:
       eslint: 10.2.0(jiti@2.6.1)
       semver: 7.7.4
 
-  eslint-config-love@151.0.0(@typescript-eslint/parser@8.58.1(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2):
+  eslint-config-love@152.0.0(@typescript-eslint/parser@8.58.1(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2):
     dependencies:
       '@eslint-community/eslint-plugin-eslint-comments': 4.7.1(eslint@10.2.0(jiti@2.6.1))
-      '@typescript-eslint/utils': 8.58.0(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
+      '@typescript-eslint/utils': 8.58.1(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       eslint: 10.2.0(jiti@2.6.1)
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.58.1(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0(jiti@2.6.1))
       eslint-plugin-n: 17.24.0(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
