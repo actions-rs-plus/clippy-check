@@ -42,7 +42,7 @@ jobs:
           pnpm install --frozen-lockfile
 
       - name: Split the incoming tag into major, minor and patch
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           # because in the JS github variable ref_name isn't there
           TAGNAME: ${{ github.ref_name }}
@@ -59,7 +59,7 @@ jobs:
             core.exportVariable("PATCH", parsed.patch);
 
       - name: Move v${{ env.MAJOR }} and v${{ env.MAJOR }}.${{ env.MINOR }} tags
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
