@@ -91,7 +91,7 @@
         "husky": "9.1.7",
         "jiti": "2.6.1",
         "lint-staged": "16.4.0",
-        "prettier": "3.8.1",
+        "prettier": "3.8.2",
         "prettier-plugin-sh": "0.18.1",
         "prettier-plugin-toml": "2.0.6",
         "semver": "7.7.4",
