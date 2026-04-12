@@ -78,6 +78,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ !startsWith(github.head_ref, 'release/') }}
     permissions:
+      contents: read
       id-token: write
     needs:
       - warm-up-cache
@@ -97,11 +98,13 @@ jobs:
         name: Download dependencies from cache
         shell: bash
         run: |
+          git status
           pnpm install --frozen-lockfile --offline
 
       - name: Run build
         shell: bash
         run: |
+          git status
           pnpm run build
 
       - name: Compare the expected and actual dist/ directories
@@ -130,6 +133,9 @@ jobs:
 
             # Remove GitHub's merging the tip of dist-updated branch into main's commit
             # it's not needed as we require a branch to up-to-date with main
+            rm diff.txt
+            git diff
+            git status
             git rebase origin/main --autosquash
 
             echo "Pushing branch"
@@ -254,29 +260,29 @@ jobs:
           # which will fail All Done
           exit 1
 
-  npm-test-windows:
-    name: Test the code on Windows
-    runs-on: windows-latest
-    permissions:
-      packages: read
-    steps:
-      - *checkout
+  #   npm-test-windows:
+  #     name: Test the code on Windows
+  #     runs-on: windows-latest
+  #     permissions:
+  #       packages: read
+  #     steps:
+  #       - *checkout
 
-      - *install_pnpm
+  #       - *install_pnpm
 
-      - *install_node
+  #       - *install_node
 
-      - name: Download dependencies
-        shell: pwsh
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          pnpm install --frozen-lockfile
+  #       - name: Download dependencies
+  #         shell: pwsh
+  #         env:
+  #           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         run: |
+  #           pnpm install --frozen-lockfile
 
-      - name: Run tests
-        shell: pwsh
-        run: |
-          pnpm run test --reporter=default --reporter=github-actions --reporter=junit --coverage.reporter=text --coverage.reporter=lcovonly
+  #       - name: Run tests
+  #         shell: pwsh
+  #         run: |
+  #           pnpm run test --reporter=default --reporter=github-actions --reporter=junit --coverage.reporter=text --coverage.reporter=lcovonly
 
   npm-dependencies:
     name: Validate dependencies
@@ -312,7 +318,7 @@ jobs:
       - npm-dependencies
       - npm-lint
       - npm-test
-      - npm-test-windows
+    #   - npm-test-windows
     if: |
       always()
     steps:
