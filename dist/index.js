@@ -29406,7 +29406,7 @@ var require_balanced_match = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 	}
 }));
 //#endregion
-//#region node_modules/.pnpm/brace-expansion@1.1.13/node_modules/brace-expansion/index.js
+//#region node_modules/.pnpm/brace-expansion@1.1.14/node_modules/brace-expansion/index.js
 var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var concatMap = require_concat_map();
 	var balanced = require_balanced_match();
@@ -29443,10 +29443,12 @@ var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) =
 		parts.push.apply(parts, p);
 		return parts;
 	}
-	function expandTop(str) {
+	function expandTop(str, options) {
 		if (!str) return [];
+		options = options || {};
+		var max = options.max == null ? Infinity : options.max;
 		if (str.substr(0, 2) === "{}") str = "\\{\\}" + str.substr(2);
-		return expand(escapeBraces(str), true).map(unescapeBraces);
+		return expand(escapeBraces(str), max, true).map(unescapeBraces);
 	}
 	function embrace(str) {
 		return "{" + str + "}";
@@ -29460,7 +29462,7 @@ var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) =
 	function gte(i, y) {
 		return i >= y;
 	}
-	function expand(str, isTop) {
+	function expand(str, max, isTop) {
 		var expansions = [];
 		var m = balanced("{", "}", str);
 		if (!m || /\$$/.test(m.pre)) return [str];
@@ -29471,7 +29473,7 @@ var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) =
 		if (!isSequence && !isOptions) {
 			if (m.post.match(/,(?!,).*\}/)) {
 				str = m.pre + "{" + m.body + escClose + m.post;
-				return expand(str);
+				return expand(str, max, true);
 			}
 			return [str];
 		}
@@ -29480,9 +29482,9 @@ var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) =
 		else {
 			n = parseCommaParts(m.body);
 			if (n.length === 1) {
-				n = expand(n[0], false).map(embrace);
+				n = expand(n[0], max, false).map(embrace);
 				if (n.length === 1) {
-					var post = m.post.length ? expand(m.post, false) : [""];
+					var post = m.post.length ? expand(m.post, max, false) : [""];
 					return post.map(function(p) {
 						return m.pre + n[0] + p;
 					});
@@ -29490,7 +29492,7 @@ var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) =
 			}
 		}
 		var pre = m.pre;
-		var post = m.post.length ? expand(m.post, false) : [""];
+		var post = m.post.length ? expand(m.post, max, false) : [""];
 		var N;
 		if (isSequence) {
 			var x = numeric(n[0]);
@@ -29523,9 +29525,9 @@ var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) =
 				N.push(c);
 			}
 		} else N = concatMap(n, function(el) {
-			return expand(el, false);
+			return expand(el, max, false);
 		});
-		for (var j = 0; j < N.length; j++) for (var k = 0; k < post.length; k++) {
+		for (var j = 0; j < N.length; j++) for (var k = 0; k < post.length && expansions.length < max; k++) {
 			var expansion = pre + N[j] + post[k];
 			if (!isTop || isSequence || expansion) expansions.push(expansion);
 		}
@@ -32092,7 +32094,7 @@ function getRuntimeToken() {
 	return token;
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/abort-controller/AbortError.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/abort-controller/AbortError.js
 /**
 * This error is thrown when an asynchronous operation has been aborted.
 * Check for this error by testing the `name` that the name property of the
@@ -32129,12 +32131,12 @@ var AbortError$1 = class extends Error {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/logger/log.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/logger/log.js
 function log(message, ...args) {
 	process$1.stderr.write(`${util.format(message, ...args)}${EOL$1}`);
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/logger/debug.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/logger/debug.js
 var debugEnvVariable = typeof process !== "undefined" && process.env && process.env.DEBUG || void 0;
 var enabledString;
 var enabledNamespaces = [];
@@ -32256,7 +32258,7 @@ function extend(namespace) {
 	return newDebugger;
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/logger/logger.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/logger/logger.js
 var TYPESPEC_RUNTIME_LOG_LEVELS = [
 	"verbose",
 	"info",
@@ -32346,7 +32348,7 @@ function createClientLogger$1(namespace) {
 	return context$1.createClientLogger(namespace);
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/httpHeaders.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/httpHeaders.js
 function normalizeName(name) {
 	return name.toLowerCase();
 }
@@ -32423,7 +32425,7 @@ function createHttpHeaders$1(rawHeaders) {
 	return new HttpHeadersImpl(rawHeaders);
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/util/uuidUtils.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/util/uuidUtils.js
 /**
 * Generated Universally Unique Identifier
 *
@@ -32433,7 +32435,7 @@ function randomUUID$1() {
 	return crypto.randomUUID();
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/pipelineRequest.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/pipelineRequest.js
 var PipelineRequestImpl = class {
 	url;
 	method;
@@ -32485,7 +32487,7 @@ function createPipelineRequest$1(options) {
 	return new PipelineRequestImpl(options);
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/pipeline.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/pipeline.js
 var ValidPhaseNames = new Set([
 	"Deserialize",
 	"Serialize",
@@ -32684,7 +32686,7 @@ function createEmptyPipeline$1() {
 	return HttpPipeline.create();
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/util/object.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/util/object.js
 /**
 * Helper to determine when an input is a generic JS object.
 * @returns true when input is an object type that is not null, Array, RegExp, or Date.
@@ -32693,7 +32695,7 @@ function isObject(input) {
 	return typeof input === "object" && input !== null && !Array.isArray(input) && !(input instanceof RegExp) && !(input instanceof Date);
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/util/error.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/util/error.js
 /**
 * Typeguard for an error object shape (has name and message)
 * @param e - Something caught by a catch clause.
@@ -32707,10 +32709,10 @@ function isError$1(e) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/util/inspect.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/util/inspect.js
 var custom = inspect.custom;
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/util/sanitizer.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/util/sanitizer.js
 var RedactedString = "REDACTED";
 var defaultAllowedHeaderNames = [
 	"x-ms-client-request-id",
@@ -32779,9 +32781,9 @@ var Sanitizer = class {
 				name: value.name,
 				message: value.message
 			};
-			if (key === "headers") return this.sanitizeHeaders(value);
-			else if (key === "url") return this.sanitizeUrl(value);
-			else if (key === "query") return this.sanitizeQuery(value);
+			if (key === "headers" && isObject(value)) return this.sanitizeHeaders(value);
+			else if (key === "url" && typeof value === "string") return this.sanitizeUrl(value);
+			else if (key === "query" && isObject(value)) return this.sanitizeQuery(value);
 			else if (key === "body") return;
 			else if (key === "response") return;
 			else if (key === "operationSpec") return;
@@ -32819,7 +32821,7 @@ var Sanitizer = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/restError.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/restError.js
 var errorSanitizer = new Sanitizer();
 /**
 * A custom error type for failed pipeline requests.
@@ -32900,7 +32902,7 @@ function isRestError$1(e) {
 	return isError$1(e) && e.name === "RestError";
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/util/bytesEncoding.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/util/bytesEncoding.js
 /**
 * The helper that transforms string to specific character encoded bytes array.
 * @param value - the string to be converted
@@ -32911,10 +32913,10 @@ function stringToUint8Array(value, format) {
 	return Buffer.from(value, format);
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/log.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/log.js
 var logger$4 = createClientLogger$1("ts-http-runtime");
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/nodeHttpClient.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/nodeHttpClient.js
 var DEFAULT_TLS_SETTINGS = {};
 function isReadableStream(body) {
 	return body && typeof body.pipe === "function";
@@ -33152,7 +33154,7 @@ function createNodeHttpClient() {
 	return new NodeHttpClient();
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/defaultHttpClient.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/defaultHttpClient.js
 /**
 * Create the correct HttpClient for the current environment.
 */
@@ -33160,7 +33162,7 @@ function createDefaultHttpClient$1() {
 	return createNodeHttpClient();
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/policies/logPolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/policies/logPolicy.js
 /**
 * The programmatic identifier of the logPolicy.
 */
@@ -33188,7 +33190,7 @@ function logPolicy$1(options = {}) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/policies/redirectPolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/policies/redirectPolicy.js
 /**
 * The programmatic identifier of the redirectPolicy.
 */
@@ -33236,7 +33238,7 @@ async function handleRedirect(next, response, maxRetries, allowCrossOriginRedire
 	return response;
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/policies/decompressResponsePolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/policies/decompressResponsePolicy.js
 /**
 * The programmatic identifier of the decompressResponsePolicy.
 */
@@ -33255,7 +33257,7 @@ function decompressResponsePolicy$1() {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/util/random.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/util/random.js
 /**
 * Returns a random integer value between a lower and upper bound,
 * inclusive of both bounds.
@@ -33270,7 +33272,7 @@ function getRandomIntegerInclusive(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/util/delay.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/util/delay.js
 /**
 * Calculates the delay interval for retry attempts using exponential delay with jitter.
 * @param retryAttempt - The current retry attempt number.
@@ -33283,7 +33285,7 @@ function calculateRetryDelay(retryAttempt, config) {
 	return { retryAfterInMs: clampedDelay / 2 + getRandomIntegerInclusive(0, clampedDelay / 2) };
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/util/helpers.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/util/helpers.js
 var StandardAbortMessage$1 = "The operation was aborted.";
 /**
 * A wrapper for setTimeout that resolves a promise after delayInMs milliseconds.
@@ -33329,7 +33331,7 @@ function parseHeaderValueAsNumber(response, headerName) {
 	return valueAsNum;
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/retryStrategies/throttlingRetryStrategy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/retryStrategies/throttlingRetryStrategy.js
 /**
 * The header that comes back from services representing
 * the amount of time (minimum) to wait to retry (in seconds or timestamp after which we can retry).
@@ -33389,7 +33391,7 @@ function throttlingRetryStrategy() {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/retryStrategies/exponentialRetryStrategy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/retryStrategies/exponentialRetryStrategy.js
 var DEFAULT_CLIENT_RETRY_INTERVAL = 1e3;
 var DEFAULT_CLIENT_MAX_RETRY_INTERVAL = 1e3 * 64;
 /**
@@ -33432,7 +33434,7 @@ function isSystemError(err) {
 	return err.code === "ETIMEDOUT" || err.code === "ESOCKETTIMEDOUT" || err.code === "ECONNREFUSED" || err.code === "ECONNRESET" || err.code === "ENOENT" || err.code === "ENOTFOUND";
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/policies/retryPolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/policies/retryPolicy.js
 var retryPolicyLogger = createClientLogger$1("ts-http-runtime retryPolicy");
 /**
 * The programmatic identifier of the retryPolicy.
@@ -33459,9 +33461,9 @@ function retryPolicy(strategies, options = { maxRetries: 3 }) {
 					logger.info(`Retry ${retryCount}: Received a response from request`, request.requestId);
 				} catch (e) {
 					logger.error(`Retry ${retryCount}: Received an error from request`, request.requestId);
+					if (!isRestError$1(e)) throw e;
 					responseError = e;
-					if (!e || responseError.name !== "RestError") throw e;
-					response = responseError.response;
+					response = e.response;
 				}
 				if (request.abortSignal?.aborted) {
 					logger.error(`Retry ${retryCount}: Request aborted.`);
@@ -33515,7 +33517,7 @@ function retryPolicy(strategies, options = { maxRetries: 3 }) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/policies/defaultRetryPolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/policies/defaultRetryPolicy.js
 /**
 * Name of the {@link defaultRetryPolicy}
 */
@@ -33542,7 +33544,7 @@ typeof Bun !== "undefined" && Bun.version;
 var isNodeLike$1 = typeof globalThis.process !== "undefined" && Boolean(globalThis.process.version) && Boolean(globalThis.process.versions?.node);
 typeof navigator !== "undefined" && navigator?.product;
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/policies/formDataPolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/policies/formDataPolicy.js
 /**
 * The programmatic identifier of the formDataPolicy.
 */
@@ -34963,7 +34965,7 @@ var require_dist = /* @__PURE__ */ __commonJSMin(((exports) => {
 	}
 }));
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/policies/proxyPolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/policies/proxyPolicy.js
 var import_dist = require_dist$1();
 var import_dist$1 = require_dist();
 var HTTPS_PROXY = "HTTPS_PROXY";
@@ -35060,12 +35062,11 @@ function setProxyAgentOnRequest(request, cachedAgents, proxyUrl) {
 	if (request.agent) return;
 	const isInsecure = new URL(request.url).protocol !== "https:";
 	if (request.tlsSettings) logger$4.warning("TLS settings are not supported in combination with custom Proxy, certificates provided to the client will be ignored.");
-	const headers = request.headers.toJSON();
 	if (isInsecure) {
-		if (!cachedAgents.httpProxyAgent) cachedAgents.httpProxyAgent = new import_dist$1.HttpProxyAgent(proxyUrl, { headers });
+		if (!cachedAgents.httpProxyAgent) cachedAgents.httpProxyAgent = new import_dist$1.HttpProxyAgent(proxyUrl);
 		request.agent = cachedAgents.httpProxyAgent;
 	} else {
-		if (!cachedAgents.httpsProxyAgent) cachedAgents.httpsProxyAgent = new import_dist.HttpsProxyAgent(proxyUrl, { headers });
+		if (!cachedAgents.httpsProxyAgent) cachedAgents.httpsProxyAgent = new import_dist.HttpsProxyAgent(proxyUrl);
 		request.agent = cachedAgents.httpsProxyAgent;
 	}
 }
@@ -35090,7 +35091,7 @@ function proxyPolicy$1(proxySettings, options) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/policies/agentPolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/policies/agentPolicy.js
 /**
 * Name of the Agent Policy
 */
@@ -35108,7 +35109,7 @@ function agentPolicy$1(agent) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/policies/tlsPolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/policies/tlsPolicy.js
 /**
 * Name of the TLS Policy
 */
@@ -35126,12 +35127,12 @@ function tlsPolicy$1(tlsSettings) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/util/typeGuards.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/util/typeGuards.js
 function isBlob(x) {
-	return typeof x.stream === "function";
+	return typeof Blob !== "undefined" && x instanceof Blob;
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/util/concat.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/util/concat.js
 async function* streamAsyncIterator() {
 	const reader = this.getReader();
 	try {
@@ -35177,7 +35178,7 @@ async function concat(sources) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.4/node_modules/@typespec/ts-http-runtime/dist/esm/policies/multipartPolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/policies/multipartPolicy.js
 function generateBoundary() {
 	return `----AzSDKFormBoundary${randomUUID$1()}`;
 }
@@ -36328,7 +36329,7 @@ function isTokenCredential(credential) {
 	return castCredential && typeof castCredential.getToken === "function" && (castCredential.signRequest === void 0 || castCredential.getToken.length > 0);
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-http-compat@2.3.2_@azure+core-client@1.10.1_@azure+core-rest-pipeline@1.23.0/node_modules/@azure/core-http-compat/dist/esm/policies/disableKeepAlivePolicy.js
+//#region node_modules/.pnpm/@azure+core-http-compat@2.4.0_@azure+core-client@1.10.1_@azure+core-rest-pipeline@1.23.0/node_modules/@azure/core-http-compat/dist/esm/policies/disableKeepAlivePolicy.js
 var disableKeepAlivePolicyName = "DisableKeepAlivePolicy";
 function createDisableKeepAlivePolicy() {
 	return {
@@ -37722,7 +37723,7 @@ function requestToOptions(request) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-http-compat@2.3.2_@azure+core-client@1.10.1_@azure+core-rest-pipeline@1.23.0/node_modules/@azure/core-http-compat/dist/esm/util.js
+//#region node_modules/.pnpm/@azure+core-http-compat@2.4.0_@azure+core-client@1.10.1_@azure+core-rest-pipeline@1.23.0/node_modules/@azure/core-http-compat/dist/esm/util.js
 var originalRequestSymbol = Symbol("Original PipelineRequest");
 var originalClientRequestSymbol = Symbol.for("@azure/core-client original request");
 function toPipelineRequest(webResource, options = {}) {
@@ -37944,7 +37945,7 @@ var HttpHeaders = class HttpHeaders {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+core-http-compat@2.3.2_@azure+core-client@1.10.1_@azure+core-rest-pipeline@1.23.0/node_modules/@azure/core-http-compat/dist/esm/response.js
+//#region node_modules/.pnpm/@azure+core-http-compat@2.4.0_@azure+core-client@1.10.1_@azure+core-rest-pipeline@1.23.0/node_modules/@azure/core-http-compat/dist/esm/response.js
 var originalResponse = Symbol("Original FullOperationResponse");
 /**
 * A helper to convert response objects from the new pipeline back to the old one.
@@ -37990,7 +37991,7 @@ function toPipelineResponse(compatResponse) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-http-compat@2.3.2_@azure+core-client@1.10.1_@azure+core-rest-pipeline@1.23.0/node_modules/@azure/core-http-compat/dist/esm/extendedClient.js
+//#region node_modules/.pnpm/@azure+core-http-compat@2.4.0_@azure+core-client@1.10.1_@azure+core-rest-pipeline@1.23.0/node_modules/@azure/core-http-compat/dist/esm/extendedClient.js
 /**
 * Client to provide compatability between core V1 & V2.
 */
@@ -38024,7 +38025,7 @@ var ExtendedServiceClient = class extends ServiceClient {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+core-http-compat@2.3.2_@azure+core-client@1.10.1_@azure+core-rest-pipeline@1.23.0/node_modules/@azure/core-http-compat/dist/esm/policies/requestPolicyFactoryPolicy.js
+//#region node_modules/.pnpm/@azure+core-http-compat@2.4.0_@azure+core-client@1.10.1_@azure+core-rest-pipeline@1.23.0/node_modules/@azure/core-http-compat/dist/esm/policies/requestPolicyFactoryPolicy.js
 /**
 * An enum for compatibility with RequestPolicy
 */
@@ -38064,7 +38065,7 @@ function createRequestPolicyFactoryPolicy(factories) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-http-compat@2.3.2_@azure+core-client@1.10.1_@azure+core-rest-pipeline@1.23.0/node_modules/@azure/core-http-compat/dist/esm/httpClientAdapter.js
+//#region node_modules/.pnpm/@azure+core-http-compat@2.4.0_@azure+core-client@1.10.1_@azure+core-rest-pipeline@1.23.0/node_modules/@azure/core-http-compat/dist/esm/httpClientAdapter.js
 /**
 * Converts a RequestPolicy based HttpClient to a PipelineRequest based HttpClient.
 * @param requestPolicyClient - A HttpClient compatible with core-http
@@ -38076,7 +38077,7 @@ function convertHttpClient(requestPolicyClient) {
 	} };
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/util.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/util.js
 var nameStartChar = ":A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD";
 nameStartChar + "";
 var nameRegexp = "[" + nameStartChar + "][:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040]*";
@@ -38119,7 +38120,7 @@ var criticalProperties = [
 	"prototype"
 ];
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/validator.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/validator.js
 var defaultOptions$2 = {
 	allowBooleanAttributes: false,
 	unpairedTags: []
@@ -38357,7 +38358,7 @@ function getPositionFromMatch(match) {
 	return match.startIndex + match[1].length;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
 var defaultOnDangerousProperty = (name) => {
 	if (DANGEROUS_PROPERTY_NAMES.includes(name)) return "__" + name;
 	return name;
@@ -38472,6 +38473,7 @@ var buildOptions = function(options) {
 	for (const { value, name } of propertyNameOptions) if (value) validatePropertyName(value, name);
 	if (built.onDangerousProperty === null) built.onDangerousProperty = defaultOnDangerousProperty;
 	built.processEntities = normalizeProcessEntities(built.processEntities);
+	built.unpairedTagsSet = new Set(built.unpairedTags);
 	if (built.stopNodes && Array.isArray(built.stopNodes)) built.stopNodes = built.stopNodes.map((node) => {
 		if (typeof node === "string" && node.startsWith("*.")) return ".." + node.substring(2);
 		return node;
@@ -38479,7 +38481,7 @@ var buildOptions = function(options) {
 	return built;
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
 var METADATA_SYMBOL$1;
 if (typeof Symbol !== "function") METADATA_SYMBOL$1 = "@@xmlMetadata";
 else METADATA_SYMBOL$1 = Symbol("XML Node Metadata");
@@ -38508,7 +38510,7 @@ var XmlNode = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
 var DocTypeReader = class {
 	constructor(options) {
 		this.suppressValidationErr = !options;
@@ -38731,7 +38733,7 @@ function validateEntityName(name) {
 	else throw new Error(`Invalid entity name ${name}`);
 }
 //#endregion
-//#region node_modules/.pnpm/strnum@2.2.2/node_modules/strnum/strnum.js
+//#region node_modules/.pnpm/strnum@2.2.3/node_modules/strnum/strnum.js
 var hexRegex = /^[-+]?0x[a-fA-F0-9]+$/;
 var numRegex = /^([\-\+])?(0*)([0-9]*(\.[0-9]*)?)$/;
 var consider = {
@@ -38832,7 +38834,7 @@ function handleInfinity(str, num, options) {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/ignoreAttributes.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/ignoreAttributes.js
 function getIgnoreAttributesFn$1(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -38844,7 +38846,7 @@ function getIgnoreAttributesFn$1(ignoreAttributes) {
 	return () => false;
 }
 //#endregion
-//#region node_modules/.pnpm/path-expression-matcher@1.2.1/node_modules/path-expression-matcher/src/Expression.js
+//#region node_modules/.pnpm/path-expression-matcher@1.5.0/node_modules/path-expression-matcher/src/Expression.js
 /**
 * Expression - Parses and stores a tag pattern expression
 * 
@@ -38862,10 +38864,11 @@ var Expression = class {
 	* @param {Object} options - Configuration options
 	* @param {string} options.separator - Path separator (default: '.')
 	*/
-	constructor(pattern, options = {}) {
+	constructor(pattern, options = {}, data) {
 		this.pattern = pattern;
 		this.separator = options.separator || ".";
 		this.segments = this._parse(pattern);
+		this.data = data;
 		this._hasDeepWildcard = this.segments.some((seg) => seg.type === "deep-wildcard");
 		this._hasAttributeCondition = this.segments.some((seg) => seg.attrName !== void 0);
 		this._hasPositionSelector = this.segments.some((seg) => seg.position !== void 0);
@@ -38995,58 +38998,357 @@ var Expression = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/path-expression-matcher@1.2.1/node_modules/path-expression-matcher/src/Matcher.js
+//#region node_modules/.pnpm/path-expression-matcher@1.5.0/node_modules/path-expression-matcher/src/ExpressionSet.js
 /**
-* Matcher - Tracks current path in XML/JSON tree and matches against Expressions
-* 
+* ExpressionSet - An indexed collection of Expressions for efficient bulk matching
+*
+* Instead of iterating all expressions on every tag, ExpressionSet pre-indexes
+* them at insertion time by depth and terminal tag name. At match time, only
+* the relevant bucket is evaluated — typically reducing checks from O(E) to O(1)
+* lookup plus O(small bucket) matches.
+*
+* Three buckets are maintained:
+*  - `_byDepthAndTag`  — exact depth + exact tag name  (tightest, used first)
+*  - `_wildcardByDepth` — exact depth + wildcard tag `*` (depth-matched only)
+*  - `_deepWildcards`  — expressions containing `..`  (cannot be depth-indexed)
+*
+* @example
+* import { Expression, ExpressionSet } from 'fast-xml-tagger';
+*
+* // Build once at config time
+* const stopNodes = new ExpressionSet();
+* stopNodes.add(new Expression('root.users.user'));
+* stopNodes.add(new Expression('root.config.setting'));
+* stopNodes.add(new Expression('..script'));
+*
+* // Query on every tag — hot path
+* if (stopNodes.matchesAny(matcher)) { ... }
+*/
+var ExpressionSet = class {
+	constructor() {
+		/** @type {Map<string, import('./Expression.js').default[]>} depth:tag → expressions */
+		this._byDepthAndTag = /* @__PURE__ */ new Map();
+		/** @type {Map<number, import('./Expression.js').default[]>} depth → wildcard-tag expressions */
+		this._wildcardByDepth = /* @__PURE__ */ new Map();
+		/** @type {import('./Expression.js').default[]} expressions containing deep wildcard (..) */
+		this._deepWildcards = [];
+		/** @type {Set<string>} pattern strings already added — used for deduplication */
+		this._patterns = /* @__PURE__ */ new Set();
+		/** @type {boolean} whether the set is sealed against further additions */
+		this._sealed = false;
+	}
+	/**
+	* Add an Expression to the set.
+	* Duplicate patterns (same pattern string) are silently ignored.
+	*
+	* @param {import('./Expression.js').default} expression - A pre-constructed Expression instance
+	* @returns {this} for chaining
+	* @throws {TypeError} if called after seal()
+	*
+	* @example
+	* set.add(new Expression('root.users.user'));
+	* set.add(new Expression('..script'));
+	*/
+	add(expression) {
+		if (this._sealed) throw new TypeError("ExpressionSet is sealed. Create a new ExpressionSet to add more expressions.");
+		if (this._patterns.has(expression.pattern)) return this;
+		this._patterns.add(expression.pattern);
+		if (expression.hasDeepWildcard()) {
+			this._deepWildcards.push(expression);
+			return this;
+		}
+		const depth = expression.length;
+		const tag = expression.segments[expression.segments.length - 1]?.tag;
+		if (!tag || tag === "*") {
+			if (!this._wildcardByDepth.has(depth)) this._wildcardByDepth.set(depth, []);
+			this._wildcardByDepth.get(depth).push(expression);
+		} else {
+			const key = `${depth}:${tag}`;
+			if (!this._byDepthAndTag.has(key)) this._byDepthAndTag.set(key, []);
+			this._byDepthAndTag.get(key).push(expression);
+		}
+		return this;
+	}
+	/**
+	* Add multiple expressions at once.
+	*
+	* @param {import('./Expression.js').default[]} expressions - Array of Expression instances
+	* @returns {this} for chaining
+	*
+	* @example
+	* set.addAll([
+	*   new Expression('root.users.user'),
+	*   new Expression('root.config.setting'),
+	* ]);
+	*/
+	addAll(expressions) {
+		for (const expr of expressions) this.add(expr);
+		return this;
+	}
+	/**
+	* Check whether a pattern string is already present in the set.
+	*
+	* @param {import('./Expression.js').default} expression
+	* @returns {boolean}
+	*/
+	has(expression) {
+		return this._patterns.has(expression.pattern);
+	}
+	/**
+	* Number of expressions in the set.
+	* @type {number}
+	*/
+	get size() {
+		return this._patterns.size;
+	}
+	/**
+	* Seal the set against further modifications.
+	* Useful to prevent accidental mutations after config is built.
+	* Calling add() or addAll() on a sealed set throws a TypeError.
+	*
+	* @returns {this}
+	*/
+	seal() {
+		this._sealed = true;
+		return this;
+	}
+	/**
+	* Whether the set has been sealed.
+	* @type {boolean}
+	*/
+	get isSealed() {
+		return this._sealed;
+	}
+	/**
+	* Test whether the matcher's current path matches any expression in the set.
+	*
+	* Evaluation order (cheapest → most expensive):
+	*  1. Exact depth + tag bucket  — O(1) lookup, typically 0–2 expressions
+	*  2. Depth-only wildcard bucket — O(1) lookup, rare
+	*  3. Deep-wildcard list         — always checked, but usually small
+	*
+	* @param {import('./Matcher.js').default} matcher - Matcher instance (or readOnly view)
+	* @returns {boolean} true if any expression matches the current path
+	*
+	* @example
+	* if (stopNodes.matchesAny(matcher)) {
+	*   // handle stop node
+	* }
+	*/
+	matchesAny(matcher) {
+		return this.findMatch(matcher) !== null;
+	}
+	/**
+	* Find and return the first Expression that matches the matcher's current path.
+	*
+	* Uses the same evaluation order as matchesAny (cheapest → most expensive):
+	*  1. Exact depth + tag bucket
+	*  2. Depth-only wildcard bucket
+	*  3. Deep-wildcard list
+	*
+	* @param {import('./Matcher.js').default} matcher - Matcher instance (or readOnly view)
+	* @returns {import('./Expression.js').default | null} the first matching Expression, or null
+	*
+	* @example
+	* const expr = stopNodes.findMatch(matcher);
+	* if (expr) {
+	*   // access expr.config, expr.pattern, etc.
+	* }
+	*/
+	findMatch(matcher) {
+		const depth = matcher.getDepth();
+		const exactKey = `${depth}:${matcher.getCurrentTag()}`;
+		const exactBucket = this._byDepthAndTag.get(exactKey);
+		if (exactBucket) {
+			for (let i = 0; i < exactBucket.length; i++) if (matcher.matches(exactBucket[i])) return exactBucket[i];
+		}
+		const wildcardBucket = this._wildcardByDepth.get(depth);
+		if (wildcardBucket) {
+			for (let i = 0; i < wildcardBucket.length; i++) if (matcher.matches(wildcardBucket[i])) return wildcardBucket[i];
+		}
+		for (let i = 0; i < this._deepWildcards.length; i++) if (matcher.matches(this._deepWildcards[i])) return this._deepWildcards[i];
+		return null;
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/path-expression-matcher@1.5.0/node_modules/path-expression-matcher/src/Matcher.js
+/**
+* MatcherView - A lightweight read-only view over a Matcher's internal state.
+*
+* Created once by Matcher and reused across all callbacks. Holds a direct
+* reference to the parent Matcher so it always reflects current parser state
+* with zero copying or freezing overhead.
+*
+* Users receive this via {@link Matcher#readOnly} or directly from parser
+* callbacks. It exposes all query and matching methods but has no mutation
+* methods — misuse is caught at the TypeScript level rather than at runtime.
+*
+* @example
+* const matcher = new Matcher();
+* const view = matcher.readOnly();
+*
+* matcher.push("root", {});
+* view.getCurrentTag(); // "root"
+* view.getDepth();      // 1
+*/
+var MatcherView = class {
+	/**
+	* @param {Matcher} matcher - The parent Matcher instance to read from.
+	*/
+	constructor(matcher) {
+		this._matcher = matcher;
+	}
+	/**
+	* Get the path separator used by the parent matcher.
+	* @returns {string}
+	*/
+	get separator() {
+		return this._matcher.separator;
+	}
+	/**
+	* Get current tag name.
+	* @returns {string|undefined}
+	*/
+	getCurrentTag() {
+		const path = this._matcher.path;
+		return path.length > 0 ? path[path.length - 1].tag : void 0;
+	}
+	/**
+	* Get current namespace.
+	* @returns {string|undefined}
+	*/
+	getCurrentNamespace() {
+		const path = this._matcher.path;
+		return path.length > 0 ? path[path.length - 1].namespace : void 0;
+	}
+	/**
+	* Get current node's attribute value.
+	* @param {string} attrName
+	* @returns {*}
+	*/
+	getAttrValue(attrName) {
+		const path = this._matcher.path;
+		if (path.length === 0) return void 0;
+		return path[path.length - 1].values?.[attrName];
+	}
+	/**
+	* Check if current node has an attribute.
+	* @param {string} attrName
+	* @returns {boolean}
+	*/
+	hasAttr(attrName) {
+		const path = this._matcher.path;
+		if (path.length === 0) return false;
+		const current = path[path.length - 1];
+		return current.values !== void 0 && attrName in current.values;
+	}
+	/**
+	* Get current node's sibling position (child index in parent).
+	* @returns {number}
+	*/
+	getPosition() {
+		const path = this._matcher.path;
+		if (path.length === 0) return -1;
+		return path[path.length - 1].position ?? 0;
+	}
+	/**
+	* Get current node's repeat counter (occurrence count of this tag name).
+	* @returns {number}
+	*/
+	getCounter() {
+		const path = this._matcher.path;
+		if (path.length === 0) return -1;
+		return path[path.length - 1].counter ?? 0;
+	}
+	/**
+	* Get current node's sibling index (alias for getPosition).
+	* @returns {number}
+	* @deprecated Use getPosition() or getCounter() instead
+	*/
+	getIndex() {
+		return this.getPosition();
+	}
+	/**
+	* Get current path depth.
+	* @returns {number}
+	*/
+	getDepth() {
+		return this._matcher.path.length;
+	}
+	/**
+	* Get path as string.
+	* @param {string} [separator] - Optional separator (uses default if not provided)
+	* @param {boolean} [includeNamespace=true]
+	* @returns {string}
+	*/
+	toString(separator, includeNamespace = true) {
+		return this._matcher.toString(separator, includeNamespace);
+	}
+	/**
+	* Get path as array of tag names.
+	* @returns {string[]}
+	*/
+	toArray() {
+		return this._matcher.path.map((n) => n.tag);
+	}
+	/**
+	* Match current path against an Expression.
+	* @param {Expression} expression
+	* @returns {boolean}
+	*/
+	matches(expression) {
+		return this._matcher.matches(expression);
+	}
+	/**
+	* Match any expression in the given set against the current path.
+	* @param {ExpressionSet} exprSet
+	* @returns {boolean}
+	*/
+	matchesAny(exprSet) {
+		return exprSet.matchesAny(this._matcher);
+	}
+};
+/**
+* Matcher - Tracks current path in XML/JSON tree and matches against Expressions.
+*
 * The matcher maintains a stack of nodes representing the current path from root to
 * current tag. It only stores attribute values for the current (top) node to minimize
 * memory usage. Sibling tracking is used to auto-calculate position and counter.
-* 
+*
+* Use {@link Matcher#readOnly} to obtain a {@link MatcherView} safe to pass to
+* user callbacks — it always reflects current state with no Proxy overhead.
+*
 * @example
 * const matcher = new Matcher();
 * matcher.push("root", {});
 * matcher.push("users", {});
 * matcher.push("user", { id: "123", type: "admin" });
-* 
+*
 * const expr = new Expression("root.users.user");
 * matcher.matches(expr); // true
 */
-/**
-* Names of methods that mutate Matcher state.
-* Any attempt to call these on a read-only view throws a TypeError.
-* @type {Set<string>}
-*/
-var MUTATING_METHODS = new Set([
-	"push",
-	"pop",
-	"reset",
-	"updateCurrent",
-	"restore"
-]);
 var Matcher = class {
 	/**
-	* Create a new Matcher
-	* @param {Object} options - Configuration options
-	* @param {string} options.separator - Default path separator (default: '.')
+	* Create a new Matcher.
+	* @param {Object} [options={}]
+	* @param {string} [options.separator='.'] - Default path separator
 	*/
 	constructor(options = {}) {
 		this.separator = options.separator || ".";
 		this.path = [];
 		this.siblingStacks = [];
+		this._pathStringCache = null;
+		this._view = new MatcherView(this);
 	}
 	/**
-	* Push a new tag onto the path
-	* @param {string} tagName - Name of the tag
-	* @param {Object} attrValues - Attribute key-value pairs for current node (optional)
-	* @param {string} namespace - Namespace for the tag (optional)
+	* Push a new tag onto the path.
+	* @param {string} tagName
+	* @param {Object|null} [attrValues=null]
+	* @param {string|null} [namespace=null]
 	*/
 	push(tagName, attrValues = null, namespace = null) {
 		this._pathStringCache = null;
-		if (this.path.length > 0) {
-			const prev = this.path[this.path.length - 1];
-			prev.values = void 0;
-		}
+		if (this.path.length > 0) this.path[this.path.length - 1].values = void 0;
 		const currentLevel = this.path.length;
 		if (!this.siblingStacks[currentLevel]) this.siblingStacks[currentLevel] = /* @__PURE__ */ new Map();
 		const siblings = this.siblingStacks[currentLevel];
@@ -39065,20 +39367,20 @@ var Matcher = class {
 		this.path.push(node);
 	}
 	/**
-	* Pop the last tag from the path
+	* Pop the last tag from the path.
 	* @returns {Object|undefined} The popped node
 	*/
 	pop() {
-		if (this.path.length === 0) return;
+		if (this.path.length === 0) return void 0;
 		this._pathStringCache = null;
 		const node = this.path.pop();
 		if (this.siblingStacks.length > this.path.length + 1) this.siblingStacks.length = this.path.length + 1;
 		return node;
 	}
 	/**
-	* Update current node's attribute values
-	* Useful when attributes are parsed after push
-	* @param {Object} attrValues - Attribute values
+	* Update current node's attribute values.
+	* Useful when attributes are parsed after push.
+	* @param {Object} attrValues
 	*/
 	updateCurrent(attrValues) {
 		if (this.path.length > 0) {
@@ -39087,31 +39389,31 @@ var Matcher = class {
 		}
 	}
 	/**
-	* Get current tag name
+	* Get current tag name.
 	* @returns {string|undefined}
 	*/
 	getCurrentTag() {
 		return this.path.length > 0 ? this.path[this.path.length - 1].tag : void 0;
 	}
 	/**
-	* Get current namespace
+	* Get current namespace.
 	* @returns {string|undefined}
 	*/
 	getCurrentNamespace() {
 		return this.path.length > 0 ? this.path[this.path.length - 1].namespace : void 0;
 	}
 	/**
-	* Get current node's attribute value
-	* @param {string} attrName - Attribute name
-	* @returns {*} Attribute value or undefined
+	* Get current node's attribute value.
+	* @param {string} attrName
+	* @returns {*}
 	*/
 	getAttrValue(attrName) {
 		if (this.path.length === 0) return void 0;
 		return this.path[this.path.length - 1].values?.[attrName];
 	}
 	/**
-	* Check if current node has an attribute
-	* @param {string} attrName - Attribute name
+	* Check if current node has an attribute.
+	* @param {string} attrName
 	* @returns {boolean}
 	*/
 	hasAttr(attrName) {
@@ -39120,7 +39422,7 @@ var Matcher = class {
 		return current.values !== void 0 && attrName in current.values;
 	}
 	/**
-	* Get current node's sibling position (child index in parent)
+	* Get current node's sibling position (child index in parent).
 	* @returns {number}
 	*/
 	getPosition() {
@@ -39128,7 +39430,7 @@ var Matcher = class {
 		return this.path[this.path.length - 1].position ?? 0;
 	}
 	/**
-	* Get current node's repeat counter (occurrence count of this tag name)
+	* Get current node's repeat counter (occurrence count of this tag name).
 	* @returns {number}
 	*/
 	getCounter() {
@@ -39136,7 +39438,7 @@ var Matcher = class {
 		return this.path[this.path.length - 1].counter ?? 0;
 	}
 	/**
-	* Get current node's sibling index (alias for getPosition for backward compatibility)
+	* Get current node's sibling index (alias for getPosition).
 	* @returns {number}
 	* @deprecated Use getPosition() or getCounter() instead
 	*/
@@ -39144,37 +39446,37 @@ var Matcher = class {
 		return this.getPosition();
 	}
 	/**
-	* Get current path depth
+	* Get current path depth.
 	* @returns {number}
 	*/
 	getDepth() {
 		return this.path.length;
 	}
 	/**
-	* Get path as string
-	* @param {string} separator - Optional separator (uses default if not provided)
-	* @param {boolean} includeNamespace - Whether to include namespace in output (default: true)
+	* Get path as string.
+	* @param {string} [separator] - Optional separator (uses default if not provided)
+	* @param {boolean} [includeNamespace=true]
 	* @returns {string}
 	*/
 	toString(separator, includeNamespace = true) {
 		const sep = separator || this.separator;
 		if (sep === this.separator && includeNamespace === true) {
-			if (this._pathStringCache !== null && this._pathStringCache !== void 0) return this._pathStringCache;
-			const result = this.path.map((n) => includeNamespace && n.namespace ? `${n.namespace}:${n.tag}` : n.tag).join(sep);
+			if (this._pathStringCache !== null) return this._pathStringCache;
+			const result = this.path.map((n) => n.namespace ? `${n.namespace}:${n.tag}` : n.tag).join(sep);
 			this._pathStringCache = result;
 			return result;
 		}
 		return this.path.map((n) => includeNamespace && n.namespace ? `${n.namespace}:${n.tag}` : n.tag).join(sep);
 	}
 	/**
-	* Get path as array of tag names
+	* Get path as array of tag names.
 	* @returns {string[]}
 	*/
 	toArray() {
 		return this.path.map((n) => n.tag);
 	}
 	/**
-	* Reset the path to empty
+	* Reset the path to empty.
 	*/
 	reset() {
 		this._pathStringCache = null;
@@ -39182,9 +39484,9 @@ var Matcher = class {
 		this.siblingStacks = [];
 	}
 	/**
-	* Match current path against an Expression
-	* @param {Expression} expression - The expression to match against
-	* @returns {boolean} True if current path matches the expression
+	* Match current path against an Expression.
+	* @param {Expression} expression
+	* @returns {boolean}
 	*/
 	matches(expression) {
 		const segments = expression.segments;
@@ -39193,21 +39495,14 @@ var Matcher = class {
 		return this._matchSimple(segments);
 	}
 	/**
-	* Match simple path (no deep wildcards)
 	* @private
 	*/
 	_matchSimple(segments) {
 		if (this.path.length !== segments.length) return false;
-		for (let i = 0; i < segments.length; i++) {
-			const segment = segments[i];
-			const node = this.path[i];
-			const isCurrentNode = i === this.path.length - 1;
-			if (!this._matchSegment(segment, node, isCurrentNode)) return false;
-		}
+		for (let i = 0; i < segments.length; i++) if (!this._matchSegment(segments[i], this.path[i], i === this.path.length - 1)) return false;
 		return true;
 	}
 	/**
-	* Match path with deep wildcards
 	* @private
 	*/
 	_matchWithDeepWildcard(segments) {
@@ -39220,19 +39515,15 @@ var Matcher = class {
 				if (segIdx < 0) return true;
 				const nextSeg = segments[segIdx];
 				let found = false;
-				for (let i = pathIdx; i >= 0; i--) {
-					const isCurrentNode = i === this.path.length - 1;
-					if (this._matchSegment(nextSeg, this.path[i], isCurrentNode)) {
-						pathIdx = i - 1;
-						segIdx--;
-						found = true;
-						break;
-					}
+				for (let i = pathIdx; i >= 0; i--) if (this._matchSegment(nextSeg, this.path[i], i === this.path.length - 1)) {
+					pathIdx = i - 1;
+					segIdx--;
+					found = true;
+					break;
 				}
 				if (!found) return false;
 			} else {
-				const isCurrentNode = pathIdx === this.path.length - 1;
-				if (!this._matchSegment(segment, this.path[pathIdx], isCurrentNode)) return false;
+				if (!this._matchSegment(segment, this.path[pathIdx], pathIdx === this.path.length - 1)) return false;
 				pathIdx--;
 				segIdx--;
 			}
@@ -39240,12 +39531,7 @@ var Matcher = class {
 		return segIdx < 0;
 	}
 	/**
-	* Match a single segment against a node
 	* @private
-	* @param {Object} segment - Segment from Expression
-	* @param {Object} node - Node from path
-	* @param {boolean} isCurrentNode - Whether this is the current (last) node
-	* @returns {boolean}
 	*/
 	_matchSegment(segment, node, isCurrentNode) {
 		if (segment.tag !== "*" && segment.tag !== node.tag) return false;
@@ -39256,8 +39542,7 @@ var Matcher = class {
 			if (!isCurrentNode) return false;
 			if (!node.values || !(segment.attrName in node.values)) return false;
 			if (segment.attrValue !== void 0) {
-				const actualValue = node.values[segment.attrName];
-				if (String(actualValue) !== String(segment.attrValue)) return false;
+				if (String(node.values[segment.attrName]) !== String(segment.attrValue)) return false;
 			}
 		}
 		if (segment.position !== void 0) {
@@ -39266,15 +39551,21 @@ var Matcher = class {
 			if (segment.position === "first" && counter !== 0) return false;
 			else if (segment.position === "odd" && counter % 2 !== 1) return false;
 			else if (segment.position === "even" && counter % 2 !== 0) return false;
-			else if (segment.position === "nth") {
-				if (counter !== segment.positionValue) return false;
-			}
+			else if (segment.position === "nth" && counter !== segment.positionValue) return false;
 		}
 		return true;
 	}
 	/**
-	* Create a snapshot of current state
-	* @returns {Object} State snapshot
+	* Match any expression in the given set against the current path.
+	* @param {ExpressionSet} exprSet
+	* @returns {boolean}
+	*/
+	matchesAny(exprSet) {
+		return exprSet.matchesAny(this);
+	}
+	/**
+	* Create a snapshot of current state.
+	* @returns {Object}
 	*/
 	snapshot() {
 		return {
@@ -39283,8 +39574,8 @@ var Matcher = class {
 		};
 	}
 	/**
-	* Restore state from snapshot
-	* @param {Object} snapshot - State snapshot
+	* Restore state from snapshot.
+	* @param {Object} snapshot
 	*/
 	restore(snapshot) {
 		this._pathStringCache = null;
@@ -39292,48 +39583,27 @@ var Matcher = class {
 		this.siblingStacks = snapshot.siblingStacks.map((map) => new Map(map));
 	}
 	/**
-	* Return a read-only view of this matcher.
+	* Return the read-only {@link MatcherView} for this matcher.
 	*
-	* The returned object exposes all query/inspection methods but throws a
-	* TypeError if any state-mutating method is called (`push`, `pop`, `reset`,
-	* `updateCurrent`, `restore`).  Property reads (e.g. `.path`, `.separator`)
-	* are allowed but the returned arrays/objects are frozen so callers cannot
-	* mutate internal state through them either.
+	* The same instance is returned on every call — no allocation occurs.
+	* It always reflects the current parser state and is safe to pass to
+	* user callbacks without risk of accidental mutation.
 	*
-	* @returns {ReadOnlyMatcher} A proxy that forwards read operations and blocks writes.
+	* @returns {MatcherView}
 	*
 	* @example
-	* const matcher = new Matcher();
-	* matcher.push("root", {});
-	*
-	* const ro = matcher.readOnly();
-	* ro.matches(expr);      // ✓ works
-	* ro.getCurrentTag();    // ✓ works
-	* ro.push("child", {}); // ✗ throws TypeError
-	* ro.reset();            // ✗ throws TypeError
+	* const view = matcher.readOnly();
+	* // pass view to callbacks — it stays in sync automatically
+	* view.matches(expr);       // ✓
+	* view.getCurrentTag();     // ✓
+	* // view.push(...)         // ✗ method does not exist — caught by TypeScript
 	*/
 	readOnly() {
-		return new Proxy(this, {
-			get(target, prop, receiver) {
-				if (MUTATING_METHODS.has(prop)) return () => {
-					throw new TypeError(`Cannot call '${prop}' on a read-only Matcher. Obtain a writable instance to mutate state.`);
-				};
-				const value = Reflect.get(target, prop, receiver);
-				if (prop === "path" || prop === "siblingStacks") return Object.freeze(Array.isArray(value) ? value.map((item) => item instanceof Map ? Object.freeze(new Map(item)) : Object.freeze({ ...item })) : value);
-				if (typeof value === "function") return value.bind(target);
-				return value;
-			},
-			set(_target, prop) {
-				throw new TypeError(`Cannot set property '${String(prop)}' on a read-only Matcher.`);
-			},
-			deleteProperty(_target, prop) {
-				throw new TypeError(`Cannot delete property '${String(prop)}' from a read-only Matcher.`);
-			}
-		});
+		return this._view;
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
 /**
 * Extract raw attributes (without prefix) from prefixed attribute map
 * @param {object} prefixedAttrs - Attributes with prefix from buildAttributesMap
@@ -39450,13 +39720,15 @@ var OrderedObjParser = class {
 		this.matcher = new Matcher();
 		this.readonlyMatcher = this.matcher.readOnly();
 		this.isCurrentNodeStopNode = false;
-		if (this.options.stopNodes && this.options.stopNodes.length > 0) {
-			this.stopNodeExpressions = [];
-			for (let i = 0; i < this.options.stopNodes.length; i++) {
-				const stopNodeExp = this.options.stopNodes[i];
-				if (typeof stopNodeExp === "string") this.stopNodeExpressions.push(new Expression(stopNodeExp));
-				else if (stopNodeExp instanceof Expression) this.stopNodeExpressions.push(stopNodeExp);
+		this.stopNodeExpressionsSet = new ExpressionSet();
+		const stopNodesOpts = this.options.stopNodes;
+		if (stopNodesOpts && stopNodesOpts.length > 0) {
+			for (let i = 0; i < stopNodesOpts.length; i++) {
+				const stopNodeExp = stopNodesOpts[i];
+				if (typeof stopNodeExp === "string") this.stopNodeExpressionsSet.add(new Expression(stopNodeExp));
+				else if (stopNodeExp instanceof Expression) this.stopNodeExpressionsSet.add(stopNodeExp);
 			}
+			this.stopNodeExpressionsSet.seal();
 		}
 	}
 };
@@ -39481,16 +39753,17 @@ function addExternalEntities(externalEntities) {
 * @param {boolean} escapeEntities
 */
 function parseTextData(val, tagName, jPath, dontTrim, hasAttributes, isLeafNode, escapeEntities) {
+	const options = this.options;
 	if (val !== void 0) {
-		if (this.options.trimValues && !dontTrim) val = val.trim();
+		if (options.trimValues && !dontTrim) val = val.trim();
 		if (val.length > 0) {
 			if (!escapeEntities) val = this.replaceEntitiesValue(val, tagName, jPath);
-			const jPathOrMatcher = this.options.jPath ? jPath.toString() : jPath;
-			const newval = this.options.tagValueProcessor(tagName, val, jPathOrMatcher, hasAttributes, isLeafNode);
+			const jPathOrMatcher = options.jPath ? jPath.toString() : jPath;
+			const newval = options.tagValueProcessor(tagName, val, jPathOrMatcher, hasAttributes, isLeafNode);
 			if (newval === null || newval === void 0) return val;
 			else if (typeof newval !== typeof val || newval !== val) return newval;
-			else if (this.options.trimValues) return parseValue(val, this.options.parseTagValue, this.options.numberParseOptions);
-			else if (val.trim() === val) return parseValue(val, this.options.parseTagValue, this.options.numberParseOptions);
+			else if (options.trimValues) return parseValue(val, options.parseTagValue, options.numberParseOptions);
+			else if (val.trim() === val) return parseValue(val, options.parseTagValue, options.numberParseOptions);
 			else return val;
 		}
 	}
@@ -39506,7 +39779,8 @@ function resolveNameSpace(tagname) {
 }
 var attrsRegx = /* @__PURE__ */ new RegExp("([^\\s=]+)\\s*(=\\s*(['\"])([\\s\\S]*?)\\3)?", "gm");
 function buildAttributesMap(attrStr, jPath, tagName) {
-	if (this.options.ignoreAttributes !== true && typeof attrStr === "string") {
+	const options = this.options;
+	if (options.ignoreAttributes !== true && typeof attrStr === "string") {
 		const matches = getAllMatches(attrStr, attrsRegx);
 		const len = matches.length;
 		const attrs = {};
@@ -39518,7 +39792,7 @@ function buildAttributesMap(attrStr, jPath, tagName) {
 			const oldVal = matches[i][4];
 			if (attrName.length && oldVal !== void 0) {
 				let val = oldVal;
-				if (this.options.trimValues) val = val.trim();
+				if (options.trimValues) val = val.trim();
 				val = this.replaceEntitiesValue(val, tagName, this.readonlyMatcher);
 				processedVals[i] = val;
 				rawAttrsForMatcher[attrName] = val;
@@ -39526,32 +39800,32 @@ function buildAttributesMap(attrStr, jPath, tagName) {
 			}
 		}
 		if (hasRawAttrs && typeof jPath === "object" && jPath.updateCurrent) jPath.updateCurrent(rawAttrsForMatcher);
-		const jPathStr = this.options.jPath ? jPath.toString() : this.readonlyMatcher;
+		const jPathStr = options.jPath ? jPath.toString() : this.readonlyMatcher;
 		let hasAttrs = false;
 		for (let i = 0; i < len; i++) {
 			const attrName = this.resolveNameSpace(matches[i][1]);
 			if (this.ignoreAttributesFn(attrName, jPathStr)) continue;
-			let aName = this.options.attributeNamePrefix + attrName;
+			let aName = options.attributeNamePrefix + attrName;
 			if (attrName.length) {
-				if (this.options.transformAttributeName) aName = this.options.transformAttributeName(aName);
-				aName = sanitizeName(aName, this.options);
+				if (options.transformAttributeName) aName = options.transformAttributeName(aName);
+				aName = sanitizeName(aName, options);
 				if (matches[i][4] !== void 0) {
 					const oldVal = processedVals[i];
-					const newVal = this.options.attributeValueProcessor(attrName, oldVal, jPathStr);
+					const newVal = options.attributeValueProcessor(attrName, oldVal, jPathStr);
 					if (newVal === null || newVal === void 0) attrs[aName] = oldVal;
 					else if (typeof newVal !== typeof oldVal || newVal !== oldVal) attrs[aName] = newVal;
-					else attrs[aName] = parseValue(oldVal, this.options.parseAttributeValue, this.options.numberParseOptions);
+					else attrs[aName] = parseValue(oldVal, options.parseAttributeValue, options.numberParseOptions);
 					hasAttrs = true;
-				} else if (this.options.allowBooleanAttributes) {
+				} else if (options.allowBooleanAttributes) {
 					attrs[aName] = true;
 					hasAttrs = true;
 				}
 			}
 		}
 		if (!hasAttrs) return;
-		if (this.options.attributesGroupName) {
+		if (options.attributesGroupName) {
 			const attrCollection = {};
-			attrCollection[this.options.attributesGroupName] = attrs;
+			attrCollection[options.attributesGroupName] = attrs;
 			return attrCollection;
 		}
 		return attrs;
@@ -39565,144 +39839,152 @@ var parseXml = function(xmlData) {
 	this.matcher.reset();
 	this.entityExpansionCount = 0;
 	this.currentExpandedLength = 0;
-	const docTypeReader = new DocTypeReader(this.options.processEntities);
-	for (let i = 0; i < xmlData.length; i++) if (xmlData[i] === "<") if (xmlData[i + 1] === "/") {
-		const closeIndex = findClosingIndex(xmlData, ">", i, "Closing Tag is not closed.");
-		let tagName = xmlData.substring(i + 2, closeIndex).trim();
-		if (this.options.removeNSPrefix) {
-			const colonIndex = tagName.indexOf(":");
-			if (colonIndex !== -1) tagName = tagName.substr(colonIndex + 1);
-		}
-		tagName = transformTagName(this.options.transformTagName, tagName, "", this.options).tagName;
-		if (currentNode) textData = this.saveTextToParentTag(textData, currentNode, this.readonlyMatcher);
-		const lastTagName = this.matcher.getCurrentTag();
-		if (tagName && this.options.unpairedTags.indexOf(tagName) !== -1) throw new Error(`Unpaired tag can not be used as closing tag: </${tagName}>`);
-		if (lastTagName && this.options.unpairedTags.indexOf(lastTagName) !== -1) {
-			this.matcher.pop();
-			this.tagsNodeStack.pop();
-		}
-		this.matcher.pop();
-		this.isCurrentNodeStopNode = false;
-		currentNode = this.tagsNodeStack.pop();
-		textData = "";
-		i = closeIndex;
-	} else if (xmlData[i + 1] === "?") {
-		let tagData = readTagExp(xmlData, i, false, "?>");
-		if (!tagData) throw new Error("Pi Tag is not closed.");
-		textData = this.saveTextToParentTag(textData, currentNode, this.readonlyMatcher);
-		if (this.options.ignoreDeclaration && tagData.tagName === "?xml" || this.options.ignorePiTags) {} else {
-			const childNode = new XmlNode(tagData.tagName);
-			childNode.add(this.options.textNodeName, "");
-			if (tagData.tagName !== tagData.tagExp && tagData.attrExpPresent) childNode[":@"] = this.buildAttributesMap(tagData.tagExp, this.matcher, tagData.tagName);
-			this.addChild(currentNode, childNode, this.readonlyMatcher, i);
-		}
-		i = tagData.closeIndex + 1;
-	} else if (xmlData.substr(i + 1, 3) === "!--") {
-		const endIndex = findClosingIndex(xmlData, "-->", i + 4, "Comment is not closed.");
-		if (this.options.commentPropName) {
-			const comment = xmlData.substring(i + 4, endIndex - 2);
-			textData = this.saveTextToParentTag(textData, currentNode, this.readonlyMatcher);
-			currentNode.add(this.options.commentPropName, [{ [this.options.textNodeName]: comment }]);
-		}
-		i = endIndex;
-	} else if (xmlData.substr(i + 1, 2) === "!D") {
-		const result = docTypeReader.readDocType(xmlData, i);
-		this.docTypeEntities = result.entities;
-		i = result.i;
-	} else if (xmlData.substr(i + 1, 2) === "![") {
-		const closeIndex = findClosingIndex(xmlData, "]]>", i, "CDATA is not closed.") - 2;
-		const tagExp = xmlData.substring(i + 9, closeIndex);
-		textData = this.saveTextToParentTag(textData, currentNode, this.readonlyMatcher);
-		let val = this.parseTextData(tagExp, currentNode.tagname, this.readonlyMatcher, true, false, true, true);
-		if (val == void 0) val = "";
-		if (this.options.cdataPropName) currentNode.add(this.options.cdataPropName, [{ [this.options.textNodeName]: tagExp }]);
-		else currentNode.add(this.options.textNodeName, val);
-		i = closeIndex + 2;
-	} else {
-		let result = readTagExp(xmlData, i, this.options.removeNSPrefix);
-		if (!result) {
-			const context = xmlData.substring(Math.max(0, i - 50), Math.min(xmlData.length, i + 50));
-			throw new Error(`readTagExp returned undefined at position ${i}. Context: "${context}"`);
-		}
-		let tagName = result.tagName;
-		const rawTagName = result.rawTagName;
-		let tagExp = result.tagExp;
-		let attrExpPresent = result.attrExpPresent;
-		let closeIndex = result.closeIndex;
-		({tagName, tagExp} = transformTagName(this.options.transformTagName, tagName, tagExp, this.options));
-		if (this.options.strictReservedNames && (tagName === this.options.commentPropName || tagName === this.options.cdataPropName || tagName === this.options.textNodeName || tagName === this.options.attributesGroupName)) throw new Error(`Invalid tag name: ${tagName}`);
-		if (currentNode && textData) {
-			if (currentNode.tagname !== "!xml") textData = this.saveTextToParentTag(textData, currentNode, this.readonlyMatcher, false);
-		}
-		const lastTag = currentNode;
-		if (lastTag && this.options.unpairedTags.indexOf(lastTag.tagname) !== -1) {
-			currentNode = this.tagsNodeStack.pop();
-			this.matcher.pop();
-		}
-		let isSelfClosing = false;
-		if (tagExp.length > 0 && tagExp.lastIndexOf("/") === tagExp.length - 1) {
-			isSelfClosing = true;
-			if (tagName[tagName.length - 1] === "/") {
-				tagName = tagName.substr(0, tagName.length - 1);
-				tagExp = tagName;
-			} else tagExp = tagExp.substr(0, tagExp.length - 1);
-			attrExpPresent = tagName !== tagExp;
-		}
-		let prefixedAttrs = null;
-		let namespace = void 0;
-		namespace = extractNamespace(rawTagName);
-		if (tagName !== xmlObj.tagname) this.matcher.push(tagName, {}, namespace);
-		if (tagName !== tagExp && attrExpPresent) {
-			prefixedAttrs = this.buildAttributesMap(tagExp, this.matcher, tagName);
-			if (prefixedAttrs) extractRawAttributes(prefixedAttrs, this.options);
-		}
-		if (tagName !== xmlObj.tagname) this.isCurrentNodeStopNode = this.isItStopNode(this.stopNodeExpressions, this.matcher);
-		const startIndex = i;
-		if (this.isCurrentNodeStopNode) {
-			let tagContent = "";
-			if (isSelfClosing) i = result.closeIndex;
-			else if (this.options.unpairedTags.indexOf(tagName) !== -1) i = result.closeIndex;
-			else {
-				const result = this.readStopNodeData(xmlData, rawTagName, closeIndex + 1);
-				if (!result) throw new Error(`Unexpected end of ${rawTagName}`);
-				i = result.i;
-				tagContent = result.tagContent;
+	this.docTypeEntitiesKeys = [];
+	this.lastEntitiesKeys = Object.keys(this.lastEntities);
+	this.htmlEntitiesKeys = this.options.htmlEntities ? Object.keys(this.htmlEntities) : [];
+	const options = this.options;
+	const docTypeReader = new DocTypeReader(options.processEntities);
+	const xmlLen = xmlData.length;
+	for (let i = 0; i < xmlLen; i++) if (xmlData[i] === "<") {
+		const c1 = xmlData.charCodeAt(i + 1);
+		if (c1 === 47) {
+			const closeIndex = findClosingIndex(xmlData, ">", i, "Closing Tag is not closed.");
+			let tagName = xmlData.substring(i + 2, closeIndex).trim();
+			if (options.removeNSPrefix) {
+				const colonIndex = tagName.indexOf(":");
+				if (colonIndex !== -1) tagName = tagName.substr(colonIndex + 1);
 			}
-			const childNode = new XmlNode(tagName);
-			if (prefixedAttrs) childNode[":@"] = prefixedAttrs;
-			childNode.add(this.options.textNodeName, tagContent);
+			tagName = transformTagName(options.transformTagName, tagName, "", options).tagName;
+			if (currentNode) textData = this.saveTextToParentTag(textData, currentNode, this.readonlyMatcher);
+			const lastTagName = this.matcher.getCurrentTag();
+			if (tagName && options.unpairedTagsSet.has(tagName)) throw new Error(`Unpaired tag can not be used as closing tag: </${tagName}>`);
+			if (lastTagName && options.unpairedTagsSet.has(lastTagName)) {
+				this.matcher.pop();
+				this.tagsNodeStack.pop();
+			}
 			this.matcher.pop();
 			this.isCurrentNodeStopNode = false;
-			this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
-		} else {
-			if (isSelfClosing) {
-				({tagName, tagExp} = transformTagName(this.options.transformTagName, tagName, tagExp, this.options));
-				const childNode = new XmlNode(tagName);
-				if (prefixedAttrs) childNode[":@"] = prefixedAttrs;
-				this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
-				this.matcher.pop();
-				this.isCurrentNodeStopNode = false;
-			} else if (this.options.unpairedTags.indexOf(tagName) !== -1) {
-				const childNode = new XmlNode(tagName);
-				if (prefixedAttrs) childNode[":@"] = prefixedAttrs;
-				this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
-				this.matcher.pop();
-				this.isCurrentNodeStopNode = false;
-				i = result.closeIndex;
-				continue;
-			} else {
-				const childNode = new XmlNode(tagName);
-				if (this.tagsNodeStack.length > this.options.maxNestedTags) throw new Error("Maximum nested tags exceeded");
-				this.tagsNodeStack.push(currentNode);
-				if (prefixedAttrs) childNode[":@"] = prefixedAttrs;
-				this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
-				currentNode = childNode;
-			}
+			currentNode = this.tagsNodeStack.pop();
 			textData = "";
 			i = closeIndex;
+		} else if (c1 === 63) {
+			let tagData = readTagExp(xmlData, i, false, "?>");
+			if (!tagData) throw new Error("Pi Tag is not closed.");
+			textData = this.saveTextToParentTag(textData, currentNode, this.readonlyMatcher);
+			if (options.ignoreDeclaration && tagData.tagName === "?xml" || options.ignorePiTags) {} else {
+				const childNode = new XmlNode(tagData.tagName);
+				childNode.add(options.textNodeName, "");
+				if (tagData.tagName !== tagData.tagExp && tagData.attrExpPresent) childNode[":@"] = this.buildAttributesMap(tagData.tagExp, this.matcher, tagData.tagName);
+				this.addChild(currentNode, childNode, this.readonlyMatcher, i);
+			}
+			i = tagData.closeIndex + 1;
+		} else if (c1 === 33 && xmlData.charCodeAt(i + 2) === 45 && xmlData.charCodeAt(i + 3) === 45) {
+			const endIndex = findClosingIndex(xmlData, "-->", i + 4, "Comment is not closed.");
+			if (options.commentPropName) {
+				const comment = xmlData.substring(i + 4, endIndex - 2);
+				textData = this.saveTextToParentTag(textData, currentNode, this.readonlyMatcher);
+				currentNode.add(options.commentPropName, [{ [options.textNodeName]: comment }]);
+			}
+			i = endIndex;
+		} else if (c1 === 33 && xmlData.charCodeAt(i + 2) === 68) {
+			const result = docTypeReader.readDocType(xmlData, i);
+			this.docTypeEntities = result.entities;
+			this.docTypeEntitiesKeys = Object.keys(this.docTypeEntities) || [];
+			i = result.i;
+		} else if (c1 === 33 && xmlData.charCodeAt(i + 2) === 91) {
+			const closeIndex = findClosingIndex(xmlData, "]]>", i, "CDATA is not closed.") - 2;
+			const tagExp = xmlData.substring(i + 9, closeIndex);
+			textData = this.saveTextToParentTag(textData, currentNode, this.readonlyMatcher);
+			let val = this.parseTextData(tagExp, currentNode.tagname, this.readonlyMatcher, true, false, true, true);
+			if (val == void 0) val = "";
+			if (options.cdataPropName) currentNode.add(options.cdataPropName, [{ [options.textNodeName]: tagExp }]);
+			else currentNode.add(options.textNodeName, val);
+			i = closeIndex + 2;
+		} else {
+			let result = readTagExp(xmlData, i, options.removeNSPrefix);
+			if (!result) {
+				const context = xmlData.substring(Math.max(0, i - 50), Math.min(xmlLen, i + 50));
+				throw new Error(`readTagExp returned undefined at position ${i}. Context: "${context}"`);
+			}
+			let tagName = result.tagName;
+			const rawTagName = result.rawTagName;
+			let tagExp = result.tagExp;
+			let attrExpPresent = result.attrExpPresent;
+			let closeIndex = result.closeIndex;
+			({tagName, tagExp} = transformTagName(options.transformTagName, tagName, tagExp, options));
+			if (options.strictReservedNames && (tagName === options.commentPropName || tagName === options.cdataPropName || tagName === options.textNodeName || tagName === options.attributesGroupName)) throw new Error(`Invalid tag name: ${tagName}`);
+			if (currentNode && textData) {
+				if (currentNode.tagname !== "!xml") textData = this.saveTextToParentTag(textData, currentNode, this.readonlyMatcher, false);
+			}
+			const lastTag = currentNode;
+			if (lastTag && options.unpairedTagsSet.has(lastTag.tagname)) {
+				currentNode = this.tagsNodeStack.pop();
+				this.matcher.pop();
+			}
+			let isSelfClosing = false;
+			if (tagExp.length > 0 && tagExp.lastIndexOf("/") === tagExp.length - 1) {
+				isSelfClosing = true;
+				if (tagName[tagName.length - 1] === "/") {
+					tagName = tagName.substr(0, tagName.length - 1);
+					tagExp = tagName;
+				} else tagExp = tagExp.substr(0, tagExp.length - 1);
+				attrExpPresent = tagName !== tagExp;
+			}
+			let prefixedAttrs = null;
+			let namespace = void 0;
+			namespace = extractNamespace(rawTagName);
+			if (tagName !== xmlObj.tagname) this.matcher.push(tagName, {}, namespace);
+			if (tagName !== tagExp && attrExpPresent) {
+				prefixedAttrs = this.buildAttributesMap(tagExp, this.matcher, tagName);
+				if (prefixedAttrs) extractRawAttributes(prefixedAttrs, options);
+			}
+			if (tagName !== xmlObj.tagname) this.isCurrentNodeStopNode = this.isItStopNode();
+			const startIndex = i;
+			if (this.isCurrentNodeStopNode) {
+				let tagContent = "";
+				if (isSelfClosing) i = result.closeIndex;
+				else if (options.unpairedTagsSet.has(tagName)) i = result.closeIndex;
+				else {
+					const result = this.readStopNodeData(xmlData, rawTagName, closeIndex + 1);
+					if (!result) throw new Error(`Unexpected end of ${rawTagName}`);
+					i = result.i;
+					tagContent = result.tagContent;
+				}
+				const childNode = new XmlNode(tagName);
+				if (prefixedAttrs) childNode[":@"] = prefixedAttrs;
+				childNode.add(options.textNodeName, tagContent);
+				this.matcher.pop();
+				this.isCurrentNodeStopNode = false;
+				this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
+			} else {
+				if (isSelfClosing) {
+					({tagName, tagExp} = transformTagName(options.transformTagName, tagName, tagExp, options));
+					const childNode = new XmlNode(tagName);
+					if (prefixedAttrs) childNode[":@"] = prefixedAttrs;
+					this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
+					this.matcher.pop();
+					this.isCurrentNodeStopNode = false;
+				} else if (options.unpairedTagsSet.has(tagName)) {
+					const childNode = new XmlNode(tagName);
+					if (prefixedAttrs) childNode[":@"] = prefixedAttrs;
+					this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
+					this.matcher.pop();
+					this.isCurrentNodeStopNode = false;
+					i = result.closeIndex;
+					continue;
+				} else {
+					const childNode = new XmlNode(tagName);
+					if (this.tagsNodeStack.length > options.maxNestedTags) throw new Error("Maximum nested tags exceeded");
+					this.tagsNodeStack.push(currentNode);
+					if (prefixedAttrs) childNode[":@"] = prefixedAttrs;
+					this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
+					currentNode = childNode;
+				}
+				textData = "";
+				i = closeIndex;
+			}
 		}
-	}
-	else textData += xmlData[i];
+	} else textData += xmlData[i];
 	return xmlObj.child;
 };
 function addChild(currentNode, childNode, matcher, startIndex) {
@@ -39730,7 +40012,7 @@ function replaceEntitiesValue$1(val, tagName, jPath) {
 		const jPathOrMatcher = this.options.jPath ? jPath.toString() : jPath;
 		if (!entityConfig.tagFilter(tagName, jPathOrMatcher)) return val;
 	}
-	for (const entityName of Object.keys(this.docTypeEntities)) {
+	for (const entityName of this.docTypeEntitiesKeys) {
 		const entity = this.docTypeEntities[entityName];
 		const matches = val.match(entity.regx);
 		if (matches) {
@@ -39745,7 +40027,7 @@ function replaceEntitiesValue$1(val, tagName, jPath) {
 		}
 	}
 	if (val.indexOf("&") === -1) return val;
-	for (const entityName of Object.keys(this.lastEntities)) {
+	for (const entityName of this.lastEntitiesKeys) {
 		const entity = this.lastEntities[entityName];
 		const matches = val.match(entity.regex);
 		if (matches) {
@@ -39755,7 +40037,7 @@ function replaceEntitiesValue$1(val, tagName, jPath) {
 		val = val.replace(entity.regex, entity.val);
 	}
 	if (val.indexOf("&") === -1) return val;
-	if (this.options.htmlEntities) for (const entityName of Object.keys(this.htmlEntities)) {
+	for (const entityName of this.htmlEntitiesKeys) {
 		const entity = this.htmlEntities[entityName];
 		const matches = val.match(entity.regex);
 		if (matches) {
@@ -39780,10 +40062,9 @@ function saveTextToParentTag(textData, parentNode, matcher, isLeafNode) {
 * @param {Array<Expression>} stopNodeExpressions - Array of compiled Expression objects
 * @param {Matcher} matcher - Current path matcher
 */
-function isItStopNode(stopNodeExpressions, matcher) {
-	if (!stopNodeExpressions || stopNodeExpressions.length === 0) return false;
-	for (let i = 0; i < stopNodeExpressions.length; i++) if (matcher.matches(stopNodeExpressions[i])) return true;
-	return false;
+function isItStopNode() {
+	if (this.stopNodeExpressionsSet.size === 0) return false;
+	return this.matcher.matchesAny(this.stopNodeExpressionsSet);
 }
 /**
 * Returns the tag Expression and where it is ending handling single-double quotes situation
@@ -39792,30 +40073,41 @@ function isItStopNode(stopNodeExpressions, matcher) {
 * @returns 
 */
 function tagExpWithClosingIndex(xmlData, i, closingChar = ">") {
-	let attrBoundary;
-	let tagExp = "";
-	for (let index = i; index < xmlData.length; index++) {
-		let ch = xmlData[index];
+	let attrBoundary = 0;
+	const chars = [];
+	const len = xmlData.length;
+	const closeCode0 = closingChar.charCodeAt(0);
+	const closeCode1 = closingChar.length > 1 ? closingChar.charCodeAt(1) : -1;
+	for (let index = i; index < len; index++) {
+		const code = xmlData.charCodeAt(index);
 		if (attrBoundary) {
-			if (ch === attrBoundary) attrBoundary = "";
-		} else if (ch === "\"" || ch === "'") attrBoundary = ch;
-		else if (ch === closingChar[0]) if (closingChar[1]) {
-			if (xmlData[index + 1] === closingChar[1]) return {
-				data: tagExp,
+			if (code === attrBoundary) attrBoundary = 0;
+		} else if (code === 34 || code === 39) attrBoundary = code;
+		else if (code === closeCode0) if (closeCode1 !== -1) {
+			if (xmlData.charCodeAt(index + 1) === closeCode1) return {
+				data: String.fromCharCode(...chars),
 				index
 			};
 		} else return {
-			data: tagExp,
+			data: String.fromCharCode(...chars),
 			index
 		};
-		else if (ch === "	") ch = " ";
-		tagExp += ch;
+		else if (code === 9) {
+			chars.push(32);
+			continue;
+		}
+		chars.push(code);
 	}
 }
 function findClosingIndex(xmlData, str, i, errMsg) {
 	const closingIndex = xmlData.indexOf(str, i);
 	if (closingIndex === -1) throw new Error(errMsg);
 	else return closingIndex + str.length - 1;
+}
+function findClosingChar(xmlData, char, i, errMsg) {
+	const closingIndex = xmlData.indexOf(char, i);
+	if (closingIndex === -1) throw new Error(errMsg);
+	return closingIndex;
 }
 function readTagExp(xmlData, i, removeNSPrefix, closingChar = ">") {
 	const result = tagExpWithClosingIndex(xmlData, i + 1, closingChar);
@@ -39854,24 +40146,28 @@ function readTagExp(xmlData, i, removeNSPrefix, closingChar = ">") {
 function readStopNodeData(xmlData, tagName, i) {
 	const startIndex = i;
 	let openTagCount = 1;
-	for (; i < xmlData.length; i++) if (xmlData[i] === "<") if (xmlData[i + 1] === "/") {
-		const closeIndex = findClosingIndex(xmlData, ">", i, `${tagName} is not closed`);
-		if (xmlData.substring(i + 2, closeIndex).trim() === tagName) {
-			openTagCount--;
-			if (openTagCount === 0) return {
-				tagContent: xmlData.substring(startIndex, i),
-				i: closeIndex
-			};
-		}
-		i = closeIndex;
-	} else if (xmlData[i + 1] === "?") i = findClosingIndex(xmlData, "?>", i + 1, "StopNode is not closed.");
-	else if (xmlData.substr(i + 1, 3) === "!--") i = findClosingIndex(xmlData, "-->", i + 3, "StopNode is not closed.");
-	else if (xmlData.substr(i + 1, 2) === "![") i = findClosingIndex(xmlData, "]]>", i, "StopNode is not closed.") - 2;
-	else {
-		const tagData = readTagExp(xmlData, i, ">");
-		if (tagData) {
-			if ((tagData && tagData.tagName) === tagName && tagData.tagExp[tagData.tagExp.length - 1] !== "/") openTagCount++;
-			i = tagData.closeIndex;
+	const xmllen = xmlData.length;
+	for (; i < xmllen; i++) if (xmlData[i] === "<") {
+		const c1 = xmlData.charCodeAt(i + 1);
+		if (c1 === 47) {
+			const closeIndex = findClosingChar(xmlData, ">", i, `${tagName} is not closed`);
+			if (xmlData.substring(i + 2, closeIndex).trim() === tagName) {
+				openTagCount--;
+				if (openTagCount === 0) return {
+					tagContent: xmlData.substring(startIndex, i),
+					i: closeIndex
+				};
+			}
+			i = closeIndex;
+		} else if (c1 === 63) i = findClosingIndex(xmlData, "?>", i + 1, "StopNode is not closed.");
+		else if (c1 === 33 && xmlData.charCodeAt(i + 2) === 45 && xmlData.charCodeAt(i + 3) === 45) i = findClosingIndex(xmlData, "-->", i + 3, "StopNode is not closed.");
+		else if (c1 === 33 && xmlData.charCodeAt(i + 2) === 91) i = findClosingIndex(xmlData, "]]>", i, "StopNode is not closed.") - 2;
+		else {
+			const tagData = readTagExp(xmlData, i, ">");
+			if (tagData) {
+				if ((tagData && tagData.tagName) === tagName && tagData.tagExp[tagData.tagExp.length - 1] !== "/") openTagCount++;
+				i = tagData.closeIndex;
+			}
 		}
 	}
 }
@@ -39907,7 +40203,7 @@ function sanitizeName(name, options) {
 	return name;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/xmlparser/node2json.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/xmlparser/node2json.js
 var METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
 /**
 * Helper function to strip attribute prefix from attribute map
@@ -40006,7 +40302,7 @@ function isLeafTag(obj, options) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
 var XMLParser = class {
 	constructor(options) {
 		this.externalEntities = {};
@@ -40565,42 +40861,42 @@ function isAttribute(name) {
 	else return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
 var json2xml_default = Builder;
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.10/node_modules/fast-xml-parser/src/fxp.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/fxp.js
 var XMLValidator = { validate };
 //#endregion
-//#region node_modules/.pnpm/@azure+core-xml@1.5.0/node_modules/@azure/core-xml/dist/esm/xml.js
+//#region node_modules/.pnpm/@azure+core-xml@1.5.1/node_modules/@azure/core-xml/dist/esm/xml.js
 function getCommonOptions(options) {
-	var _a;
 	return {
 		attributesGroupName: "$",
-		textNodeName: (_a = options.xmlCharKey) !== null && _a !== void 0 ? _a : "_",
+		textNodeName: options.xmlCharKey ?? "_",
 		ignoreAttributes: false,
 		suppressBooleanAttributes: false
 	};
 }
 function getSerializerOptions(options = {}) {
-	var _a, _b;
-	return Object.assign(Object.assign({}, getCommonOptions(options)), {
+	return {
+		...getCommonOptions(options),
 		attributeNamePrefix: "@_",
 		format: true,
 		suppressEmptyNode: true,
 		indentBy: "",
-		rootNodeName: (_a = options.rootName) !== null && _a !== void 0 ? _a : "root",
-		cdataPropName: (_b = options.cdataPropName) !== null && _b !== void 0 ? _b : "__cdata"
-	});
+		rootNodeName: options.rootName ?? "root",
+		cdataPropName: options.cdataPropName ?? "__cdata"
+	};
 }
 function getParserOptions(options = {}) {
-	return Object.assign(Object.assign({}, getCommonOptions(options)), {
+	return {
+		...getCommonOptions(options),
 		parseAttributeValue: false,
 		parseTagValue: false,
 		attributeNamePrefix: "",
 		stopNodes: options.stopNodes,
 		processEntities: true,
 		trimValues: false
-	});
+	};
 }
 /**
 * Converts given JSON object to XML string
@@ -40628,7 +40924,7 @@ async function parseXML(str, opts = {}) {
 	if (parsedXml["?xml"]) delete parsedXml["?xml"];
 	if (!opts.includeRoot) for (const key of Object.keys(parsedXml)) {
 		const value = parsedXml[key];
-		return typeof value === "object" ? Object.assign({}, value) : value;
+		return typeof value === "object" ? { ...value } : value;
 	}
 	return parsedXml;
 }
