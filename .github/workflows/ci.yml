@@ -19,6 +19,7 @@ permissions:
   contents: read
 
 env:
+  # HUSKY: "0"
   NPM_CONFIG_FUND: "false"
 
 jobs:
@@ -77,6 +78,8 @@ jobs:
     name: Build the code
     runs-on: ubuntu-latest
     if: ${{ !startsWith(github.head_ref, 'release/') }}
+    permissions:
+      id-token: write
     needs:
       - warm-up-cache
     steps:
@@ -108,27 +111,51 @@ jobs:
           # for gh-cli
           GH_TOKEN: ${{ secrets.TOKEN_TO_TRIGGER_SUBSEQUENT_WORKFLOWS }}
         run: |
+          # temp fix for https://github.com/actions/setup-node/issues/1527
+          git restore --staged pnpm-lock.yaml
+          git restore pnpm-lock.yaml
+
+          git status
+
           if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
             PR_NUMBER="${{ github.event.pull_request.number }}"
             BRANCH="dist-updated-${PR_NUMBER}"
 
+            git status
+
             echo "Detected uncommitted changes after build. Checking in changes on branch: ${BRANCH}"
             git checkout -b ${BRANCH}
 
+            git status
+
             echo "Please see the artifacts of this build for the changes"
             git diff > diff.txt
+
+            git status
 
             echo "Creating commit with changes"
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+            git status
+
             echo "Committing changes in dist/"
+
+            git status
+
             git add dist/
+
+            git status
+
             git commit --message "chore: commiting changes in dist/. See #${PR_NUMBER}"
+
+            git status
 
             # Remove GitHub's merging the tip of dist-updated branch into main's commit
             # it's not needed as we require a branch to up-to-date with main
             git rebase origin/main --autosquash
+
+            git status
 
             echo "Pushing branch"
             git push --force --set-upstream origin HEAD
