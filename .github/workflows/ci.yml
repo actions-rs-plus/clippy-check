@@ -78,6 +78,8 @@ jobs:
     name: Build the code
     runs-on: ubuntu-latest
     if: ${{ !startsWith(github.head_ref, 'release/') }}
+    permissions:
+      id-token: write
     needs:
       - warm-up-cache
     steps:
