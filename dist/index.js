@@ -38028,7 +38028,7 @@ function convertHttpClient(requestPolicyClient) {
 	} };
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/util.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/util.js
 var nameStartChar = ":A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD";
 nameStartChar + "";
 var nameRegexp = "[" + nameStartChar + "][:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040]*";
@@ -38071,7 +38071,7 @@ var criticalProperties = [
 	"prototype"
 ];
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/validator.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/validator.js
 var defaultOptions$2 = {
 	allowBooleanAttributes: false,
 	unpairedTags: []
@@ -38309,7 +38309,7 @@ function getPositionFromMatch(match) {
 	return match.startIndex + match[1].length;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
 var defaultOnDangerousProperty = (name) => {
 	if (DANGEROUS_PROPERTY_NAMES.includes(name)) return "__" + name;
 	return name;
@@ -38432,7 +38432,7 @@ var buildOptions = function(options) {
 	return built;
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
 var METADATA_SYMBOL$1;
 if (typeof Symbol !== "function") METADATA_SYMBOL$1 = "@@xmlMetadata";
 else METADATA_SYMBOL$1 = Symbol("XML Node Metadata");
@@ -38461,7 +38461,7 @@ var XmlNode = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
 var DocTypeReader = class {
 	constructor(options) {
 		this.suppressValidationErr = !options;
@@ -38785,7 +38785,7 @@ function handleInfinity(str, num, options) {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/ignoreAttributes.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/ignoreAttributes.js
 function getIgnoreAttributesFn$1(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -39554,7 +39554,7 @@ var Matcher = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
 /**
 * Extract raw attributes (without prefix) from prefixed attribute map
 * @param {object} prefixedAttrs - Attributes with prefix from buildAttributesMap
@@ -40154,7 +40154,7 @@ function sanitizeName(name, options) {
 	return name;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/xmlparser/node2json.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/xmlparser/node2json.js
 var METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
 /**
 * Helper function to strip attribute prefix from attribute map
@@ -40253,7 +40253,7 @@ function isLeafTag(obj, options) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
 var XMLParser = class {
 	constructor(options) {
 		this.externalEntities = {};
@@ -40812,10 +40812,10 @@ function isAttribute(name) {
 	else return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
 var json2xml_default = Builder;
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.11/node_modules/fast-xml-parser/src/fxp.js
+//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/fxp.js
 var XMLValidator = { validate };
 //#endregion
 //#region node_modules/.pnpm/@azure+core-xml@1.5.1/node_modules/@azure/core-xml/dist/esm/xml.js
