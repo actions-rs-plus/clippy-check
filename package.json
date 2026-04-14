@@ -63,7 +63,7 @@
     },
     "devDependencies": {
         "@actions/io": "3.0.2",
-        "@codecov/vite-plugin": "1.9.1",
+        "@codecov/vite-plugin": "2.0.0",
         "@eslint-community/eslint-plugin-eslint-comments": "4.7.1",
         "@eslint/config-helpers": "0.5.5",
         "@eslint/core": "1.2.1",
