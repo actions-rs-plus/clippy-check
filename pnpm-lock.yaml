@@ -35,8 +35,8 @@ importers:
         specifier: 3.0.2
         version: 3.0.2
       '@codecov/vite-plugin':
-        specifier: 2.0.0
-        version: 2.0.0(vite@8.0.8(@types/node@24.12.2)(jiti@2.6.1)(yaml@2.8.3))
+        specifier: 2.0.1
+        version: 2.0.1(vite@8.0.8(@types/node@24.12.2)(jiti@2.6.1)(yaml@2.8.3))
       '@eslint-community/eslint-plugin-eslint-comments':
         specifier: 4.7.1
         version: 4.7.1(eslint@10.2.0(jiti@2.6.1))
@@ -259,12 +259,12 @@ packages:
     resolution: {integrity: sha512-6zABk/ECA/QYSCQ1NGiVwwbQerUCZ+TQbp64Q3AgmfNvurHH0j8TtXa1qbShXA6qqkpAj4V5W8pP6mLe1mcMqA==}
     engines: {node: '>=18'}
 
-  '@codecov/bundler-plugin-core@2.0.0':
-    resolution: {integrity: sha512-jlt9zzj+R+2cgqkoH+Kq645VNNGjg4GdnBvm3IploLDeiBY5q6OBpoPry7s9s34Tv5HElIGpliGWcHI+cx/LEw==}
+  '@codecov/bundler-plugin-core@2.0.1':
+    resolution: {integrity: sha512-TkdKn/rEwZQ723M7DDUmHe5r0IJa23rUT4TAx5jXmg12wGZGAHGWWU7LKeQsYCsKdLMxK7bLaGk9M++4wSRD5w==}
     engines: {node: '>=20.0.0'}
 
-  '@codecov/vite-plugin@2.0.0':
-    resolution: {integrity: sha512-ME5ZyZ2YZDqk3euJKVsDW+ScsD2CtXGCITlV5PUPTPiRNynFWHass5Bd4GcyeTZDwJM6xZMr848pyDx6Qn1yig==}
+  '@codecov/vite-plugin@2.0.1':
+    resolution: {integrity: sha512-w7nGA9SSc0WECzn05yRrw3uN8293I620Kd9x97I0kyyxUjtWxCMmlgmAbS364gJZYvljd0A6iQyAigVV2dOX9A==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       vite: 8.0.8
@@ -2661,7 +2661,7 @@ snapshots:
 
   '@bcoe/v8-coverage@1.0.2': {}
 
-  '@codecov/bundler-plugin-core@2.0.0':
+  '@codecov/bundler-plugin-core@2.0.1':
     dependencies:
       '@actions/core': 3.0.0
       '@actions/github': 9.1.0
@@ -2670,9 +2670,9 @@ snapshots:
       unplugin: 1.16.1
       zod: 3.25.76
 
-  '@codecov/vite-plugin@2.0.0(vite@8.0.8(@types/node@24.12.2)(jiti@2.6.1)(yaml@2.8.3))':
+  '@codecov/vite-plugin@2.0.1(vite@8.0.8(@types/node@24.12.2)(jiti@2.6.1)(yaml@2.8.3))':
     dependencies:
-      '@codecov/bundler-plugin-core': 2.0.0
+      '@codecov/bundler-plugin-core': 2.0.1
       unplugin: 1.16.1
       vite: 8.0.8(@types/node@24.12.2)(jiti@2.6.1)(yaml@2.8.3)
 
