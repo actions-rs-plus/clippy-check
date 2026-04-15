@@ -38028,7 +38028,7 @@ function convertHttpClient(requestPolicyClient) {
 	} };
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/util.js
+//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/util.js
 var nameStartChar = ":A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD";
 nameStartChar + "";
 var nameRegexp = "[" + nameStartChar + "][:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040]*";
@@ -38071,7 +38071,7 @@ var criticalProperties = [
 	"prototype"
 ];
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/validator.js
+//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/validator.js
 var defaultOptions$2 = {
 	allowBooleanAttributes: false,
 	unpairedTags: []
@@ -38309,7 +38309,7 @@ function getPositionFromMatch(match) {
 	return match.startIndex + match[1].length;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
+//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
 var defaultOnDangerousProperty = (name) => {
 	if (DANGEROUS_PROPERTY_NAMES.includes(name)) return "__" + name;
 	return name;
@@ -38432,7 +38432,7 @@ var buildOptions = function(options) {
 	return built;
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
+//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
 var METADATA_SYMBOL$1;
 if (typeof Symbol !== "function") METADATA_SYMBOL$1 = "@@xmlMetadata";
 else METADATA_SYMBOL$1 = Symbol("XML Node Metadata");
@@ -38461,7 +38461,7 @@ var XmlNode = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
+//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
 var DocTypeReader = class {
 	constructor(options) {
 		this.suppressValidationErr = !options;
@@ -38524,7 +38524,7 @@ var DocTypeReader = class {
 		const startIndex = i;
 		while (i < xmlData.length && !/\s/.test(xmlData[i]) && xmlData[i] !== "\"" && xmlData[i] !== "'") i++;
 		let entityName = xmlData.substring(startIndex, i);
-		validateEntityName(entityName);
+		validateEntityName$1(entityName);
 		i = skipWhitespace(xmlData, i);
 		if (!this.suppressValidationErr) {
 			if (xmlData.substring(i, i + 6).toUpperCase() === "SYSTEM") throw new Error("External entities are not supported");
@@ -38545,7 +38545,7 @@ var DocTypeReader = class {
 		const startIndex = i;
 		while (i < xmlData.length && !/\s/.test(xmlData[i])) i++;
 		let notationName = xmlData.substring(startIndex, i);
-		!this.suppressValidationErr && validateEntityName(notationName);
+		!this.suppressValidationErr && validateEntityName$1(notationName);
 		i = skipWhitespace(xmlData, i);
 		const identifierType = xmlData.substring(i, i + 6).toUpperCase();
 		if (!this.suppressValidationErr && identifierType !== "SYSTEM" && identifierType !== "PUBLIC") throw new Error(`Expected SYSTEM or PUBLIC, found "${identifierType}"`);
@@ -38608,12 +38608,12 @@ var DocTypeReader = class {
 		let startIndex = i;
 		while (i < xmlData.length && !/\s/.test(xmlData[i])) i++;
 		let elementName = xmlData.substring(startIndex, i);
-		validateEntityName(elementName);
+		validateEntityName$1(elementName);
 		i = skipWhitespace(xmlData, i);
 		startIndex = i;
 		while (i < xmlData.length && !/\s/.test(xmlData[i])) i++;
 		let attributeName = xmlData.substring(startIndex, i);
-		if (!validateEntityName(attributeName)) throw new Error(`Invalid attribute name: "${attributeName}"`);
+		if (!validateEntityName$1(attributeName)) throw new Error(`Invalid attribute name: "${attributeName}"`);
 		i = skipWhitespace(xmlData, i);
 		let attributeType = "";
 		if (xmlData.substring(i, i + 8).toUpperCase() === "NOTATION") {
@@ -38628,7 +38628,7 @@ var DocTypeReader = class {
 				while (i < xmlData.length && xmlData[i] !== "|" && xmlData[i] !== ")") i++;
 				let notation = xmlData.substring(startIndex, i);
 				notation = notation.trim();
-				if (!validateEntityName(notation)) throw new Error(`Invalid notation name: "${notation}"`);
+				if (!validateEntityName$1(notation)) throw new Error(`Invalid notation name: "${notation}"`);
 				allowedNotations.push(notation);
 				if (xmlData[i] === "|") {
 					i++;
@@ -38679,7 +38679,7 @@ function hasSeq(data, seq, i) {
 	for (let j = 0; j < seq.length; j++) if (seq[j] !== data[i + j + 1]) return false;
 	return true;
 }
-function validateEntityName(name) {
+function validateEntityName$1(name) {
 	if (isName(name)) return name;
 	else throw new Error(`Invalid entity name ${name}`);
 }
@@ -38785,7 +38785,7 @@ function handleInfinity(str, num, options) {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/ignoreAttributes.js
+//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/ignoreAttributes.js
 function getIgnoreAttributesFn$1(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -39554,7 +39554,437 @@ var Matcher = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
+//#region node_modules/.pnpm/@nodable+entities@1.1.0/node_modules/@nodable/entities/src/EntityReplacer.js
+/**
+* Standard XML entities — always processed after external/system so they
+* cannot be overridden by DOCTYPE, and &amp; is deferred to its own final pass.
+*
+* Each entry: { regex: RegExp, val: string }
+*/
+var DEFAULT_XML_ENTITIES = {
+	apos: {
+		regex: /&(apos|#0*39|#x0*27);/g,
+		val: "'"
+	},
+	gt: {
+		regex: /&(gt|#0*62|#x0*3[Ee]);/g,
+		val: ">"
+	},
+	lt: {
+		regex: /&(lt|#0*60|#x0*3[Cc]);/g,
+		val: "<"
+	},
+	quot: {
+		regex: /&(quot|#0*34|#x0*22);/g,
+		val: "\""
+	}
+};
+/** &amp; — always expanded last to avoid double-expansion. */
+var AMP_ENTITY = {
+	regex: /&(amp|#0*38|#x0*26);/g,
+	val: "&"
+};
+var SPECIAL_CHARS = /* @__PURE__ */ new Set("!?\\\\/[]$%{}^&*()<>|+");
+/**
+* Validate that an entity name contains no regex-special or otherwise
+* dangerous characters.
+* @param {string} name
+* @returns {string} the name, unchanged
+* @throws {Error} on invalid characters
+*/
+function validateEntityName(name) {
+	for (const ch of name) if (SPECIAL_CHARS.has(ch)) throw new Error(`[EntityReplacer] Invalid character '${ch}' in entity name: "${name}"`);
+	return name;
+}
+/**
+* Escape a string for use inside a RegExp character class / alternation.
+*/
+function escapeForRegex(str) {
+	return str.replace(/[.\-+*:]/g, "\\$&");
+}
+/**
+* Resolve a constructor option to an entity table (plain object) or null.
+*/
+function resolveTable(option, builtIn, enabledByDefault = false) {
+	if (option === false || option === null) return null;
+	if (option === true) return builtIn;
+	if (option === void 0) return enabledByDefault ? builtIn : null;
+	if (typeof option === "object") return option;
+	return null;
+}
+/**
+* Convert a category name or array of names into a Set<string>.
+*/
+function resolveApplyLimitsTo(spec) {
+	if (spec === "all") return "all";
+	if (typeof spec === "string") return new Set([spec]);
+	if (Array.isArray(spec)) return new Set(spec);
+	return new Set(["external"]);
+}
+/**
+* Build an entries array from a raw map of name → string|{regex,val}.
+* Skips string values that contain '&' (recursive expansion risk).
+* Normalises DocTypeReader's `regx` spelling to `regex`.
+*
+* @param {object} map
+* @returns {Array<[string, {regex: RegExp, val: string}]>}
+*/
+function buildEntries(map) {
+	const entries = [];
+	for (const key of Object.keys(map)) {
+		const raw = map[key];
+		if (typeof raw === "object" && raw !== null && raw.val !== void 0) entries.push([key, {
+			regex: raw.regex ?? raw.regx,
+			val: raw.val
+		}]);
+		else if (typeof raw === "string") {
+			if (raw.indexOf("&") !== -1) continue;
+			validateEntityName(key);
+			entries.push([key, {
+				regex: new RegExp("&" + escapeForRegex(key) + ";", "g"),
+				val: raw
+			}]);
+		}
+	}
+	return entries;
+}
+/**
+* Standalone, zero-dependency entity replacer for XML/HTML content.
+*
+* Entity categories:
+*  - **persistent external** — configured once, survive across documents.
+*    Set via `setExternalEntities()` or built up via `addExternalEntity()`.
+*  - **input / runtime** — DOCTYPE entities for the *current* document only.
+*    Injected via `addInputEntities()`. Wiped on every `getInstance()` call
+*    so they never leak between documents.
+*
+* Replacement order (fixed):
+*   1. persistent external
+*   2. input / runtime  (DOCTYPE)
+*   3. system           (named entity groups)
+*   4. default          (lt / gt / apos / quot)
+*   5. amp              (&amp; final pass)
+*
+* @example
+* const replacer = new EntityReplacer({ default: true, system: COMMON_HTML });
+* replacer.setExternalEntities({ brand: 'Acme' });
+*
+* // Builder factory calls getInstance() before each document:
+* const instance = replacer.getInstance();
+* // Builder calls addInputEntities() if DOCTYPE entities are present:
+* instance.addInputEntities({ version: '1.0' });
+* instance.replace('&brand; v&version; &lt;'); // 'Acme v1.0 <'
+*/
+var EntityReplacer = class {
+	/**
+	* @param {object} [options]
+	* @param {boolean|object|null} [options.default=true]
+	* @param {boolean|object|null} [options.amp=true]
+	* @param {boolean|object|null} [options.system=false]
+	* @param {number}              [options.maxTotalExpansions=0]
+	* @param {number}              [options.maxExpandedLength=0]
+	* @param {'external'|'all'|string[]} [options.applyLimitsTo='external']
+	* @param {((resolved: string, original: string) => string)|null} [options.postCheck=null]
+	*/
+	constructor(options = {}) {
+		this._defaultTable = resolveTable(options.default, DEFAULT_XML_ENTITIES, true);
+		this._systemTable = resolveTable(options.system, null, false);
+		this._ampEnabled = options.amp !== false && options.amp !== null;
+		this._maxTotalExpansions = options.maxTotalExpansions || 0;
+		this._maxExpandedLength = options.maxExpandedLength || 0;
+		this._applyLimitsTo = resolveApplyLimitsTo(options.applyLimitsTo ?? "external");
+		this._postCheck = typeof options.postCheck === "function" ? options.postCheck : (r) => r;
+		this._limitExternal = this._applyLimitsTo === "all" || this._applyLimitsTo instanceof Set && this._applyLimitsTo.has("external");
+		this._limitSystem = this._applyLimitsTo === "all" || this._applyLimitsTo instanceof Set && this._applyLimitsTo.has("system");
+		this._limitDefault = this._applyLimitsTo === "all" || this._applyLimitsTo instanceof Set && this._applyLimitsTo.has("default");
+		this._defaultEntries = this._defaultTable ? Object.entries(this._defaultTable) : [];
+		this._systemEntries = this._systemTable ? Object.entries(this._systemTable) : [];
+		/** @type {Array<[string, {regex: RegExp, val: string}]>} */
+		this._persistentEntries = [];
+		/** @type {Array<[string, {regex: RegExp, val: string}]>} */
+		this._inputEntries = [];
+		this._totalExpansions = 0;
+		this._expandedLength = 0;
+	}
+	/**
+	* Replace the full set of persistent external entities.
+	* These are never wiped between documents.
+	*
+	* @param {Record<string, string | { regex: RegExp, val: string | Function }>} map
+	*/
+	setExternalEntities(map) {
+		this._persistentEntries = buildEntries(map);
+	}
+	/**
+	* Add a single persistent external entity without disturbing existing ones.
+	*
+	* @param {string} key   — bare entity name, e.g. `'copy'`
+	* @param {string} value — replacement string, e.g. `'©'`
+	*/
+	addExternalEntity(key, value) {
+		validateEntityName(key);
+		if (typeof value === "string" && value.indexOf("&") === -1) this._persistentEntries.push([key, {
+			regex: new RegExp("&" + escapeForRegex(key) + ";", "g"),
+			val: value
+		}]);
+	}
+	/**
+	* Inject DOCTYPE (input/runtime) entities for the current document.
+	* These are stored separately from persistent entities and wiped on the
+	* next `getInstance()` call so they never leak into subsequent documents.
+	*
+	* Also resets per-document expansion counters.
+	*
+	* @param {Record<string, string | { regx?: RegExp, regex?: RegExp, val: string | Function }>} map
+	*/
+	addInputEntities(map) {
+		this._totalExpansions = 0;
+		this._expandedLength = 0;
+		this._inputEntries = buildEntries(map);
+	}
+	/**
+	* Reset all per-document state (input entities + expansion counters) and
+	* return `this`.
+	*
+	* The builder factory calls this each time it creates a new builder instance
+	* so DOCTYPE entities from a previous document are never carried over.
+	*
+	*/
+	reset() {
+		this._inputEntries = [];
+		this._totalExpansions = 0;
+		this._expandedLength = 0;
+	}
+	/**
+	* Replace all entity references in `str`.
+	*
+	* Processing order:
+	*   1. persistent external
+	*   2. input / runtime  (DOCTYPE)
+	*   3. system
+	*   4. default (lt/gt/apos/quot)
+	*   5. amp
+	*   6. postCheck hook
+	*
+	* @param {string} str
+	* @returns {string}
+	*/
+	replace(str) {
+		if (typeof str !== "string" || str.length === 0) return str;
+		if (str.indexOf("&") === -1) return str;
+		const original = str;
+		if (this._persistentEntries.length > 0) str = this._applyEntries(str, this._persistentEntries, this._limitExternal);
+		if (this._inputEntries.length > 0 && str.indexOf("&") !== -1) str = this._applyEntries(str, this._inputEntries, this._limitExternal);
+		if (this._defaultEntries.length > 0 && str.indexOf("&") !== -1) str = this._applyEntries(str, this._defaultEntries, this._limitDefault);
+		if (this._systemEntries.length > 0 && str.indexOf("&") !== -1) str = this._applyEntries(str, this._systemEntries, this._limitSystem);
+		if (this._ampEnabled && str.indexOf("&") !== -1) str = str.replace(AMP_ENTITY.regex, AMP_ENTITY.val);
+		str = this._postCheck(str, original);
+		return str;
+	}
+	/**
+	* 
+	* @param {string} val 
+	* @returns 
+	*/
+	parse(val) {
+		return this.replace(val);
+	}
+	_applyEntries(str, entries, track) {
+		const limitExpansions = track && this._maxTotalExpansions > 0;
+		const limitLength = track && this._maxExpandedLength > 0;
+		const trackAny = limitExpansions || limitLength;
+		for (let i = 0; i < entries.length; i++) {
+			if (str.indexOf("&") === -1) break;
+			const entity = entries[i][1];
+			if (!trackAny) {
+				str = str.replace(entity.regex, entity.val);
+				continue;
+			}
+			if (limitExpansions && !limitLength) {
+				let count = 0;
+				str = str.replace(entity.regex, (...args) => {
+					count++;
+					return typeof entity.val === "function" ? entity.val(...args) : entity.val;
+				});
+				if (count > 0) {
+					this._totalExpansions += count;
+					if (this._totalExpansions > this._maxTotalExpansions) throw new Error(`[EntityReplacer] Entity expansion count limit exceeded: ${this._totalExpansions} > ${this._maxTotalExpansions}`);
+				}
+			} else if (limitLength && !limitExpansions) {
+				const before = str.length;
+				str = str.replace(entity.regex, entity.val);
+				const delta = str.length - before;
+				if (delta > 0) {
+					this._expandedLength += delta;
+					if (this._expandedLength > this._maxExpandedLength) throw new Error(`[EntityReplacer] Expanded content length limit exceeded: ${this._expandedLength} > ${this._maxExpandedLength}`);
+				}
+			} else {
+				const before = str.length;
+				let count = 0;
+				str = str.replace(entity.regex, (...args) => {
+					count++;
+					return typeof entity.val === "function" ? entity.val(...args) : entity.val;
+				});
+				if (count > 0) {
+					this._totalExpansions += count;
+					if (this._totalExpansions > this._maxTotalExpansions) throw new Error(`[EntityReplacer] Entity expansion count limit exceeded: ${this._totalExpansions} > ${this._maxTotalExpansions}`);
+				}
+				const delta = str.length - before;
+				if (delta > 0) {
+					this._expandedLength += delta;
+					if (this._expandedLength > this._maxExpandedLength) throw new Error(`[EntityReplacer] Expanded content length limit exceeded: ${this._expandedLength} > ${this._maxExpandedLength}`);
+				}
+			}
+		}
+		return str;
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@nodable+entities@1.1.0/node_modules/@nodable/entities/src/groups.js
+/**
+* ~20 most commonly needed HTML named entities.
+* @type {Record<string, { regex: RegExp, val: string | ((m: string, s: string) => string) }>}
+*/
+var COMMON_HTML = {
+	nbsp: {
+		regex: /&(nbsp|#0*160|#x0*[Aa]0);/g,
+		val: "\xA0"
+	},
+	copy: {
+		regex: /&(copy|#0*169|#x0*[Aa]9);/g,
+		val: "©"
+	},
+	reg: {
+		regex: /&(reg|#0*174|#x0*[Aa][Ee]);/g,
+		val: "®"
+	},
+	trade: {
+		regex: /&(trade|#0*8482|#x0*2122);/g,
+		val: "™"
+	},
+	mdash: {
+		regex: /&(mdash|#0*8212|#x0*2014);/g,
+		val: "—"
+	},
+	ndash: {
+		regex: /&(ndash|#0*8211|#x0*2013);/g,
+		val: "–"
+	},
+	hellip: {
+		regex: /&(hellip|#0*8230|#x0*2026);/g,
+		val: "…"
+	},
+	laquo: {
+		regex: /&(laquo|#0*171|#x0*[Aa][Bb]);/g,
+		val: "«"
+	},
+	raquo: {
+		regex: /&(raquo|#0*187|#x0*[Bb][Bb]);/g,
+		val: "»"
+	},
+	lsquo: {
+		regex: /&(lsquo|#0*8216|#x0*2018);/g,
+		val: "‘"
+	},
+	rsquo: {
+		regex: /&(rsquo|#0*8217|#x0*2019);/g,
+		val: "’"
+	},
+	ldquo: {
+		regex: /&(ldquo|#0*8220|#x0*201[Cc]);/g,
+		val: "“"
+	},
+	rdquo: {
+		regex: /&(rdquo|#0*8221|#x0*201[Dd]);/g,
+		val: "”"
+	},
+	bull: {
+		regex: /&(bull|#0*8226|#x0*2022);/g,
+		val: "•"
+	},
+	para: {
+		regex: /&(para|#0*182|#x0*[Bb]6);/g,
+		val: "¶"
+	},
+	sect: {
+		regex: /&(sect|#0*167|#x0*[Aa]7);/g,
+		val: "§"
+	},
+	deg: {
+		regex: /&(deg|#0*176|#x0*[Bb]0);/g,
+		val: "°"
+	},
+	frac12: {
+		regex: /&(frac12|#0*189|#x0*[Bb][Dd]);/g,
+		val: "½"
+	},
+	frac14: {
+		regex: /&(frac14|#0*188|#x0*[Bb][Cc]);/g,
+		val: "¼"
+	},
+	frac34: {
+		regex: /&(frac34|#0*190|#x0*[Bb][Ee]);/g,
+		val: "¾"
+	},
+	inr: {
+		regex: /&(inr|#0*8377);/g,
+		val: "₹"
+	}
+};
+/**
+* Currency symbol entities.
+*/
+var CURRENCY_ENTITIES = {
+	cent: {
+		regex: /&(cent|#0*162|#x0*[Aa]2);/g,
+		val: "¢"
+	},
+	pound: {
+		regex: /&(pound|#0*163|#x0*[Aa]3);/g,
+		val: "£"
+	},
+	yen: {
+		regex: /&(yen|#0*165|#x0*[Aa]5);/g,
+		val: "¥"
+	},
+	euro: {
+		regex: /&(euro|#0*8364|#x0*20[Aa][Cc]);/g,
+		val: "€"
+	},
+	inr: {
+		regex: /&(inr|#0*8377|#x0*20[Bb]9);/g,
+		val: "₹"
+	},
+	curren: {
+		regex: /&(curren|#0*164|#x0*[Aa]4);/g,
+		val: "¤"
+	},
+	fnof: {
+		regex: /&(fnof|#0*402|#x0*192);/g,
+		val: "ƒ"
+	}
+};
+/**
+* Numeric character references — decimal &#NNN; and hex &#xHH;
+* These are function-replacers; they expand any valid code point.
+*/
+var NUMERIC_ENTITIES = {
+	num_dec: {
+		regex: /&#0*([0-9]{1,7});/g,
+		val: (_, s) => fromCodePoint(s, 10, "&#")
+	},
+	num_hex: {
+		regex: /&#x0*([0-9a-fA-F]{1,6});/g,
+		val: (_, s) => fromCodePoint(s, 16, "&#x")
+	}
+};
+function fromCodePoint(str, base, prefix) {
+	const codePoint = Number.parseInt(str, base);
+	if (codePoint >= 0 && codePoint <= 1114111) return String.fromCodePoint(codePoint);
+	else return prefix + str + ";";
+}
+//#endregion
+//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
 /**
 * Extract raw attributes (without prefix) from prefixed attribute map
 * @param {object} prefixedAttrs - Attributes with prefix from buildAttributesMap
@@ -39590,72 +40020,6 @@ var OrderedObjParser = class {
 		this.options = options;
 		this.currentNode = null;
 		this.tagsNodeStack = [];
-		this.docTypeEntities = {};
-		this.lastEntities = {
-			"apos": {
-				regex: /&(apos|#39|#x27);/g,
-				val: "'"
-			},
-			"gt": {
-				regex: /&(gt|#62|#x3E);/g,
-				val: ">"
-			},
-			"lt": {
-				regex: /&(lt|#60|#x3C);/g,
-				val: "<"
-			},
-			"quot": {
-				regex: /&(quot|#34|#x22);/g,
-				val: "\""
-			}
-		};
-		this.ampEntity = {
-			regex: /&(amp|#38|#x26);/g,
-			val: "&"
-		};
-		this.htmlEntities = {
-			"space": {
-				regex: /&(nbsp|#160);/g,
-				val: " "
-			},
-			"cent": {
-				regex: /&(cent|#162);/g,
-				val: "¢"
-			},
-			"pound": {
-				regex: /&(pound|#163);/g,
-				val: "£"
-			},
-			"yen": {
-				regex: /&(yen|#165);/g,
-				val: "¥"
-			},
-			"euro": {
-				regex: /&(euro|#8364);/g,
-				val: "€"
-			},
-			"copyright": {
-				regex: /&(copy|#169);/g,
-				val: "©"
-			},
-			"reg": {
-				regex: /&(reg|#174);/g,
-				val: "®"
-			},
-			"inr": {
-				regex: /&(inr|#8377);/g,
-				val: "₹"
-			},
-			"num_dec": {
-				regex: /&#([0-9]{1,7});/g,
-				val: (_, str) => fromCodePoint(str, 10, "&#")
-			},
-			"num_hex": {
-				regex: /&#x([0-9a-fA-F]{1,6});/g,
-				val: (_, str) => fromCodePoint(str, 16, "&#x")
-			}
-		};
-		this.addExternalEntities = addExternalEntities;
 		this.parseXml = parseXml;
 		this.parseTextData = parseTextData;
 		this.resolveNameSpace = resolveNameSpace;
@@ -39668,6 +40032,17 @@ var OrderedObjParser = class {
 		this.ignoreAttributesFn = getIgnoreAttributesFn$1(this.options.ignoreAttributes);
 		this.entityExpansionCount = 0;
 		this.currentExpandedLength = 0;
+		this.entityReplacer = new EntityReplacer({
+			default: true,
+			system: this.options.htmlEntities ? {
+				...COMMON_HTML,
+				...NUMERIC_ENTITIES,
+				...CURRENCY_ENTITIES
+			} : {},
+			maxTotalExpansions: this.options.processEntities.maxTotalExpansions,
+			maxExpandedLength: this.options.processEntities.maxExpandedLength,
+			applyLimitsTo: "all"
+		});
 		this.matcher = new Matcher();
 		this.readonlyMatcher = this.matcher.readOnly();
 		this.isCurrentNodeStopNode = false;
@@ -39683,17 +40058,6 @@ var OrderedObjParser = class {
 		}
 	}
 };
-function addExternalEntities(externalEntities) {
-	const entKeys = Object.keys(externalEntities);
-	for (let i = 0; i < entKeys.length; i++) {
-		const ent = entKeys[i];
-		const escaped = ent.replace(/[.\-+*:]/g, "\\.");
-		this.lastEntities[ent] = {
-			regex: new RegExp("&" + escaped + ";", "g"),
-			val: externalEntities[ent]
-		};
-	}
-}
 /**
 * @param {string} val
 * @param {string} tagName
@@ -39790,9 +40154,6 @@ var parseXml = function(xmlData) {
 	this.matcher.reset();
 	this.entityExpansionCount = 0;
 	this.currentExpandedLength = 0;
-	this.docTypeEntitiesKeys = [];
-	this.lastEntitiesKeys = Object.keys(this.lastEntities);
-	this.htmlEntitiesKeys = this.options.htmlEntities ? Object.keys(this.htmlEntities) : [];
 	const options = this.options;
 	const docTypeReader = new DocTypeReader(options.processEntities);
 	const xmlLen = xmlData.length;
@@ -39839,8 +40200,7 @@ var parseXml = function(xmlData) {
 			i = endIndex;
 		} else if (c1 === 33 && xmlData.charCodeAt(i + 2) === 68) {
 			const result = docTypeReader.readDocType(xmlData, i);
-			this.docTypeEntities = result.entities;
-			this.docTypeEntitiesKeys = Object.keys(this.docTypeEntities) || [];
+			this.entityReplacer.addInputEntities(result.entities);
 			i = result.i;
 		} else if (c1 === 33 && xmlData.charCodeAt(i + 2) === 91) {
 			const closeIndex = findClosingIndex(xmlData, "]]>", i, "CDATA is not closed.") - 2;
@@ -39963,42 +40323,7 @@ function replaceEntitiesValue$1(val, tagName, jPath) {
 		const jPathOrMatcher = this.options.jPath ? jPath.toString() : jPath;
 		if (!entityConfig.tagFilter(tagName, jPathOrMatcher)) return val;
 	}
-	for (const entityName of this.docTypeEntitiesKeys) {
-		const entity = this.docTypeEntities[entityName];
-		const matches = val.match(entity.regx);
-		if (matches) {
-			this.entityExpansionCount += matches.length;
-			if (entityConfig.maxTotalExpansions && this.entityExpansionCount > entityConfig.maxTotalExpansions) throw new Error(`Entity expansion limit exceeded: ${this.entityExpansionCount} > ${entityConfig.maxTotalExpansions}`);
-			const lengthBefore = val.length;
-			val = val.replace(entity.regx, entity.val);
-			if (entityConfig.maxExpandedLength) {
-				this.currentExpandedLength += val.length - lengthBefore;
-				if (this.currentExpandedLength > entityConfig.maxExpandedLength) throw new Error(`Total expanded content size exceeded: ${this.currentExpandedLength} > ${entityConfig.maxExpandedLength}`);
-			}
-		}
-	}
-	if (val.indexOf("&") === -1) return val;
-	for (const entityName of this.lastEntitiesKeys) {
-		const entity = this.lastEntities[entityName];
-		const matches = val.match(entity.regex);
-		if (matches) {
-			this.entityExpansionCount += matches.length;
-			if (entityConfig.maxTotalExpansions && this.entityExpansionCount > entityConfig.maxTotalExpansions) throw new Error(`Entity expansion limit exceeded: ${this.entityExpansionCount} > ${entityConfig.maxTotalExpansions}`);
-		}
-		val = val.replace(entity.regex, entity.val);
-	}
-	if (val.indexOf("&") === -1) return val;
-	for (const entityName of this.htmlEntitiesKeys) {
-		const entity = this.htmlEntities[entityName];
-		const matches = val.match(entity.regex);
-		if (matches) {
-			this.entityExpansionCount += matches.length;
-			if (entityConfig.maxTotalExpansions && this.entityExpansionCount > entityConfig.maxTotalExpansions) throw new Error(`Entity expansion limit exceeded: ${this.entityExpansionCount} > ${entityConfig.maxTotalExpansions}`);
-		}
-		val = val.replace(entity.regex, entity.val);
-	}
-	val = val.replace(this.ampEntity.regex, this.ampEntity.val);
-	return val;
+	return this.entityReplacer.replace(val);
 }
 function saveTextToParentTag(textData, parentNode, matcher, isLeafNode) {
 	if (textData) {
@@ -40131,11 +40456,6 @@ function parseValue(val, shouldParse, options) {
 	} else if (isExist(val)) return val;
 	else return "";
 }
-function fromCodePoint(str, base, prefix) {
-	const codePoint = Number.parseInt(str, base);
-	if (codePoint >= 0 && codePoint <= 1114111) return String.fromCodePoint(codePoint);
-	else return prefix + str + ";";
-}
 function transformTagName(fn, tagName, tagExp, options) {
 	if (fn) {
 		const newTagName = fn(tagName);
@@ -40154,7 +40474,7 @@ function sanitizeName(name, options) {
 	return name;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/xmlparser/node2json.js
+//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/xmlparser/node2json.js
 var METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
 /**
 * Helper function to strip attribute prefix from attribute map
@@ -40253,7 +40573,7 @@ function isLeafTag(obj, options) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
 var XMLParser = class {
 	constructor(options) {
 		this.externalEntities = {};
@@ -40273,7 +40593,7 @@ var XMLParser = class {
 			if (result !== true) throw Error(`${result.err.msg}:${result.err.line}:${result.err.col}`);
 		}
 		const orderedObjParser = new OrderedObjParser(this.options);
-		orderedObjParser.addExternalEntities(this.externalEntities);
+		orderedObjParser.entityReplacer.setExternalEntities(this.externalEntities);
 		const orderedResult = orderedObjParser.parseXml(xmlData);
 		if (this.options.preserveOrder || orderedResult === void 0) return orderedResult;
 		else return prettify(orderedResult, this.options, orderedObjParser.matcher, orderedObjParser.readonlyMatcher);
@@ -40812,10 +41132,10 @@ function isAttribute(name) {
 	else return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
+//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
 var json2xml_default = Builder;
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.5.12/node_modules/fast-xml-parser/src/fxp.js
+//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/fxp.js
 var XMLValidator = { validate };
 //#endregion
 //#region node_modules/.pnpm/@azure+core-xml@1.5.1/node_modules/@azure/core-xml/dist/esm/xml.js
