@@ -78,7 +78,7 @@
         "@vitest/ui": "4.1.4",
         "dependency-cruiser": "17.3.10",
         "eslint": "10.2.0",
-        "eslint-config-love": "152.0.0",
+        "eslint-config-love": "153.0.0",
         "eslint-config-prettier": "10.1.8",
         "eslint-import-resolver-node": "0.3.10",
         "eslint-import-resolver-typescript": "4.4.4",
