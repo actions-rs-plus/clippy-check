@@ -38028,7 +38028,7 @@ function convertHttpClient(requestPolicyClient) {
 	} };
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/util.js
+//#region node_modules/.pnpm/fast-xml-parser@5.7.1/node_modules/fast-xml-parser/src/util.js
 var nameStartChar = ":A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD";
 nameStartChar + "";
 var nameRegexp = "[" + nameStartChar + "][:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040]*";
@@ -38071,7 +38071,7 @@ var criticalProperties = [
 	"prototype"
 ];
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/validator.js
+//#region node_modules/.pnpm/fast-xml-parser@5.7.1/node_modules/fast-xml-parser/src/validator.js
 var defaultOptions$2 = {
 	allowBooleanAttributes: false,
 	unpairedTags: []
@@ -38309,7 +38309,1551 @@ function getPositionFromMatch(match) {
 	return match.startIndex + match[1].length;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
+//#region node_modules/.pnpm/@nodable+entities@2.1.0/node_modules/@nodable/entities/src/entities.js
+/**
+* Basic Latin & Special Characters
+* @type {Record<string, string>}
+*/
+var BASIC_LATIN = {
+	amp: "&",
+	AMP: "&",
+	lt: "<",
+	LT: "<",
+	gt: ">",
+	GT: ">",
+	quot: "\"",
+	QUOT: "\"",
+	apos: "'",
+	lsquo: "‘",
+	rsquo: "’",
+	ldquo: "“",
+	rdquo: "”",
+	lsquor: "‚",
+	rsquor: "’",
+	ldquor: "„",
+	bdquo: "„",
+	comma: ",",
+	period: ".",
+	colon: ":",
+	semi: ";",
+	excl: "!",
+	quest: "?",
+	num: "#",
+	dollar: "$",
+	percent: "%",
+	amp: "&",
+	ast: "*",
+	commat: "@",
+	lowbar: "_",
+	verbar: "|",
+	vert: "|",
+	sol: "/",
+	bsol: "\\",
+	lbrace: "{",
+	rbrace: "}",
+	lbrack: "[",
+	rbrack: "]",
+	lpar: "(",
+	rpar: ")",
+	nbsp: "\xA0",
+	iexcl: "¡",
+	cent: "¢",
+	pound: "£",
+	curren: "¤",
+	yen: "¥",
+	brvbar: "¦",
+	sect: "§",
+	uml: "¨",
+	copy: "©",
+	COPY: "©",
+	ordf: "ª",
+	laquo: "«",
+	not: "¬",
+	shy: "­",
+	reg: "®",
+	REG: "®",
+	macr: "¯",
+	deg: "°",
+	plusmn: "±",
+	sup2: "²",
+	sup3: "³",
+	acute: "´",
+	micro: "µ",
+	para: "¶",
+	middot: "·",
+	cedil: "¸",
+	sup1: "¹",
+	ordm: "º",
+	raquo: "»",
+	frac14: "¼",
+	frac12: "½",
+	half: "½",
+	frac34: "¾",
+	iquest: "¿",
+	times: "×",
+	div: "÷",
+	divide: "÷"
+};
+/**
+* Latin Extended & Accented Letters (A-Z)
+* @type {Record<string, string>}
+*/
+var LATIN_ACCENTS = {
+	Agrave: "À",
+	agrave: "à",
+	Aacute: "Á",
+	aacute: "á",
+	Acirc: "Â",
+	acirc: "â",
+	Atilde: "Ã",
+	atilde: "ã",
+	Auml: "Ä",
+	auml: "ä",
+	Aring: "Å",
+	aring: "å",
+	AElig: "Æ",
+	aelig: "æ",
+	Ccedil: "Ç",
+	ccedil: "ç",
+	Egrave: "È",
+	egrave: "è",
+	Eacute: "É",
+	eacute: "é",
+	Ecirc: "Ê",
+	ecirc: "ê",
+	Euml: "Ë",
+	euml: "ë",
+	Igrave: "Ì",
+	igrave: "ì",
+	Iacute: "Í",
+	iacute: "í",
+	Icirc: "Î",
+	icirc: "î",
+	Iuml: "Ï",
+	iuml: "ï",
+	ETH: "Ð",
+	eth: "ð",
+	Ntilde: "Ñ",
+	ntilde: "ñ",
+	Ograve: "Ò",
+	ograve: "ò",
+	Oacute: "Ó",
+	oacute: "ó",
+	Ocirc: "Ô",
+	ocirc: "ô",
+	Otilde: "Õ",
+	otilde: "õ",
+	Ouml: "Ö",
+	ouml: "ö",
+	Oslash: "Ø",
+	oslash: "ø",
+	Ugrave: "Ù",
+	ugrave: "ù",
+	Uacute: "Ú",
+	uacute: "ú",
+	Ucirc: "Û",
+	ucirc: "û",
+	Uuml: "Ü",
+	uuml: "ü",
+	Yacute: "Ý",
+	yacute: "ý",
+	THORN: "Þ",
+	thorn: "þ",
+	szlig: "ß",
+	yuml: "ÿ",
+	Yuml: "Ÿ"
+};
+/**
+* Latin Extended (Letters with diacritics)
+* @type {Record<string, string>}
+*/
+var LATIN_EXTENDED = {
+	Amacr: "Ā",
+	amacr: "ā",
+	Abreve: "Ă",
+	abreve: "ă",
+	Aogon: "Ą",
+	aogon: "ą",
+	Cacute: "Ć",
+	cacute: "ć",
+	Ccirc: "Ĉ",
+	ccirc: "ĉ",
+	Cdot: "Ċ",
+	cdot: "ċ",
+	Ccaron: "Č",
+	ccaron: "č",
+	Dcaron: "Ď",
+	dcaron: "ď",
+	Dstrok: "Đ",
+	dstrok: "đ",
+	Emacr: "Ē",
+	emacr: "ē",
+	Ecaron: "Ě",
+	ecaron: "ě",
+	Edot: "Ė",
+	edot: "ė",
+	Eogon: "Ę",
+	eogon: "ę",
+	Gcirc: "Ĝ",
+	gcirc: "ĝ",
+	Gbreve: "Ğ",
+	gbreve: "ğ",
+	Gdot: "Ġ",
+	gdot: "ġ",
+	Gcedil: "Ģ",
+	Hcirc: "Ĥ",
+	hcirc: "ĥ",
+	Hstrok: "Ħ",
+	hstrok: "ħ",
+	Itilde: "Ĩ",
+	itilde: "ĩ",
+	Imacr: "Ī",
+	imacr: "ī",
+	Iogon: "Į",
+	iogon: "į",
+	Idot: "İ",
+	IJlig: "Ĳ",
+	ijlig: "ĳ",
+	Jcirc: "Ĵ",
+	jcirc: "ĵ",
+	Kcedil: "Ķ",
+	kcedil: "ķ",
+	kgreen: "ĸ",
+	Lacute: "Ĺ",
+	lacute: "ĺ",
+	Lcedil: "Ļ",
+	lcedil: "ļ",
+	Lcaron: "Ľ",
+	lcaron: "ľ",
+	Lmidot: "Ŀ",
+	lmidot: "ŀ",
+	Lstrok: "Ł",
+	lstrok: "ł",
+	Nacute: "Ń",
+	nacute: "ń",
+	Ncaron: "Ň",
+	ncaron: "ň",
+	Ncedil: "Ņ",
+	ncedil: "ņ",
+	ENG: "Ŋ",
+	eng: "ŋ",
+	Omacr: "Ō",
+	omacr: "ō",
+	Odblac: "Ő",
+	odblac: "ő",
+	OElig: "Œ",
+	oelig: "œ",
+	Racute: "Ŕ",
+	racute: "ŕ",
+	Rcaron: "Ř",
+	rcaron: "ř",
+	Rcedil: "Ŗ",
+	rcedil: "ŗ",
+	Sacute: "Ś",
+	sacute: "ś",
+	Scirc: "Ŝ",
+	scirc: "ŝ",
+	Scedil: "Ş",
+	scedil: "ş",
+	Scaron: "Š",
+	scaron: "š",
+	Tcedil: "Ţ",
+	tcedil: "ţ",
+	Tcaron: "Ť",
+	tcaron: "ť",
+	Tstrok: "Ŧ",
+	tstrok: "ŧ",
+	Utilde: "Ũ",
+	utilde: "ũ",
+	Umacr: "Ū",
+	umacr: "ū",
+	Ubreve: "Ŭ",
+	ubreve: "ŭ",
+	Uring: "Ů",
+	uring: "ů",
+	Udblac: "Ű",
+	udblac: "ű",
+	Uogon: "Ų",
+	uogon: "ų",
+	Wcirc: "Ŵ",
+	wcirc: "ŵ",
+	Ycirc: "Ŷ",
+	ycirc: "ŷ",
+	Zacute: "Ź",
+	zacute: "ź",
+	Zdot: "Ż",
+	zdot: "ż",
+	Zcaron: "Ž",
+	zcaron: "ž"
+};
+/**
+* Greek Letters
+* @type {Record<string, string>}
+*/
+var GREEK = {
+	Alpha: "Α",
+	alpha: "α",
+	Beta: "Β",
+	beta: "β",
+	Gamma: "Γ",
+	gamma: "γ",
+	Delta: "Δ",
+	delta: "δ",
+	Epsilon: "Ε",
+	epsilon: "ε",
+	epsiv: "ϵ",
+	varepsilon: "ϵ",
+	Zeta: "Ζ",
+	zeta: "ζ",
+	Eta: "Η",
+	eta: "η",
+	Theta: "Θ",
+	theta: "θ",
+	thetasym: "ϑ",
+	vartheta: "ϑ",
+	Iota: "Ι",
+	iota: "ι",
+	Kappa: "Κ",
+	kappa: "κ",
+	kappav: "ϰ",
+	varkappa: "ϰ",
+	Lambda: "Λ",
+	lambda: "λ",
+	Mu: "Μ",
+	mu: "μ",
+	Nu: "Ν",
+	nu: "ν",
+	Xi: "Ξ",
+	xi: "ξ",
+	Omicron: "Ο",
+	omicron: "ο",
+	Pi: "Π",
+	pi: "π",
+	piv: "ϖ",
+	varpi: "ϖ",
+	Rho: "Ρ",
+	rho: "ρ",
+	rhov: "ϱ",
+	varrho: "ϱ",
+	Sigma: "Σ",
+	sigma: "σ",
+	sigmaf: "ς",
+	sigmav: "ς",
+	varsigma: "ς",
+	Tau: "Τ",
+	tau: "τ",
+	Upsilon: "Υ",
+	upsilon: "υ",
+	upsi: "υ",
+	Upsi: "ϒ",
+	upsih: "ϒ",
+	Phi: "Φ",
+	phi: "φ",
+	phiv: "ϕ",
+	varphi: "ϕ",
+	Chi: "Χ",
+	chi: "χ",
+	Psi: "Ψ",
+	psi: "ψ",
+	Omega: "Ω",
+	omega: "ω",
+	ohm: "Ω",
+	Gammad: "Ϝ",
+	gammad: "ϝ",
+	digamma: "ϝ"
+};
+/**
+* Cyrillic Letters
+* @type {Record<string, string>}
+*/
+var CYRILLIC = {
+	Afr: "𝔄",
+	afr: "𝔞",
+	Acy: "А",
+	acy: "а",
+	Bcy: "Б",
+	bcy: "б",
+	Vcy: "В",
+	vcy: "в",
+	Gcy: "Г",
+	gcy: "г",
+	Dcy: "Д",
+	dcy: "д",
+	IEcy: "Е",
+	iecy: "е",
+	IOcy: "Ё",
+	iocy: "ё",
+	ZHcy: "Ж",
+	zhcy: "ж",
+	Zcy: "З",
+	zcy: "з",
+	Icy: "И",
+	icy: "и",
+	Jcy: "Й",
+	jcy: "й",
+	Kcy: "К",
+	kcy: "к",
+	Lcy: "Л",
+	lcy: "л",
+	Mcy: "М",
+	mcy: "м",
+	Ncy: "Н",
+	ncy: "н",
+	Ocy: "О",
+	ocy: "о",
+	Pcy: "П",
+	pcy: "п",
+	Rcy: "Р",
+	rcy: "р",
+	Scy: "С",
+	scy: "с",
+	Tcy: "Т",
+	tcy: "т",
+	Ucy: "У",
+	ucy: "у",
+	Fcy: "Ф",
+	fcy: "ф",
+	KHcy: "Х",
+	khcy: "х",
+	TScy: "Ц",
+	tscy: "ц",
+	CHcy: "Ч",
+	chcy: "ч",
+	SHcy: "Ш",
+	shcy: "ш",
+	SHCHcy: "Щ",
+	shchcy: "щ",
+	HARDcy: "Ъ",
+	hardcy: "ъ",
+	Ycy: "Ы",
+	ycy: "ы",
+	SOFTcy: "Ь",
+	softcy: "ь",
+	Ecy: "Э",
+	ecy: "э",
+	YUcy: "Ю",
+	yucy: "ю",
+	YAcy: "Я",
+	yacy: "я",
+	DJcy: "Ђ",
+	djcy: "ђ",
+	GJcy: "Ѓ",
+	gjcy: "ѓ",
+	Jukcy: "Є",
+	jukcy: "є",
+	DScy: "Ѕ",
+	dscy: "ѕ",
+	Iukcy: "І",
+	iukcy: "і",
+	YIcy: "Ї",
+	yicy: "ї",
+	Jsercy: "Ј",
+	jsercy: "ј",
+	LJcy: "Љ",
+	ljcy: "љ",
+	NJcy: "Њ",
+	njcy: "њ",
+	TSHcy: "Ћ",
+	tshcy: "ћ",
+	KJcy: "Ќ",
+	kjcy: "ќ",
+	Ubrcy: "Ў",
+	ubrcy: "ў",
+	DZcy: "Џ",
+	dzcy: "џ"
+};
+/**
+* Mathematical Operators & Relations
+* @type {Record<string, string>}
+*/
+var MATH = {
+	plus: "+",
+	minus: "−",
+	mnplus: "∓",
+	mp: "∓",
+	pm: "±",
+	times: "×",
+	div: "÷",
+	divide: "÷",
+	sdot: "⋅",
+	star: "☆",
+	starf: "★",
+	bigstar: "★",
+	lowast: "∗",
+	ast: "*",
+	midast: "*",
+	compfn: "∘",
+	smallcircle: "∘",
+	bullet: "•",
+	bull: "•",
+	nbsp: "\xA0",
+	hellip: "…",
+	mldr: "…",
+	prime: "′",
+	Prime: "″",
+	tprime: "‴",
+	bprime: "‵",
+	backprime: "‵",
+	minus: "−",
+	minusd: "∸",
+	dotminus: "∸",
+	plusdo: "∔",
+	dotplus: "∔",
+	plusmn: "±",
+	minusplus: "∓",
+	mnplus: "∓",
+	mp: "∓",
+	setminus: "∖",
+	smallsetminus: "∖",
+	Backslash: "∖",
+	setmn: "∖",
+	ssetmn: "∖",
+	lowbar: "_",
+	verbar: "|",
+	vert: "|",
+	VerticalLine: "|",
+	colon: ":",
+	Colon: "∷",
+	Proportion: "∷",
+	ratio: "∶",
+	equals: "=",
+	ne: "≠",
+	nequiv: "≢",
+	equiv: "≡",
+	Congruent: "≡",
+	sim: "∼",
+	thicksim: "∼",
+	thksim: "∼",
+	sime: "≃",
+	simeq: "≃",
+	TildeEqual: "≃",
+	asymp: "≈",
+	approx: "≈",
+	thickapprox: "≈",
+	thkap: "≈",
+	TildeTilde: "≈",
+	ncong: "≇",
+	cong: "≅",
+	TildeFullEqual: "≅",
+	asympeq: "≍",
+	CupCap: "≍",
+	bump: "≎",
+	Bumpeq: "≎",
+	HumpDownHump: "≎",
+	bumpe: "≏",
+	bumpeq: "≏",
+	HumpEqual: "≏",
+	dotminus: "∸",
+	minusd: "∸",
+	plusdo: "∔",
+	dotplus: "∔",
+	le: "≤",
+	LessEqual: "≤",
+	ge: "≥",
+	GreaterEqual: "≥",
+	lesseqgtr: "⋚",
+	lesseqqgtr: "⪋",
+	greater: ">",
+	less: "<"
+};
+/**
+* Mathematical Operators (Advanced)
+* @type {Record<string, string>}
+*/
+var MATH_ADVANCED = {
+	alefsym: "ℵ",
+	aleph: "ℵ",
+	beth: "ℶ",
+	gimel: "ℷ",
+	daleth: "ℸ",
+	forall: "∀",
+	ForAll: "∀",
+	part: "∂",
+	PartialD: "∂",
+	exist: "∃",
+	Exists: "∃",
+	nexist: "∄",
+	nexists: "∄",
+	empty: "∅",
+	emptyset: "∅",
+	emptyv: "∅",
+	varnothing: "∅",
+	nabla: "∇",
+	Del: "∇",
+	isin: "∈",
+	isinv: "∈",
+	in: "∈",
+	Element: "∈",
+	notin: "∉",
+	notinva: "∉",
+	ni: "∋",
+	niv: "∋",
+	SuchThat: "∋",
+	ReverseElement: "∋",
+	notni: "∌",
+	notniva: "∌",
+	prod: "∏",
+	Product: "∏",
+	coprod: "∐",
+	Coproduct: "∐",
+	sum: "∑",
+	Sum: "∑",
+	minus: "−",
+	mp: "∓",
+	plusdo: "∔",
+	dotplus: "∔",
+	setminus: "∖",
+	lowast: "∗",
+	radic: "√",
+	Sqrt: "√",
+	prop: "∝",
+	propto: "∝",
+	Proportional: "∝",
+	varpropto: "∝",
+	infin: "∞",
+	infintie: "⧝",
+	ang: "∠",
+	angle: "∠",
+	angmsd: "∡",
+	measuredangle: "∡",
+	angsph: "∢",
+	mid: "∣",
+	VerticalBar: "∣",
+	nmid: "∤",
+	nsmid: "∤",
+	npar: "∦",
+	parallel: "∥",
+	spar: "∥",
+	nparallel: "∦",
+	nspar: "∦",
+	and: "∧",
+	wedge: "∧",
+	or: "∨",
+	vee: "∨",
+	cap: "∩",
+	cup: "∪",
+	int: "∫",
+	Integral: "∫",
+	conint: "∮",
+	ContourIntegral: "∮",
+	Conint: "∯",
+	DoubleContourIntegral: "∯",
+	Cconint: "∰",
+	there4: "∴",
+	therefore: "∴",
+	Therefore: "∴",
+	becaus: "∵",
+	because: "∵",
+	Because: "∵",
+	ratio: "∶",
+	Proportion: "∷",
+	minusd: "∸",
+	dotminus: "∸",
+	mDDot: "∺",
+	homtht: "∻",
+	sim: "∼",
+	bsimg: "∽",
+	backsim: "∽",
+	ac: "∾",
+	mstpos: "∾",
+	acd: "∿",
+	VerticalTilde: "≀",
+	wr: "≀",
+	wreath: "≀",
+	nsime: "≄",
+	nsimeq: "≄",
+	nsimeq: "≄",
+	ncong: "≇",
+	simne: "≆",
+	ncongdot: "⩭̸",
+	ngsim: "≵",
+	nsim: "≁",
+	napprox: "≉",
+	nap: "≉",
+	ngeq: "≱",
+	nge: "≱",
+	nleq: "≰",
+	nle: "≰",
+	ngtr: "≯",
+	ngt: "≯",
+	nless: "≮",
+	nlt: "≮",
+	nprec: "⊀",
+	npr: "⊀",
+	nsucc: "⊁",
+	nsc: "⊁"
+};
+/**
+* Arrows
+* @type {Record<string, string>}
+*/
+var ARROWS = {
+	larr: "←",
+	leftarrow: "←",
+	LeftArrow: "←",
+	uarr: "↑",
+	uparrow: "↑",
+	UpArrow: "↑",
+	rarr: "→",
+	rightarrow: "→",
+	RightArrow: "→",
+	darr: "↓",
+	downarrow: "↓",
+	DownArrow: "↓",
+	harr: "↔",
+	leftrightarrow: "↔",
+	LeftRightArrow: "↔",
+	varr: "↕",
+	updownarrow: "↕",
+	UpDownArrow: "↕",
+	nwarr: "↖",
+	nwarrow: "↖",
+	UpperLeftArrow: "↖",
+	nearr: "↗",
+	nearrow: "↗",
+	UpperRightArrow: "↗",
+	searr: "↘",
+	searrow: "↘",
+	LowerRightArrow: "↘",
+	swarr: "↙",
+	swarrow: "↙",
+	LowerLeftArrow: "↙",
+	lArr: "⇐",
+	Leftarrow: "⇐",
+	uArr: "⇑",
+	Uparrow: "⇑",
+	rArr: "⇒",
+	Rightarrow: "⇒",
+	dArr: "⇓",
+	Downarrow: "⇓",
+	hArr: "⇔",
+	Leftrightarrow: "⇔",
+	iff: "⇔",
+	vArr: "⇕",
+	Updownarrow: "⇕",
+	lAarr: "⇚",
+	Lleftarrow: "⇚",
+	rAarr: "⇛",
+	Rrightarrow: "⇛",
+	lrarr: "⇆",
+	leftrightarrows: "⇆",
+	rlarr: "⇄",
+	rightleftarrows: "⇄",
+	lrhar: "⇋",
+	leftrightharpoons: "⇋",
+	ReverseEquilibrium: "⇋",
+	rlhar: "⇌",
+	rightleftharpoons: "⇌",
+	Equilibrium: "⇌",
+	udarr: "⇅",
+	UpArrowDownArrow: "⇅",
+	duarr: "⇵",
+	DownArrowUpArrow: "⇵",
+	llarr: "⇇",
+	leftleftarrows: "⇇",
+	rrarr: "⇉",
+	rightrightarrows: "⇉",
+	ddarr: "⇊",
+	downdownarrows: "⇊",
+	har: "↽",
+	lhard: "↽",
+	leftharpoondown: "↽",
+	lharu: "↼",
+	leftharpoonup: "↼",
+	rhard: "⇁",
+	rightharpoondown: "⇁",
+	rharu: "⇀",
+	rightharpoonup: "⇀",
+	lsh: "↰",
+	Lsh: "↰",
+	rsh: "↱",
+	Rsh: "↱",
+	ldsh: "↲",
+	rdsh: "↳",
+	hookleftarrow: "↩",
+	hookrightarrow: "↪",
+	mapstoleft: "↤",
+	mapstoup: "↥",
+	map: "↦",
+	mapsto: "↦",
+	mapstodown: "↧",
+	crarr: "↵",
+	nwarrow: "↖",
+	nearrow: "↗",
+	searrow: "↘",
+	swarrow: "↙",
+	nleftarrow: "↚",
+	nleftrightarrow: "↮",
+	nrightarrow: "↛",
+	nrarr: "↛",
+	larrtl: "↢",
+	rarrtl: "↣",
+	leftarrowtail: "↢",
+	rightarrowtail: "↣",
+	twoheadleftarrow: "↞",
+	twoheadrightarrow: "↠",
+	Larr: "↞",
+	Rarr: "↠",
+	larrhk: "↩",
+	rarrhk: "↪",
+	larrlp: "↫",
+	looparrowleft: "↫",
+	rarrlp: "↬",
+	looparrowright: "↬",
+	harrw: "↭",
+	leftrightsquigarrow: "↭",
+	nrarrw: "↝̸",
+	rarrw: "↝",
+	rightsquigarrow: "↝",
+	larrbfs: "⤟",
+	rarrbfs: "⤠",
+	nvHarr: "⤄",
+	nvlArr: "⤂",
+	nvrArr: "⤃",
+	larrfs: "⤝",
+	rarrfs: "⤞",
+	Map: "⤅",
+	larrsim: "⥳",
+	rarrsim: "⥴",
+	harrcir: "⥈",
+	Uarrocir: "⥉",
+	lurdshar: "⥊",
+	ldrdhar: "⥧",
+	ldrushar: "⥋",
+	rdldhar: "⥩",
+	lrhard: "⥭",
+	rlhar: "⇌",
+	uharr: "↾",
+	uharl: "↿",
+	dharr: "⇂",
+	dharl: "⇃",
+	Uarr: "↟",
+	Darr: "↡",
+	zigrarr: "⇝",
+	nwArr: "⇖",
+	neArr: "⇗",
+	seArr: "⇘",
+	swArr: "⇙",
+	nharr: "↮",
+	nhArr: "⇎",
+	nlarr: "↚",
+	nlArr: "⇍",
+	nrarr: "↛",
+	nrArr: "⇏",
+	larrb: "⇤",
+	LeftArrowBar: "⇤",
+	rarrb: "⇥",
+	RightArrowBar: "⇥"
+};
+/**
+* Geometric Shapes
+* @type {Record<string, string>}
+*/
+var SHAPES = {
+	square: "□",
+	Square: "□",
+	squ: "□",
+	squf: "▪",
+	squarf: "▪",
+	blacksquar: "▪",
+	blacksquare: "▪",
+	FilledVerySmallSquare: "▪",
+	blk34: "▓",
+	blk12: "▒",
+	blk14: "░",
+	block: "█",
+	srect: "▭",
+	rect: "▭",
+	sdot: "⋅",
+	sdotb: "⊡",
+	dotsquare: "⊡",
+	triangle: "▵",
+	tri: "▵",
+	trine: "▵",
+	utri: "▵",
+	triangledown: "▿",
+	dtri: "▿",
+	tridown: "▿",
+	triangleleft: "◃",
+	ltri: "◃",
+	triangleright: "▹",
+	rtri: "▹",
+	blacktriangle: "▴",
+	utrif: "▴",
+	blacktriangledown: "▾",
+	dtrif: "▾",
+	blacktriangleleft: "◂",
+	ltrif: "◂",
+	blacktriangleright: "▸",
+	rtrif: "▸",
+	loz: "◊",
+	lozenge: "◊",
+	blacklozenge: "⧫",
+	lozf: "⧫",
+	bigcirc: "◯",
+	xcirc: "◯",
+	circ: "ˆ",
+	Circle: "○",
+	cir: "○",
+	o: "○",
+	bullet: "•",
+	bull: "•",
+	hellip: "…",
+	mldr: "…",
+	nldr: "‥",
+	boxh: "─",
+	HorizontalLine: "─",
+	boxv: "│",
+	boxdr: "┌",
+	boxdl: "┐",
+	boxur: "└",
+	boxul: "┘",
+	boxvr: "├",
+	boxvl: "┤",
+	boxhd: "┬",
+	boxhu: "┴",
+	boxvh: "┼",
+	boxH: "═",
+	boxV: "║",
+	boxdR: "╒",
+	boxDr: "╓",
+	boxDR: "╔",
+	boxDl: "╕",
+	boxdL: "╖",
+	boxDL: "╗",
+	boxuR: "╘",
+	boxUr: "╙",
+	boxUR: "╚",
+	boxUl: "╜",
+	boxuL: "╛",
+	boxUL: "╝",
+	boxvR: "╞",
+	boxVr: "╟",
+	boxVR: "╠",
+	boxVl: "╢",
+	boxvL: "╡",
+	boxVL: "╣",
+	boxHd: "╤",
+	boxhD: "╥",
+	boxHD: "╦",
+	boxHu: "╧",
+	boxhU: "╨",
+	boxHU: "╩",
+	boxvH: "╪",
+	boxVh: "╫",
+	boxVH: "╬"
+};
+/**
+* Punctuation & Diacritics
+* @type {Record<string, string>}
+*/
+var PUNCTUATION = {
+	excl: "!",
+	iexcl: "¡",
+	brvbar: "¦",
+	sect: "§",
+	uml: "¨",
+	copy: "©",
+	ordf: "ª",
+	laquo: "«",
+	not: "¬",
+	shy: "­",
+	reg: "®",
+	macr: "¯",
+	deg: "°",
+	plusmn: "±",
+	sup2: "²",
+	sup3: "³",
+	acute: "´",
+	micro: "µ",
+	para: "¶",
+	middot: "·",
+	cedil: "¸",
+	sup1: "¹",
+	ordm: "º",
+	raquo: "»",
+	frac14: "¼",
+	frac12: "½",
+	frac34: "¾",
+	iquest: "¿",
+	nbsp: "\xA0",
+	comma: ",",
+	period: ".",
+	colon: ":",
+	semi: ";",
+	vert: "|",
+	Verbar: "‖",
+	verbar: "|",
+	dblac: "˝",
+	circ: "ˆ",
+	caron: "ˇ",
+	breve: "˘",
+	dot: "˙",
+	ring: "˚",
+	ogon: "˛",
+	tilde: "˜",
+	DiacriticalGrave: "`",
+	DiacriticalAcute: "´",
+	DiacriticalTilde: "˜",
+	DiacriticalDot: "˙",
+	DiacriticalDoubleAcute: "˝",
+	grave: "`",
+	acute: "´"
+};
+/**
+* Currency Symbols
+* @type {Record<string, string>}
+*/
+var CURRENCY = {
+	cent: "¢",
+	pound: "£",
+	curren: "¤",
+	yen: "¥",
+	euro: "€",
+	dollar: "$",
+	euro: "€",
+	fnof: "ƒ",
+	inr: "₹",
+	af: "؋",
+	birr: "ብር",
+	peso: "₱",
+	rub: "₽",
+	won: "₩",
+	yuan: "¥",
+	cedil: "¸"
+};
+/**
+* Fractions
+* @type {Record<string, string>}
+*/
+var FRACTIONS = {
+	frac12: "½",
+	half: "½",
+	frac13: "⅓",
+	frac14: "¼",
+	frac15: "⅕",
+	frac16: "⅙",
+	frac18: "⅛",
+	frac23: "⅔",
+	frac25: "⅖",
+	frac34: "¾",
+	frac35: "⅗",
+	frac38: "⅜",
+	frac45: "⅘",
+	frac56: "⅚",
+	frac58: "⅝",
+	frac78: "⅞",
+	frasl: "⁄"
+};
+/**
+* Miscellaneous Symbols
+* @type {Record<string, string>}
+*/
+var MISC_SYMBOLS = {
+	trade: "™",
+	TRADE: "™",
+	telrec: "⌕",
+	target: "⌖",
+	ulcorn: "⌜",
+	ulcorner: "⌜",
+	urcorn: "⌝",
+	urcorner: "⌝",
+	dlcorn: "⌞",
+	llcorner: "⌞",
+	drcorn: "⌟",
+	lrcorner: "⌟",
+	intercal: "⊺",
+	intcal: "⊺",
+	oplus: "⊕",
+	CirclePlus: "⊕",
+	ominus: "⊖",
+	CircleMinus: "⊖",
+	otimes: "⊗",
+	CircleTimes: "⊗",
+	osol: "⊘",
+	odot: "⊙",
+	CircleDot: "⊙",
+	oast: "⊛",
+	circledast: "⊛",
+	odash: "⊝",
+	circleddash: "⊝",
+	ocirc: "⊚",
+	circledcirc: "⊚",
+	boxplus: "⊞",
+	plusb: "⊞",
+	boxminus: "⊟",
+	minusb: "⊟",
+	boxtimes: "⊠",
+	timesb: "⊠",
+	boxdot: "⊡",
+	sdotb: "⊡",
+	veebar: "⊻",
+	vee: "∨",
+	barvee: "⊽",
+	and: "∧",
+	wedge: "∧",
+	Cap: "⋒",
+	Cup: "⋓",
+	Fork: "⋔",
+	pitchfork: "⋔",
+	epar: "⋕",
+	ltlarr: "⥶",
+	nvap: "≍⃒",
+	nvsim: "∼⃒",
+	nvge: "≥⃒",
+	nvle: "≤⃒",
+	nvlt: "<⃒",
+	nvgt: ">⃒",
+	nvltrie: "⊴⃒",
+	nvrtrie: "⊵⃒",
+	Vdash: "⊩",
+	dashv: "⊣",
+	vDash: "⊨",
+	Vdash: "⊩",
+	Vvdash: "⊪",
+	nvdash: "⊬",
+	nvDash: "⊭",
+	nVdash: "⊮",
+	nVDash: "⊯"
+};
+({
+	...BASIC_LATIN,
+	...LATIN_ACCENTS,
+	...LATIN_EXTENDED,
+	...GREEK,
+	...CYRILLIC,
+	...MATH,
+	...MATH_ADVANCED,
+	...ARROWS,
+	...SHAPES,
+	...PUNCTUATION,
+	...CURRENCY,
+	...FRACTIONS,
+	...MISC_SYMBOLS
+});
+var XML = {
+	amp: "&",
+	apos: "'",
+	gt: ">",
+	lt: "<",
+	quot: "\""
+};
+var COMMON_HTML = {
+	nbsp: "\xA0",
+	copy: "©",
+	reg: "®",
+	trade: "™",
+	mdash: "—",
+	ndash: "–",
+	hellip: "…",
+	laquo: "«",
+	raquo: "»",
+	lsquo: "‘",
+	rsquo: "’",
+	ldquo: "“",
+	rdquo: "”",
+	bull: "•",
+	para: "¶",
+	sect: "§",
+	deg: "°",
+	frac12: "½",
+	frac14: "¼",
+	frac34: "¾"
+};
+//#endregion
+//#region node_modules/.pnpm/@nodable+entities@2.1.0/node_modules/@nodable/entities/src/EntityDecoder.js
+var SPECIAL_CHARS = /* @__PURE__ */ new Set("!?\\\\/[]$%{}^&*()<>|+");
+/**
+* Validate that an entity name contains no dangerous characters.
+* @param {string} name
+* @returns {string} the name, unchanged
+* @throws {Error} on invalid characters
+*/
+function validateEntityName$1(name) {
+	if (name[0] === "#") throw new Error(`[EntityReplacer] Invalid character '#' in entity name: "${name}"`);
+	for (const ch of name) if (SPECIAL_CHARS.has(ch)) throw new Error(`[EntityReplacer] Invalid character '${ch}' in entity name: "${name}"`);
+	return name;
+}
+/**
+* Merge one or more entity maps into a flat name→string map.
+* Accepts either:
+*   - plain string values:             { amp: '&' }
+*   - legacy {regex,val} / {regx,val}: { lt: { regex: /.../, val: '<' } }
+*
+* Values containing '&' are skipped (recursive expansion risk).
+*
+* @param {...object} maps
+* @returns {Record<string, string>}
+*/
+function mergeEntityMaps(...maps) {
+	const out = Object.create(null);
+	for (const map of maps) {
+		if (!map) continue;
+		for (const key of Object.keys(map)) {
+			const raw = map[key];
+			if (typeof raw === "string") out[key] = raw;
+			else if (raw && typeof raw === "object" && raw.val !== void 0) {
+				const val = raw.val;
+				if (typeof val === "string") out[key] = val;
+			}
+		}
+	}
+	return out;
+}
+var LIMIT_TIER_EXTERNAL = "external";
+var LIMIT_TIER_BASE = "base";
+var LIMIT_TIER_ALL = "all";
+/**
+* Resolve `applyLimitsTo` option into a normalised Set of tier strings.
+* Accepted values: 'external' | 'base' | 'all' | string[]
+* Default: 'external' (only untrusted injected entities are counted).
+* @param {string|string[]|undefined} raw
+* @returns {Set<string>}
+*/
+function parseLimitTiers(raw) {
+	if (!raw || raw === LIMIT_TIER_EXTERNAL) return new Set([LIMIT_TIER_EXTERNAL]);
+	if (raw === LIMIT_TIER_ALL) return new Set([LIMIT_TIER_ALL]);
+	if (raw === LIMIT_TIER_BASE) return new Set([LIMIT_TIER_BASE]);
+	if (Array.isArray(raw)) return new Set(raw);
+	return new Set([LIMIT_TIER_EXTERNAL]);
+}
+var NCR_LEVEL = Object.freeze({
+	allow: 0,
+	leave: 1,
+	remove: 2,
+	throw: 3
+});
+var XML10_ALLOWED_C0 = new Set([
+	9,
+	10,
+	13
+]);
+/**
+* Parse the `ncr` constructor option into flat, hot-path-friendly fields.
+* @param {object|undefined} ncr
+* @returns {{ xmlVersion: number, onLevel: number, nullLevel: number }}
+*/
+function parseNCRConfig(ncr) {
+	if (!ncr) return {
+		xmlVersion: 1,
+		onLevel: NCR_LEVEL.allow,
+		nullLevel: NCR_LEVEL.remove
+	};
+	const xmlVersion = ncr.xmlVersion === 1.1 ? 1.1 : 1;
+	const onLevel = NCR_LEVEL[ncr.onNCR] ?? NCR_LEVEL.allow;
+	const nullLevel = NCR_LEVEL[ncr.nullNCR] ?? NCR_LEVEL.remove;
+	return {
+		xmlVersion,
+		onLevel,
+		nullLevel: Math.max(nullLevel, NCR_LEVEL.remove)
+	};
+}
+/**
+* Single-pass, zero-regex entity replacer for XML/HTML content.
+*
+* Algorithm: scan the string once for '&', read to ';', resolve via map
+* or direct codepoint conversion, build output chunks, join once at the end.
+*
+* Entity lookup priority (highest → lowest):
+*   1. input / runtime  (DOCTYPE entities for current document)
+*   2. persistent external (survive across documents)
+*   3. base named map   (DEFAULT_XML_ENTITIES + user-supplied namedEntities)
+*
+* Both input and external resolve as the 'external' tier for limit purposes.
+* Base map entities resolve as the 'base' tier.
+*
+* Numeric / hex references (&#NNN; / &#xHH;) are resolved directly via
+* String.fromCodePoint() — no map needed. They count as 'base' tier.
+*
+* @example
+* const replacer = new EntityReplacer({ namedEntities: COMMON_HTML });
+* replacer.setExternalEntities({ brand: 'Acme' });
+*
+* const instance = replacer.reset();
+* instance.addInputEntities({ version: '1.0' });
+* instance.encode('&brand; v&version; &lt;'); // 'Acme v1.0 <'
+*/
+var EntityDecoder = class {
+	/**
+	* @param {object} [options]
+	* @param {object|null}  [options.namedEntities]        — extra named entities merged into base map
+	* @param {object}  [options.limit]                 — security limits
+	* @param {number}       [options.limit.maxTotalExpansions=0]  — 0 = unlimited
+	* @param {number}       [options.limit.maxExpandedLength=0]   — 0 = unlimited
+	* @param {'external'|'base'|'all'|string[]} [options.limit.applyLimitsTo='external']
+	*   Which entity tiers count against the security limits:
+	*   - 'external' (default) — only input/runtime + persistent external entities
+	*   - 'base'               — only DEFAULT_XML_ENTITIES + namedEntities
+	*   - 'all'                — every entity regardless of tier
+	*   - string[]             — explicit combination, e.g. ['external', 'base']
+	* @param {((resolved: string, original: string) => string)|null} [options.postCheck=null]
+	* @param {string[]} [options.remove=[]] — entity names (e.g. ['nbsp', '#13']) to delete (replace with empty string)
+	* @param {string[]} [options.leave=[]]  — entity names to keep as literal (unchanged in output)
+	* @param {object}   [options.ncr]       — Numeric Character Reference controls
+	* @param {1.0|1.1}  [options.ncr.xmlVersion=1.0]
+	*   XML version governing which codepoint ranges are restricted:
+	*   - 1.0 — C0 controls U+0001–U+001F (except U+0009/000A/000D) are prohibited
+	*   - 1.1 — C0 controls are allowed when written as NCRs; C1 (U+007F–U+009F) decoded as-is
+	* @param {'allow'|'leave'|'remove'|'throw'} [options.ncr.onNCR='allow']
+	*   Base action for numeric references. Severity order: allow < leave < remove < throw.
+	*   For codepoint ranges that carry a minimum level (surrogates → remove, XML 1.0 C0 → remove),
+	*   the effective action is max(onNCR, rangeMinimum).
+	* @param {'remove'|'throw'} [options.ncr.nullNCR='remove']
+	*   Action for U+0000 (null). 'allow' and 'leave' are clamped to 'remove' since null is never safe.
+	*/
+	constructor(options = {}) {
+		this._limit = options.limit || {};
+		this._maxTotalExpansions = this._limit.maxTotalExpansions || 0;
+		this._maxExpandedLength = this._limit.maxExpandedLength || 0;
+		this._postCheck = typeof options.postCheck === "function" ? options.postCheck : (r) => r;
+		this._limitTiers = parseLimitTiers(this._limit.applyLimitsTo ?? LIMIT_TIER_EXTERNAL);
+		this._numericAllowed = options.numericAllowed ?? true;
+		this._baseMap = mergeEntityMaps(XML, options.namedEntities || null);
+		/** @type {Record<string, string>} */
+		this._externalMap = Object.create(null);
+		/** @type {Record<string, string>} */
+		this._inputMap = Object.create(null);
+		this._totalExpansions = 0;
+		this._expandedLength = 0;
+		/** @type {Set<string>} */
+		this._removeSet = new Set(options.remove && Array.isArray(options.remove) ? options.remove : []);
+		/** @type {Set<string>} */
+		this._leaveSet = new Set(options.leave && Array.isArray(options.leave) ? options.leave : []);
+		const ncrCfg = parseNCRConfig(options.ncr);
+		this._ncrXmlVersion = ncrCfg.xmlVersion;
+		this._ncrOnLevel = ncrCfg.onLevel;
+		this._ncrNullLevel = ncrCfg.nullLevel;
+	}
+	/**
+	* Replace the full set of persistent external entities.
+	* All keys are validated — throws on invalid characters.
+	* @param {Record<string, string | { regex?: RegExp, val: string }>} map
+	*/
+	setExternalEntities(map) {
+		if (map) for (const key of Object.keys(map)) validateEntityName$1(key);
+		this._externalMap = mergeEntityMaps(map);
+	}
+	/**
+	* Add a single persistent external entity.
+	* @param {string} key
+	* @param {string} value
+	*/
+	addExternalEntity(key, value) {
+		validateEntityName$1(key);
+		if (typeof value === "string" && value.indexOf("&") === -1) this._externalMap[key] = value;
+	}
+	/**
+	* Inject DOCTYPE entities for the current document.
+	* Also resets per-document expansion counters.
+	* @param {Record<string, string | { regx?: RegExp, regex?: RegExp, val: string }>} map
+	*/
+	addInputEntities(map) {
+		this._totalExpansions = 0;
+		this._expandedLength = 0;
+		this._inputMap = mergeEntityMaps(map);
+	}
+	/**
+	* Wipe input/runtime entities and reset counters.
+	* Call this before processing each new document.
+	* @returns {this}
+	*/
+	reset() {
+		this._inputMap = Object.create(null);
+		this._totalExpansions = 0;
+		this._expandedLength = 0;
+		return this;
+	}
+	/**
+	* Update the XML version used for NCR classification.
+	* Call this as soon as the document's `<?xml version="...">` declaration is parsed.
+	* @param {1.0|1.1|number} version
+	*/
+	setXmlVersion(version) {
+		this._ncrXmlVersion = version === 1.1 ? 1.1 : 1;
+	}
+	/**
+	* Replace all entity references in `str` in a single pass.
+	*
+	* @param {string} str
+	* @returns {string}
+	*/
+	decode(str) {
+		if (typeof str !== "string" || str.length === 0) return str;
+		const original = str;
+		const chunks = [];
+		const len = str.length;
+		let last = 0;
+		let i = 0;
+		const limitExpansions = this._maxTotalExpansions > 0;
+		const limitLength = this._maxExpandedLength > 0;
+		const checkLimits = limitExpansions || limitLength;
+		while (i < len) {
+			if (str.charCodeAt(i) !== 38) {
+				i++;
+				continue;
+			}
+			let j = i + 1;
+			while (j < len && str.charCodeAt(j) !== 59 && j - i <= 32) j++;
+			if (j >= len || str.charCodeAt(j) !== 59) {
+				i++;
+				continue;
+			}
+			const token = str.slice(i + 1, j);
+			if (token.length === 0) {
+				i++;
+				continue;
+			}
+			let replacement;
+			let tier;
+			if (this._removeSet.has(token)) {
+				replacement = "";
+				if (tier === void 0) tier = LIMIT_TIER_EXTERNAL;
+			} else if (this._leaveSet.has(token)) {
+				i++;
+				continue;
+			} else if (token.charCodeAt(0) === 35) {
+				const ncrResult = this._resolveNCR(token);
+				if (ncrResult === void 0) {
+					i++;
+					continue;
+				}
+				replacement = ncrResult;
+				tier = LIMIT_TIER_BASE;
+			} else {
+				const resolved = this._resolveName(token);
+				replacement = resolved?.value;
+				tier = resolved?.tier;
+			}
+			if (replacement === void 0) {
+				i++;
+				continue;
+			}
+			if (i > last) chunks.push(str.slice(last, i));
+			chunks.push(replacement);
+			last = j + 1;
+			i = last;
+			if (checkLimits && this._tierCounts(tier)) {
+				if (limitExpansions) {
+					this._totalExpansions++;
+					if (this._totalExpansions > this._maxTotalExpansions) throw new Error(`[EntityReplacer] Entity expansion count limit exceeded: ${this._totalExpansions} > ${this._maxTotalExpansions}`);
+				}
+				if (limitLength) {
+					const delta = replacement.length - (token.length + 2);
+					if (delta > 0) {
+						this._expandedLength += delta;
+						if (this._expandedLength > this._maxExpandedLength) throw new Error(`[EntityReplacer] Expanded content length limit exceeded: ${this._expandedLength} > ${this._maxExpandedLength}`);
+					}
+				}
+			}
+		}
+		if (last < len) chunks.push(str.slice(last));
+		const result = chunks.length === 0 ? str : chunks.join("");
+		return this._postCheck(result, original);
+	}
+	/**
+	* Returns true if a resolved entity of the given tier should count
+	* against the expansion/length limits.
+	* @param {string} tier  — LIMIT_TIER_EXTERNAL | LIMIT_TIER_BASE
+	* @returns {boolean}
+	*/
+	_tierCounts(tier) {
+		if (this._limitTiers.has(LIMIT_TIER_ALL)) return true;
+		return this._limitTiers.has(tier);
+	}
+	/**
+	* Resolve a named entity token (without & and ;).
+	* Priority: inputMap > externalMap > baseMap
+	* Returns the resolved value tagged with its limit tier.
+	*
+	* @param {string} name
+	* @returns {{ value: string, tier: string }|undefined}
+	*/
+	_resolveName(name) {
+		if (name in this._inputMap) return {
+			value: this._inputMap[name],
+			tier: LIMIT_TIER_EXTERNAL
+		};
+		if (name in this._externalMap) return {
+			value: this._externalMap[name],
+			tier: LIMIT_TIER_EXTERNAL
+		};
+		if (name in this._baseMap) return {
+			value: this._baseMap[name],
+			tier: LIMIT_TIER_BASE
+		};
+	}
+	/**
+	* Classify a codepoint and return the minimum action level that must be applied.
+	* Returns -1 when no minimum is imposed (normal allow path).
+	*
+	* Ranges checked (in priority order):
+	*   1. U+0000            — null, governed by nullNCR (always ≥ remove)
+	*   2. U+D800–U+DFFF     — surrogates, always prohibited (min: remove)
+	*   3. U+0001–U+001F \ {0x09,0x0A,0x0D}  — XML 1.0 restricted C0 (min: remove)
+	*      (skipped in XML 1.1 — C0 controls are allowed when written as NCRs)
+	*
+	* @param {number} cp  — codepoint
+	* @returns {number}   — minimum NCR_LEVEL value, or -1 for no restriction
+	*/
+	_classifyNCR(cp) {
+		if (cp === 0) return this._ncrNullLevel;
+		if (cp >= 55296 && cp <= 57343) return NCR_LEVEL.remove;
+		if (this._ncrXmlVersion === 1) {
+			if (cp >= 1 && cp <= 31 && !XML10_ALLOWED_C0.has(cp)) return NCR_LEVEL.remove;
+		}
+		return -1;
+	}
+	/**
+	* Execute a resolved NCR action.
+	*
+	* @param {number} action   — NCR_LEVEL value
+	* @param {string} token    — raw token (e.g. '#38') for error messages
+	* @param {number} cp       — codepoint, used only for error messages
+	* @returns {string|undefined}
+	*   - decoded character string  → 'allow'
+	*   - ''                        → 'remove'
+	*   - undefined                 → 'leave' (caller must skip past '&' only)
+	*   - throws Error              → 'throw'
+	*/
+	_applyNCRAction(action, token, cp) {
+		switch (action) {
+			case NCR_LEVEL.allow: return String.fromCodePoint(cp);
+			case NCR_LEVEL.remove: return "";
+			case NCR_LEVEL.leave: return;
+			case NCR_LEVEL.throw: throw new Error(`[EntityDecoder] Prohibited numeric character reference &${token}; (U+${cp.toString(16).toUpperCase().padStart(4, "0")})`);
+			default: return String.fromCodePoint(cp);
+		}
+	}
+	/**
+	* Full NCR resolution pipeline for a numeric token.
+	*
+	* Steps:
+	*   1. Parse the codepoint (decimal or hex).
+	*   2. Validate the raw codepoint range (NaN, <0, >0x10FFFF).
+	*   3. If numericAllowed is false and no minimum restriction applies → leave as-is.
+	*   4. Classify the codepoint to find the minimum required action level.
+	*   5. Resolve effective action = max(onNCR, minimum).
+	*   6. Apply and return.
+	*
+	* @param {string} token  — e.g. '#38', '#x26', '#X26'
+	* @returns {string|undefined}
+	*   - string (incl. '')  — replacement ('' = remove)
+	*   - undefined          — leave original &token; as-is
+	*/
+	_resolveNCR(token) {
+		const second = token.charCodeAt(1);
+		let cp;
+		if (second === 120 || second === 88) cp = parseInt(token.slice(2), 16);
+		else cp = parseInt(token.slice(1), 10);
+		if (Number.isNaN(cp) || cp < 0 || cp > 1114111) return void 0;
+		const minimum = this._classifyNCR(cp);
+		if (!this._numericAllowed && minimum < NCR_LEVEL.remove) return void 0;
+		const effective = minimum === -1 ? this._ncrOnLevel : Math.max(this._ncrOnLevel, minimum);
+		return this._applyNCRAction(effective, token, cp);
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/fast-xml-parser@5.7.1/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
 var defaultOnDangerousProperty = (name) => {
 	if (DANGEROUS_PROPERTY_NAMES.includes(name)) return "__" + name;
 	return name;
@@ -38344,6 +39888,7 @@ var defaultOptions$1 = {
 	unpairedTags: [],
 	processEntities: true,
 	htmlEntities: false,
+	entityDecoder: null,
 	ignoreDeclaration: false,
 	ignorePiTags: false,
 	transformTagName: false,
@@ -38374,16 +39919,17 @@ function validatePropertyName(propertyName, optionName) {
 * @param {boolean|object} value 
 * @returns {object} Always returns normalized object
 */
-function normalizeProcessEntities(value) {
+function normalizeProcessEntities(value, htmlEntities) {
 	if (typeof value === "boolean") return {
 		enabled: value,
 		maxEntitySize: 1e4,
-		maxExpansionDepth: 10,
-		maxTotalExpansions: 1e3,
+		maxExpansionDepth: 1e4,
+		maxTotalExpansions: Infinity,
 		maxExpandedLength: 1e5,
-		maxEntityCount: 100,
+		maxEntityCount: 1e3,
 		allowedTags: null,
-		tagFilter: null
+		tagFilter: null,
+		appliesTo: "all"
 	};
 	if (typeof value === "object" && value !== null) return {
 		enabled: value.enabled !== false,
@@ -38393,7 +39939,8 @@ function normalizeProcessEntities(value) {
 		maxExpandedLength: Math.max(1, value.maxExpandedLength ?? 1e5),
 		maxEntityCount: Math.max(1, value.maxEntityCount ?? 1e3),
 		allowedTags: value.allowedTags ?? null,
-		tagFilter: value.tagFilter ?? null
+		tagFilter: value.tagFilter ?? null,
+		appliesTo: value.appliesTo ?? "all"
 	};
 	return normalizeProcessEntities(true);
 }
@@ -38423,7 +39970,7 @@ var buildOptions = function(options) {
 	];
 	for (const { value, name } of propertyNameOptions) if (value) validatePropertyName(value, name);
 	if (built.onDangerousProperty === null) built.onDangerousProperty = defaultOnDangerousProperty;
-	built.processEntities = normalizeProcessEntities(built.processEntities);
+	built.processEntities = normalizeProcessEntities(built.processEntities, built.htmlEntities);
 	built.unpairedTagsSet = new Set(built.unpairedTags);
 	if (built.stopNodes && Array.isArray(built.stopNodes)) built.stopNodes = built.stopNodes.map((node) => {
 		if (typeof node === "string" && node.startsWith("*.")) return ".." + node.substring(2);
@@ -38432,7 +39979,7 @@ var buildOptions = function(options) {
 	return built;
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
+//#region node_modules/.pnpm/fast-xml-parser@5.7.1/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
 var METADATA_SYMBOL$1;
 if (typeof Symbol !== "function") METADATA_SYMBOL$1 = "@@xmlMetadata";
 else METADATA_SYMBOL$1 = Symbol("XML Node Metadata");
@@ -38461,7 +40008,7 @@ var XmlNode = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
+//#region node_modules/.pnpm/fast-xml-parser@5.7.1/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
 var DocTypeReader = class {
 	constructor(options) {
 		this.suppressValidationErr = !options;
@@ -38482,11 +40029,7 @@ var DocTypeReader = class {
 					[entityName, val, i] = this.readEntityExp(xmlData, i + 1, this.suppressValidationErr);
 					if (val.indexOf("&") === -1) {
 						if (this.options.enabled !== false && this.options.maxEntityCount != null && entityCount >= this.options.maxEntityCount) throw new Error(`Entity count (${entityCount + 1}) exceeds maximum allowed (${this.options.maxEntityCount})`);
-						const escaped = entityName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-						entities[entityName] = {
-							regx: RegExp(`&${escaped};`, "g"),
-							val
-						};
+						entities[entityName] = val;
 						entityCount++;
 					}
 				} else if (hasBody && hasSeq(xmlData, "!ELEMENT", i)) {
@@ -38524,7 +40067,7 @@ var DocTypeReader = class {
 		const startIndex = i;
 		while (i < xmlData.length && !/\s/.test(xmlData[i]) && xmlData[i] !== "\"" && xmlData[i] !== "'") i++;
 		let entityName = xmlData.substring(startIndex, i);
-		validateEntityName$1(entityName);
+		validateEntityName(entityName);
 		i = skipWhitespace(xmlData, i);
 		if (!this.suppressValidationErr) {
 			if (xmlData.substring(i, i + 6).toUpperCase() === "SYSTEM") throw new Error("External entities are not supported");
@@ -38545,7 +40088,7 @@ var DocTypeReader = class {
 		const startIndex = i;
 		while (i < xmlData.length && !/\s/.test(xmlData[i])) i++;
 		let notationName = xmlData.substring(startIndex, i);
-		!this.suppressValidationErr && validateEntityName$1(notationName);
+		!this.suppressValidationErr && validateEntityName(notationName);
 		i = skipWhitespace(xmlData, i);
 		const identifierType = xmlData.substring(i, i + 6).toUpperCase();
 		if (!this.suppressValidationErr && identifierType !== "SYSTEM" && identifierType !== "PUBLIC") throw new Error(`Expected SYSTEM or PUBLIC, found "${identifierType}"`);
@@ -38608,12 +40151,12 @@ var DocTypeReader = class {
 		let startIndex = i;
 		while (i < xmlData.length && !/\s/.test(xmlData[i])) i++;
 		let elementName = xmlData.substring(startIndex, i);
-		validateEntityName$1(elementName);
+		validateEntityName(elementName);
 		i = skipWhitespace(xmlData, i);
 		startIndex = i;
 		while (i < xmlData.length && !/\s/.test(xmlData[i])) i++;
 		let attributeName = xmlData.substring(startIndex, i);
-		if (!validateEntityName$1(attributeName)) throw new Error(`Invalid attribute name: "${attributeName}"`);
+		if (!validateEntityName(attributeName)) throw new Error(`Invalid attribute name: "${attributeName}"`);
 		i = skipWhitespace(xmlData, i);
 		let attributeType = "";
 		if (xmlData.substring(i, i + 8).toUpperCase() === "NOTATION") {
@@ -38628,7 +40171,7 @@ var DocTypeReader = class {
 				while (i < xmlData.length && xmlData[i] !== "|" && xmlData[i] !== ")") i++;
 				let notation = xmlData.substring(startIndex, i);
 				notation = notation.trim();
-				if (!validateEntityName$1(notation)) throw new Error(`Invalid notation name: "${notation}"`);
+				if (!validateEntityName(notation)) throw new Error(`Invalid notation name: "${notation}"`);
 				allowedNotations.push(notation);
 				if (xmlData[i] === "|") {
 					i++;
@@ -38679,7 +40222,7 @@ function hasSeq(data, seq, i) {
 	for (let j = 0; j < seq.length; j++) if (seq[j] !== data[i + j + 1]) return false;
 	return true;
 }
-function validateEntityName$1(name) {
+function validateEntityName(name) {
 	if (isName(name)) return name;
 	else throw new Error(`Invalid entity name ${name}`);
 }
@@ -38785,7 +40328,7 @@ function handleInfinity(str, num, options) {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/ignoreAttributes.js
+//#region node_modules/.pnpm/fast-xml-parser@5.7.1/node_modules/fast-xml-parser/src/ignoreAttributes.js
 function getIgnoreAttributesFn$1(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -39554,437 +41097,7 @@ var Matcher = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@nodable+entities@1.1.0/node_modules/@nodable/entities/src/EntityReplacer.js
-/**
-* Standard XML entities — always processed after external/system so they
-* cannot be overridden by DOCTYPE, and &amp; is deferred to its own final pass.
-*
-* Each entry: { regex: RegExp, val: string }
-*/
-var DEFAULT_XML_ENTITIES = {
-	apos: {
-		regex: /&(apos|#0*39|#x0*27);/g,
-		val: "'"
-	},
-	gt: {
-		regex: /&(gt|#0*62|#x0*3[Ee]);/g,
-		val: ">"
-	},
-	lt: {
-		regex: /&(lt|#0*60|#x0*3[Cc]);/g,
-		val: "<"
-	},
-	quot: {
-		regex: /&(quot|#0*34|#x0*22);/g,
-		val: "\""
-	}
-};
-/** &amp; — always expanded last to avoid double-expansion. */
-var AMP_ENTITY = {
-	regex: /&(amp|#0*38|#x0*26);/g,
-	val: "&"
-};
-var SPECIAL_CHARS = /* @__PURE__ */ new Set("!?\\\\/[]$%{}^&*()<>|+");
-/**
-* Validate that an entity name contains no regex-special or otherwise
-* dangerous characters.
-* @param {string} name
-* @returns {string} the name, unchanged
-* @throws {Error} on invalid characters
-*/
-function validateEntityName(name) {
-	for (const ch of name) if (SPECIAL_CHARS.has(ch)) throw new Error(`[EntityReplacer] Invalid character '${ch}' in entity name: "${name}"`);
-	return name;
-}
-/**
-* Escape a string for use inside a RegExp character class / alternation.
-*/
-function escapeForRegex(str) {
-	return str.replace(/[.\-+*:]/g, "\\$&");
-}
-/**
-* Resolve a constructor option to an entity table (plain object) or null.
-*/
-function resolveTable(option, builtIn, enabledByDefault = false) {
-	if (option === false || option === null) return null;
-	if (option === true) return builtIn;
-	if (option === void 0) return enabledByDefault ? builtIn : null;
-	if (typeof option === "object") return option;
-	return null;
-}
-/**
-* Convert a category name or array of names into a Set<string>.
-*/
-function resolveApplyLimitsTo(spec) {
-	if (spec === "all") return "all";
-	if (typeof spec === "string") return new Set([spec]);
-	if (Array.isArray(spec)) return new Set(spec);
-	return new Set(["external"]);
-}
-/**
-* Build an entries array from a raw map of name → string|{regex,val}.
-* Skips string values that contain '&' (recursive expansion risk).
-* Normalises DocTypeReader's `regx` spelling to `regex`.
-*
-* @param {object} map
-* @returns {Array<[string, {regex: RegExp, val: string}]>}
-*/
-function buildEntries(map) {
-	const entries = [];
-	for (const key of Object.keys(map)) {
-		const raw = map[key];
-		if (typeof raw === "object" && raw !== null && raw.val !== void 0) entries.push([key, {
-			regex: raw.regex ?? raw.regx,
-			val: raw.val
-		}]);
-		else if (typeof raw === "string") {
-			if (raw.indexOf("&") !== -1) continue;
-			validateEntityName(key);
-			entries.push([key, {
-				regex: new RegExp("&" + escapeForRegex(key) + ";", "g"),
-				val: raw
-			}]);
-		}
-	}
-	return entries;
-}
-/**
-* Standalone, zero-dependency entity replacer for XML/HTML content.
-*
-* Entity categories:
-*  - **persistent external** — configured once, survive across documents.
-*    Set via `setExternalEntities()` or built up via `addExternalEntity()`.
-*  - **input / runtime** — DOCTYPE entities for the *current* document only.
-*    Injected via `addInputEntities()`. Wiped on every `getInstance()` call
-*    so they never leak between documents.
-*
-* Replacement order (fixed):
-*   1. persistent external
-*   2. input / runtime  (DOCTYPE)
-*   3. system           (named entity groups)
-*   4. default          (lt / gt / apos / quot)
-*   5. amp              (&amp; final pass)
-*
-* @example
-* const replacer = new EntityReplacer({ default: true, system: COMMON_HTML });
-* replacer.setExternalEntities({ brand: 'Acme' });
-*
-* // Builder factory calls getInstance() before each document:
-* const instance = replacer.getInstance();
-* // Builder calls addInputEntities() if DOCTYPE entities are present:
-* instance.addInputEntities({ version: '1.0' });
-* instance.replace('&brand; v&version; &lt;'); // 'Acme v1.0 <'
-*/
-var EntityReplacer = class {
-	/**
-	* @param {object} [options]
-	* @param {boolean|object|null} [options.default=true]
-	* @param {boolean|object|null} [options.amp=true]
-	* @param {boolean|object|null} [options.system=false]
-	* @param {number}              [options.maxTotalExpansions=0]
-	* @param {number}              [options.maxExpandedLength=0]
-	* @param {'external'|'all'|string[]} [options.applyLimitsTo='external']
-	* @param {((resolved: string, original: string) => string)|null} [options.postCheck=null]
-	*/
-	constructor(options = {}) {
-		this._defaultTable = resolveTable(options.default, DEFAULT_XML_ENTITIES, true);
-		this._systemTable = resolveTable(options.system, null, false);
-		this._ampEnabled = options.amp !== false && options.amp !== null;
-		this._maxTotalExpansions = options.maxTotalExpansions || 0;
-		this._maxExpandedLength = options.maxExpandedLength || 0;
-		this._applyLimitsTo = resolveApplyLimitsTo(options.applyLimitsTo ?? "external");
-		this._postCheck = typeof options.postCheck === "function" ? options.postCheck : (r) => r;
-		this._limitExternal = this._applyLimitsTo === "all" || this._applyLimitsTo instanceof Set && this._applyLimitsTo.has("external");
-		this._limitSystem = this._applyLimitsTo === "all" || this._applyLimitsTo instanceof Set && this._applyLimitsTo.has("system");
-		this._limitDefault = this._applyLimitsTo === "all" || this._applyLimitsTo instanceof Set && this._applyLimitsTo.has("default");
-		this._defaultEntries = this._defaultTable ? Object.entries(this._defaultTable) : [];
-		this._systemEntries = this._systemTable ? Object.entries(this._systemTable) : [];
-		/** @type {Array<[string, {regex: RegExp, val: string}]>} */
-		this._persistentEntries = [];
-		/** @type {Array<[string, {regex: RegExp, val: string}]>} */
-		this._inputEntries = [];
-		this._totalExpansions = 0;
-		this._expandedLength = 0;
-	}
-	/**
-	* Replace the full set of persistent external entities.
-	* These are never wiped between documents.
-	*
-	* @param {Record<string, string | { regex: RegExp, val: string | Function }>} map
-	*/
-	setExternalEntities(map) {
-		this._persistentEntries = buildEntries(map);
-	}
-	/**
-	* Add a single persistent external entity without disturbing existing ones.
-	*
-	* @param {string} key   — bare entity name, e.g. `'copy'`
-	* @param {string} value — replacement string, e.g. `'©'`
-	*/
-	addExternalEntity(key, value) {
-		validateEntityName(key);
-		if (typeof value === "string" && value.indexOf("&") === -1) this._persistentEntries.push([key, {
-			regex: new RegExp("&" + escapeForRegex(key) + ";", "g"),
-			val: value
-		}]);
-	}
-	/**
-	* Inject DOCTYPE (input/runtime) entities for the current document.
-	* These are stored separately from persistent entities and wiped on the
-	* next `getInstance()` call so they never leak into subsequent documents.
-	*
-	* Also resets per-document expansion counters.
-	*
-	* @param {Record<string, string | { regx?: RegExp, regex?: RegExp, val: string | Function }>} map
-	*/
-	addInputEntities(map) {
-		this._totalExpansions = 0;
-		this._expandedLength = 0;
-		this._inputEntries = buildEntries(map);
-	}
-	/**
-	* Reset all per-document state (input entities + expansion counters) and
-	* return `this`.
-	*
-	* The builder factory calls this each time it creates a new builder instance
-	* so DOCTYPE entities from a previous document are never carried over.
-	*
-	*/
-	reset() {
-		this._inputEntries = [];
-		this._totalExpansions = 0;
-		this._expandedLength = 0;
-	}
-	/**
-	* Replace all entity references in `str`.
-	*
-	* Processing order:
-	*   1. persistent external
-	*   2. input / runtime  (DOCTYPE)
-	*   3. system
-	*   4. default (lt/gt/apos/quot)
-	*   5. amp
-	*   6. postCheck hook
-	*
-	* @param {string} str
-	* @returns {string}
-	*/
-	replace(str) {
-		if (typeof str !== "string" || str.length === 0) return str;
-		if (str.indexOf("&") === -1) return str;
-		const original = str;
-		if (this._persistentEntries.length > 0) str = this._applyEntries(str, this._persistentEntries, this._limitExternal);
-		if (this._inputEntries.length > 0 && str.indexOf("&") !== -1) str = this._applyEntries(str, this._inputEntries, this._limitExternal);
-		if (this._defaultEntries.length > 0 && str.indexOf("&") !== -1) str = this._applyEntries(str, this._defaultEntries, this._limitDefault);
-		if (this._systemEntries.length > 0 && str.indexOf("&") !== -1) str = this._applyEntries(str, this._systemEntries, this._limitSystem);
-		if (this._ampEnabled && str.indexOf("&") !== -1) str = str.replace(AMP_ENTITY.regex, AMP_ENTITY.val);
-		str = this._postCheck(str, original);
-		return str;
-	}
-	/**
-	* 
-	* @param {string} val 
-	* @returns 
-	*/
-	parse(val) {
-		return this.replace(val);
-	}
-	_applyEntries(str, entries, track) {
-		const limitExpansions = track && this._maxTotalExpansions > 0;
-		const limitLength = track && this._maxExpandedLength > 0;
-		const trackAny = limitExpansions || limitLength;
-		for (let i = 0; i < entries.length; i++) {
-			if (str.indexOf("&") === -1) break;
-			const entity = entries[i][1];
-			if (!trackAny) {
-				str = str.replace(entity.regex, entity.val);
-				continue;
-			}
-			if (limitExpansions && !limitLength) {
-				let count = 0;
-				str = str.replace(entity.regex, (...args) => {
-					count++;
-					return typeof entity.val === "function" ? entity.val(...args) : entity.val;
-				});
-				if (count > 0) {
-					this._totalExpansions += count;
-					if (this._totalExpansions > this._maxTotalExpansions) throw new Error(`[EntityReplacer] Entity expansion count limit exceeded: ${this._totalExpansions} > ${this._maxTotalExpansions}`);
-				}
-			} else if (limitLength && !limitExpansions) {
-				const before = str.length;
-				str = str.replace(entity.regex, entity.val);
-				const delta = str.length - before;
-				if (delta > 0) {
-					this._expandedLength += delta;
-					if (this._expandedLength > this._maxExpandedLength) throw new Error(`[EntityReplacer] Expanded content length limit exceeded: ${this._expandedLength} > ${this._maxExpandedLength}`);
-				}
-			} else {
-				const before = str.length;
-				let count = 0;
-				str = str.replace(entity.regex, (...args) => {
-					count++;
-					return typeof entity.val === "function" ? entity.val(...args) : entity.val;
-				});
-				if (count > 0) {
-					this._totalExpansions += count;
-					if (this._totalExpansions > this._maxTotalExpansions) throw new Error(`[EntityReplacer] Entity expansion count limit exceeded: ${this._totalExpansions} > ${this._maxTotalExpansions}`);
-				}
-				const delta = str.length - before;
-				if (delta > 0) {
-					this._expandedLength += delta;
-					if (this._expandedLength > this._maxExpandedLength) throw new Error(`[EntityReplacer] Expanded content length limit exceeded: ${this._expandedLength} > ${this._maxExpandedLength}`);
-				}
-			}
-		}
-		return str;
-	}
-};
-//#endregion
-//#region node_modules/.pnpm/@nodable+entities@1.1.0/node_modules/@nodable/entities/src/groups.js
-/**
-* ~20 most commonly needed HTML named entities.
-* @type {Record<string, { regex: RegExp, val: string | ((m: string, s: string) => string) }>}
-*/
-var COMMON_HTML = {
-	nbsp: {
-		regex: /&(nbsp|#0*160|#x0*[Aa]0);/g,
-		val: "\xA0"
-	},
-	copy: {
-		regex: /&(copy|#0*169|#x0*[Aa]9);/g,
-		val: "©"
-	},
-	reg: {
-		regex: /&(reg|#0*174|#x0*[Aa][Ee]);/g,
-		val: "®"
-	},
-	trade: {
-		regex: /&(trade|#0*8482|#x0*2122);/g,
-		val: "™"
-	},
-	mdash: {
-		regex: /&(mdash|#0*8212|#x0*2014);/g,
-		val: "—"
-	},
-	ndash: {
-		regex: /&(ndash|#0*8211|#x0*2013);/g,
-		val: "–"
-	},
-	hellip: {
-		regex: /&(hellip|#0*8230|#x0*2026);/g,
-		val: "…"
-	},
-	laquo: {
-		regex: /&(laquo|#0*171|#x0*[Aa][Bb]);/g,
-		val: "«"
-	},
-	raquo: {
-		regex: /&(raquo|#0*187|#x0*[Bb][Bb]);/g,
-		val: "»"
-	},
-	lsquo: {
-		regex: /&(lsquo|#0*8216|#x0*2018);/g,
-		val: "‘"
-	},
-	rsquo: {
-		regex: /&(rsquo|#0*8217|#x0*2019);/g,
-		val: "’"
-	},
-	ldquo: {
-		regex: /&(ldquo|#0*8220|#x0*201[Cc]);/g,
-		val: "“"
-	},
-	rdquo: {
-		regex: /&(rdquo|#0*8221|#x0*201[Dd]);/g,
-		val: "”"
-	},
-	bull: {
-		regex: /&(bull|#0*8226|#x0*2022);/g,
-		val: "•"
-	},
-	para: {
-		regex: /&(para|#0*182|#x0*[Bb]6);/g,
-		val: "¶"
-	},
-	sect: {
-		regex: /&(sect|#0*167|#x0*[Aa]7);/g,
-		val: "§"
-	},
-	deg: {
-		regex: /&(deg|#0*176|#x0*[Bb]0);/g,
-		val: "°"
-	},
-	frac12: {
-		regex: /&(frac12|#0*189|#x0*[Bb][Dd]);/g,
-		val: "½"
-	},
-	frac14: {
-		regex: /&(frac14|#0*188|#x0*[Bb][Cc]);/g,
-		val: "¼"
-	},
-	frac34: {
-		regex: /&(frac34|#0*190|#x0*[Bb][Ee]);/g,
-		val: "¾"
-	},
-	inr: {
-		regex: /&(inr|#0*8377);/g,
-		val: "₹"
-	}
-};
-/**
-* Currency symbol entities.
-*/
-var CURRENCY_ENTITIES = {
-	cent: {
-		regex: /&(cent|#0*162|#x0*[Aa]2);/g,
-		val: "¢"
-	},
-	pound: {
-		regex: /&(pound|#0*163|#x0*[Aa]3);/g,
-		val: "£"
-	},
-	yen: {
-		regex: /&(yen|#0*165|#x0*[Aa]5);/g,
-		val: "¥"
-	},
-	euro: {
-		regex: /&(euro|#0*8364|#x0*20[Aa][Cc]);/g,
-		val: "€"
-	},
-	inr: {
-		regex: /&(inr|#0*8377|#x0*20[Bb]9);/g,
-		val: "₹"
-	},
-	curren: {
-		regex: /&(curren|#0*164|#x0*[Aa]4);/g,
-		val: "¤"
-	},
-	fnof: {
-		regex: /&(fnof|#0*402|#x0*192);/g,
-		val: "ƒ"
-	}
-};
-/**
-* Numeric character references — decimal &#NNN; and hex &#xHH;
-* These are function-replacers; they expand any valid code point.
-*/
-var NUMERIC_ENTITIES = {
-	num_dec: {
-		regex: /&#0*([0-9]{1,7});/g,
-		val: (_, s) => fromCodePoint(s, 10, "&#")
-	},
-	num_hex: {
-		regex: /&#x0*([0-9a-fA-F]{1,6});/g,
-		val: (_, s) => fromCodePoint(s, 16, "&#x")
-	}
-};
-function fromCodePoint(str, base, prefix) {
-	const codePoint = Number.parseInt(str, base);
-	if (codePoint >= 0 && codePoint <= 1114111) return String.fromCodePoint(codePoint);
-	else return prefix + str + ";";
-}
-//#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.7.1/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
 /**
 * Extract raw attributes (without prefix) from prefixed attribute map
 * @param {object} prefixedAttrs - Attributes with prefix from buildAttributesMap
@@ -40032,17 +41145,24 @@ var OrderedObjParser = class {
 		this.ignoreAttributesFn = getIgnoreAttributesFn$1(this.options.ignoreAttributes);
 		this.entityExpansionCount = 0;
 		this.currentExpandedLength = 0;
-		this.entityReplacer = new EntityReplacer({
-			default: true,
-			system: this.options.htmlEntities ? {
+		let namedEntities = { ...XML };
+		if (this.options.entityDecoder) this.entityDecoder = this.options.entityDecoder;
+		else {
+			if (typeof this.options.htmlEntities === "object") namedEntities = this.options.htmlEntities;
+			else if (this.options.htmlEntities === true) namedEntities = {
 				...COMMON_HTML,
-				...NUMERIC_ENTITIES,
-				...CURRENCY_ENTITIES
-			} : {},
-			maxTotalExpansions: this.options.processEntities.maxTotalExpansions,
-			maxExpandedLength: this.options.processEntities.maxExpandedLength,
-			applyLimitsTo: "all"
-		});
+				...CURRENCY
+			};
+			this.entityDecoder = new EntityDecoder({
+				namedEntities,
+				numericAllowed: this.options.htmlEntities,
+				limit: {
+					maxTotalExpansions: this.options.processEntities.maxTotalExpansions,
+					maxExpandedLength: this.options.processEntities.maxExpandedLength,
+					applyLimitsTo: this.options.processEntities.appliesTo
+				}
+			});
+		}
 		this.matcher = new Matcher();
 		this.readonlyMatcher = this.matcher.readOnly();
 		this.isCurrentNodeStopNode = false;
@@ -40093,9 +41213,9 @@ function resolveNameSpace(tagname) {
 	return tagname;
 }
 var attrsRegx = /* @__PURE__ */ new RegExp("([^\\s=]+)\\s*(=\\s*(['\"])([\\s\\S]*?)\\3)?", "gm");
-function buildAttributesMap(attrStr, jPath, tagName) {
+function buildAttributesMap(attrStr, jPath, tagName, force = false) {
 	const options = this.options;
-	if (options.ignoreAttributes !== true && typeof attrStr === "string") {
+	if (force === true || options.ignoreAttributes !== true && typeof attrStr === "string") {
 		const matches = getAllMatches(attrStr, attrsRegx);
 		const len = matches.length;
 		const attrs = {};
@@ -40152,6 +41272,7 @@ var parseXml = function(xmlData) {
 	let currentNode = xmlObj;
 	let textData = "";
 	this.matcher.reset();
+	this.entityDecoder.reset();
 	this.entityExpansionCount = 0;
 	this.currentExpandedLength = 0;
 	const options = this.options;
@@ -40183,10 +41304,15 @@ var parseXml = function(xmlData) {
 			let tagData = readTagExp(xmlData, i, false, "?>");
 			if (!tagData) throw new Error("Pi Tag is not closed.");
 			textData = this.saveTextToParentTag(textData, currentNode, this.readonlyMatcher);
+			const attsMap = this.buildAttributesMap(tagData.tagExp, this.matcher, tagData.tagName, true);
+			if (attsMap) {
+				const ver = attsMap[this.options.attributeNamePrefix + "version"];
+				this.entityDecoder.setXmlVersion(Number(ver) || 1);
+			}
 			if (options.ignoreDeclaration && tagData.tagName === "?xml" || options.ignorePiTags) {} else {
 				const childNode = new XmlNode(tagData.tagName);
 				childNode.add(options.textNodeName, "");
-				if (tagData.tagName !== tagData.tagExp && tagData.attrExpPresent) childNode[":@"] = this.buildAttributesMap(tagData.tagExp, this.matcher, tagData.tagName);
+				if (tagData.tagName !== tagData.tagExp && tagData.attrExpPresent && options.ignoreAttributes !== true) childNode[":@"] = attsMap;
 				this.addChild(currentNode, childNode, this.readonlyMatcher, i);
 			}
 			i = tagData.closeIndex + 1;
@@ -40200,7 +41326,7 @@ var parseXml = function(xmlData) {
 			i = endIndex;
 		} else if (c1 === 33 && xmlData.charCodeAt(i + 2) === 68) {
 			const result = docTypeReader.readDocType(xmlData, i);
-			this.entityReplacer.addInputEntities(result.entities);
+			this.entityDecoder.addInputEntities(result.entities);
 			i = result.i;
 		} else if (c1 === 33 && xmlData.charCodeAt(i + 2) === 91) {
 			const closeIndex = findClosingIndex(xmlData, "]]>", i, "CDATA is not closed.") - 2;
@@ -40323,7 +41449,7 @@ function replaceEntitiesValue$1(val, tagName, jPath) {
 		const jPathOrMatcher = this.options.jPath ? jPath.toString() : jPath;
 		if (!entityConfig.tagFilter(tagName, jPathOrMatcher)) return val;
 	}
-	return this.entityReplacer.replace(val);
+	return this.entityDecoder.decode(val);
 }
 function saveTextToParentTag(textData, parentNode, matcher, isLeafNode) {
 	if (textData) {
@@ -40474,7 +41600,7 @@ function sanitizeName(name, options) {
 	return name;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/xmlparser/node2json.js
+//#region node_modules/.pnpm/fast-xml-parser@5.7.1/node_modules/fast-xml-parser/src/xmlparser/node2json.js
 var METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
 /**
 * Helper function to strip attribute prefix from attribute map
@@ -40573,7 +41699,7 @@ function isLeafTag(obj, options) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.7.1/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
 var XMLParser = class {
 	constructor(options) {
 		this.externalEntities = {};
@@ -40593,7 +41719,7 @@ var XMLParser = class {
 			if (result !== true) throw Error(`${result.err.msg}:${result.err.line}:${result.err.col}`);
 		}
 		const orderedObjParser = new OrderedObjParser(this.options);
-		orderedObjParser.entityReplacer.setExternalEntities(this.externalEntities);
+		orderedObjParser.entityDecoder.setExternalEntities(this.externalEntities);
 		const orderedResult = orderedObjParser.parseXml(xmlData);
 		if (this.options.preserveOrder || orderedResult === void 0) return orderedResult;
 		else return prettify(orderedResult, this.options, orderedObjParser.matcher, orderedObjParser.readonlyMatcher);
@@ -40624,7 +41750,7 @@ var XMLParser = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.1.4/node_modules/fast-xml-builder/src/orderedJs2Xml.js
+//#region node_modules/.pnpm/fast-xml-builder@1.1.5/node_modules/fast-xml-builder/src/orderedJs2Xml.js
 var EOL$2 = "\n";
 /**
 * 
@@ -40676,12 +41802,16 @@ function arrToStr(arr, options, indentation, matcher, stopNodeExpressions) {
 			continue;
 		} else if (tagName === options.cdataPropName) {
 			if (isPreviousElementTag) xmlStr += indentation;
-			xmlStr += `<![CDATA[${tagObj[tagName][0][options.textNodeName]}]]>`;
+			const val = tagObj[tagName][0][options.textNodeName];
+			const safeVal = String(val).replace(/\]\]>/g, "]]]]><![CDATA[>");
+			xmlStr += `<![CDATA[${safeVal}]]>`;
 			isPreviousElementTag = false;
 			matcher.pop();
 			continue;
 		} else if (tagName === options.commentPropName) {
-			xmlStr += indentation + `<!--${tagObj[tagName][0][options.textNodeName]}-->`;
+			const val = tagObj[tagName][0][options.textNodeName];
+			const safeVal = String(val).replace(/--/g, "- -").replace(/-$/, "- ");
+			xmlStr += indentation + `<!--${safeVal}-->`;
 			isPreviousElementTag = true;
 			matcher.pop();
 			continue;
@@ -40807,7 +41937,7 @@ function replaceEntitiesValue(textValue, options) {
 	return textValue;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.1.4/node_modules/fast-xml-builder/src/ignoreAttributes.js
+//#region node_modules/.pnpm/fast-xml-builder@1.1.5/node_modules/fast-xml-builder/src/ignoreAttributes.js
 function getIgnoreAttributesFn(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -40819,7 +41949,7 @@ function getIgnoreAttributesFn(ignoreAttributes) {
 	return () => false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.1.4/node_modules/fast-xml-builder/src/fxb.js
+//#region node_modules/.pnpm/fast-xml-builder@1.1.5/node_modules/fast-xml-builder/src/fxb.js
 var defaultOptions = {
 	attributeNamePrefix: "@_",
 	attributesGroupName: false,
@@ -41107,9 +42237,13 @@ Builder.prototype.checkStopNode = function(matcher) {
 	return false;
 };
 Builder.prototype.buildTextValNode = function(val, key, attrStr, level, matcher) {
-	if (this.options.cdataPropName !== false && key === this.options.cdataPropName) return this.indentate(level) + `<![CDATA[${val}]]>` + this.newLine;
-	else if (this.options.commentPropName !== false && key === this.options.commentPropName) return this.indentate(level) + `<!--${val}-->` + this.newLine;
-	else if (key[0] === "?") return this.indentate(level) + "<" + key + attrStr + "?" + this.tagEndChar;
+	if (this.options.cdataPropName !== false && key === this.options.cdataPropName) {
+		const safeVal = String(val).replace(/\]\]>/g, "]]]]><![CDATA[>");
+		return this.indentate(level) + `<![CDATA[${safeVal}]]>` + this.newLine;
+	} else if (this.options.commentPropName !== false && key === this.options.commentPropName) {
+		const safeVal = String(val).replace(/--/g, "- -").replace(/-$/, "- ");
+		return this.indentate(level) + `<!--${safeVal}-->` + this.newLine;
+	} else if (key[0] === "?") return this.indentate(level) + "<" + key + attrStr + "?" + this.tagEndChar;
 	else {
 		let textValue = this.options.tagValueProcessor(key, val);
 		textValue = this.replaceEntitiesValue(textValue);
@@ -41132,10 +42266,10 @@ function isAttribute(name) {
 	else return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
+//#region node_modules/.pnpm/fast-xml-parser@5.7.1/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
 var json2xml_default = Builder;
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.6.0/node_modules/fast-xml-parser/src/fxp.js
+//#region node_modules/.pnpm/fast-xml-parser@5.7.1/node_modules/fast-xml-parser/src/fxp.js
 var XMLValidator = { validate };
 //#endregion
 //#region node_modules/.pnpm/@azure+core-xml@1.5.1/node_modules/@azure/core-xml/dist/esm/xml.js
