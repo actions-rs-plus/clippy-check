@@ -38,7 +38,7 @@ var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __esmMin = (fn, res) => () => (fn && (res = fn(fn = 0)), res);
-var __commonJSMin = (cb, mod) => () => (mod || cb((mod = { exports: {} }).exports, mod), mod.exports);
+var __commonJSMin = (cb, mod) => () => (mod || (cb((mod = { exports: {} }).exports, mod), cb = null), mod.exports);
 var __exportAll$1 = (all, no_symbols) => {
 	let target = {};
 	for (var name in all) __defProp$1(target, name, {
@@ -65312,7 +65312,10 @@ var ReflectionBinaryWriter = class {
 		this.info = info;
 	}
 	prepare() {
-		if (!this.fields) this.fields = (this.info.fields ? this.info.fields.concat() : []).sort((a, b) => a.no - b.no);
+		if (!this.fields) {
+			const fieldsInput = this.info.fields ? this.info.fields.concat() : [];
+			this.fields = fieldsInput.sort((a, b) => a.no - b.no);
+		}
 	}
 	/**
 	* Writes the message to binary format.
