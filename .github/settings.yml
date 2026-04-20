@@ -149,7 +149,7 @@ rulesets:
             #   integration_id: 254
             - context: Format
               integration_id: 15368
-            - context: Lint commits
+            - context: Lint
               integration_id: 15368
       - type: pull_request
         parameters:
