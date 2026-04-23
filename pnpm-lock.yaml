@@ -13,8 +13,8 @@ importers:
   .:
     dependencies:
       '@actions-rs-plus/core':
-        specifier: 0.6.6
-        version: 0.6.6
+        specifier: 0.7.4
+        version: 0.7.4
       '@actions/core':
         specifier: 3.0.1
         version: 3.0.1
@@ -148,9 +148,9 @@ importers:
 
 packages:
 
-  '@actions-rs-plus/core@0.6.6':
-    resolution: {integrity: sha512-V1zpaXLcRPo9Wy9idECkHWTFHlGJ2+jQMp+i0AwiVkID2b3KzbFGPrxWDaeAFthZinPQ+6HKKrQNuQM3UyUH2A==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.6.6/063979440631a78b1be9787a9ec15cc6e13a6ef1}
-    engines: {node: 24.14.1, pnpm: 10.33.0}
+  '@actions-rs-plus/core@0.7.4':
+    resolution: {integrity: sha512-fjeb/zUwUsQ+C5gzw4GcKri2B6ujIscmMC76x56BMN492pT5llDwhUuPFTr4IL7dHBR5evbJJkI5Uv/WNeSjGA==, tarball: https://npm.pkg.github.com/download/@actions-rs-plus/core/0.7.4/4ec061ace828502a26674b043f59d1ecad10f054}
+    engines: {node: 24.15.0, pnpm: 10.33.2}
 
   '@actions/cache@6.0.0':
     resolution: {integrity: sha512-+tCs634SyGBQJ3KU1rtAVabmN/gYiT9WgzTSJzWwdPCLmM3zWrdbysaErKv8HyI6OozClrxNvDgPjJimbHZZvw==}
@@ -164,6 +164,9 @@ packages:
   '@actions/github@9.1.0':
     resolution: {integrity: sha512-u0hDGQeCS+7VNoLA8hYG65RLdPLMaPGfka0sZ0up7P0AiShqfX6xcuXNteGkQ7X7Tod7AMNwHd4p7DS63i8zzA==}
 
+  '@actions/github@9.1.1':
+    resolution: {integrity: sha512-tL5JbYOBZHc0ngEnCsaDcryUizIUIlQyIMwy1Wkx93H5HzbBJ7TbiPx2PnFjBwZW0Vh05JmfFZhecE6gglYegA==}
+
   '@actions/glob@0.6.1':
     resolution: {integrity: sha512-K4+2Ac5ILcf2ySdJCha+Pop9NcKjxqCL4xL4zI50dgB2PbXgC0+AcP011xfH4Of6b4QEJJg8dyZYv7zl4byTsw==}
 
@@ -172,6 +175,9 @@ packages:
 
   '@actions/http-client@4.0.0':
     resolution: {integrity: sha512-QuwPsgVMsD6qaPD57GLZi9sqzAZCtiJT8kVBCDpLtxhL5MydQ4gS+DrejtZZPdIYyB1e95uCK9Luyds7ybHI3g==}
+
+  '@actions/http-client@4.0.1':
+    resolution: {integrity: sha512-+Nvd1ImaOZBSoPbsUtEhv+1z99H12xzncCkz0a3RuehINE81FZSe2QTj3uvAPTcJX/SCzUQHQ0D1GrPMbrPitg==}
 
   '@actions/io@3.0.2':
     resolution: {integrity: sha512-nRBchcMM+QK1pdjO7/idu86rbJI5YHUKCvKs0KxnSYbVe3F51UfGxuZX4Qy/fWlp6l7gWFwIkrOzN+oUK03kfw==}
@@ -2468,13 +2474,13 @@ packages:
 
 snapshots:
 
-  '@actions-rs-plus/core@0.6.6':
+  '@actions-rs-plus/core@0.7.4':
     dependencies:
       '@actions/cache': 6.0.0
       '@actions/core': 3.0.1
       '@actions/exec': 3.0.0
-      '@actions/github': 9.1.0
-      '@actions/http-client': 4.0.0
+      '@actions/github': 9.1.1
+      '@actions/http-client': 4.0.1
       '@actions/io': 3.0.2
       '@actions/tool-cache': 4.0.0
       lint-staged: 16.4.0
@@ -2488,7 +2494,7 @@ snapshots:
       '@actions/core': 3.0.1
       '@actions/exec': 3.0.0
       '@actions/glob': 0.6.1
-      '@actions/http-client': 4.0.0
+      '@actions/http-client': 4.0.1
       '@actions/io': 3.0.2
       '@azure/core-rest-pipeline': 1.23.0
       '@azure/storage-blob': 12.31.0
@@ -2516,6 +2522,16 @@ snapshots:
       '@octokit/request-error': 7.1.0
       undici: 8.1.0
 
+  '@actions/github@9.1.1':
+    dependencies:
+      '@actions/http-client': 3.0.2
+      '@octokit/core': 7.0.6
+      '@octokit/plugin-paginate-rest': 14.0.0(@octokit/core@7.0.6)
+      '@octokit/plugin-rest-endpoint-methods': 17.0.0(@octokit/core@7.0.6)
+      '@octokit/request': 10.0.8
+      '@octokit/request-error': 7.1.0
+      undici: 8.1.0
+
   '@actions/glob@0.6.1':
     dependencies:
       '@actions/core': 3.0.1
@@ -2531,13 +2547,18 @@ snapshots:
       tunnel: 0.0.6
       undici: 8.1.0
 
+  '@actions/http-client@4.0.1':
+    dependencies:
+      tunnel: 0.0.6
+      undici: 8.1.0
+
   '@actions/io@3.0.2': {}
 
   '@actions/tool-cache@4.0.0':
     dependencies:
       '@actions/core': 3.0.1
       '@actions/exec': 3.0.0
-      '@actions/http-client': 4.0.0
+      '@actions/http-client': 4.0.1
       '@actions/io': 3.0.2
       semver: 7.7.4
 
