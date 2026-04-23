@@ -3152,9 +3152,26 @@ var require_timers = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	* used as a drop-in replacement for the native functions.
 	*/
 	module.exports = {
+		/**
+		* The setTimeout() method sets a timer which executes a function once the
+		* timer expires.
+		* @param {Function} callback A function to be executed after the timer
+		* expires.
+		* @param {number} delay The time, in milliseconds that the timer should
+		* wait before the specified function or code is executed.
+		* @param {*} [arg] An optional argument to be passed to the callback function
+		* when the timer expires.
+		* @returns {NodeJS.Timeout|FastTimer}
+		*/
 		setTimeout(callback, delay, arg) {
 			return delay <= RESOLUTION_MS ? setTimeout(callback, delay, arg) : new FastTimer(callback, delay, arg);
 		},
+		/**
+		* The clearTimeout method cancels an instantiated Timer previously created
+		* by calling setTimeout.
+		*
+		* @param {NodeJS.Timeout|FastTimer} timeout
+		*/
 		clearTimeout(timeout) {
 			if (timeout[kFastTimer])
  /**
@@ -3163,26 +3180,66 @@ var require_timers = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			timeout.clear();
 			else clearTimeout(timeout);
 		},
+		/**
+		* The setFastTimeout() method sets a fastTimer which executes a function once
+		* the timer expires.
+		* @param {Function} callback A function to be executed after the timer
+		* expires.
+		* @param {number} delay The time, in milliseconds that the timer should
+		* wait before the specified function or code is executed.
+		* @param {*} [arg] An optional argument to be passed to the callback function
+		* when the timer expires.
+		* @returns {FastTimer}
+		*/
 		setFastTimeout(callback, delay, arg) {
 			return new FastTimer(callback, delay, arg);
 		},
+		/**
+		* The clearTimeout method cancels an instantiated FastTimer previously
+		* created by calling setFastTimeout.
+		*
+		* @param {FastTimer} timeout
+		*/
 		clearFastTimeout(timeout) {
 			timeout.clear();
 		},
+		/**
+		* The now method returns the value of the internal fast timer clock.
+		*
+		* @returns {number}
+		*/
 		now() {
 			return fastNow;
 		},
+		/**
+		* Trigger the onTick function to process the fastTimers array.
+		* Exported for testing purposes only.
+		* Marking as deprecated to discourage any use outside of testing.
+		* @deprecated
+		* @param {number} [delay=0] The delay in milliseconds to add to the now value.
+		*/
 		tick(delay = 0) {
 			fastNow += delay - RESOLUTION_MS + 1;
 			onTick();
 			onTick();
 		},
+		/**
+		* Reset FastTimers.
+		* Exported for testing purposes only.
+		* Marking as deprecated to discourage any use outside of testing.
+		* @deprecated
+		*/
 		reset() {
 			fastNow = 0;
 			fastTimers.length = 0;
 			clearTimeout(fastNowTimeout);
 			fastNowTimeout = null;
 		},
+		/**
+		* Exporting for testing purposes only.
+		* Marking as deprecated to discourage any use outside of testing.
+		* @deprecated
+		*/
 		kFastTimer
 	};
 }));
@@ -6588,6 +6645,7 @@ var require_data_url = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		const mimeType = {
 			type: typeLowercase,
 			subtype: subtypeLowercase,
+			/** @type {Map<string, string>} */
 			parameters: /* @__PURE__ */ new Map(),
 			essence: `${typeLowercase}/${subtypeLowercase}`
 		};
@@ -8757,37 +8815,82 @@ var require_client_h1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		} catch {}
 		if (!mod) mod = new WebAssembly.Module(llhttpWasmData || require_llhttp_wasm());
 		return new WebAssembly.Instance(mod, { env: {
+			/**
+			* @param {number} p
+			* @param {number} at
+			* @param {number} len
+			* @returns {number}
+			*/
 			wasm_on_url: (p, at, len) => {
 				return 0;
 			},
+			/**
+			* @param {number} p
+			* @param {number} at
+			* @param {number} len
+			* @returns {number}
+			*/
 			wasm_on_status: (p, at, len) => {
 				assert$25(currentParser.ptr === p);
 				const start = at - currentBufferPtr + currentBufferRef.byteOffset;
 				return currentParser.onStatus(new FastBuffer(currentBufferRef.buffer, start, len));
 			},
+			/**
+			* @param {number} p
+			* @returns {number}
+			*/
 			wasm_on_message_begin: (p) => {
 				assert$25(currentParser.ptr === p);
 				return currentParser.onMessageBegin();
 			},
+			/**
+			* @param {number} p
+			* @param {number} at
+			* @param {number} len
+			* @returns {number}
+			*/
 			wasm_on_header_field: (p, at, len) => {
 				assert$25(currentParser.ptr === p);
 				const start = at - currentBufferPtr + currentBufferRef.byteOffset;
 				return currentParser.onHeaderField(new FastBuffer(currentBufferRef.buffer, start, len));
 			},
+			/**
+			* @param {number} p
+			* @param {number} at
+			* @param {number} len
+			* @returns {number}
+			*/
 			wasm_on_header_value: (p, at, len) => {
 				assert$25(currentParser.ptr === p);
 				const start = at - currentBufferPtr + currentBufferRef.byteOffset;
 				return currentParser.onHeaderValue(new FastBuffer(currentBufferRef.buffer, start, len));
 			},
+			/**
+			* @param {number} p
+			* @param {number} statusCode
+			* @param {0|1} upgrade
+			* @param {0|1} shouldKeepAlive
+			* @returns {number}
+			*/
 			wasm_on_headers_complete: (p, statusCode, upgrade, shouldKeepAlive) => {
 				assert$25(currentParser.ptr === p);
 				return currentParser.onHeadersComplete(statusCode, upgrade === 1, shouldKeepAlive === 1);
 			},
+			/**
+			* @param {number} p
+			* @param {number} at
+			* @param {number} len
+			* @returns {number}
+			*/
 			wasm_on_body: (p, at, len) => {
 				assert$25(currentParser.ptr === p);
 				const start = at - currentBufferPtr + currentBufferRef.byteOffset;
 				return currentParser.onBody(new FastBuffer(currentBufferRef.buffer, start, len));
 			},
+			/**
+			* @param {number} p
+			* @returns {number}
+			*/
 			wasm_on_message_complete: (p) => {
 				assert$25(currentParser.ptr === p);
 				return currentParser.onMessageComplete();
@@ -9195,6 +9298,10 @@ var require_client_h1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			resume() {
 				resumeH1(client);
 			},
+			/**
+			* @param {Error|undefined} err
+			* @param {() => void} callback
+			*/
 			destroy(err, callback) {
 				if (socket[kClosed]) queueMicrotask(callback);
 				else {
@@ -9202,9 +9309,16 @@ var require_client_h1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 					socket.destroy(err);
 				}
 			},
+			/**
+			* @returns {boolean}
+			*/
 			get destroyed() {
 				return socket.destroyed;
 			},
+			/**
+			* @param {import('../core/request.js')} request
+			* @returns {boolean}
+			*/
 			busy(request) {
 				if (socket[kWriting] || socket[kReset] || socket[kBlocking]) return true;
 				if (request) {
@@ -9719,19 +9833,37 @@ var require_client_h2 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return {
 			version: "h2",
 			defaultPipelining: Infinity,
+			/**
+			* @param {import('../core/request.js')} request
+			* @returns {boolean}
+			*/
 			write(request) {
 				return writeH2(client, request);
 			},
+			/**
+			* @returns {void}
+			*/
 			resume() {
 				resumeH2(client);
 			},
+			/**
+			* @param {Error | null} err
+			* @param {() => void} callback
+			*/
 			destroy(err, callback) {
 				if (socket[kClosed]) queueMicrotask(callback);
 				else socket.destroy(err).on("close", callback);
 			},
+			/**
+			* @type {boolean}
+			*/
 			get destroyed() {
 				return socket.destroyed;
 			},
+			/**
+			* @param {import('../core/request.js')} request
+			* @returns {boolean}
+			*/
 			busy(request) {
 				if (request != null) if (client[kRunning] > 0) {
 					if (request.idempotent === false) return true;
@@ -36056,14 +36188,25 @@ function createTokenCycler(credential, tokenCyclerOptions) {
 	* the rules of refreshing the token.
 	*/
 	const cycler = {
+		/**
+		* Produces true if a refresh job is currently in progress.
+		*/
 		get isRefreshing() {
 			return refreshWorker !== null;
 		},
+		/**
+		* Produces true if the cycler SHOULD refresh (we are within the refresh
+		* window and not already refreshing)
+		*/
 		get shouldRefresh() {
 			if (cycler.isRefreshing) return false;
 			if (token?.refreshAfterTimestamp && token.refreshAfterTimestamp < Date.now()) return true;
 			return (token?.expiresOnTimestamp ?? 0) - options.refreshWindowInMs < Date.now();
 		},
+		/**
+		* Produces true if the cycler MUST refresh (null or nearly-expired
+		* token).
+		*/
 		get mustRefresh() {
 			return token === null || token.expiresOnTimestamp - options.forcedRefreshWindowInMs < Date.now();
 		}
@@ -36169,6 +36312,19 @@ function bearerTokenAuthenticationPolicy(options) {
 	const getAccessToken = credential ? createTokenCycler(credential) : () => Promise.resolve(null);
 	return {
 		name: bearerTokenAuthenticationPolicyName,
+		/**
+		* If there's no challenge parameter:
+		* - It will try to retrieve the token using the cache, or the credential's getToken.
+		* - Then it will try the next policy with or without the retrieved token.
+		*
+		* It uses the challenge parameters to:
+		* - Skip a first attempt to get the token from the credential if there's no cached token,
+		*   since it expects the token to be retrievable only after the challenge.
+		* - Prepare the outgoing request if the `prepareRequest` method has been provided.
+		* - Send an initial request to receive the challenge if it fails.
+		* - Process a challenge if the response contains it.
+		* - Retrieve a token with the challenge information, then re-send the request.
+		*/
 		async sendRequest(request, next) {
 			if (!request.url.toLowerCase().startsWith("https://")) throw new Error("Bearer token authentication is not permitted for non-TLS protected (non-https) URLs.");
 			await callbacks.authorizeRequest({
@@ -37593,7 +37749,14 @@ function getCredentialScopes(options) {
 */
 var Constants = {
 	DefaultScope: "/.default",
-	HeaderConstants: { AUTHORIZATION: "authorization" }
+	/**
+	* Defines constants for use with HTTP headers.
+	*/
+	HeaderConstants: { 
+	/**
+	* The Authorization header.
+	*/
+AUTHORIZATION: "authorization" }
 };
 function isUuid(text) {
 	return /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/.test(text);
@@ -62090,12 +62253,21 @@ var PageBlobClient = class PageBlobClient extends BlobClient {
 		options.conditions = options.conditions || {};
 		const iter = this.listPageRangeItems(offset, count, options);
 		return {
+			/**
+			* The next method, part of the iteration protocol
+			*/
 			next() {
 				return iter.next();
 			},
+			/**
+			* The connection to the async iterator, part of the iteration protocol
+			*/
 			[Symbol.asyncIterator]() {
 				return this;
 			},
+			/**
+			* Return an AsyncIterableIterator that works a page at a time
+			*/
 			byPage: (settings = {}) => {
 				return this.listPageRangeItemSegments(offset, count, settings.continuationToken, {
 					maxPageSize: settings.maxPageSize,
@@ -62289,12 +62461,21 @@ var PageBlobClient = class PageBlobClient extends BlobClient {
 		options.conditions = options.conditions || {};
 		const iter = this.listPageRangeDiffItems(offset, count, prevSnapshot, { ...options });
 		return {
+			/**
+			* The next method, part of the iteration protocol
+			*/
 			next() {
 				return iter.next();
 			},
+			/**
+			* The connection to the async iterator, part of the iteration protocol
+			*/
 			[Symbol.asyncIterator]() {
 				return this;
 			},
+			/**
+			* Return an AsyncIterableIterator that works a page at a time
+			*/
 			byPage: (settings = {}) => {
 				return this.listPageRangeDiffItemSegments(offset, count, prevSnapshot, settings.continuationToken, {
 					maxPageSize: settings.maxPageSize,
