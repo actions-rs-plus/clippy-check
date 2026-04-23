@@ -11,7 +11,6 @@ on:
 
 permissions:
   contents: write
-  packages: write
 
 jobs:
   move-git-tags:
@@ -31,13 +30,9 @@ jobs:
           node-version-file: package.json
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
-          registry-url: https://npm.pkg.github.com
-          scope: "@actions-rs-plus"
 
       - name: Download dependencies
         shell: bash
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pnpm install --frozen-lockfile
 

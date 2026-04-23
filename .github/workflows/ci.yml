@@ -48,8 +48,6 @@ jobs:
     name: Warm up the cache
     runs-on: ubuntu-latest
     if: ${{ !startsWith(github.head_ref, 'release/') }}
-    permissions:
-      packages: read
     steps:
       - *checkout
 
@@ -64,13 +62,9 @@ jobs:
           node-version-file: package.json
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
-          registry-url: https://npm.pkg.github.com
-          scope: "@actions-rs-plus"
 
       - name: Download dependencies
         shell: bash
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pnpm install --frozen-lockfile
 
@@ -80,7 +74,6 @@ jobs:
     if: ${{ !startsWith(github.head_ref, 'release/') }}
     permissions:
       id-token: write
-      packages: read
     needs:
       - warm-up-cache
     steps:
@@ -161,7 +154,6 @@ jobs:
     if: ${{ !startsWith(github.head_ref, 'release/') }}
     permissions:
       checks: write
-      packages: read
     needs:
       - changes
       - warm-up-cache
@@ -263,8 +255,6 @@ jobs:
   npm-test-windows:
     name: Test the code on Windows
     runs-on: windows-latest
-    permissions:
-      packages: read
     steps:
       - *checkout
 
@@ -274,8 +264,6 @@ jobs:
 
       - name: Download dependencies
         shell: pwsh
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pnpm install --frozen-lockfile
 
@@ -290,8 +278,6 @@ jobs:
     if: ${{ !startsWith(github.head_ref, 'release/') }}
     needs:
       - warm-up-cache
-    permissions:
-      packages: read
     steps:
       - *checkout
 

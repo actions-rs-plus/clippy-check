@@ -1,13 +1,5 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": ["github>kristof-mattei/renovate-config"],
-    "forkProcessing": "enabled",
-    "hostRules": [
-        {
-            "matchHost": "https://npm.pkg.github.com/",
-            "hostType": "npm",
-            "token": "{{ secrets.NPM_TOKEN }}"
-        }
-    ],
-    "npmrc": "@actions-rs-plus:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken={{ secrets.NPM_TOKEN }}"
+    "forkProcessing": "enabled"
 }
