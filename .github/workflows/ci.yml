@@ -80,6 +80,7 @@ jobs:
     if: ${{ !startsWith(github.head_ref, 'release/') }}
     permissions:
       id-token: write
+      packages: read
     needs:
       - warm-up-cache
     steps:
@@ -160,6 +161,7 @@ jobs:
     if: ${{ !startsWith(github.head_ref, 'release/') }}
     permissions:
       checks: write
+      packages: read
     needs:
       - changes
       - warm-up-cache
@@ -288,6 +290,8 @@ jobs:
     if: ${{ !startsWith(github.head_ref, 'release/') }}
     needs:
       - warm-up-cache
+    permissions:
+      packages: read
     steps:
       - *checkout
 
