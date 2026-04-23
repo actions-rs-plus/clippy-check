@@ -5,8 +5,8 @@ import { constants, existsSync, promises, readFileSync, writeFileSync } from "fs
 import * as os$4 from "os";
 import os, { EOL } from "os";
 import * as crypto$1 from "crypto";
-import * as http$4 from "http";
-import * as https$3 from "https";
+import * as http$3 from "http";
+import * as https$2 from "https";
 import * as events from "events";
 import { EventEmitter } from "events";
 import assert, { ok } from "assert";
@@ -2574,54 +2574,6 @@ function escapeData(s) {
 function escapeProperty(s) {
 	return toCommandValue(s).replace(/%/g, "%25").replace(/\r/g, "%0D").replace(/\n/g, "%0A").replace(/:/g, "%3A").replace(/,/g, "%2C");
 }
-//#endregion
-//#region node_modules/.pnpm/@actions+http-client@4.0.0/node_modules/@actions/http-client/lib/proxy.js
-function getProxyUrl(reqUrl) {
-	const usingSsl = reqUrl.protocol === "https:";
-	if (checkBypass(reqUrl)) return;
-	const proxyVar = (() => {
-		if (usingSsl) return process.env["https_proxy"] || process.env["HTTPS_PROXY"];
-		else return process.env["http_proxy"] || process.env["HTTP_PROXY"];
-	})();
-	if (proxyVar) try {
-		return new DecodedURL(proxyVar);
-	} catch (_a) {
-		if (!proxyVar.startsWith("http://") && !proxyVar.startsWith("https://")) return new DecodedURL(`http://${proxyVar}`);
-	}
-	else return;
-}
-function checkBypass(reqUrl) {
-	if (!reqUrl.hostname) return false;
-	const reqHost = reqUrl.hostname;
-	if (isLoopbackAddress(reqHost)) return true;
-	const noProxy = process.env["no_proxy"] || process.env["NO_PROXY"] || "";
-	if (!noProxy) return false;
-	let reqPort;
-	if (reqUrl.port) reqPort = Number(reqUrl.port);
-	else if (reqUrl.protocol === "http:") reqPort = 80;
-	else if (reqUrl.protocol === "https:") reqPort = 443;
-	const upperReqHosts = [reqUrl.hostname.toUpperCase()];
-	if (typeof reqPort === "number") upperReqHosts.push(`${upperReqHosts[0]}:${reqPort}`);
-	for (const upperNoProxyItem of noProxy.split(",").map((x) => x.trim().toUpperCase()).filter((x) => x)) if (upperNoProxyItem === "*" || upperReqHosts.some((x) => x === upperNoProxyItem || x.endsWith(`.${upperNoProxyItem}`) || upperNoProxyItem.startsWith(".") && x.endsWith(`${upperNoProxyItem}`))) return true;
-	return false;
-}
-function isLoopbackAddress(host) {
-	const hostLower = host.toLowerCase();
-	return hostLower === "localhost" || hostLower.startsWith("127.") || hostLower.startsWith("[::1]") || hostLower.startsWith("[0:0:0:0:0:0:0:1]");
-}
-var DecodedURL = class extends URL {
-	constructor(url, base) {
-		super(url, base);
-		this._decodedUsername = decodeURIComponent(super.username);
-		this._decodedPassword = decodeURIComponent(super.password);
-	}
-	get username() {
-		return this._decodedUsername;
-	}
-	get password() {
-		return this._decodedPassword;
-	}
-};
 //#endregion
 //#region node_modules/.pnpm/tunnel@0.0.6/node_modules/tunnel/lib/tunnel.js
 var require_tunnel$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
@@ -24426,34 +24378,7 @@ var require_undici = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 //#region node_modules/.pnpm/@actions+http-client@4.0.0/node_modules/@actions/http-client/lib/index.js
 var import_tunnel = /* @__PURE__ */ __toESM(require_tunnel(), 1);
 var import_undici = require_undici();
-var __awaiter$24 = function(thisArg, _arguments, P, generator) {
-	function adopt(value) {
-		return value instanceof P ? value : new P(function(resolve) {
-			resolve(value);
-		});
-	}
-	return new (P || (P = Promise))(function(resolve, reject) {
-		function fulfilled(value) {
-			try {
-				step(generator.next(value));
-			} catch (e) {
-				reject(e);
-			}
-		}
-		function rejected(value) {
-			try {
-				step(generator["throw"](value));
-			} catch (e) {
-				reject(e);
-			}
-		}
-		function step(result) {
-			result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-		}
-		step((generator = generator.apply(thisArg, _arguments || [])).next());
-	});
-};
-var HttpCodes;
+var HttpCodes$1;
 (function(HttpCodes) {
 	HttpCodes[HttpCodes["OK"] = 200] = "OK";
 	HttpCodes[HttpCodes["MultipleChoices"] = 300] = "MultipleChoices";
@@ -24482,519 +24407,21 @@ var HttpCodes;
 	HttpCodes[HttpCodes["BadGateway"] = 502] = "BadGateway";
 	HttpCodes[HttpCodes["ServiceUnavailable"] = 503] = "ServiceUnavailable";
 	HttpCodes[HttpCodes["GatewayTimeout"] = 504] = "GatewayTimeout";
-})(HttpCodes || (HttpCodes = {}));
-var Headers;
+})(HttpCodes$1 || (HttpCodes$1 = {}));
+var Headers$1;
 (function(Headers) {
 	Headers["Accept"] = "accept";
 	Headers["ContentType"] = "content-type";
-})(Headers || (Headers = {}));
-var MediaTypes;
+})(Headers$1 || (Headers$1 = {}));
+var MediaTypes$1;
 (function(MediaTypes) {
 	MediaTypes["ApplicationJson"] = "application/json";
-})(MediaTypes || (MediaTypes = {}));
-var HttpRedirectCodes = [
-	HttpCodes.MovedPermanently,
-	HttpCodes.ResourceMoved,
-	HttpCodes.SeeOther,
-	HttpCodes.TemporaryRedirect,
-	HttpCodes.PermanentRedirect
-];
-var HttpResponseRetryCodes = [
-	HttpCodes.BadGateway,
-	HttpCodes.ServiceUnavailable,
-	HttpCodes.GatewayTimeout
-];
-var RetryableHttpVerbs = [
-	"OPTIONS",
-	"GET",
-	"DELETE",
-	"HEAD"
-];
-var ExponentialBackoffCeiling = 10;
-var ExponentialBackoffTimeSlice = 5;
-var HttpClientError = class HttpClientError extends Error {
-	constructor(message, statusCode) {
-		super(message);
-		this.name = "HttpClientError";
-		this.statusCode = statusCode;
-		Object.setPrototypeOf(this, HttpClientError.prototype);
-	}
-};
-var HttpClientResponse = class {
-	constructor(message) {
-		this.message = message;
-	}
-	readBody() {
-		return __awaiter$24(this, void 0, void 0, function* () {
-			return new Promise((resolve) => __awaiter$24(this, void 0, void 0, function* () {
-				let output = Buffer.alloc(0);
-				this.message.on("data", (chunk) => {
-					output = Buffer.concat([output, chunk]);
-				});
-				this.message.on("end", () => {
-					resolve(output.toString());
-				});
-			}));
-		});
-	}
-	readBodyBuffer() {
-		return __awaiter$24(this, void 0, void 0, function* () {
-			return new Promise((resolve) => __awaiter$24(this, void 0, void 0, function* () {
-				const chunks = [];
-				this.message.on("data", (chunk) => {
-					chunks.push(chunk);
-				});
-				this.message.on("end", () => {
-					resolve(Buffer.concat(chunks));
-				});
-			}));
-		});
-	}
-};
-var HttpClient = class {
-	constructor(userAgent, handlers, requestOptions) {
-		this._ignoreSslError = false;
-		this._allowRedirects = true;
-		this._allowRedirectDowngrade = false;
-		this._maxRedirects = 50;
-		this._allowRetries = false;
-		this._maxRetries = 1;
-		this._keepAlive = false;
-		this._disposed = false;
-		this.userAgent = this._getUserAgentWithOrchestrationId(userAgent);
-		this.handlers = handlers || [];
-		this.requestOptions = requestOptions;
-		if (requestOptions) {
-			if (requestOptions.ignoreSslError != null) this._ignoreSslError = requestOptions.ignoreSslError;
-			this._socketTimeout = requestOptions.socketTimeout;
-			if (requestOptions.allowRedirects != null) this._allowRedirects = requestOptions.allowRedirects;
-			if (requestOptions.allowRedirectDowngrade != null) this._allowRedirectDowngrade = requestOptions.allowRedirectDowngrade;
-			if (requestOptions.maxRedirects != null) this._maxRedirects = Math.max(requestOptions.maxRedirects, 0);
-			if (requestOptions.keepAlive != null) this._keepAlive = requestOptions.keepAlive;
-			if (requestOptions.allowRetries != null) this._allowRetries = requestOptions.allowRetries;
-			if (requestOptions.maxRetries != null) this._maxRetries = requestOptions.maxRetries;
-		}
-	}
-	options(requestUrl, additionalHeaders) {
-		return __awaiter$24(this, void 0, void 0, function* () {
-			return this.request("OPTIONS", requestUrl, null, additionalHeaders || {});
-		});
-	}
-	get(requestUrl, additionalHeaders) {
-		return __awaiter$24(this, void 0, void 0, function* () {
-			return this.request("GET", requestUrl, null, additionalHeaders || {});
-		});
-	}
-	del(requestUrl, additionalHeaders) {
-		return __awaiter$24(this, void 0, void 0, function* () {
-			return this.request("DELETE", requestUrl, null, additionalHeaders || {});
-		});
-	}
-	post(requestUrl, data, additionalHeaders) {
-		return __awaiter$24(this, void 0, void 0, function* () {
-			return this.request("POST", requestUrl, data, additionalHeaders || {});
-		});
-	}
-	patch(requestUrl, data, additionalHeaders) {
-		return __awaiter$24(this, void 0, void 0, function* () {
-			return this.request("PATCH", requestUrl, data, additionalHeaders || {});
-		});
-	}
-	put(requestUrl, data, additionalHeaders) {
-		return __awaiter$24(this, void 0, void 0, function* () {
-			return this.request("PUT", requestUrl, data, additionalHeaders || {});
-		});
-	}
-	head(requestUrl, additionalHeaders) {
-		return __awaiter$24(this, void 0, void 0, function* () {
-			return this.request("HEAD", requestUrl, null, additionalHeaders || {});
-		});
-	}
-	sendStream(verb, requestUrl, stream, additionalHeaders) {
-		return __awaiter$24(this, void 0, void 0, function* () {
-			return this.request(verb, requestUrl, stream, additionalHeaders);
-		});
-	}
-	/**
-	* Gets a typed object from an endpoint
-	* Be aware that not found returns a null.  Other errors (4xx, 5xx) reject the promise
-	*/
-	getJson(requestUrl_1) {
-		return __awaiter$24(this, arguments, void 0, function* (requestUrl, additionalHeaders = {}) {
-			additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
-			const res = yield this.get(requestUrl, additionalHeaders);
-			return this._processResponse(res, this.requestOptions);
-		});
-	}
-	postJson(requestUrl_1, obj_1) {
-		return __awaiter$24(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
-			const data = JSON.stringify(obj, null, 2);
-			additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
-			additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
-			const res = yield this.post(requestUrl, data, additionalHeaders);
-			return this._processResponse(res, this.requestOptions);
-		});
-	}
-	putJson(requestUrl_1, obj_1) {
-		return __awaiter$24(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
-			const data = JSON.stringify(obj, null, 2);
-			additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
-			additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
-			const res = yield this.put(requestUrl, data, additionalHeaders);
-			return this._processResponse(res, this.requestOptions);
-		});
-	}
-	patchJson(requestUrl_1, obj_1) {
-		return __awaiter$24(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
-			const data = JSON.stringify(obj, null, 2);
-			additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
-			additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
-			const res = yield this.patch(requestUrl, data, additionalHeaders);
-			return this._processResponse(res, this.requestOptions);
-		});
-	}
-	/**
-	* Makes a raw http request.
-	* All other methods such as get, post, patch, and request ultimately call this.
-	* Prefer get, del, post and patch
-	*/
-	request(verb, requestUrl, data, headers) {
-		return __awaiter$24(this, void 0, void 0, function* () {
-			if (this._disposed) throw new Error("Client has already been disposed.");
-			const parsedUrl = new URL(requestUrl);
-			let info = this._prepareRequest(verb, parsedUrl, headers);
-			const maxTries = this._allowRetries && RetryableHttpVerbs.includes(verb) ? this._maxRetries + 1 : 1;
-			let numTries = 0;
-			let response;
-			do {
-				response = yield this.requestRaw(info, data);
-				if (response && response.message && response.message.statusCode === HttpCodes.Unauthorized) {
-					let authenticationHandler;
-					for (const handler of this.handlers) if (handler.canHandleAuthentication(response)) {
-						authenticationHandler = handler;
-						break;
-					}
-					if (authenticationHandler) return authenticationHandler.handleAuthentication(this, info, data);
-					else return response;
-				}
-				let redirectsRemaining = this._maxRedirects;
-				while (response.message.statusCode && HttpRedirectCodes.includes(response.message.statusCode) && this._allowRedirects && redirectsRemaining > 0) {
-					const redirectUrl = response.message.headers["location"];
-					if (!redirectUrl) break;
-					const parsedRedirectUrl = new URL(redirectUrl);
-					if (parsedUrl.protocol === "https:" && parsedUrl.protocol !== parsedRedirectUrl.protocol && !this._allowRedirectDowngrade) throw new Error("Redirect from HTTPS to HTTP protocol. This downgrade is not allowed for security reasons. If you want to allow this behavior, set the allowRedirectDowngrade option to true.");
-					yield response.readBody();
-					if (parsedRedirectUrl.hostname !== parsedUrl.hostname) {
-						for (const header in headers) if (header.toLowerCase() === "authorization") delete headers[header];
-					}
-					info = this._prepareRequest(verb, parsedRedirectUrl, headers);
-					response = yield this.requestRaw(info, data);
-					redirectsRemaining--;
-				}
-				if (!response.message.statusCode || !HttpResponseRetryCodes.includes(response.message.statusCode)) return response;
-				numTries += 1;
-				if (numTries < maxTries) {
-					yield response.readBody();
-					yield this._performExponentialBackoff(numTries);
-				}
-			} while (numTries < maxTries);
-			return response;
-		});
-	}
-	/**
-	* Needs to be called if keepAlive is set to true in request options.
-	*/
-	dispose() {
-		if (this._agent) this._agent.destroy();
-		this._disposed = true;
-	}
-	/**
-	* Raw request.
-	* @param info
-	* @param data
-	*/
-	requestRaw(info, data) {
-		return __awaiter$24(this, void 0, void 0, function* () {
-			return new Promise((resolve, reject) => {
-				function callbackForResult(err, res) {
-					if (err) reject(err);
-					else if (!res) reject(/* @__PURE__ */ new Error("Unknown error"));
-					else resolve(res);
-				}
-				this.requestRawWithCallback(info, data, callbackForResult);
-			});
-		});
-	}
-	/**
-	* Raw request with callback.
-	* @param info
-	* @param data
-	* @param onResult
-	*/
-	requestRawWithCallback(info, data, onResult) {
-		if (typeof data === "string") {
-			if (!info.options.headers) info.options.headers = {};
-			info.options.headers["Content-Length"] = Buffer.byteLength(data, "utf8");
-		}
-		let callbackCalled = false;
-		function handleResult(err, res) {
-			if (!callbackCalled) {
-				callbackCalled = true;
-				onResult(err, res);
-			}
-		}
-		const req = info.httpModule.request(info.options, (msg) => {
-			handleResult(void 0, new HttpClientResponse(msg));
-		});
-		let socket;
-		req.on("socket", (sock) => {
-			socket = sock;
-		});
-		req.setTimeout(this._socketTimeout || 3 * 6e4, () => {
-			if (socket) socket.end();
-			handleResult(/* @__PURE__ */ new Error(`Request timeout: ${info.options.path}`));
-		});
-		req.on("error", function(err) {
-			handleResult(err);
-		});
-		if (data && typeof data === "string") req.write(data, "utf8");
-		if (data && typeof data !== "string") {
-			data.on("close", function() {
-				req.end();
-			});
-			data.pipe(req);
-		} else req.end();
-	}
-	/**
-	* Gets an http agent. This function is useful when you need an http agent that handles
-	* routing through a proxy server - depending upon the url and proxy environment variables.
-	* @param serverUrl  The server URL where the request will be sent. For example, https://api.github.com
-	*/
-	getAgent(serverUrl) {
-		const parsedUrl = new URL(serverUrl);
-		return this._getAgent(parsedUrl);
-	}
-	getAgentDispatcher(serverUrl) {
-		const parsedUrl = new URL(serverUrl);
-		const proxyUrl = getProxyUrl(parsedUrl);
-		if (!(proxyUrl && proxyUrl.hostname)) return;
-		return this._getProxyAgentDispatcher(parsedUrl, proxyUrl);
-	}
-	_prepareRequest(method, requestUrl, headers) {
-		const info = {};
-		info.parsedUrl = requestUrl;
-		const usingSsl = info.parsedUrl.protocol === "https:";
-		info.httpModule = usingSsl ? https$3 : http$4;
-		const defaultPort = usingSsl ? 443 : 80;
-		info.options = {};
-		info.options.host = info.parsedUrl.hostname;
-		info.options.port = info.parsedUrl.port ? parseInt(info.parsedUrl.port) : defaultPort;
-		info.options.path = (info.parsedUrl.pathname || "") + (info.parsedUrl.search || "");
-		info.options.method = method;
-		info.options.headers = this._mergeHeaders(headers);
-		if (this.userAgent != null) info.options.headers["user-agent"] = this.userAgent;
-		info.options.agent = this._getAgent(info.parsedUrl);
-		if (this.handlers) for (const handler of this.handlers) handler.prepareRequest(info.options);
-		return info;
-	}
-	_mergeHeaders(headers) {
-		if (this.requestOptions && this.requestOptions.headers) return Object.assign({}, lowercaseKeys$1(this.requestOptions.headers), lowercaseKeys$1(headers || {}));
-		return lowercaseKeys$1(headers || {});
-	}
-	/**
-	* Gets an existing header value or returns a default.
-	* Handles converting number header values to strings since HTTP headers must be strings.
-	* Note: This returns string | string[] since some headers can have multiple values.
-	* For headers that must always be a single string (like Content-Type), use the
-	* specialized _getExistingOrDefaultContentTypeHeader method instead.
-	*/
-	_getExistingOrDefaultHeader(additionalHeaders, header, _default) {
-		let clientHeader;
-		if (this.requestOptions && this.requestOptions.headers) {
-			const headerValue = lowercaseKeys$1(this.requestOptions.headers)[header];
-			if (headerValue) clientHeader = typeof headerValue === "number" ? headerValue.toString() : headerValue;
-		}
-		const additionalValue = additionalHeaders[header];
-		if (additionalValue !== void 0) return typeof additionalValue === "number" ? additionalValue.toString() : additionalValue;
-		if (clientHeader !== void 0) return clientHeader;
-		return _default;
-	}
-	/**
-	* Specialized version of _getExistingOrDefaultHeader for Content-Type header.
-	* Always returns a single string (not an array) since Content-Type should be a single value.
-	* Converts arrays to comma-separated strings and numbers to strings to ensure type safety.
-	* This was split from _getExistingOrDefaultHeader to provide stricter typing for callers
-	* that assign the result to places expecting a string (e.g., additionalHeaders[Headers.ContentType]).
-	*/
-	_getExistingOrDefaultContentTypeHeader(additionalHeaders, _default) {
-		let clientHeader;
-		if (this.requestOptions && this.requestOptions.headers) {
-			const headerValue = lowercaseKeys$1(this.requestOptions.headers)[Headers.ContentType];
-			if (headerValue) if (typeof headerValue === "number") clientHeader = String(headerValue);
-			else if (Array.isArray(headerValue)) clientHeader = headerValue.join(", ");
-			else clientHeader = headerValue;
-		}
-		const additionalValue = additionalHeaders[Headers.ContentType];
-		if (additionalValue !== void 0) if (typeof additionalValue === "number") return String(additionalValue);
-		else if (Array.isArray(additionalValue)) return additionalValue.join(", ");
-		else return additionalValue;
-		if (clientHeader !== void 0) return clientHeader;
-		return _default;
-	}
-	_getAgent(parsedUrl) {
-		let agent;
-		const proxyUrl = getProxyUrl(parsedUrl);
-		const useProxy = proxyUrl && proxyUrl.hostname;
-		if (this._keepAlive && useProxy) agent = this._proxyAgent;
-		if (!useProxy) agent = this._agent;
-		if (agent) return agent;
-		const usingSsl = parsedUrl.protocol === "https:";
-		let maxSockets = 100;
-		if (this.requestOptions) maxSockets = this.requestOptions.maxSockets || http$4.globalAgent.maxSockets;
-		if (proxyUrl && proxyUrl.hostname) {
-			const agentOptions = {
-				maxSockets,
-				keepAlive: this._keepAlive,
-				proxy: Object.assign(Object.assign({}, (proxyUrl.username || proxyUrl.password) && { proxyAuth: `${proxyUrl.username}:${proxyUrl.password}` }), {
-					host: proxyUrl.hostname,
-					port: proxyUrl.port
-				})
-			};
-			let tunnelAgent;
-			const overHttps = proxyUrl.protocol === "https:";
-			if (usingSsl) tunnelAgent = overHttps ? import_tunnel.httpsOverHttps : import_tunnel.httpsOverHttp;
-			else tunnelAgent = overHttps ? import_tunnel.httpOverHttps : import_tunnel.httpOverHttp;
-			agent = tunnelAgent(agentOptions);
-			this._proxyAgent = agent;
-		}
-		if (!agent) {
-			const options = {
-				keepAlive: this._keepAlive,
-				maxSockets
-			};
-			agent = usingSsl ? new https$3.Agent(options) : new http$4.Agent(options);
-			this._agent = agent;
-		}
-		if (usingSsl && this._ignoreSslError) agent.options = Object.assign(agent.options || {}, { rejectUnauthorized: false });
-		return agent;
-	}
-	_getProxyAgentDispatcher(parsedUrl, proxyUrl) {
-		let proxyAgent;
-		if (this._keepAlive) proxyAgent = this._proxyAgentDispatcher;
-		if (proxyAgent) return proxyAgent;
-		const usingSsl = parsedUrl.protocol === "https:";
-		proxyAgent = new import_undici.ProxyAgent(Object.assign({
-			uri: proxyUrl.href,
-			pipelining: !this._keepAlive ? 0 : 1
-		}, (proxyUrl.username || proxyUrl.password) && { token: `Basic ${Buffer.from(`${proxyUrl.username}:${proxyUrl.password}`).toString("base64")}` }));
-		this._proxyAgentDispatcher = proxyAgent;
-		if (usingSsl && this._ignoreSslError) proxyAgent.options = Object.assign(proxyAgent.options.requestTls || {}, { rejectUnauthorized: false });
-		return proxyAgent;
-	}
-	_getUserAgentWithOrchestrationId(userAgent) {
-		const baseUserAgent = userAgent || "actions/http-client";
-		const orchId = process.env["ACTIONS_ORCHESTRATION_ID"];
-		if (orchId) return `${baseUserAgent} actions_orchestration_id/${orchId.replace(/[^a-z0-9_.-]/gi, "_")}`;
-		return baseUserAgent;
-	}
-	_performExponentialBackoff(retryNumber) {
-		return __awaiter$24(this, void 0, void 0, function* () {
-			retryNumber = Math.min(ExponentialBackoffCeiling, retryNumber);
-			const ms = ExponentialBackoffTimeSlice * Math.pow(2, retryNumber);
-			return new Promise((resolve) => setTimeout(() => resolve(), ms));
-		});
-	}
-	_processResponse(res, options) {
-		return __awaiter$24(this, void 0, void 0, function* () {
-			return new Promise((resolve, reject) => __awaiter$24(this, void 0, void 0, function* () {
-				const statusCode = res.message.statusCode || 0;
-				const response = {
-					statusCode,
-					result: null,
-					headers: {}
-				};
-				if (statusCode === HttpCodes.NotFound) resolve(response);
-				function dateTimeDeserializer(key, value) {
-					if (typeof value === "string") {
-						const a = new Date(value);
-						if (!isNaN(a.valueOf())) return a;
-					}
-					return value;
-				}
-				let obj;
-				let contents;
-				try {
-					contents = yield res.readBody();
-					if (contents && contents.length > 0) {
-						if (options && options.deserializeDates) obj = JSON.parse(contents, dateTimeDeserializer);
-						else obj = JSON.parse(contents);
-						response.result = obj;
-					}
-					response.headers = res.message.headers;
-				} catch (err) {}
-				if (statusCode > 299) {
-					let msg;
-					if (obj && obj.message) msg = obj.message;
-					else if (contents && contents.length > 0) msg = contents;
-					else msg = `Failed request: (${statusCode})`;
-					const err = new HttpClientError(msg, statusCode);
-					err.result = response.result;
-					reject(err);
-				} else resolve(response);
-			}));
-		});
-	}
-};
-var lowercaseKeys$1 = (obj) => Object.keys(obj).reduce((c, k) => (c[k.toLowerCase()] = obj[k], c), {});
-//#endregion
-//#region node_modules/.pnpm/@actions+http-client@4.0.0/node_modules/@actions/http-client/lib/auth.js
-var __awaiter$23 = function(thisArg, _arguments, P, generator) {
-	function adopt(value) {
-		return value instanceof P ? value : new P(function(resolve) {
-			resolve(value);
-		});
-	}
-	return new (P || (P = Promise))(function(resolve, reject) {
-		function fulfilled(value) {
-			try {
-				step(generator.next(value));
-			} catch (e) {
-				reject(e);
-			}
-		}
-		function rejected(value) {
-			try {
-				step(generator["throw"](value));
-			} catch (e) {
-				reject(e);
-			}
-		}
-		function step(result) {
-			result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-		}
-		step((generator = generator.apply(thisArg, _arguments || [])).next());
-	});
-};
-var BearerCredentialHandler = class {
-	constructor(token) {
-		this.token = token;
-	}
-	prepareRequest(options) {
-		if (!options.headers) throw Error("The request has no headers");
-		options.headers["Authorization"] = `Bearer ${this.token}`;
-	}
-	canHandleAuthentication() {
-		return false;
-	}
-	handleAuthentication() {
-		return __awaiter$23(this, void 0, void 0, function* () {
-			throw new Error("not implemented");
-		});
-	}
-};
+})(MediaTypes$1 || (MediaTypes$1 = {}));
+HttpCodes$1.MovedPermanently, HttpCodes$1.ResourceMoved, HttpCodes$1.SeeOther, HttpCodes$1.TemporaryRedirect, HttpCodes$1.PermanentRedirect;
+HttpCodes$1.BadGateway, HttpCodes$1.ServiceUnavailable, HttpCodes$1.GatewayTimeout;
 //#endregion
 //#region node_modules/.pnpm/@actions+core@3.0.1/node_modules/@actions/core/lib/summary.js
-var __awaiter$21 = function(thisArg, _arguments, P, generator) {
+var __awaiter$23 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -25034,7 +24461,7 @@ var Summary = class {
 	* @returns step summary file path
 	*/
 	filePath() {
-		return __awaiter$21(this, void 0, void 0, function* () {
+		return __awaiter$23(this, void 0, void 0, function* () {
 			if (this._filePath) return this._filePath;
 			const pathFromEnv = process.env[SUMMARY_ENV_VAR];
 			if (!pathFromEnv) throw new Error(`Unable to find environment variable for $${SUMMARY_ENV_VAR}. Check if your runtime environment supports job summaries.`);
@@ -25069,7 +24496,7 @@ var Summary = class {
 	* @returns {Promise<Summary>} summary instance
 	*/
 	write(options) {
-		return __awaiter$21(this, void 0, void 0, function* () {
+		return __awaiter$23(this, void 0, void 0, function* () {
 			const overwrite = !!(options === null || options === void 0 ? void 0 : options.overwrite);
 			const filePath = yield this.filePath();
 			yield (overwrite ? writeFile : appendFile)(filePath, this._buffer, { encoding: "utf8" });
@@ -25082,7 +24509,7 @@ var Summary = class {
 	* @returns {Summary} summary instance
 	*/
 	clear() {
-		return __awaiter$21(this, void 0, void 0, function* () {
+		return __awaiter$23(this, void 0, void 0, function* () {
 			return this.emptyBuffer().write({ overwrite: true });
 		});
 	}
@@ -25277,7 +24704,7 @@ var Summary = class {
 var summary = new Summary();
 //#endregion
 //#region node_modules/.pnpm/@actions+io@3.0.2/node_modules/@actions/io/lib/io-util.js
-var __awaiter$20 = function(thisArg, _arguments, P, generator) {
+var __awaiter$22 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -25308,7 +24735,7 @@ var { chmod, copyFile, lstat, mkdir, open, readdir, rename, rm, rmdir, stat, sym
 var IS_WINDOWS$8 = process.platform === "win32";
 fs$1.constants.O_RDONLY;
 function exists(fsPath) {
-	return __awaiter$20(this, void 0, void 0, function* () {
+	return __awaiter$22(this, void 0, void 0, function* () {
 		try {
 			yield stat(fsPath);
 		} catch (err) {
@@ -25335,7 +24762,7 @@ function isRooted(p) {
 * @return if file exists and is executable, returns the file path. otherwise empty string.
 */
 function tryGetExecutablePath(filePath, extensions) {
-	return __awaiter$20(this, void 0, void 0, function* () {
+	return __awaiter$22(this, void 0, void 0, function* () {
 		let stats = void 0;
 		try {
 			stats = yield stat(filePath);
@@ -25389,7 +24816,7 @@ function isUnixExecutable(stats) {
 }
 //#endregion
 //#region node_modules/.pnpm/@actions+io@3.0.2/node_modules/@actions/io/lib/io.js
-var __awaiter$19 = function(thisArg, _arguments, P, generator) {
+var __awaiter$21 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -25424,7 +24851,7 @@ var __awaiter$19 = function(thisArg, _arguments, P, generator) {
 * @returns Promise<void>
 */
 function mkdirP(fsPath) {
-	return __awaiter$19(this, void 0, void 0, function* () {
+	return __awaiter$21(this, void 0, void 0, function* () {
 		ok(fsPath, "a path argument must be provided");
 		yield mkdir(fsPath, { recursive: true });
 	});
@@ -25438,7 +24865,7 @@ function mkdirP(fsPath) {
 * @returns   Promise<string>   path to tool
 */
 function which(tool, check) {
-	return __awaiter$19(this, void 0, void 0, function* () {
+	return __awaiter$21(this, void 0, void 0, function* () {
 		if (!tool) throw new Error("parameter 'tool' is required");
 		if (check) {
 			const result = yield which(tool, false);
@@ -25457,7 +24884,7 @@ function which(tool, check) {
 * @returns   Promise<string[]>  the paths of the tool
 */
 function findInPath(tool) {
-	return __awaiter$19(this, void 0, void 0, function* () {
+	return __awaiter$21(this, void 0, void 0, function* () {
 		if (!tool) throw new Error("parameter 'tool' is required");
 		const extensions = [];
 		if (IS_WINDOWS$8 && process.env["PATHEXT"]) {
@@ -25483,7 +24910,7 @@ function findInPath(tool) {
 }
 //#endregion
 //#region node_modules/.pnpm/@actions+exec@3.0.0/node_modules/@actions/exec/lib/toolrunner.js
-var __awaiter$18 = function(thisArg, _arguments, P, generator) {
+var __awaiter$20 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -25681,10 +25108,10 @@ var ToolRunner = class extends events.EventEmitter {
 	* @returns   number
 	*/
 	exec() {
-		return __awaiter$18(this, void 0, void 0, function* () {
+		return __awaiter$20(this, void 0, void 0, function* () {
 			if (!isRooted(this.toolPath) && (this.toolPath.includes("/") || IS_WINDOWS$7 && this.toolPath.includes("\\"))) this.toolPath = path$2.resolve(process.cwd(), this.options.cwd || process.cwd(), this.toolPath);
 			this.toolPath = yield which(this.toolPath, true);
-			return new Promise((resolve, reject) => __awaiter$18(this, void 0, void 0, function* () {
+			return new Promise((resolve, reject) => __awaiter$20(this, void 0, void 0, function* () {
 				this._debug(`exec tool: ${this.toolPath}`);
 				this._debug("arguments:");
 				for (const arg of this.args) this._debug(`   ${arg}`);
@@ -25840,7 +25267,7 @@ var ExecState = class ExecState extends events.EventEmitter {
 };
 //#endregion
 //#region node_modules/.pnpm/@actions+exec@3.0.0/node_modules/@actions/exec/lib/exec.js
-var __awaiter$17 = function(thisArg, _arguments, P, generator) {
+var __awaiter$19 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -25878,7 +25305,7 @@ var __awaiter$17 = function(thisArg, _arguments, P, generator) {
 * @returns   Promise<number>    exit code
 */
 function exec(commandLine, args, options) {
-	return __awaiter$17(this, void 0, void 0, function* () {
+	return __awaiter$19(this, void 0, void 0, function* () {
 		const commandArgs = argStringToArray(commandLine);
 		if (commandArgs.length === 0) throw new Error(`Parameter 'commandLine' cannot be null or empty.`);
 		const toolPath = commandArgs[0];
@@ -26019,7 +25446,7 @@ function endGroup() {
 	issue("endgroup");
 }
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.6.6/node_modules/@actions-rs-plus/core/dist/_virtual/_rolldown/runtime.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.4/node_modules/@actions-rs-plus/core/dist/_virtual/_rolldown/runtime.js
 var __defProp = Object.defineProperty;
 var __exportAll = (all, no_symbols) => {
 	let target = {};
@@ -26031,7 +25458,7 @@ var __exportAll = (all, no_symbols) => {
 	return target;
 };
 //#endregion
-//#region node_modules/.pnpm/@actions+github@9.1.0/node_modules/@actions/github/lib/context.js
+//#region node_modules/.pnpm/@actions+github@9.1.1/node_modules/@actions/github/lib/context.js
 var Context = class {
 	/**
 	* Hydrate the context from the environment
@@ -26131,7 +25558,7 @@ var require_proxy = /* @__PURE__ */ __commonJSMin(((exports) => {
 	};
 }));
 //#endregion
-//#region node_modules/.pnpm/@actions+github@9.1.0/node_modules/@actions/github/lib/internal/utils.js
+//#region node_modules/.pnpm/@actions+github@9.1.1/node_modules/@actions/github/lib/internal/utils.js
 var import_lib = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exports) => {
 	var __createBinding = exports && exports.__createBinding || (Object.create ? (function(o, m, k, k2) {
 		if (k2 === void 0) k2 = k;
@@ -26205,8 +25632,8 @@ var import_lib = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((export
 	exports.HttpClient = exports.HttpClientResponse = exports.HttpClientError = exports.MediaTypes = exports.Headers = exports.HttpCodes = void 0;
 	exports.getProxyUrl = getProxyUrl;
 	exports.isHttps = isHttps;
-	var http$3 = __importStar(__require("http"));
-	var https$2 = __importStar(__require("https"));
+	var http$4 = __importStar(__require("http"));
+	var https$3 = __importStar(__require("https"));
 	var pm = __importStar(require_proxy());
 	var tunnel = __importStar(require_tunnel());
 	var undici_1 = require_undici();
@@ -26554,7 +25981,7 @@ var import_lib = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((export
 			const info = {};
 			info.parsedUrl = requestUrl;
 			const usingSsl = info.parsedUrl.protocol === "https:";
-			info.httpModule = usingSsl ? https$2 : http$3;
+			info.httpModule = usingSsl ? https$3 : http$4;
 			const defaultPort = usingSsl ? 443 : 80;
 			info.options = {};
 			info.options.host = info.parsedUrl.hostname;
@@ -26620,7 +26047,7 @@ var import_lib = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((export
 			if (agent) return agent;
 			const usingSsl = parsedUrl.protocol === "https:";
 			let maxSockets = 100;
-			if (this.requestOptions) maxSockets = this.requestOptions.maxSockets || http$3.globalAgent.maxSockets;
+			if (this.requestOptions) maxSockets = this.requestOptions.maxSockets || http$4.globalAgent.maxSockets;
 			if (proxyUrl && proxyUrl.hostname) {
 				const agentOptions = {
 					maxSockets,
@@ -26642,7 +26069,7 @@ var import_lib = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((export
 					keepAlive: this._keepAlive,
 					maxSockets
 				};
-				agent = usingSsl ? new https$2.Agent(options) : new http$3.Agent(options);
+				agent = usingSsl ? new https$3.Agent(options) : new http$4.Agent(options);
 				this._agent = agent;
 			}
 			if (usingSsl && this._ignoreSslError) agent.options = Object.assign(agent.options || {}, { rejectUnauthorized: false });
@@ -26718,7 +26145,7 @@ var import_lib = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((export
 	exports.HttpClient = HttpClient;
 	var lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => (c[k.toLowerCase()] = obj[k], c), {});
 })))(), 1);
-var __awaiter$14 = function(thisArg, _arguments, P, generator) {
+var __awaiter$16 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -26753,7 +26180,7 @@ function getProxyAgentDispatcher(destinationUrl) {
 }
 function getProxyFetch(destinationUrl) {
 	const httpDispatcher = getProxyAgentDispatcher(destinationUrl);
-	const proxyFetch = (url, opts) => __awaiter$14(this, void 0, void 0, function* () {
+	const proxyFetch = (url, opts) => __awaiter$16(this, void 0, void 0, function* () {
 		return (0, import_undici.fetch)(url, Object.assign(Object.assign({}, opts), { dispatcher: httpDispatcher }));
 	});
 	return proxyFetch;
@@ -26870,7 +26297,7 @@ var DEFAULTS = {
 	},
 	mediaType: { format: "" }
 };
-function lowercaseKeys(object) {
+function lowercaseKeys$1(object) {
 	if (!object) return {};
 	return Object.keys(object).reduce((newObj, key) => {
 		newObj[key.toLowerCase()] = object[key];
@@ -26906,7 +26333,7 @@ function merge(defaults, route, options) {
 			url
 		} : { url: method }, options);
 	} else options = Object.assign({}, route);
-	options.headers = lowercaseKeys(options.headers);
+	options.headers = lowercaseKeys$1(options.headers);
 	removeUndefinedProperties(options);
 	removeUndefinedProperties(options.headers);
 	const mergedOptions = mergeDeep(defaults || {}, options);
@@ -29200,7 +28627,7 @@ var defaults = {
 Octokit.plugin(restEndpointMethods, paginateRest).defaults(defaults);
 new Context();
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.6.6/node_modules/@actions-rs-plus/core/dist/commands/base-program.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.4/node_modules/@actions-rs-plus/core/dist/commands/base-program.js
 var BaseProgram = class {
 	path;
 	constructor(path) {
@@ -29211,7 +28638,577 @@ var BaseProgram = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.6.6/node_modules/@actions-rs-plus/core/dist/commands/crates.js
+//#region node_modules/.pnpm/@actions+http-client@4.0.1/node_modules/@actions/http-client/lib/proxy.js
+function getProxyUrl(reqUrl) {
+	const usingSsl = reqUrl.protocol === "https:";
+	if (checkBypass(reqUrl)) return;
+	const proxyVar = (() => {
+		if (usingSsl) return process.env["https_proxy"] || process.env["HTTPS_PROXY"];
+		else return process.env["http_proxy"] || process.env["HTTP_PROXY"];
+	})();
+	if (proxyVar) try {
+		return new DecodedURL(proxyVar);
+	} catch (_a) {
+		if (!proxyVar.startsWith("http://") && !proxyVar.startsWith("https://")) return new DecodedURL(`http://${proxyVar}`);
+	}
+	else return;
+}
+function checkBypass(reqUrl) {
+	if (!reqUrl.hostname) return false;
+	const reqHost = reqUrl.hostname;
+	if (isLoopbackAddress(reqHost)) return true;
+	const noProxy = process.env["no_proxy"] || process.env["NO_PROXY"] || "";
+	if (!noProxy) return false;
+	let reqPort;
+	if (reqUrl.port) reqPort = Number(reqUrl.port);
+	else if (reqUrl.protocol === "http:") reqPort = 80;
+	else if (reqUrl.protocol === "https:") reqPort = 443;
+	const upperReqHosts = [reqUrl.hostname.toUpperCase()];
+	if (typeof reqPort === "number") upperReqHosts.push(`${upperReqHosts[0]}:${reqPort}`);
+	for (const upperNoProxyItem of noProxy.split(",").map((x) => x.trim().toUpperCase()).filter((x) => x)) if (upperNoProxyItem === "*" || upperReqHosts.some((x) => x === upperNoProxyItem || x.endsWith(`.${upperNoProxyItem}`) || upperNoProxyItem.startsWith(".") && x.endsWith(`${upperNoProxyItem}`))) return true;
+	return false;
+}
+function isLoopbackAddress(host) {
+	const hostLower = host.toLowerCase();
+	return hostLower === "localhost" || hostLower.startsWith("127.") || hostLower.startsWith("[::1]") || hostLower.startsWith("[0:0:0:0:0:0:0:1]");
+}
+var DecodedURL = class extends URL {
+	constructor(url, base) {
+		super(url, base);
+		this._decodedUsername = decodeURIComponent(super.username);
+		this._decodedPassword = decodeURIComponent(super.password);
+	}
+	get username() {
+		return this._decodedUsername;
+	}
+	get password() {
+		return this._decodedPassword;
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@actions+http-client@4.0.1/node_modules/@actions/http-client/lib/index.js
+var __awaiter$15 = function(thisArg, _arguments, P, generator) {
+	function adopt(value) {
+		return value instanceof P ? value : new P(function(resolve) {
+			resolve(value);
+		});
+	}
+	return new (P || (P = Promise))(function(resolve, reject) {
+		function fulfilled(value) {
+			try {
+				step(generator.next(value));
+			} catch (e) {
+				reject(e);
+			}
+		}
+		function rejected(value) {
+			try {
+				step(generator["throw"](value));
+			} catch (e) {
+				reject(e);
+			}
+		}
+		function step(result) {
+			result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+		}
+		step((generator = generator.apply(thisArg, _arguments || [])).next());
+	});
+};
+var HttpCodes;
+(function(HttpCodes) {
+	HttpCodes[HttpCodes["OK"] = 200] = "OK";
+	HttpCodes[HttpCodes["MultipleChoices"] = 300] = "MultipleChoices";
+	HttpCodes[HttpCodes["MovedPermanently"] = 301] = "MovedPermanently";
+	HttpCodes[HttpCodes["ResourceMoved"] = 302] = "ResourceMoved";
+	HttpCodes[HttpCodes["SeeOther"] = 303] = "SeeOther";
+	HttpCodes[HttpCodes["NotModified"] = 304] = "NotModified";
+	HttpCodes[HttpCodes["UseProxy"] = 305] = "UseProxy";
+	HttpCodes[HttpCodes["SwitchProxy"] = 306] = "SwitchProxy";
+	HttpCodes[HttpCodes["TemporaryRedirect"] = 307] = "TemporaryRedirect";
+	HttpCodes[HttpCodes["PermanentRedirect"] = 308] = "PermanentRedirect";
+	HttpCodes[HttpCodes["BadRequest"] = 400] = "BadRequest";
+	HttpCodes[HttpCodes["Unauthorized"] = 401] = "Unauthorized";
+	HttpCodes[HttpCodes["PaymentRequired"] = 402] = "PaymentRequired";
+	HttpCodes[HttpCodes["Forbidden"] = 403] = "Forbidden";
+	HttpCodes[HttpCodes["NotFound"] = 404] = "NotFound";
+	HttpCodes[HttpCodes["MethodNotAllowed"] = 405] = "MethodNotAllowed";
+	HttpCodes[HttpCodes["NotAcceptable"] = 406] = "NotAcceptable";
+	HttpCodes[HttpCodes["ProxyAuthenticationRequired"] = 407] = "ProxyAuthenticationRequired";
+	HttpCodes[HttpCodes["RequestTimeout"] = 408] = "RequestTimeout";
+	HttpCodes[HttpCodes["Conflict"] = 409] = "Conflict";
+	HttpCodes[HttpCodes["Gone"] = 410] = "Gone";
+	HttpCodes[HttpCodes["TooManyRequests"] = 429] = "TooManyRequests";
+	HttpCodes[HttpCodes["InternalServerError"] = 500] = "InternalServerError";
+	HttpCodes[HttpCodes["NotImplemented"] = 501] = "NotImplemented";
+	HttpCodes[HttpCodes["BadGateway"] = 502] = "BadGateway";
+	HttpCodes[HttpCodes["ServiceUnavailable"] = 503] = "ServiceUnavailable";
+	HttpCodes[HttpCodes["GatewayTimeout"] = 504] = "GatewayTimeout";
+})(HttpCodes || (HttpCodes = {}));
+var Headers;
+(function(Headers) {
+	Headers["Accept"] = "accept";
+	Headers["ContentType"] = "content-type";
+})(Headers || (Headers = {}));
+var MediaTypes;
+(function(MediaTypes) {
+	MediaTypes["ApplicationJson"] = "application/json";
+})(MediaTypes || (MediaTypes = {}));
+var HttpRedirectCodes = [
+	HttpCodes.MovedPermanently,
+	HttpCodes.ResourceMoved,
+	HttpCodes.SeeOther,
+	HttpCodes.TemporaryRedirect,
+	HttpCodes.PermanentRedirect
+];
+var HttpResponseRetryCodes = [
+	HttpCodes.BadGateway,
+	HttpCodes.ServiceUnavailable,
+	HttpCodes.GatewayTimeout
+];
+var RetryableHttpVerbs = [
+	"OPTIONS",
+	"GET",
+	"DELETE",
+	"HEAD"
+];
+var ExponentialBackoffCeiling = 10;
+var ExponentialBackoffTimeSlice = 5;
+var HttpClientError = class HttpClientError extends Error {
+	constructor(message, statusCode) {
+		super(message);
+		this.name = "HttpClientError";
+		this.statusCode = statusCode;
+		Object.setPrototypeOf(this, HttpClientError.prototype);
+	}
+};
+var HttpClientResponse = class {
+	constructor(message) {
+		this.message = message;
+	}
+	readBody() {
+		return __awaiter$15(this, void 0, void 0, function* () {
+			return new Promise((resolve) => __awaiter$15(this, void 0, void 0, function* () {
+				let output = Buffer.alloc(0);
+				this.message.on("data", (chunk) => {
+					output = Buffer.concat([output, chunk]);
+				});
+				this.message.on("end", () => {
+					resolve(output.toString());
+				});
+			}));
+		});
+	}
+	readBodyBuffer() {
+		return __awaiter$15(this, void 0, void 0, function* () {
+			return new Promise((resolve) => __awaiter$15(this, void 0, void 0, function* () {
+				const chunks = [];
+				this.message.on("data", (chunk) => {
+					chunks.push(chunk);
+				});
+				this.message.on("end", () => {
+					resolve(Buffer.concat(chunks));
+				});
+			}));
+		});
+	}
+};
+var HttpClient = class {
+	constructor(userAgent, handlers, requestOptions) {
+		this._ignoreSslError = false;
+		this._allowRedirects = true;
+		this._allowRedirectDowngrade = false;
+		this._maxRedirects = 50;
+		this._allowRetries = false;
+		this._maxRetries = 1;
+		this._keepAlive = false;
+		this._disposed = false;
+		this.userAgent = this._getUserAgentWithOrchestrationId(userAgent);
+		this.handlers = handlers || [];
+		this.requestOptions = requestOptions;
+		if (requestOptions) {
+			if (requestOptions.ignoreSslError != null) this._ignoreSslError = requestOptions.ignoreSslError;
+			this._socketTimeout = requestOptions.socketTimeout;
+			if (requestOptions.allowRedirects != null) this._allowRedirects = requestOptions.allowRedirects;
+			if (requestOptions.allowRedirectDowngrade != null) this._allowRedirectDowngrade = requestOptions.allowRedirectDowngrade;
+			if (requestOptions.maxRedirects != null) this._maxRedirects = Math.max(requestOptions.maxRedirects, 0);
+			if (requestOptions.keepAlive != null) this._keepAlive = requestOptions.keepAlive;
+			if (requestOptions.allowRetries != null) this._allowRetries = requestOptions.allowRetries;
+			if (requestOptions.maxRetries != null) this._maxRetries = requestOptions.maxRetries;
+		}
+	}
+	options(requestUrl, additionalHeaders) {
+		return __awaiter$15(this, void 0, void 0, function* () {
+			return this.request("OPTIONS", requestUrl, null, additionalHeaders || {});
+		});
+	}
+	get(requestUrl, additionalHeaders) {
+		return __awaiter$15(this, void 0, void 0, function* () {
+			return this.request("GET", requestUrl, null, additionalHeaders || {});
+		});
+	}
+	del(requestUrl, additionalHeaders) {
+		return __awaiter$15(this, void 0, void 0, function* () {
+			return this.request("DELETE", requestUrl, null, additionalHeaders || {});
+		});
+	}
+	post(requestUrl, data, additionalHeaders) {
+		return __awaiter$15(this, void 0, void 0, function* () {
+			return this.request("POST", requestUrl, data, additionalHeaders || {});
+		});
+	}
+	patch(requestUrl, data, additionalHeaders) {
+		return __awaiter$15(this, void 0, void 0, function* () {
+			return this.request("PATCH", requestUrl, data, additionalHeaders || {});
+		});
+	}
+	put(requestUrl, data, additionalHeaders) {
+		return __awaiter$15(this, void 0, void 0, function* () {
+			return this.request("PUT", requestUrl, data, additionalHeaders || {});
+		});
+	}
+	head(requestUrl, additionalHeaders) {
+		return __awaiter$15(this, void 0, void 0, function* () {
+			return this.request("HEAD", requestUrl, null, additionalHeaders || {});
+		});
+	}
+	sendStream(verb, requestUrl, stream, additionalHeaders) {
+		return __awaiter$15(this, void 0, void 0, function* () {
+			return this.request(verb, requestUrl, stream, additionalHeaders);
+		});
+	}
+	/**
+	* Gets a typed object from an endpoint
+	* Be aware that not found returns a null.  Other errors (4xx, 5xx) reject the promise
+	*/
+	getJson(requestUrl_1) {
+		return __awaiter$15(this, arguments, void 0, function* (requestUrl, additionalHeaders = {}) {
+			additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
+			const res = yield this.get(requestUrl, additionalHeaders);
+			return this._processResponse(res, this.requestOptions);
+		});
+	}
+	postJson(requestUrl_1, obj_1) {
+		return __awaiter$15(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
+			const data = JSON.stringify(obj, null, 2);
+			additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
+			additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
+			const res = yield this.post(requestUrl, data, additionalHeaders);
+			return this._processResponse(res, this.requestOptions);
+		});
+	}
+	putJson(requestUrl_1, obj_1) {
+		return __awaiter$15(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
+			const data = JSON.stringify(obj, null, 2);
+			additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
+			additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
+			const res = yield this.put(requestUrl, data, additionalHeaders);
+			return this._processResponse(res, this.requestOptions);
+		});
+	}
+	patchJson(requestUrl_1, obj_1) {
+		return __awaiter$15(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
+			const data = JSON.stringify(obj, null, 2);
+			additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
+			additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
+			const res = yield this.patch(requestUrl, data, additionalHeaders);
+			return this._processResponse(res, this.requestOptions);
+		});
+	}
+	/**
+	* Makes a raw http request.
+	* All other methods such as get, post, patch, and request ultimately call this.
+	* Prefer get, del, post and patch
+	*/
+	request(verb, requestUrl, data, headers) {
+		return __awaiter$15(this, void 0, void 0, function* () {
+			if (this._disposed) throw new Error("Client has already been disposed.");
+			const parsedUrl = new URL(requestUrl);
+			let info = this._prepareRequest(verb, parsedUrl, headers);
+			const maxTries = this._allowRetries && RetryableHttpVerbs.includes(verb) ? this._maxRetries + 1 : 1;
+			let numTries = 0;
+			let response;
+			do {
+				response = yield this.requestRaw(info, data);
+				if (response && response.message && response.message.statusCode === HttpCodes.Unauthorized) {
+					let authenticationHandler;
+					for (const handler of this.handlers) if (handler.canHandleAuthentication(response)) {
+						authenticationHandler = handler;
+						break;
+					}
+					if (authenticationHandler) return authenticationHandler.handleAuthentication(this, info, data);
+					else return response;
+				}
+				let redirectsRemaining = this._maxRedirects;
+				while (response.message.statusCode && HttpRedirectCodes.includes(response.message.statusCode) && this._allowRedirects && redirectsRemaining > 0) {
+					const redirectUrl = response.message.headers["location"];
+					if (!redirectUrl) break;
+					const parsedRedirectUrl = new URL(redirectUrl);
+					if (parsedUrl.protocol === "https:" && parsedUrl.protocol !== parsedRedirectUrl.protocol && !this._allowRedirectDowngrade) throw new Error("Redirect from HTTPS to HTTP protocol. This downgrade is not allowed for security reasons. If you want to allow this behavior, set the allowRedirectDowngrade option to true.");
+					yield response.readBody();
+					if (parsedRedirectUrl.hostname !== parsedUrl.hostname) {
+						for (const header in headers) if (header.toLowerCase() === "authorization") delete headers[header];
+					}
+					info = this._prepareRequest(verb, parsedRedirectUrl, headers);
+					response = yield this.requestRaw(info, data);
+					redirectsRemaining--;
+				}
+				if (!response.message.statusCode || !HttpResponseRetryCodes.includes(response.message.statusCode)) return response;
+				numTries += 1;
+				if (numTries < maxTries) {
+					yield response.readBody();
+					yield this._performExponentialBackoff(numTries);
+				}
+			} while (numTries < maxTries);
+			return response;
+		});
+	}
+	/**
+	* Needs to be called if keepAlive is set to true in request options.
+	*/
+	dispose() {
+		if (this._agent) this._agent.destroy();
+		this._disposed = true;
+	}
+	/**
+	* Raw request.
+	* @param info
+	* @param data
+	*/
+	requestRaw(info, data) {
+		return __awaiter$15(this, void 0, void 0, function* () {
+			return new Promise((resolve, reject) => {
+				function callbackForResult(err, res) {
+					if (err) reject(err);
+					else if (!res) reject(/* @__PURE__ */ new Error("Unknown error"));
+					else resolve(res);
+				}
+				this.requestRawWithCallback(info, data, callbackForResult);
+			});
+		});
+	}
+	/**
+	* Raw request with callback.
+	* @param info
+	* @param data
+	* @param onResult
+	*/
+	requestRawWithCallback(info, data, onResult) {
+		if (typeof data === "string") {
+			if (!info.options.headers) info.options.headers = {};
+			info.options.headers["Content-Length"] = Buffer.byteLength(data, "utf8");
+		}
+		let callbackCalled = false;
+		function handleResult(err, res) {
+			if (!callbackCalled) {
+				callbackCalled = true;
+				onResult(err, res);
+			}
+		}
+		const req = info.httpModule.request(info.options, (msg) => {
+			handleResult(void 0, new HttpClientResponse(msg));
+		});
+		let socket;
+		req.on("socket", (sock) => {
+			socket = sock;
+		});
+		req.setTimeout(this._socketTimeout || 3 * 6e4, () => {
+			if (socket) socket.end();
+			handleResult(/* @__PURE__ */ new Error(`Request timeout: ${info.options.path}`));
+		});
+		req.on("error", function(err) {
+			handleResult(err);
+		});
+		if (data && typeof data === "string") req.write(data, "utf8");
+		if (data && typeof data !== "string") {
+			data.on("close", function() {
+				req.end();
+			});
+			data.pipe(req);
+		} else req.end();
+	}
+	/**
+	* Gets an http agent. This function is useful when you need an http agent that handles
+	* routing through a proxy server - depending upon the url and proxy environment variables.
+	* @param serverUrl  The server URL where the request will be sent. For example, https://api.github.com
+	*/
+	getAgent(serverUrl) {
+		const parsedUrl = new URL(serverUrl);
+		return this._getAgent(parsedUrl);
+	}
+	getAgentDispatcher(serverUrl) {
+		const parsedUrl = new URL(serverUrl);
+		const proxyUrl = getProxyUrl(parsedUrl);
+		if (!(proxyUrl && proxyUrl.hostname)) return;
+		return this._getProxyAgentDispatcher(parsedUrl, proxyUrl);
+	}
+	_prepareRequest(method, requestUrl, headers) {
+		const info = {};
+		info.parsedUrl = requestUrl;
+		const usingSsl = info.parsedUrl.protocol === "https:";
+		info.httpModule = usingSsl ? https$2 : http$3;
+		const defaultPort = usingSsl ? 443 : 80;
+		info.options = {};
+		info.options.host = info.parsedUrl.hostname;
+		info.options.port = info.parsedUrl.port ? parseInt(info.parsedUrl.port) : defaultPort;
+		info.options.path = (info.parsedUrl.pathname || "") + (info.parsedUrl.search || "");
+		info.options.method = method;
+		info.options.headers = this._mergeHeaders(headers);
+		if (this.userAgent != null) info.options.headers["user-agent"] = this.userAgent;
+		info.options.agent = this._getAgent(info.parsedUrl);
+		if (this.handlers) for (const handler of this.handlers) handler.prepareRequest(info.options);
+		return info;
+	}
+	_mergeHeaders(headers) {
+		if (this.requestOptions && this.requestOptions.headers) return Object.assign({}, lowercaseKeys(this.requestOptions.headers), lowercaseKeys(headers || {}));
+		return lowercaseKeys(headers || {});
+	}
+	/**
+	* Gets an existing header value or returns a default.
+	* Handles converting number header values to strings since HTTP headers must be strings.
+	* Note: This returns string | string[] since some headers can have multiple values.
+	* For headers that must always be a single string (like Content-Type), use the
+	* specialized _getExistingOrDefaultContentTypeHeader method instead.
+	*/
+	_getExistingOrDefaultHeader(additionalHeaders, header, _default) {
+		let clientHeader;
+		if (this.requestOptions && this.requestOptions.headers) {
+			const headerValue = lowercaseKeys(this.requestOptions.headers)[header];
+			if (headerValue) clientHeader = typeof headerValue === "number" ? headerValue.toString() : headerValue;
+		}
+		const additionalValue = additionalHeaders[header];
+		if (additionalValue !== void 0) return typeof additionalValue === "number" ? additionalValue.toString() : additionalValue;
+		if (clientHeader !== void 0) return clientHeader;
+		return _default;
+	}
+	/**
+	* Specialized version of _getExistingOrDefaultHeader for Content-Type header.
+	* Always returns a single string (not an array) since Content-Type should be a single value.
+	* Converts arrays to comma-separated strings and numbers to strings to ensure type safety.
+	* This was split from _getExistingOrDefaultHeader to provide stricter typing for callers
+	* that assign the result to places expecting a string (e.g., additionalHeaders[Headers.ContentType]).
+	*/
+	_getExistingOrDefaultContentTypeHeader(additionalHeaders, _default) {
+		let clientHeader;
+		if (this.requestOptions && this.requestOptions.headers) {
+			const headerValue = lowercaseKeys(this.requestOptions.headers)[Headers.ContentType];
+			if (headerValue) if (typeof headerValue === "number") clientHeader = String(headerValue);
+			else if (Array.isArray(headerValue)) clientHeader = headerValue.join(", ");
+			else clientHeader = headerValue;
+		}
+		const additionalValue = additionalHeaders[Headers.ContentType];
+		if (additionalValue !== void 0) if (typeof additionalValue === "number") return String(additionalValue);
+		else if (Array.isArray(additionalValue)) return additionalValue.join(", ");
+		else return additionalValue;
+		if (clientHeader !== void 0) return clientHeader;
+		return _default;
+	}
+	_getAgent(parsedUrl) {
+		let agent;
+		const proxyUrl = getProxyUrl(parsedUrl);
+		const useProxy = proxyUrl && proxyUrl.hostname;
+		if (this._keepAlive && useProxy) agent = this._proxyAgent;
+		if (!useProxy) agent = this._agent;
+		if (agent) return agent;
+		const usingSsl = parsedUrl.protocol === "https:";
+		let maxSockets = 100;
+		if (this.requestOptions) maxSockets = this.requestOptions.maxSockets || http$3.globalAgent.maxSockets;
+		if (proxyUrl && proxyUrl.hostname) {
+			const agentOptions = {
+				maxSockets,
+				keepAlive: this._keepAlive,
+				proxy: Object.assign(Object.assign({}, (proxyUrl.username || proxyUrl.password) && { proxyAuth: `${proxyUrl.username}:${proxyUrl.password}` }), {
+					host: proxyUrl.hostname,
+					port: proxyUrl.port
+				})
+			};
+			let tunnelAgent;
+			const overHttps = proxyUrl.protocol === "https:";
+			if (usingSsl) tunnelAgent = overHttps ? import_tunnel.httpsOverHttps : import_tunnel.httpsOverHttp;
+			else tunnelAgent = overHttps ? import_tunnel.httpOverHttps : import_tunnel.httpOverHttp;
+			agent = tunnelAgent(agentOptions);
+			this._proxyAgent = agent;
+		}
+		if (!agent) {
+			const options = {
+				keepAlive: this._keepAlive,
+				maxSockets
+			};
+			agent = usingSsl ? new https$2.Agent(options) : new http$3.Agent(options);
+			this._agent = agent;
+		}
+		if (usingSsl && this._ignoreSslError) agent.options = Object.assign(agent.options || {}, { rejectUnauthorized: false });
+		return agent;
+	}
+	_getProxyAgentDispatcher(parsedUrl, proxyUrl) {
+		let proxyAgent;
+		if (this._keepAlive) proxyAgent = this._proxyAgentDispatcher;
+		if (proxyAgent) return proxyAgent;
+		const usingSsl = parsedUrl.protocol === "https:";
+		proxyAgent = new import_undici.ProxyAgent(Object.assign({
+			uri: proxyUrl.href,
+			pipelining: !this._keepAlive ? 0 : 1
+		}, (proxyUrl.username || proxyUrl.password) && { token: `Basic ${Buffer.from(`${proxyUrl.username}:${proxyUrl.password}`).toString("base64")}` }));
+		this._proxyAgentDispatcher = proxyAgent;
+		if (usingSsl && this._ignoreSslError) proxyAgent.options = Object.assign(proxyAgent.options.requestTls || {}, { rejectUnauthorized: false });
+		return proxyAgent;
+	}
+	_getUserAgentWithOrchestrationId(userAgent) {
+		const baseUserAgent = userAgent || "actions/http-client";
+		const orchId = process.env["ACTIONS_ORCHESTRATION_ID"];
+		if (orchId) return `${baseUserAgent} actions_orchestration_id/${orchId.replace(/[^a-z0-9_.-]/gi, "_")}`;
+		return baseUserAgent;
+	}
+	_performExponentialBackoff(retryNumber) {
+		return __awaiter$15(this, void 0, void 0, function* () {
+			retryNumber = Math.min(ExponentialBackoffCeiling, retryNumber);
+			const ms = ExponentialBackoffTimeSlice * Math.pow(2, retryNumber);
+			return new Promise((resolve) => setTimeout(() => resolve(), ms));
+		});
+	}
+	_processResponse(res, options) {
+		return __awaiter$15(this, void 0, void 0, function* () {
+			return new Promise((resolve, reject) => __awaiter$15(this, void 0, void 0, function* () {
+				const statusCode = res.message.statusCode || 0;
+				const response = {
+					statusCode,
+					result: null,
+					headers: {}
+				};
+				if (statusCode === HttpCodes.NotFound) resolve(response);
+				function dateTimeDeserializer(key, value) {
+					if (typeof value === "string") {
+						const a = new Date(value);
+						if (!isNaN(a.valueOf())) return a;
+					}
+					return value;
+				}
+				let obj;
+				let contents;
+				try {
+					contents = yield res.readBody();
+					if (contents && contents.length > 0) {
+						if (options && options.deserializeDates) obj = JSON.parse(contents, dateTimeDeserializer);
+						else obj = JSON.parse(contents);
+						response.result = obj;
+					}
+					response.headers = res.message.headers;
+				} catch (err) {}
+				if (statusCode > 299) {
+					let msg;
+					if (obj && obj.message) msg = obj.message;
+					else if (contents && contents.length > 0) msg = contents;
+					else msg = `Failed request: (${statusCode})`;
+					const err = new HttpClientError(msg, statusCode);
+					err.result = response.result;
+					reject(err);
+				} else resolve(response);
+			}));
+		});
+	}
+};
+var lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => (c[k.toLowerCase()] = obj[k], c), {});
+//#endregion
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.4/node_modules/@actions-rs-plus/core/dist/commands/crates.js
 async function resolveVersion(crate) {
 	const url = `https://crates.io/api/v1/crates/${crate}`;
 	const response = await new HttpClient("@actions-rs-plus (https://github.com/actions-rs-plus/)").getJson(url);
@@ -30400,7 +30397,7 @@ var SearchState = class {
 };
 //#endregion
 //#region node_modules/.pnpm/@actions+glob@0.6.1/node_modules/@actions/glob/lib/internal-globber.js
-var __awaiter$13 = function(thisArg, _arguments, P, generator) {
+var __awaiter$14 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -30509,7 +30506,7 @@ var DefaultGlobber = class DefaultGlobber {
 		return this.searchPaths.slice();
 	}
 	glob() {
-		return __awaiter$13(this, void 0, void 0, function* () {
+		return __awaiter$14(this, void 0, void 0, function* () {
 			var _a, e_1, _b, _c;
 			const result = [];
 			try {
@@ -30573,7 +30570,7 @@ var DefaultGlobber = class DefaultGlobber {
 	* Constructs a DefaultGlobber
 	*/
 	static create(patterns, options) {
-		return __awaiter$13(this, void 0, void 0, function* () {
+		return __awaiter$14(this, void 0, void 0, function* () {
 			const result = new DefaultGlobber(options);
 			if (IS_WINDOWS$2) {
 				patterns = patterns.replace(/\r\n/g, "\n");
@@ -30587,7 +30584,7 @@ var DefaultGlobber = class DefaultGlobber {
 		});
 	}
 	static stat(item, options, traversalChain) {
-		return __awaiter$13(this, void 0, void 0, function* () {
+		return __awaiter$14(this, void 0, void 0, function* () {
 			let stats;
 			if (options.followSymbolicLinks) try {
 				stats = yield fs$1.promises.stat(item.path);
@@ -30617,7 +30614,7 @@ var DefaultGlobber = class DefaultGlobber {
 };
 //#endregion
 //#region node_modules/.pnpm/@actions+glob@0.6.1/node_modules/@actions/glob/lib/glob.js
-var __awaiter$11 = function(thisArg, _arguments, P, generator) {
+var __awaiter$12 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -30651,7 +30648,7 @@ var __awaiter$11 = function(thisArg, _arguments, P, generator) {
 * @param options   Glob options
 */
 function create(patterns, options) {
-	return __awaiter$11(this, void 0, void 0, function* () {
+	return __awaiter$12(this, void 0, void 0, function* () {
 		return yield DefaultGlobber.create(patterns, options);
 	});
 }
@@ -32018,7 +32015,7 @@ var ManifestFilename = "manifest.txt";
 10 * Math.pow(1024, 3);
 //#endregion
 //#region node_modules/.pnpm/@actions+cache@6.0.0/node_modules/@actions/cache/lib/internal/cacheUtils.js
-var __awaiter$10 = function(thisArg, _arguments, P, generator) {
+var __awaiter$11 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -32069,7 +32066,7 @@ var __asyncValues = function(o) {
 };
 var versionSalt = "1.0";
 function createTempDirectory() {
-	return __awaiter$10(this, void 0, void 0, function* () {
+	return __awaiter$11(this, void 0, void 0, function* () {
 		const IS_WINDOWS = process.platform === "win32";
 		let tempDirectory = process.env["RUNNER_TEMP"] || "";
 		if (!tempDirectory) {
@@ -32088,7 +32085,7 @@ function getArchiveFileSizeInBytes(filePath) {
 	return fs$1.statSync(filePath).size;
 }
 function resolvePaths(patterns) {
-	return __awaiter$10(this, void 0, void 0, function* () {
+	return __awaiter$11(this, void 0, void 0, function* () {
 		var _a, e_1, _b, _c;
 		var _d;
 		const paths = [];
@@ -32117,12 +32114,12 @@ function resolvePaths(patterns) {
 	});
 }
 function unlinkFile(filePath) {
-	return __awaiter$10(this, void 0, void 0, function* () {
+	return __awaiter$11(this, void 0, void 0, function* () {
 		return util$2.promisify(fs$1.unlink)(filePath);
 	});
 }
 function getVersion(app_1) {
-	return __awaiter$10(this, arguments, void 0, function* (app, additionalArgs = []) {
+	return __awaiter$11(this, arguments, void 0, function* (app, additionalArgs = []) {
 		let versionOutput = "";
 		additionalArgs.push("--version");
 		debug(`Checking ${app} ${additionalArgs.join(" ")}`);
@@ -32144,7 +32141,7 @@ function getVersion(app_1) {
 	});
 }
 function getCompressionMethod() {
-	return __awaiter$10(this, void 0, void 0, function* () {
+	return __awaiter$11(this, void 0, void 0, function* () {
 		const versionOutput = yield getVersion("zstd", ["--quiet"]);
 		debug(`zstd version: ${import_semver.clean(versionOutput)}`);
 		if (versionOutput === "") return CompressionMethod.Gzip;
@@ -32155,7 +32152,7 @@ function getCacheFileName(compressionMethod) {
 	return compressionMethod === CompressionMethod.Gzip ? CacheFilename.Gzip : CacheFilename.Zstd;
 }
 function getGnuTarPathOnWindows() {
-	return __awaiter$10(this, void 0, void 0, function* () {
+	return __awaiter$11(this, void 0, void 0, function* () {
 		if (fs$1.existsSync(GnuTarPathOnWindows)) return GnuTarPathOnWindows;
 		return (yield getVersion("tar")).toLowerCase().includes("gnu tar") ? which("tar") : "";
 	});
@@ -32176,6 +32173,52 @@ function getRuntimeToken() {
 	if (!token) throw new Error("Unable to get the ACTIONS_RUNTIME_TOKEN env variable");
 	return token;
 }
+//#endregion
+//#region node_modules/.pnpm/@actions+http-client@4.0.1/node_modules/@actions/http-client/lib/auth.js
+var __awaiter$10 = function(thisArg, _arguments, P, generator) {
+	function adopt(value) {
+		return value instanceof P ? value : new P(function(resolve) {
+			resolve(value);
+		});
+	}
+	return new (P || (P = Promise))(function(resolve, reject) {
+		function fulfilled(value) {
+			try {
+				step(generator.next(value));
+			} catch (e) {
+				reject(e);
+			}
+		}
+		function rejected(value) {
+			try {
+				step(generator["throw"](value));
+			} catch (e) {
+				reject(e);
+			}
+		}
+		function step(result) {
+			result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+		}
+		step((generator = generator.apply(thisArg, _arguments || [])).next());
+	});
+};
+var BearerCredentialHandler = class {
+	constructor(token) {
+		this.token = token;
+	}
+	prepareRequest(options) {
+		if (!options.headers) throw Error("The request has no headers");
+		options.headers["Authorization"] = `Bearer ${this.token}`;
+	}
+	canHandleAuthentication() {
+		return false;
+	}
+	handleAuthentication() {
+		return __awaiter$10(this, void 0, void 0, function* () {
+			throw new Error("not implemented");
+		});
+	}
+};
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.5/node_modules/@typespec/ts-http-runtime/dist/esm/abort-controller/AbortError.js
 /**
@@ -67386,7 +67429,7 @@ function saveCacheV2(paths_1, key_1, options_1) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.6.6/node_modules/@actions-rs-plus/core/dist/commands/cargo.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.4/node_modules/@actions-rs-plus/core/dist/commands/cargo.js
 var Cargo = class Cargo extends BaseProgram {
 	constructor(pathToCargo) {
 		super(pathToCargo);
@@ -67473,7 +67516,7 @@ var Cargo = class Cargo extends BaseProgram {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.6.6/node_modules/@actions-rs-plus/core/dist/commands/cross.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.4/node_modules/@actions-rs-plus/core/dist/commands/cross.js
 var Cross = class Cross extends BaseProgram {
 	constructor(path) {
 		super(path);
@@ -67503,7 +67546,7 @@ var Cross = class Cross extends BaseProgram {
 process.platform;
 process.platform;
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.6.6/node_modules/@actions-rs-plus/core/dist/input.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.4/node_modules/@actions-rs-plus/core/dist/input.js
 var input_exports = /* @__PURE__ */ __exportAll({
 	getInput: () => getInput,
 	getInputAsArray: () => getInputAsArray,
