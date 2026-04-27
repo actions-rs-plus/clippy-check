@@ -73,7 +73,7 @@
         "@types/node": "24.12.2",
         "@types/semver": "7.7.1",
         "@types/source-map-support": "0.5.10",
-        "@typescript-eslint/parser": "8.59.0",
+        "@typescript-eslint/parser": "8.59.1",
         "@vitest/coverage-v8": "4.1.5",
         "@vitest/ui": "4.1.5",
         "dependency-cruiser": "17.3.10",
@@ -96,7 +96,7 @@
         "prettier-plugin-toml": "2.0.6",
         "semver": "7.7.4",
         "typescript": "6.0.3",
-        "typescript-eslint": "8.59.0",
+        "typescript-eslint": "8.59.1",
         "vite": "8.0.10",
         "vite-plugin-checker": "0.13.0",
         "vitest": "4.1.5"
