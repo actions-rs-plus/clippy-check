@@ -6,7 +6,6 @@ import stylistic from "@stylistic/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import love from "eslint-config-love";
 import { flatConfigs as importPluginsFlatConfigs } from "eslint-plugin-import-x";
-import nPlugin from "eslint-plugin-n";
 import perfectionist from "eslint-plugin-perfectionist";
 import prettier from "eslint-plugin-prettier/recommended";
 import promise from "eslint-plugin-promise";
@@ -132,7 +131,6 @@ const config: ReturnType<typeof defineConfig> = defineConfig(
         },
         plugins: {
             "@stylistic/ts": stylistic,
-            n: nPlugin,
             "eslint-comments": commentsPlugin,
             perfectionist,
         },
