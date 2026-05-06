@@ -42245,7 +42245,7 @@ var XMLParser = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.1.8/node_modules/fast-xml-builder/src/util.js
+//#region node_modules/.pnpm/fast-xml-builder@1.1.9/node_modules/fast-xml-builder/src/util.js
 function safeComment(val) {
 	return String(val).replace(/--/g, "- -").replace(/--/g, "- -").replace(/-$/, "- ");
 }
@@ -42256,7 +42256,7 @@ function escapeAttribute(val) {
 	return String(val).replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.1.8/node_modules/fast-xml-builder/src/orderedJs2Xml.js
+//#region node_modules/.pnpm/fast-xml-builder@1.1.9/node_modules/fast-xml-builder/src/orderedJs2Xml.js
 var EOL$2 = "\n";
 /**
 * 
@@ -42266,7 +42266,7 @@ var EOL$2 = "\n";
 */
 function toXml(jArray, options) {
 	let indentation = "";
-	if (options.format && options.indentBy.length > 0) indentation = EOL$2;
+	if (options.format) indentation = EOL$2;
 	const stopNodeExpressions = [];
 	if (options.stopNodes && Array.isArray(options.stopNodes)) for (let i = 0; i < options.stopNodes.length; i++) {
 		const node = options.stopNodes[i];
@@ -42440,7 +42440,7 @@ function replaceEntitiesValue(textValue, options) {
 	return textValue;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.1.8/node_modules/fast-xml-builder/src/ignoreAttributes.js
+//#region node_modules/.pnpm/fast-xml-builder@1.1.9/node_modules/fast-xml-builder/src/ignoreAttributes.js
 function getIgnoreAttributesFn(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -42452,7 +42452,7 @@ function getIgnoreAttributesFn(ignoreAttributes) {
 	return () => false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.1.8/node_modules/fast-xml-builder/src/fxb.js
+//#region node_modules/.pnpm/fast-xml-builder@1.1.9/node_modules/fast-xml-builder/src/fxb.js
 var defaultOptions = {
 	attributeNamePrefix: "@_",
 	attributesGroupName: false,
