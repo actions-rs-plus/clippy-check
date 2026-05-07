@@ -1,0 +1,7 @@
+allowBuilds:
+  unrs-resolver: false
+overrides:
+  "@codecov/vite-plugin>vite": "$vite"
+  "eslint-config-love>eslint": "$eslint"
+  "eslint-plugin-import>eslint": "$eslint"
+  "eslint-plugin-react>eslint": "$eslint"

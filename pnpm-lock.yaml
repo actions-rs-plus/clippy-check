@@ -6,7 +6,9 @@ settings:
 
 overrides:
   '@codecov/vite-plugin>vite': 8.0.11
-  undici: 8.2.0
+  eslint-config-love>eslint: 10.3.0
+  eslint-plugin-import>eslint: 10.3.0
+  eslint-plugin-react>eslint: 10.3.0
 
 importers:
 
@@ -1105,7 +1107,7 @@ packages:
   eslint-config-love@154.0.0:
     resolution: {integrity: sha512-vPWss66epd/UTPWC3ItR0VMY1Hkd3JWuOlVxWp40wq9Fpki0w07DsvdT33tgA2LUatV6XhxObpNmfIQkZ+rT1A==}
     peerDependencies:
-      eslint: ^9.35.0
+      eslint: 10.3.0
       typescript: '*'
 
   eslint-config-prettier@10.1.8:
@@ -1184,7 +1186,7 @@ packages:
     engines: {node: '>=4'}
     peerDependencies:
       '@typescript-eslint/parser': '*'
-      eslint: ^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0 || ^8 || ^9
+      eslint: 10.3.0
     peerDependenciesMeta:
       '@typescript-eslint/parser':
         optional: true
@@ -2272,9 +2274,9 @@ packages:
   undici-types@7.16.0:
     resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
 
-  undici@8.2.0:
-    resolution: {integrity: sha512-Z+4Hx9GE26Lh9Upwfnc8C7SsrpBPGaM/Gm6kMFtiG7c+5IvQKlXi/t+9x9DrrCh29cww5TSP9YdVaBcnLDs5fQ==}
-    engines: {node: '>=22.19.0'}
+  undici@6.25.0:
+    resolution: {integrity: sha512-ZgpWDC5gmNiuY9CnLVXEH8rl50xhRCuLNA97fAUnKi8RRuV4E6KG31pDTsLVUKnohJE0I3XDrTeEydAXRw47xg==}
+    engines: {node: '>=18.17'}
 
   unicorn-magic@0.3.0:
     resolution: {integrity: sha512-+QBBXBCvifc56fsbuxZQ6Sic3wqqc3WWaqxs58gvJrcOuN83HGTCwz3oS5phzU9LthRNE9VrJCFCLUgHeeFnfA==}
@@ -2529,7 +2531,7 @@ snapshots:
       '@octokit/plugin-rest-endpoint-methods': 17.0.0(@octokit/core@7.0.6)
       '@octokit/request': 10.0.8
       '@octokit/request-error': 7.1.0
-      undici: 8.2.0
+      undici: 6.25.0
 
   '@actions/glob@0.6.1':
     dependencies:
@@ -2539,12 +2541,12 @@ snapshots:
   '@actions/http-client@3.0.2':
     dependencies:
       tunnel: 0.0.6
-      undici: 8.2.0
+      undici: 6.25.0
 
   '@actions/http-client@4.0.1':
     dependencies:
       tunnel: 0.0.6
-      undici: 8.2.0
+      undici: 6.25.0
 
   '@actions/io@3.0.2': {}
 
@@ -4843,7 +4845,7 @@ snapshots:
 
   undici-types@7.16.0: {}
 
-  undici@8.2.0: {}
+  undici@6.25.0: {}
 
   unicorn-magic@0.3.0: {}
 
