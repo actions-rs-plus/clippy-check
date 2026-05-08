@@ -118,8 +118,8 @@ importers:
         specifier: 2.7.0
         version: 2.7.0
       lint-staged:
-        specifier: 17.0.2
-        version: 17.0.2
+        specifier: 17.0.3
+        version: 17.0.3
       prettier:
         specifier: 3.8.3
         version: 3.8.3
@@ -1759,8 +1759,8 @@ packages:
     engines: {node: '>=20.17'}
     hasBin: true
 
-  lint-staged@17.0.2:
-    resolution: {integrity: sha512-Rbr6rdmbCn1fIDHBZpn0madg0hEkdlh+QwajnL3Qq0ZUq/icAJfLGj9BVBajAXi7657ZzKQ7kobGP9S5XOHYRw==}
+  lint-staged@17.0.3:
+    resolution: {integrity: sha512-wnvMRhzC3GNpjixxleiG+pAW09dHTUgBCjMS7XouAg5E7wKUc8YdfogpF7zIgvXKDbH+452O6+XpnKm6V67rPw==}
     engines: {node: '>=22.22.1'}
     hasBin: true
 
@@ -4263,7 +4263,7 @@ snapshots:
       tinyexec: 1.1.2
       yaml: 2.8.4
 
-  lint-staged@17.0.2:
+  lint-staged@17.0.3:
     dependencies:
       listr2: 10.2.1
       picomatch: 4.0.4
