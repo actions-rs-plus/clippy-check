@@ -6,7 +6,157 @@ import * as os$4 from "os";
 import os, { EOL } from "os";
 import * as crypto$1 from "crypto";
 import * as http$4 from "http";
-import * as https$3 fro
+import * as https$3 from "https";
+import * as events from "events";
+import { EventEmitter } from "events";
+import assert, { ok } from "assert";
+import * as util$2 from "util";
+import http from "node:http";
+import { Readable, Transform } from "node:stream";
+import buffer from "node:buffer";
+import util, { inspect } from "node:util";
+import zlib from "node:zlib";
+import { createHmac } from "node:crypto";
+import * as child from "child_process";
+import { setTimeout as setTimeout$1 } from "timers";
+import path from "node:path";
+import * as stream from "stream";
+import { Readable as Readable$1 } from "stream";
+import { URL as URL$1 } from "url";
+import * as os$2 from "node:os";
+import os$1, { EOL as EOL$1 } from "node:os";
+import process$1 from "node:process";
+import https from "node:https";
+import * as buffer$1 from "buffer";
+import { Buffer as Buffer$1 } from "buffer";
+import fs from "node:fs";
+//#region \0rolldown/runtime.js
+var __create = Object.create;
+var __defProp$1 = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __esmMin = (fn, res) => () => (fn && (res = fn(fn = 0)), res);
+var __commonJSMin = (cb, mod) => () => (mod || (cb((mod = { exports: {} }).exports, mod), cb = null), mod.exports);
+var __exportAll$1 = (all, no_symbols) => {
+	let target = {};
+	for (var name in all) __defProp$1(target, name, {
+		get: all[name],
+		enumerable: true
+	});
+	if (!no_symbols) __defProp$1(target, Symbol.toStringTag, { value: "Module" });
+	return target;
+};
+var __copyProps = (to, from, except, desc) => {
+	if (from && typeof from === "object" || typeof from === "function") for (var keys = __getOwnPropNames(from), i = 0, n = keys.length, key; i < n; i++) {
+		key = keys[i];
+		if (!__hasOwnProp.call(to, key) && key !== except) __defProp$1(to, key, {
+			get: ((k) => from[k]).bind(null, key),
+			enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+		});
+	}
+	return to;
+};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp$1(target, "default", {
+	value: mod,
+	enumerable: true
+}) : target, mod));
+var __toCommonJS = (mod) => __hasOwnProp.call(mod, "module.exports") ? mod["module.exports"] : __copyProps(__defProp$1({}, "__esModule", { value: true }), mod);
+var __require = /* @__PURE__ */ createRequire(import.meta.url);
+//#endregion
+//#region node_modules/.pnpm/source-map@0.6.1/node_modules/source-map/lib/base64.js
+var require_base64 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var intToCharMap = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".split("");
+	/**
+	* Encode an integer in the range of 0 to 63 to a single base 64 digit.
+	*/
+	exports.encode = function(number) {
+		if (0 <= number && number < intToCharMap.length) return intToCharMap[number];
+		throw new TypeError("Must be between 0 and 63: " + number);
+	};
+	/**
+	* Decode a single base 64 character code digit to an integer. Returns -1 on
+	* failure.
+	*/
+	exports.decode = function(charCode) {
+		var bigA = 65;
+		var bigZ = 90;
+		var littleA = 97;
+		var littleZ = 122;
+		var zero = 48;
+		var nine = 57;
+		var plus = 43;
+		var slash = 47;
+		var littleOffset = 26;
+		var numberOffset = 52;
+		if (bigA <= charCode && charCode <= bigZ) return charCode - bigA;
+		if (littleA <= charCode && charCode <= littleZ) return charCode - littleA + littleOffset;
+		if (zero <= charCode && charCode <= nine) return charCode - zero + numberOffset;
+		if (charCode == plus) return 62;
+		if (charCode == slash) return 63;
+		return -1;
+	};
+}));
+//#endregion
+//#region node_modules/.pnpm/source-map@0.6.1/node_modules/source-map/lib/base64-vlq.js
+var require_base64_vlq = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var base64 = require_base64();
+	var VLQ_BASE_SHIFT = 5;
+	var VLQ_BASE = 1 << VLQ_BASE_SHIFT;
+	var VLQ_BASE_MASK = VLQ_BASE - 1;
+	var VLQ_CONTINUATION_BIT = VLQ_BASE;
+	/**
+	* Converts from a two-complement value to a value where the sign bit is
+	* placed in the least significant bit.  For example, as decimals:
+	*   1 becomes 2 (10 binary), -1 becomes 3 (11 binary)
+	*   2 becomes 4 (100 binary), -2 becomes 5 (101 binary)
+	*/
+	function toVLQSigned(aValue) {
+		return aValue < 0 ? (-aValue << 1) + 1 : (aValue << 1) + 0;
+	}
+	/**
+	* Converts to a two-complement value from a value where the sign bit is
+	* placed in the least significant bit.  For example, as decimals:
+	*   2 (10 binary) becomes 1, 3 (11 binary) becomes -1
+	*   4 (100 binary) becomes 2, 5 (101 binary) becomes -2
+	*/
+	function fromVLQSigned(aValue) {
+		var isNegative = (aValue & 1) === 1;
+		var shifted = aValue >> 1;
+		return isNegative ? -shifted : shifted;
+	}
+	/**
+	* Returns the base 64 VLQ encoded value.
+	*/
+	exports.encode = function base64VLQ_encode(aValue) {
+		var encoded = "";
+		var digit;
+		var vlq = toVLQSigned(aValue);
+		do {
+			digit = vlq & VLQ_BASE_MASK;
+			vlq >>>= VLQ_BASE_SHIFT;
+			if (vlq > 0) digit |= VLQ_CONTINUATION_BIT;
+			encoded += base64.encode(digit);
+		} while (vlq > 0);
+		return encoded;
+	};
+	/**
+	* Decodes the next base 64 VLQ value from the given string and returns the
+	* value and the rest of the string via the out parameter.
+	*/
+	exports.decode = function base64VLQ_decode(aStr, aIndex, aOutParam) {
+		var strLen = aStr.length;
+		var result = 0;
+		var shift = 0;
+		var continuation, digit;
+		do {
+			if (aIndex >= strLen) throw new Error("Expected more digits in base 64 VLQ value.");
+			digit = base64.decode(aStr.charCodeAt(aIndex++));
+			if (digit === -1) throw new Error("Invalid base64 digit: " + aStr.charAt(aIndex - 1));
+			continuation = !!(digit & VLQ_CONTINUATION_BIT);
+			digit &= VLQ_BASE_MASK;
+			result = result + (digit << shift);
 			shift += VLQ_BASE_SHIFT;
 		} while (continuation);
 		aOutParam.value = fromVLQSigned(result);
@@ -1545,7 +1695,7 @@ var require_source_map_consumer = /* @__PURE__ */ __commonJSMin(((exports) => {
 	* and an object is returned with the following properties:
 	*
 	*   - line: The line number in the generated source, or null.  The
-	*     line number is 1-based.
+	*     line number is 1-based. 
 	*   - column: The column number in the generated source, or null.
 	*     The column number is 0-based.
 	*/
@@ -15489,7 +15639,7 @@ var require_util$2 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	IMF-fixdate  = day-name "," SP date1 SP time-of-day SP GMT
 	; fixed length/zone/capitalization subset of the format
 	; see Section 3.3 of [RFC5322]
-
+	
 	day-name     = %x4D.6F.6E ; "Mon", case-sensitive
 	/ %x54.75.65 ; "Tue", case-sensitive
 	/ %x57.65.64 ; "Wed", case-sensitive
@@ -15499,7 +15649,7 @@ var require_util$2 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/ %x53.75.6E ; "Sun", case-sensitive
 	date1        = day SP month SP year
 	; e.g., 02 Jun 1982
-
+	
 	day          = 2DIGIT
 	month        = %x4A.61.6E ; "Jan", case-sensitive
 	/ %x46.65.62 ; "Feb", case-sensitive
@@ -15514,12 +15664,12 @@ var require_util$2 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/ %x4E.6F.76 ; "Nov", case-sensitive
 	/ %x44.65.63 ; "Dec", case-sensitive
 	year         = 4DIGIT
-
+	
 	GMT          = %x47.4D.54 ; "GMT", case-sensitive
-
+	
 	time-of-day  = hour ":" minute ":" second
 	; 00:00:00 - 23:59:60 (leap second)
-
+	
 	hour         = 2DIGIT
 	minute       = 2DIGIT
 	second       = 2DIGIT
@@ -31396,7 +31546,7 @@ var Constants = {
 	/**
 	* Defines constants for use with HTTP headers.
 	*/
-	HeaderConstants: {
+	HeaderConstants: { 
 	/**
 	* The Authorization header.
 	*/
@@ -33723,7 +33873,7 @@ function validatePropertyName(propertyName, optionName) {
 }
 /**
 * Normalizes processEntities option for backward compatibility
-* @param {boolean|object} value
+* @param {boolean|object} value 
 * @returns {object} Always returns normalized object
 */
 function normalizeProcessEntities(value, htmlEntities) {
@@ -34104,9 +34254,9 @@ function resolveEnotation(str, trimmedStr, options) {
 	} else return str;
 }
 /**
-*
+* 
 * @param {string} numStr without leading zeros
-* @returns
+* @returns 
 */
 function trimZeros(numStr) {
 	if (numStr && numStr.indexOf(".") !== -1) {
@@ -34158,9 +34308,9 @@ function getIgnoreAttributesFn$1(ignoreAttributes) {
 //#region node_modules/.pnpm/path-expression-matcher@1.5.0/node_modules/path-expression-matcher/src/Expression.js
 /**
 * Expression - Parses and stores a tag pattern expression
-*
+* 
 * Patterns are parsed once and stored in an optimized structure for fast matching.
-*
+* 
 * @example
 * const expr = new Expression("root.users.user");
 * const expr2 = new Expression("..user[id]:first");
@@ -35288,9 +35438,9 @@ function isItStopNode() {
 }
 /**
 * Returns the tag Expression and where it is ending handling single-double quotes situation
-* @param {string} xmlData
+* @param {string} xmlData 
 * @param {number} i starting index
-* @returns
+* @returns 
 */
 function tagExpWithClosingIndex(xmlData, i, closingChar = ">") {
 	let attrBoundary = 0;
@@ -35365,9 +35515,9 @@ function readTagExp(xmlData, i, removeNSPrefix, closingChar = ">") {
 }
 /**
 * find paired tag for a stop node
-* @param {string} xmlData
-* @param {string} tagName
-* @param {number} i
+* @param {string} xmlData 
+* @param {string} tagName 
+* @param {number} i 
 */
 function readStopNodeData(xmlData, tagName, i) {
 	const startIndex = i;
@@ -35443,18 +35593,18 @@ function stripAttributePrefix(attrs, prefix) {
 	return rawAttrs;
 }
 /**
-*
-* @param {array} node
-* @param {any} options
+* 
+* @param {array} node 
+* @param {any} options 
 * @param {Matcher} matcher - Path matcher instance
-* @returns
+* @returns 
 */
 function prettify(node, options, matcher, readonlyMatcher) {
 	return compress(node, options, matcher, readonlyMatcher);
 }
 /**
-* @param {array} arr
-* @param {object} options
+* @param {array} arr 
+* @param {object} options 
 * @param {Matcher} matcher - Path matcher instance
 * @returns object
 */
@@ -35531,9 +35681,9 @@ var XMLParser = class {
 		this.options = buildOptions(options);
 	}
 	/**
-	* Parse XML dats to JS object
-	* @param {string|Uint8Array} xmlData
-	* @param {boolean|Object} validationOption
+	* Parse XML dats to JS object 
+	* @param {string|Uint8Array} xmlData 
+	* @param {boolean|Object} validationOption 
 	*/
 	parse(xmlData, validationOption) {
 		if (typeof xmlData !== "string" && xmlData.toString) xmlData = xmlData.toString();
@@ -35550,8 +35700,8 @@ var XMLParser = class {
 	}
 	/**
 	* Add Entity which is not by default supported by this library
-	* @param {string} key
-	* @param {string} value
+	* @param {string} key 
+	* @param {string} value 
 	*/
 	addEntity(key, value) {
 		if (value.indexOf("&") !== -1) throw new Error("Entity value can't have '&'");
@@ -35562,10 +35712,10 @@ var XMLParser = class {
 	/**
 	* Returns a Symbol that can be used to access the metadata
 	* property on a node.
-	*
+	* 
 	* If Symbol is not available in the environment, an ordinary property is used
 	* and the name of the property is here returned.
-	*
+	* 
 	* The XMLMetaData property is only present when `captureMetaData`
 	* is true in the options.
 	*/
