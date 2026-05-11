@@ -24416,7 +24416,7 @@ function create(patterns, options) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/internal/constants.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/internal/constants.js
 var require_constants = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SEMVER_SPEC_VERSION = "2.0.0";
 	var MAX_LENGTH = 256;
@@ -24441,12 +24441,12 @@ var require_constants = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/internal/debug.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/internal/debug.js
 var require_debug = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = typeof process === "object" && process.env && process.env.NODE_DEBUG && /\bsemver\b/i.test(process.env.NODE_DEBUG) ? (...args) => console.error("SEMVER", ...args) : () => {};
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/internal/re.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/internal/re.js
 var require_re = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { MAX_SAFE_COMPONENT_LENGTH, MAX_SAFE_BUILD_LENGTH, MAX_LENGTH } = require_constants();
 	var debug = require_debug();
@@ -24525,7 +24525,7 @@ var require_re = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	createToken("GTE0PRE", "^\\s*>=\\s*0\\.0\\.0-0\\s*$");
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/internal/parse-options.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/internal/parse-options.js
 var require_parse_options = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var looseOption = Object.freeze({ loose: true });
 	var emptyOpts = Object.freeze({});
@@ -24537,7 +24537,7 @@ var require_parse_options = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	module.exports = parseOptions;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/internal/identifiers.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/internal/identifiers.js
 var require_identifiers = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var numeric = /^[0-9]+$/;
 	var compareIdentifiers = (a, b) => {
@@ -24557,7 +24557,7 @@ var require_identifiers = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/classes/semver.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/classes/semver.js
 var require_semver$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var debug = require_debug();
 	var { MAX_LENGTH, MAX_SAFE_INTEGER } = require_constants();
@@ -24735,7 +24735,7 @@ var require_semver$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/parse.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/parse.js
 var require_parse = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var parse = (version, options, throwErrors = false) => {
@@ -24750,7 +24750,7 @@ var require_parse = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = parse;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/valid.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/valid.js
 var require_valid$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var parse = require_parse();
 	var valid = (version, options) => {
@@ -24760,7 +24760,7 @@ var require_valid$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = valid;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/clean.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/clean.js
 var require_clean = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var parse = require_parse();
 	var clean = (version, options) => {
@@ -24770,7 +24770,7 @@ var require_clean = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = clean;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/inc.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/inc.js
 var require_inc = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var inc = (version, release, options, identifier, identifierBase) => {
@@ -24788,7 +24788,7 @@ var require_inc = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = inc;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/diff.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/diff.js
 var require_diff = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var parse = require_parse();
 	var diff = (version1, version2) => {
@@ -24816,28 +24816,28 @@ var require_diff = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = diff;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/major.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/major.js
 var require_major = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var major = (a, loose) => new SemVer(a, loose).major;
 	module.exports = major;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/minor.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/minor.js
 var require_minor = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var minor = (a, loose) => new SemVer(a, loose).minor;
 	module.exports = minor;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/patch.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/patch.js
 var require_patch = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var patch = (a, loose) => new SemVer(a, loose).patch;
 	module.exports = patch;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/prerelease.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/prerelease.js
 var require_prerelease = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var parse = require_parse();
 	var prerelease = (version, options) => {
@@ -24847,28 +24847,28 @@ var require_prerelease = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = prerelease;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/compare.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/compare.js
 var require_compare = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var compare = (a, b, loose) => new SemVer(a, loose).compare(new SemVer(b, loose));
 	module.exports = compare;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/rcompare.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/rcompare.js
 var require_rcompare = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compare = require_compare();
 	var rcompare = (a, b, loose) => compare(b, a, loose);
 	module.exports = rcompare;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/compare-loose.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/compare-loose.js
 var require_compare_loose = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compare = require_compare();
 	var compareLoose = (a, b) => compare(a, b, true);
 	module.exports = compareLoose;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/compare-build.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/compare-build.js
 var require_compare_build = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var compareBuild = (a, b, loose) => {
@@ -24879,63 +24879,63 @@ var require_compare_build = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	module.exports = compareBuild;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/sort.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/sort.js
 var require_sort = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compareBuild = require_compare_build();
 	var sort = (list, loose) => list.sort((a, b) => compareBuild(a, b, loose));
 	module.exports = sort;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/rsort.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/rsort.js
 var require_rsort = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compareBuild = require_compare_build();
 	var rsort = (list, loose) => list.sort((a, b) => compareBuild(b, a, loose));
 	module.exports = rsort;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/gt.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/gt.js
 var require_gt = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compare = require_compare();
 	var gt = (a, b, loose) => compare(a, b, loose) > 0;
 	module.exports = gt;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/lt.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/lt.js
 var require_lt = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compare = require_compare();
 	var lt = (a, b, loose) => compare(a, b, loose) < 0;
 	module.exports = lt;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/eq.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/eq.js
 var require_eq = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compare = require_compare();
 	var eq = (a, b, loose) => compare(a, b, loose) === 0;
 	module.exports = eq;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/neq.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/neq.js
 var require_neq = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compare = require_compare();
 	var neq = (a, b, loose) => compare(a, b, loose) !== 0;
 	module.exports = neq;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/gte.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/gte.js
 var require_gte = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compare = require_compare();
 	var gte = (a, b, loose) => compare(a, b, loose) >= 0;
 	module.exports = gte;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/lte.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/lte.js
 var require_lte = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compare = require_compare();
 	var lte = (a, b, loose) => compare(a, b, loose) <= 0;
 	module.exports = lte;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/cmp.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/cmp.js
 var require_cmp = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var eq = require_eq();
 	var neq = require_neq();
@@ -24967,7 +24967,7 @@ var require_cmp = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = cmp;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/coerce.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/coerce.js
 var require_coerce = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var parse = require_parse();
@@ -24995,7 +24995,40 @@ var require_coerce = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = coerce;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/internal/lrucache.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/truncate.js
+var require_truncate = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var parse = require_parse();
+	var constants = require_constants();
+	var SemVer = require_semver$1();
+	var truncate = (version, truncation, options) => {
+		if (!constants.RELEASE_TYPES.includes(truncation)) return null;
+		const clonedVersion = cloneInputVersion(version, options);
+		return clonedVersion && doTruncation(clonedVersion, truncation);
+	};
+	var cloneInputVersion = (version, options) => {
+		return parse(version instanceof SemVer ? version.version : version, options);
+	};
+	var doTruncation = (version, truncation) => {
+		if (isPrerelease(truncation)) return version.version;
+		version.prerelease = [];
+		switch (truncation) {
+			case "major":
+				version.minor = 0;
+				version.patch = 0;
+				break;
+			case "minor":
+				version.patch = 0;
+				break;
+		}
+		return version.format();
+	};
+	var isPrerelease = (type) => {
+		return type.startsWith("pre");
+	};
+	module.exports = truncate;
+}));
+//#endregion
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/internal/lrucache.js
 var require_lrucache = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var LRUCache = class {
 		constructor() {
@@ -25028,7 +25061,7 @@ var require_lrucache = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = LRUCache;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/classes/range.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/classes/range.js
 var require_range = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SPACE_CHARACTERS = /\s+/g;
 	module.exports = class Range {
@@ -25300,7 +25333,7 @@ var require_range = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/classes/comparator.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/classes/comparator.js
 var require_comparator = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var ANY = Symbol("SemVer ANY");
 	module.exports = class Comparator {
@@ -25370,7 +25403,7 @@ var require_comparator = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Range = require_range();
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/functions/satisfies.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/functions/satisfies.js
 var require_satisfies = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Range = require_range();
 	var satisfies = (version, range, options) => {
@@ -25384,14 +25417,14 @@ var require_satisfies = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = satisfies;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/ranges/to-comparators.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/ranges/to-comparators.js
 var require_to_comparators = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Range = require_range();
 	var toComparators = (range, options) => new Range(range, options).set.map((comp) => comp.map((c) => c.value).join(" ").trim().split(" "));
 	module.exports = toComparators;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/ranges/max-satisfying.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/ranges/max-satisfying.js
 var require_max_satisfying = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var Range = require_range();
@@ -25417,7 +25450,7 @@ var require_max_satisfying = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 	module.exports = maxSatisfying;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/ranges/min-satisfying.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/ranges/min-satisfying.js
 var require_min_satisfying = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var Range = require_range();
@@ -25443,7 +25476,7 @@ var require_min_satisfying = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 	module.exports = minSatisfying;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/ranges/min-version.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/ranges/min-version.js
 var require_min_version = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var Range = require_range();
@@ -25483,7 +25516,7 @@ var require_min_version = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = minVersion;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/ranges/valid.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/ranges/valid.js
 var require_valid = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Range = require_range();
 	var validRange = (range, options) => {
@@ -25496,7 +25529,7 @@ var require_valid = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = validRange;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/ranges/outside.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/ranges/outside.js
 var require_outside = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var Comparator = require_comparator();
@@ -25549,21 +25582,21 @@ var require_outside = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = outside;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/ranges/gtr.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/ranges/gtr.js
 var require_gtr = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var outside = require_outside();
 	var gtr = (version, range, options) => outside(version, range, ">", options);
 	module.exports = gtr;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/ranges/ltr.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/ranges/ltr.js
 var require_ltr = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var outside = require_outside();
 	var ltr = (version, range, options) => outside(version, range, "<", options);
 	module.exports = ltr;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/ranges/intersects.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/ranges/intersects.js
 var require_intersects = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Range = require_range();
 	var intersects = (r1, r2, options) => {
@@ -25574,7 +25607,7 @@ var require_intersects = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = intersects;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/ranges/simplify.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/ranges/simplify.js
 var require_simplify = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var satisfies = require_satisfies();
 	var compare = require_compare();
@@ -25604,7 +25637,7 @@ var require_simplify = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.7.4/node_modules/semver/ranges/subset.js
+//#region node_modules/.pnpm/semver@7.8.0/node_modules/semver/ranges/subset.js
 var require_subset = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Range = require_range();
 	var Comparator = require_comparator();
@@ -25729,6 +25762,7 @@ var import_semver = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exp
 		lte: require_lte(),
 		cmp: require_cmp(),
 		coerce: require_coerce(),
+		truncate: require_truncate(),
 		Comparator: require_comparator(),
 		Range: require_range(),
 		satisfies: require_satisfies(),
@@ -34150,11 +34184,15 @@ function validateEntityName(name) {
 	else throw new Error(`Invalid entity name ${name}`);
 }
 //#endregion
-//#region node_modules/.pnpm/strnum@2.2.3/node_modules/strnum/strnum.js
+//#region node_modules/.pnpm/strnum@2.3.0/node_modules/strnum/strnum.js
 var hexRegex = /^[-+]?0x[a-fA-F0-9]+$/;
+var binRegex = /^0b[01]+$/;
+var octRegex = /^0o[0-7]+$/;
 var numRegex = /^([\-\+])?(0*)([0-9]*(\.[0-9]*)?)$/;
 var consider = {
 	hex: true,
+	binary: false,
+	octal: false,
 	leadingZeros: true,
 	decimalPoint: ".",
 	eNotation: true,
@@ -34168,6 +34206,8 @@ function toNumber(str, options = {}) {
 	else if (options.skipLike !== void 0 && options.skipLike.test(trimmedStr)) return str;
 	else if (trimmedStr === "0") return 0;
 	else if (options.hex && hexRegex.test(trimmedStr)) return parse_int(trimmedStr, 16);
+	else if (options.binary && binRegex.test(trimmedStr)) return parse_int(trimmedStr, 2);
+	else if (options.octal && octRegex.test(trimmedStr)) return parse_int(trimmedStr, 8);
 	else if (!isFinite(trimmedStr)) return handleInfinity(str, Number(trimmedStr), options);
 	else if (trimmedStr.includes("e") || trimmedStr.includes("E")) return resolveEnotation(str, trimmedStr, options);
 	else {
@@ -34229,6 +34269,8 @@ function trimZeros(numStr) {
 	return numStr;
 }
 function parse_int(numStr, base) {
+	const str = numStr.trim();
+	if (base === 2 || base === 8) numStr = str.substring(2);
 	if (parseInt) return parseInt(numStr, base);
 	else if (Number.parseInt) return Number.parseInt(numStr, base);
 	else if (window && window.parseInt) return window.parseInt(numStr, base);
@@ -35682,7 +35724,7 @@ var XMLParser = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.1.9/node_modules/fast-xml-builder/src/util.js
+//#region node_modules/.pnpm/fast-xml-builder@1.2.0/node_modules/fast-xml-builder/src/util.js
 function safeComment(val) {
 	return String(val).replace(/--/g, "- -").replace(/--/g, "- -").replace(/-$/, "- ");
 }
@@ -35693,13 +35735,86 @@ function escapeAttribute(val) {
 	return String(val).replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.1.9/node_modules/fast-xml-builder/src/orderedJs2Xml.js
+//#region node_modules/.pnpm/xml-naming@0.1.0/node_modules/xml-naming/src/index.js
+/**
+* xml-naming
+* Validates XML Name productions as defined in the XML 1.0 and 1.1 specifications.
+* Covers: Name, NCName, QName, NMToken, NMTokens
+*
+* XML 1.0 spec: https://www.w3.org/TR/xml/#NT-Name
+* XML 1.1 spec: https://www.w3.org/TR/xml11/#NT-NameStartChar
+* XML NS spec:  https://www.w3.org/TR/xml-names/#NT-NCName
+*/
+var nameStartChar10 = ":A-Za-z_À-ÖØ-öø-˿Ͱ-ͽͿ-҆҈-῿‌-‍⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�";
+var nameChar10 = nameStartChar10 + "\\-\\.\\d·̀-ͯ‿-⁀";
+var nameStartChar11 = ":A-Za-z_À-˿Ͱ-ͽͿ-҆҈-῿‌-‍⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�𐀀-󯿿";
+var nameChar11 = nameStartChar11 + "\\-\\.\\d·̀-ͯ҇‿-⁀";
+var buildRegexes = (startChar, char, flags = "") => {
+	const ncNamePat = `[${startChar.replace(":", "")}][${char.replace(":", "")}]*`;
+	return {
+		name: new RegExp(`^[${startChar}][${char}]*$`, flags),
+		ncName: new RegExp(`^${ncNamePat}$`, flags),
+		qName: new RegExp(`^${ncNamePat}(?::${ncNamePat})?$`, flags),
+		nmToken: new RegExp(`^[${char}]+$`, flags),
+		nmTokens: new RegExp(`^[${char}]+(?:\\s+[${char}]+)*$`, flags)
+	};
+};
+var regexes10 = buildRegexes(nameStartChar10, nameChar10);
+var regexes11 = buildRegexes(nameStartChar11, nameChar11, "u");
+var getRegexes = (xmlVersion = "1.0") => xmlVersion === "1.1" ? regexes11 : regexes10;
+/**
+* Returns true if the string is a valid QName (Qualified Name).
+* Allows exactly one colon as a prefix separator: prefix:localName.
+* Used for: element and attribute names in namespace-aware XML/SVG.
+*/
+var qName = (str, { xmlVersion = "1.0" } = {}) => getRegexes(xmlVersion).qName.test(str);
+//#endregion
+//#region node_modules/.pnpm/fast-xml-builder@1.2.0/node_modules/fast-xml-builder/src/orderedJs2Xml.js
 var EOL$2 = "\n";
 /**
-* 
-* @param {array} jArray 
-* @param {any} options 
-* @returns 
+* Detect XML version from the first element of the ordered array input.
+* The first element must be a ?xml processing instruction with a version attribute.
+* Returns '1.0' if not found.
+*
+* @param {array}  jArray
+* @param {object} options
+*/
+function detectXmlVersionFromArray(jArray, options) {
+	if (!Array.isArray(jArray) || jArray.length === 0) return "1.0";
+	const first = jArray[0];
+	if (propName(first) === "?xml") {
+		const attrs = first[":@"];
+		if (attrs) {
+			const versionKey = options.attributeNamePrefix + "version";
+			if (attrs[versionKey]) return attrs[versionKey];
+		}
+	}
+	return "1.0";
+}
+/**
+* Resolve a tag or attribute name through sanitizeName if configured.
+* Validation via xml-naming's qName is performed first; the sanitizeName
+* callback is invoked only when the name is invalid. If sanitizeName is
+* false (default), no validation occurs and the name is used as-is.
+*
+* @param {string}  name        - raw name from the JS object
+* @param {boolean} isAttribute - true when resolving an attribute name
+* @param {object}  options
+* @param {Matcher} matcher     - current matcher state (readonly from callback perspective)
+* @param {string}  xmlVersion  - '1.0' or '1.1', forwarded to xml-naming
+*/
+function resolveTagName$1(name, isAttribute, options, matcher, xmlVersion) {
+	if (!options.sanitizeName) return name;
+	if (qName(name, { xmlVersion })) return name;
+	return options.sanitizeName(name, {
+		isAttribute,
+		matcher: matcher.readOnly()
+	});
+}
+/**
+* @param {array} jArray
+* @param {any} options
+* @returns
 */
 function toXml(jArray, options) {
 	let indentation = "";
@@ -35710,10 +35825,11 @@ function toXml(jArray, options) {
 		if (typeof node === "string") stopNodeExpressions.push(new Expression(node));
 		else if (node instanceof Expression) stopNodeExpressions.push(node);
 	}
+	const xmlVersion = detectXmlVersionFromArray(jArray, options);
 	const matcher = new Matcher();
-	return arrToStr(jArray, options, indentation, matcher, stopNodeExpressions);
+	return arrToStr(jArray, options, indentation, matcher, stopNodeExpressions, xmlVersion);
 }
-function arrToStr(arr, options, indentation, matcher, stopNodeExpressions) {
+function arrToStr(arr, options, indentation, matcher, stopNodeExpressions, xmlVersion) {
 	let xmlStr = "";
 	let isPreviousElementTag = false;
 	if (options.maxNestedTags && matcher.getDepth() > options.maxNestedTags) throw new Error("Maximum nested tags exceeded");
@@ -35727,13 +35843,14 @@ function arrToStr(arr, options, indentation, matcher, stopNodeExpressions) {
 	}
 	for (let i = 0; i < arr.length; i++) {
 		const tagObj = arr[i];
-		const tagName = propName(tagObj);
-		if (tagName === void 0) continue;
+		const rawTagName = propName(tagObj);
+		if (rawTagName === void 0) continue;
+		const tagName = rawTagName === options.textNodeName || rawTagName === options.cdataPropName || rawTagName === options.commentPropName || rawTagName[0] === "?" ? rawTagName : resolveTagName$1(rawTagName, false, options, matcher, xmlVersion);
 		const attrValues = extractAttributeValues(tagObj[":@"], options);
 		matcher.push(tagName, attrValues);
 		const isStopNode = checkStopNode(matcher, stopNodeExpressions);
 		if (tagName === options.textNodeName) {
-			let tagText = tagObj[tagName];
+			let tagText = tagObj[rawTagName];
 			if (!isStopNode) {
 				tagText = options.tagValueProcessor(tagName, tagText);
 				tagText = replaceEntitiesValue(tagText, options);
@@ -35745,21 +35862,21 @@ function arrToStr(arr, options, indentation, matcher, stopNodeExpressions) {
 			continue;
 		} else if (tagName === options.cdataPropName) {
 			if (isPreviousElementTag) xmlStr += indentation;
-			const val = tagObj[tagName][0][options.textNodeName];
+			const val = tagObj[rawTagName][0][options.textNodeName];
 			const safeVal = safeCdata(val);
 			xmlStr += `<![CDATA[${safeVal}]]>`;
 			isPreviousElementTag = false;
 			matcher.pop();
 			continue;
 		} else if (tagName === options.commentPropName) {
-			const val = tagObj[tagName][0][options.textNodeName];
+			const val = tagObj[rawTagName][0][options.textNodeName];
 			const safeVal = safeComment(val);
 			xmlStr += indentation + `<!--${safeVal}-->`;
 			isPreviousElementTag = true;
 			matcher.pop();
 			continue;
 		} else if (tagName[0] === "?") {
-			const attStr = attr_to_str(tagObj[":@"], options, isStopNode);
+			const attStr = attr_to_str(tagObj[":@"], options, isStopNode, matcher, xmlVersion);
 			xmlStr += (tagName === "?xml" ? "" : indentation) + `<${tagName}${attStr}?>`;
 			isPreviousElementTag = true;
 			matcher.pop();
@@ -35767,10 +35884,10 @@ function arrToStr(arr, options, indentation, matcher, stopNodeExpressions) {
 		}
 		let newIdentation = indentation;
 		if (newIdentation !== "") newIdentation += options.indentBy;
-		const tagStart = indentation + `<${tagName}${attr_to_str(tagObj[":@"], options, isStopNode)}`;
+		const tagStart = indentation + `<${tagName}${attr_to_str(tagObj[":@"], options, isStopNode, matcher, xmlVersion)}`;
 		let tagValue;
-		if (isStopNode) tagValue = getRawContent(tagObj[tagName], options);
-		else tagValue = arrToStr(tagObj[tagName], options, newIdentation, matcher, stopNodeExpressions);
+		if (isStopNode) tagValue = getRawContent(tagObj[rawTagName], options);
+		else tagValue = arrToStr(tagObj[rawTagName], options, newIdentation, matcher, stopNodeExpressions, xmlVersion);
 		if (options.unpairedTags.indexOf(tagName) !== -1) if (options.suppressUnpairedNode) xmlStr += tagStart + ">";
 		else xmlStr += tagStart + "/>";
 		else if ((!tagValue || tagValue.length === 0) && options.suppressEmptyNode) xmlStr += tagStart + "/>";
@@ -35849,18 +35966,24 @@ function propName(obj) {
 		if (key !== ":@") return key;
 	}
 }
-function attr_to_str(attrMap, options, isStopNode) {
+/**
+* Build attribute string, resolving attribute names through sanitizeName when configured.
+* Accepts matcher so the callback has path context.
+*/
+function attr_to_str(attrMap, options, isStopNode, matcher, xmlVersion) {
 	let attrStr = "";
 	if (attrMap && !options.ignoreAttributes) for (let attr in attrMap) {
 		if (!Object.prototype.hasOwnProperty.call(attrMap, attr)) continue;
+		const cleanAttrName = attr.substr(options.attributeNamePrefix.length);
+		const resolvedAttrName = isStopNode ? cleanAttrName : resolveTagName$1(cleanAttrName, true, options, matcher, xmlVersion);
 		let attrVal;
 		if (isStopNode) attrVal = attrMap[attr];
 		else {
 			attrVal = options.attributeValueProcessor(attr, attrMap[attr]);
 			attrVal = replaceEntitiesValue(attrVal, options);
 		}
-		if (attrVal === true && options.suppressBooleanAttributes) attrStr += ` ${attr.substr(options.attributeNamePrefix.length)}`;
-		else attrStr += ` ${attr.substr(options.attributeNamePrefix.length)}="${escapeAttribute(attrVal)}"`;
+		if (attrVal === true && options.suppressBooleanAttributes) attrStr += ` ${resolvedAttrName}`;
+		else attrStr += ` ${resolvedAttrName}="${escapeAttribute(attrVal)}"`;
 	}
 	return attrStr;
 }
@@ -35877,7 +36000,7 @@ function replaceEntitiesValue(textValue, options) {
 	return textValue;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.1.9/node_modules/fast-xml-builder/src/ignoreAttributes.js
+//#region node_modules/.pnpm/fast-xml-builder@1.2.0/node_modules/fast-xml-builder/src/ignoreAttributes.js
 function getIgnoreAttributesFn(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -35889,7 +36012,7 @@ function getIgnoreAttributesFn(ignoreAttributes) {
 	return () => false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.1.9/node_modules/fast-xml-builder/src/fxb.js
+//#region node_modules/.pnpm/fast-xml-builder@1.2.0/node_modules/fast-xml-builder/src/fxb.js
 var defaultOptions = {
 	attributeNamePrefix: "@_",
 	attributesGroupName: false,
@@ -35936,7 +36059,8 @@ var defaultOptions = {
 	stopNodes: [],
 	oneListGroup: false,
 	maxNestedTags: 100,
-	jPath: true
+	jPath: true,
+	sanitizeName: false
 };
 function Builder(options) {
 	this.options = Object.assign({}, defaultOptions, options);
@@ -35971,15 +36095,53 @@ function Builder(options) {
 		this.newLine = "";
 	}
 }
+/**
+* Detect XML version from the ?xml declaration at the root of a plain-object input.
+* Checks both attributesGroupName and flat attribute forms.
+* Returns '1.0' if no declaration is found.
+*/
+function detectXmlVersionFromObj(jObj, options) {
+	const decl = jObj["?xml"];
+	if (decl && typeof decl === "object") {
+		if (options.attributesGroupName && decl[options.attributesGroupName]) {
+			const v = decl[options.attributesGroupName][options.attributeNamePrefix + "version"];
+			if (v) return v;
+		}
+		const v = decl[options.attributeNamePrefix + "version"];
+		if (v) return v;
+	}
+	return "1.0";
+}
+/**
+* Resolve a tag or attribute name through sanitizeName if configured.
+* Validation via xml-naming's qName is performed first; the sanitizeName
+* callback is invoked only when the name is invalid. If sanitizeName is
+* false (default), no validation occurs and the name is used as-is.
+*
+* @param {string}  name        - raw name from the JS object
+* @param {boolean} isAttribute - true when resolving an attribute name
+* @param {object}  options
+* @param {Matcher} matcher     - current matcher state (readonly from callback perspective)
+* @param {string}  xmlVersion  - '1.0' or '1.1', forwarded to xml-naming
+*/
+function resolveTagName(name, isAttribute, options, matcher, xmlVersion) {
+	if (!options.sanitizeName) return name;
+	if (qName(name, { xmlVersion })) return name;
+	return options.sanitizeName(name, {
+		isAttribute,
+		matcher: matcher.readOnly()
+	});
+}
 Builder.prototype.build = function(jObj) {
 	if (this.options.preserveOrder) return toXml(jObj, this.options);
 	else {
 		if (Array.isArray(jObj) && this.options.arrayNodeName && this.options.arrayNodeName.length > 1) jObj = { [this.options.arrayNodeName]: jObj };
 		const matcher = new Matcher();
-		return this.j2x(jObj, 0, matcher).val;
+		const xmlVersion = detectXmlVersionFromObj(jObj, this.options);
+		return this.j2x(jObj, 0, matcher, xmlVersion).val;
 	}
 };
-Builder.prototype.j2x = function(jObj, level, matcher) {
+Builder.prototype.j2x = function(jObj, level, matcher, xmlVersion) {
 	let attrStr = "";
 	let val = "";
 	if (this.options.maxNestedTags && matcher.getDepth() >= this.options.maxNestedTags) throw new Error("Maximum nested tags exceeded");
@@ -35987,28 +36149,31 @@ Builder.prototype.j2x = function(jObj, level, matcher) {
 	const isCurrentStopNode = this.checkStopNode(matcher);
 	for (let key in jObj) {
 		if (!Object.prototype.hasOwnProperty.call(jObj, key)) continue;
+		const resolvedKey = key === this.options.textNodeName || key === this.options.cdataPropName || key === this.options.commentPropName || this.options.attributesGroupName && key === this.options.attributesGroupName || this.isAttribute(key) || key[0] === "?" ? key : resolveTagName(key, false, this.options, matcher, xmlVersion);
 		if (typeof jObj[key] === "undefined") {
 			if (this.isAttribute(key)) val += "";
 		} else if (jObj[key] === null) if (this.isAttribute(key)) val += "";
-		else if (key === this.options.cdataPropName || key === this.options.commentPropName) val += "";
-		else if (key[0] === "?") val += this.indentate(level) + "<" + key + "?" + this.tagEndChar;
-		else val += this.indentate(level) + "<" + key + "/" + this.tagEndChar;
-		else if (jObj[key] instanceof Date) val += this.buildTextValNode(jObj[key], key, "", level, matcher);
+		else if (resolvedKey === this.options.cdataPropName || resolvedKey === this.options.commentPropName) val += "";
+		else if (resolvedKey[0] === "?") val += this.indentate(level) + "<" + resolvedKey + "?" + this.tagEndChar;
+		else val += this.indentate(level) + "<" + resolvedKey + "/" + this.tagEndChar;
+		else if (jObj[key] instanceof Date) val += this.buildTextValNode(jObj[key], resolvedKey, "", level, matcher);
 		else if (typeof jObj[key] !== "object") {
 			const attr = this.isAttribute(key);
-			if (attr && !this.ignoreAttributesFn(attr, jPath)) attrStr += this.buildAttrPairStr(attr, "" + jObj[key], isCurrentStopNode);
-			else if (!attr) if (key === this.options.textNodeName) {
+			if (attr && !this.ignoreAttributesFn(attr, jPath)) {
+				const resolvedAttr = resolveTagName(attr, true, this.options, matcher, xmlVersion);
+				attrStr += this.buildAttrPairStr(resolvedAttr, "" + jObj[key], isCurrentStopNode);
+			} else if (!attr) if (key === this.options.textNodeName) {
 				let newval = this.options.tagValueProcessor(key, "" + jObj[key]);
 				val += this.replaceEntitiesValue(newval);
 			} else {
-				matcher.push(key);
+				matcher.push(resolvedKey);
 				const isStopNode = this.checkStopNode(matcher);
 				matcher.pop();
 				if (isStopNode) {
 					const textValue = "" + jObj[key];
-					if (textValue === "") val += this.indentate(level) + "<" + key + this.closeTag(key) + this.tagEndChar;
-					else val += this.indentate(level) + "<" + key + ">" + textValue + "</" + key + this.tagEndChar;
-				} else val += this.buildTextValNode(jObj[key], key, "", level, matcher);
+					if (textValue === "") val += this.indentate(level) + "<" + resolvedKey + this.closeTag(resolvedKey) + this.tagEndChar;
+					else val += this.indentate(level) + "<" + resolvedKey + ">" + textValue + "</" + resolvedKey + this.tagEndChar;
+				} else val += this.buildTextValNode(jObj[key], resolvedKey, "", level, matcher);
 			}
 		} else if (Array.isArray(jObj[key])) {
 			const arrLen = jObj[key].length;
@@ -36016,37 +36181,40 @@ Builder.prototype.j2x = function(jObj, level, matcher) {
 			let listTagAttr = "";
 			for (let j = 0; j < arrLen; j++) {
 				const item = jObj[key][j];
-				if (typeof item === "undefined") {} else if (item === null) if (key[0] === "?") val += this.indentate(level) + "<" + key + "?" + this.tagEndChar;
-				else val += this.indentate(level) + "<" + key + "/" + this.tagEndChar;
+				if (typeof item === "undefined") {} else if (item === null) if (resolvedKey[0] === "?") val += this.indentate(level) + "<" + resolvedKey + "?" + this.tagEndChar;
+				else val += this.indentate(level) + "<" + resolvedKey + "/" + this.tagEndChar;
 				else if (typeof item === "object") if (this.options.oneListGroup) {
-					matcher.push(key);
-					const result = this.j2x(item, level + 1, matcher);
+					matcher.push(resolvedKey);
+					const result = this.j2x(item, level + 1, matcher, xmlVersion);
 					matcher.pop();
 					listTagVal += result.val;
 					if (this.options.attributesGroupName && item.hasOwnProperty(this.options.attributesGroupName)) listTagAttr += result.attrStr;
-				} else listTagVal += this.processTextOrObjNode(item, key, level, matcher);
+				} else listTagVal += this.processTextOrObjNode(item, resolvedKey, level, matcher, xmlVersion);
 				else if (this.options.oneListGroup) {
-					let textValue = this.options.tagValueProcessor(key, item);
+					let textValue = this.options.tagValueProcessor(resolvedKey, item);
 					textValue = this.replaceEntitiesValue(textValue);
 					listTagVal += textValue;
 				} else {
-					matcher.push(key);
+					matcher.push(resolvedKey);
 					const isStopNode = this.checkStopNode(matcher);
 					matcher.pop();
 					if (isStopNode) {
 						const textValue = "" + item;
-						if (textValue === "") listTagVal += this.indentate(level) + "<" + key + this.closeTag(key) + this.tagEndChar;
-						else listTagVal += this.indentate(level) + "<" + key + ">" + textValue + "</" + key + this.tagEndChar;
-					} else listTagVal += this.buildTextValNode(item, key, "", level, matcher);
+						if (textValue === "") listTagVal += this.indentate(level) + "<" + resolvedKey + this.closeTag(resolvedKey) + this.tagEndChar;
+						else listTagVal += this.indentate(level) + "<" + resolvedKey + ">" + textValue + "</" + resolvedKey + this.tagEndChar;
+					} else listTagVal += this.buildTextValNode(item, resolvedKey, "", level, matcher);
 				}
 			}
-			if (this.options.oneListGroup) listTagVal = this.buildObjectNode(listTagVal, key, listTagAttr, level);
+			if (this.options.oneListGroup) listTagVal = this.buildObjectNode(listTagVal, resolvedKey, listTagAttr, level);
 			val += listTagVal;
 		} else if (this.options.attributesGroupName && key === this.options.attributesGroupName) {
 			const Ks = Object.keys(jObj[key]);
 			const L = Ks.length;
-			for (let j = 0; j < L; j++) attrStr += this.buildAttrPairStr(Ks[j], "" + jObj[key][Ks[j]], isCurrentStopNode);
-		} else val += this.processTextOrObjNode(jObj[key], key, level, matcher);
+			for (let j = 0; j < L; j++) {
+				const resolvedAttr = resolveTagName(Ks[j], true, this.options, matcher, xmlVersion);
+				attrStr += this.buildAttrPairStr(resolvedAttr, "" + jObj[key][Ks[j]], isCurrentStopNode);
+			}
+		} else val += this.processTextOrObjNode(jObj[key], resolvedKey, level, matcher, xmlVersion);
 	}
 	return {
 		attrStr,
@@ -36061,7 +36229,7 @@ Builder.prototype.buildAttrPairStr = function(attrName, val, isStopNode) {
 	if (this.options.suppressBooleanAttributes && val === "true") return " " + attrName;
 	else return " " + attrName + "=\"" + escapeAttribute(val) + "\"";
 };
-function processTextOrObjNode(object, key, level, matcher) {
+function processTextOrObjNode(object, key, level, matcher, xmlVersion) {
 	const attrValues = this.extractAttributes(object);
 	matcher.push(key, attrValues);
 	if (this.checkStopNode(matcher)) {
@@ -36070,7 +36238,7 @@ function processTextOrObjNode(object, key, level, matcher) {
 		matcher.pop();
 		return this.buildObjectNode(rawContent, key, attrStr, level);
 	}
-	const result = this.j2x(object, level + 1, matcher);
+	const result = this.j2x(object, level + 1, matcher, xmlVersion);
 	matcher.pop();
 	if (key[0] === "?") return this.buildTextValNode("", key, result.attrStr, level, matcher);
 	else if (object[this.options.textNodeName] !== void 0 && Object.keys(object).length === 1) return this.buildTextValNode(object[this.options.textNodeName], key, result.attrStr, level, matcher);
