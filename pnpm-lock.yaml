@@ -130,8 +130,8 @@ importers:
         specifier: 2.0.6
         version: 2.0.6(prettier@3.8.3)
       semver:
-        specifier: 7.8.0
-        version: 7.8.0
+        specifier: 7.7.0
+        version: 7.7.0
       typescript:
         specifier: 6.0.3
         version: 6.0.3
@@ -2045,6 +2045,11 @@ packages:
 
   semver@6.3.1:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
+    hasBin: true
+
+  semver@7.7.0:
+    resolution: {integrity: sha512-DrfFnPzblFmNrIZzg5RzHegbiRWg7KMR7btwi2yjHwx06zsUbO5g613sVwEV7FTwmzJu+Io0lJe2GJ3LxqpvBQ==}
+    engines: {node: '>=10'}
     hasBin: true
 
   semver@7.7.4:
@@ -4605,6 +4610,8 @@ snapshots:
       regexp-tree: 0.1.27
 
   semver@6.3.1: {}
+
+  semver@7.7.0: {}
 
   semver@7.7.4: {}
 
