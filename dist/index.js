@@ -20789,7 +20789,7 @@ function expand(template, context) {
 	if (template === "/") return template;
 	else return template.replace(/\/$/, "");
 }
-function parse$1(options) {
+function parse$2(options) {
 	let method = options.method.toUpperCase();
 	let url = (options.url || "/").replace(/:([a-z]\w+)/g, "{$1}");
 	let headers = Object.assign({}, options.headers);
@@ -20826,7 +20826,7 @@ function parse$1(options) {
 	}, typeof body !== "undefined" ? { body } : null, options.request ? { request: options.request } : null);
 }
 function endpointWithDefaults(defaults, route, options) {
-	return parse$1(merge(defaults, route, options));
+	return parse$2(merge(defaults, route, options));
 }
 function withDefaults$2(oldDefaults, newDefaults) {
 	const DEFAULTS2 = merge(oldDefaults, newDefaults);
@@ -20835,121 +20835,130 @@ function withDefaults$2(oldDefaults, newDefaults) {
 		DEFAULTS: DEFAULTS2,
 		defaults: withDefaults$2.bind(null, DEFAULTS2),
 		merge: merge.bind(null, DEFAULTS2),
-		parse: parse$1
+		parse: parse$2
 	});
 }
 var endpoint = withDefaults$2(null, DEFAULTS);
+/*!
+* content-type
+* Copyright(c) 2015 Douglas Christopher Wilson
+* MIT Licensed
+*/
 //#endregion
 //#region node_modules/.pnpm/json-with-bigint@3.5.8/node_modules/json-with-bigint/json-with-bigint.js
-var import_fast_content_type_parse = (/* @__PURE__ */ __commonJSMin(((exports, module) => {
-	var NullObject = function NullObject() {};
-	NullObject.prototype = Object.create(null);
+var import_dist$2 = (/* @__PURE__ */ __commonJSMin(((exports) => {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.parse = parse;
 	/**
-	* RegExp to match *( ";" parameter ) in RFC 7231 sec 3.1.1.1
-	*
-	* parameter     = token "=" ( token / quoted-string )
-	* token         = 1*tchar
-	* tchar         = "!" / "#" / "$" / "%" / "&" / "'" / "*"
-	*               / "+" / "-" / "." / "^" / "_" / "`" / "|" / "~"
-	*               / DIGIT / ALPHA
-	*               ; any VCHAR, except delimiters
-	* quoted-string = DQUOTE *( qdtext / quoted-pair ) DQUOTE
-	* qdtext        = HTAB / SP / %x21 / %x23-5B / %x5D-7E / obs-text
-	* obs-text      = %x80-FF
-	* quoted-pair   = "\" ( HTAB / SP / VCHAR / obs-text )
+	* Null object perf optimization. Faster than `Object.create(null)` and `{ __proto__: null }`.
 	*/
-	var paramRE = /; *([!#$%&'*+.^\w`|~-]+)=("(?:[\v\u0020\u0021\u0023-\u005b\u005d-\u007e\u0080-\u00ff]|\\[\v\u0020-\u00ff])*"|[!#$%&'*+.^\w`|~-]+) */gu;
+	var NullObject = /* @__PURE__ */ (() => {
+		const C = function() {};
+		C.prototype = Object.create(null);
+		return C;
+	})();
 	/**
-	* RegExp to match quoted-pair in RFC 7230 sec 3.2.6
-	*
-	* quoted-pair = "\" ( HTAB / SP / VCHAR / obs-text )
-	* obs-text    = %x80-FF
+	* Parse a `Content-Type` header.
 	*/
-	var quotedPairRE = /\\([\v\u0020-\u00ff])/gu;
-	/**
-	* RegExp to match type in RFC 7231 sec 3.1.1.1
-	*
-	* media-type = type "/" subtype
-	* type       = token
-	* subtype    = token
-	*/
-	var mediaTypeRE = /^[!#$%&'*+.^\w|~-]+\/[!#$%&'*+.^\w|~-]+$/u;
-	var defaultContentType = {
-		type: "",
-		parameters: new NullObject()
-	};
-	Object.freeze(defaultContentType.parameters);
-	Object.freeze(defaultContentType);
-	/**
-	* Parse media type to object.
-	*
-	* @param {string|object} header
-	* @return {Object}
-	* @public
-	*/
-	function parse(header) {
-		if (typeof header !== "string") throw new TypeError("argument header is required and must be a string");
-		let index = header.indexOf(";");
-		const type = index !== -1 ? header.slice(0, index).trim() : header.trim();
-		if (mediaTypeRE.test(type) === false) throw new TypeError("invalid media type");
-		const result = {
-			type: type.toLowerCase(),
-			parameters: new NullObject()
+	function parse(header, options) {
+		const len = header.length;
+		let index = skipOWS(header, 0, len);
+		const valueStart = index;
+		index = skipValue(header, index, len);
+		const valueEnd = trailingOWS(header, valueStart, index);
+		return {
+			type: header.slice(valueStart, valueEnd).toLowerCase(),
+			parameters: options?.parameters === false ? new NullObject() : parseParameters(header, index, len)
 		};
-		if (index === -1) return result;
-		let key;
-		let match;
-		let value;
-		paramRE.lastIndex = index;
-		while (match = paramRE.exec(header)) {
-			if (match.index !== index) throw new TypeError("invalid parameter format");
-			index += match[0].length;
-			key = match[1].toLowerCase();
-			value = match[2];
-			if (value[0] === "\"") {
-				value = value.slice(1, value.length - 1);
-				quotedPairRE.test(value) && (value = value.replace(quotedPairRE, "$1"));
-			}
-			result.parameters[key] = value;
-		}
-		if (index !== header.length) throw new TypeError("invalid parameter format");
-		return result;
 	}
-	function safeParse(header) {
-		if (typeof header !== "string") return defaultContentType;
-		let index = header.indexOf(";");
-		const type = index !== -1 ? header.slice(0, index).trim() : header.trim();
-		if (mediaTypeRE.test(type) === false) return defaultContentType;
-		const result = {
-			type: type.toLowerCase(),
-			parameters: new NullObject()
-		};
-		if (index === -1) return result;
-		let key;
-		let match;
-		let value;
-		paramRE.lastIndex = index;
-		while (match = paramRE.exec(header)) {
-			if (match.index !== index) return defaultContentType;
-			index += match[0].length;
-			key = match[1].toLowerCase();
-			value = match[2];
-			if (value[0] === "\"") {
-				value = value.slice(1, value.length - 1);
-				quotedPairRE.test(value) && (value = value.replace(quotedPairRE, "$1"));
+	var SP = 32;
+	var HTAB = 9;
+	var SEMI = 59;
+	var EQ = 61;
+	var DQUOTE = 34;
+	var BSLASH = 92;
+	/**
+	* Parses the parameters of a `Content-Type` header starting at the given index.
+	*/
+	function parseParameters(header, index, len) {
+		const parameters = new NullObject();
+		parameter: while (index < len) {
+			index = skipOWS(header, index + 1, len);
+			const keyStart = index;
+			while (index < len) {
+				const code = header.charCodeAt(index);
+				if (code === SEMI) continue parameter;
+				if (code === EQ) {
+					const keyEnd = trailingOWS(header, keyStart, index);
+					const key = header.slice(keyStart, keyEnd).toLowerCase();
+					index = skipOWS(header, index + 1, len);
+					if (index < len && header.charCodeAt(index) === DQUOTE) {
+						index++;
+						let value = "";
+						while (index < len) {
+							const code = header.charCodeAt(index++);
+							if (code === DQUOTE) {
+								index = skipValue(header, index, len);
+								if (parameters[key] === void 0) parameters[key] = value;
+								break;
+							}
+							if (code === BSLASH && index < len) {
+								value += header[index++];
+								continue;
+							}
+							value += String.fromCharCode(code);
+						}
+						continue parameter;
+					}
+					const valueStart = index;
+					index = skipValue(header, index, len);
+					if (parameters[key] === void 0) {
+						const valueEnd = trailingOWS(header, valueStart, index);
+						parameters[key] = header.slice(valueStart, valueEnd);
+					}
+					continue parameter;
+				}
+				index++;
 			}
-			result.parameters[key] = value;
 		}
-		if (index !== header.length) return defaultContentType;
-		return result;
+		return parameters;
 	}
-	module.exports.default = {
-		parse,
-		safeParse
-	};
-	module.exports.parse = parse;
-	module.exports.safeParse = safeParse;
-	module.exports.defaultContentType = defaultContentType;
+	/**
+	* Skip over characters until a semicolon.
+	*/
+	function skipValue(str, index, len) {
+		while (index < len) {
+			if (str.charCodeAt(index) === SEMI) break;
+			index++;
+		}
+		return index;
+	}
+	/**
+	* Skip optional whitespace (OWS) in an HTTP header value.
+	*
+	* OWS is defined in RFC 9110 sec 5.6.3 as SP (" ") or HTAB ("\t").
+	*/
+	function skipOWS(header, index, len) {
+		while (index < len) {
+			const char = header.charCodeAt(index);
+			if (char !== SP && char !== HTAB) break;
+			index++;
+		}
+		return index;
+	}
+	/**
+	* Trim optional whitespace (OWS) from the end of a substring.
+	*
+	* OWS is defined in RFC 9110 sec 5.6.3 as SP (" ") or HTAB ("\t").
+	*/
+	function trailingOWS(header, start, end) {
+		while (end > start) {
+			const char = header.charCodeAt(end - 1);
+			if (char !== SP && char !== HTAB) break;
+			end--;
+		}
+		return end;
+	}
 })))();
 var intRegex = /^-?\d+$/;
 var noiseValue = /^-?\d+n+$/;
@@ -21115,8 +21124,8 @@ var RequestError = class extends Error {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@octokit+request@10.0.8/node_modules/@octokit/request/dist-bundle/index.js
-var defaults_default = { headers: { "user-agent": `octokit-request.js/10.0.8 ${getUserAgent()}` } };
+//#region node_modules/.pnpm/@octokit+request@10.0.9/node_modules/@octokit/request/dist-bundle/index.js
+var defaults_default = { headers: { "user-agent": `octokit-request.js/10.0.9 ${getUserAgent()}` } };
 function isPlainObject(value) {
 	if (typeof value !== "object" || value === null) return false;
 	if (Object.prototype.toString.call(value) !== "[object Object]") return false;
@@ -21203,7 +21212,7 @@ async function fetchWrapper(requestOptions) {
 async function getResponseData(response) {
 	const contentType = response.headers.get("content-type");
 	if (!contentType) return response.text().catch(noop$1);
-	const mimetype = (0, import_fast_content_type_parse.safeParse)(contentType);
+	const mimetype = (0, import_dist$2.parse)(contentType);
 	if (isJSONResponse(mimetype)) {
 		let text = "";
 		try {
@@ -31985,7 +31994,7 @@ function convertHttpClient(requestPolicyClient) {
 	} };
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.7.3/node_modules/fast-xml-parser/src/util.js
+//#region node_modules/.pnpm/fast-xml-parser@5.8.0/node_modules/fast-xml-parser/src/util.js
 var nameStartChar = ":A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD";
 nameStartChar + "";
 var nameRegexp = "[" + nameStartChar + "][:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040]*";
@@ -32028,7 +32037,7 @@ var criticalProperties = [
 	"prototype"
 ];
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.7.3/node_modules/fast-xml-parser/src/validator.js
+//#region node_modules/.pnpm/fast-xml-parser@5.8.0/node_modules/fast-xml-parser/src/validator.js
 var defaultOptions$2 = {
 	allowBooleanAttributes: false,
 	unpairedTags: []
@@ -33810,7 +33819,7 @@ var EntityDecoder = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.7.3/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
+//#region node_modules/.pnpm/fast-xml-parser@5.8.0/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
 var defaultOnDangerousProperty = (name) => {
 	if (DANGEROUS_PROPERTY_NAMES.includes(name)) return "__" + name;
 	return name;
@@ -33936,7 +33945,7 @@ var buildOptions = function(options) {
 	return built;
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.7.3/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
+//#region node_modules/.pnpm/fast-xml-parser@5.8.0/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
 var METADATA_SYMBOL$1;
 if (typeof Symbol !== "function") METADATA_SYMBOL$1 = "@@xmlMetadata";
 else METADATA_SYMBOL$1 = Symbol("XML Node Metadata");
@@ -33965,11 +33974,49 @@ var XmlNode = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.7.3/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
+//#region node_modules/.pnpm/xml-naming@0.1.0/node_modules/xml-naming/src/index.js
+/**
+* xml-naming
+* Validates XML Name productions as defined in the XML 1.0 and 1.1 specifications.
+* Covers: Name, NCName, QName, NMToken, NMTokens
+*
+* XML 1.0 spec: https://www.w3.org/TR/xml/#NT-Name
+* XML 1.1 spec: https://www.w3.org/TR/xml11/#NT-NameStartChar
+* XML NS spec:  https://www.w3.org/TR/xml-names/#NT-NCName
+*/
+var nameStartChar10 = ":A-Za-z_À-ÖØ-öø-˿Ͱ-ͽͿ-҆҈-῿‌-‍⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�";
+var nameChar10 = nameStartChar10 + "\\-\\.\\d·̀-ͯ‿-⁀";
+var nameStartChar11 = ":A-Za-z_À-˿Ͱ-ͽͿ-҆҈-῿‌-‍⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�𐀀-󯿿";
+var nameChar11 = nameStartChar11 + "\\-\\.\\d·̀-ͯ҇‿-⁀";
+var buildRegexes = (startChar, char, flags = "") => {
+	const ncNamePat = `[${startChar.replace(":", "")}][${char.replace(":", "")}]*`;
+	return {
+		name: new RegExp(`^[${startChar}][${char}]*$`, flags),
+		ncName: new RegExp(`^${ncNamePat}$`, flags),
+		qName: new RegExp(`^${ncNamePat}(?::${ncNamePat})?$`, flags),
+		nmToken: new RegExp(`^[${char}]+$`, flags),
+		nmTokens: new RegExp(`^[${char}]+(?:\\s+[${char}]+)*$`, flags)
+	};
+};
+var regexes10 = buildRegexes(nameStartChar10, nameChar10);
+var regexes11 = buildRegexes(nameStartChar11, nameChar11, "u");
+var getRegexes = (xmlVersion = "1.0") => xmlVersion === "1.1" ? regexes11 : regexes10;
+/**
+* Returns true if the string is a valid QName (Qualified Name).
+* Allows exactly one colon as a prefix separator: prefix:localName.
+* Used for: element and attribute names in namespace-aware XML/SVG.
+*/
+var qName = (str, { xmlVersion = "1.0" } = {}) => getRegexes(xmlVersion).qName.test(str);
+//#endregion
+//#region node_modules/.pnpm/fast-xml-parser@5.8.0/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
 var DocTypeReader = class {
-	constructor(options) {
+	constructor(options, xmlVersion) {
 		this.suppressValidationErr = !options;
 		this.options = options;
+		this.xmlVersion = xmlVersion || 1;
+	}
+	setXmlVersion(xmlVersion = 1) {
+		this.xmlVersion = xmlVersion;
 	}
 	readDocType(xmlData, i) {
 		const entities = Object.create(null);
@@ -34024,7 +34071,7 @@ var DocTypeReader = class {
 		const startIndex = i;
 		while (i < xmlData.length && !/\s/.test(xmlData[i]) && xmlData[i] !== "\"" && xmlData[i] !== "'") i++;
 		let entityName = xmlData.substring(startIndex, i);
-		validateEntityName(entityName);
+		validateEntityName(entityName, { xmlVersion: this.xmlVersion });
 		i = skipWhitespace(xmlData, i);
 		if (!this.suppressValidationErr) {
 			if (xmlData.substring(i, i + 6).toUpperCase() === "SYSTEM") throw new Error("External entities are not supported");
@@ -34045,7 +34092,7 @@ var DocTypeReader = class {
 		const startIndex = i;
 		while (i < xmlData.length && !/\s/.test(xmlData[i])) i++;
 		let notationName = xmlData.substring(startIndex, i);
-		!this.suppressValidationErr && validateEntityName(notationName);
+		!this.suppressValidationErr && validateEntityName(notationName, { xmlVersion: this.xmlVersion });
 		i = skipWhitespace(xmlData, i);
 		const identifierType = xmlData.substring(i, i + 6).toUpperCase();
 		if (!this.suppressValidationErr && identifierType !== "SYSTEM" && identifierType !== "PUBLIC") throw new Error(`Expected SYSTEM or PUBLIC, found "${identifierType}"`);
@@ -34085,7 +34132,7 @@ var DocTypeReader = class {
 		const startIndex = i;
 		while (i < xmlData.length && !/\s/.test(xmlData[i])) i++;
 		let elementName = xmlData.substring(startIndex, i);
-		if (!this.suppressValidationErr && !isName(elementName)) throw new Error(`Invalid element name: "${elementName}"`);
+		if (!this.suppressValidationErr && !qName(elementName, { xmlVersion: this.xmlVersion })) throw new Error(`Invalid element name: "${elementName}"`);
 		i = skipWhitespace(xmlData, i);
 		let contentModel = "";
 		if (xmlData[i] === "E" && hasSeq(xmlData, "MPTY", i)) i += 4;
@@ -34108,12 +34155,12 @@ var DocTypeReader = class {
 		let startIndex = i;
 		while (i < xmlData.length && !/\s/.test(xmlData[i])) i++;
 		let elementName = xmlData.substring(startIndex, i);
-		validateEntityName(elementName);
+		validateEntityName(elementName, { xmlVersion: this.xmlVersion });
 		i = skipWhitespace(xmlData, i);
 		startIndex = i;
 		while (i < xmlData.length && !/\s/.test(xmlData[i])) i++;
 		let attributeName = xmlData.substring(startIndex, i);
-		if (!validateEntityName(attributeName)) throw new Error(`Invalid attribute name: "${attributeName}"`);
+		if (!validateEntityName(attributeName, { xmlVersion: this.xmlVersion })) throw new Error(`Invalid attribute name: "${attributeName}"`);
 		i = skipWhitespace(xmlData, i);
 		let attributeType = "";
 		if (xmlData.substring(i, i + 8).toUpperCase() === "NOTATION") {
@@ -34128,7 +34175,7 @@ var DocTypeReader = class {
 				while (i < xmlData.length && xmlData[i] !== "|" && xmlData[i] !== ")") i++;
 				let notation = xmlData.substring(startIndex, i);
 				notation = notation.trim();
-				if (!validateEntityName(notation)) throw new Error(`Invalid notation name: "${notation}"`);
+				if (!validateEntityName(notation, { xmlVersion: this.xmlVersion })) throw new Error(`Invalid notation name: "${notation}"`);
 				allowedNotations.push(notation);
 				if (xmlData[i] === "|") {
 					i++;
@@ -34179,8 +34226,8 @@ function hasSeq(data, seq, i) {
 	for (let j = 0; j < seq.length; j++) if (seq[j] !== data[i + j + 1]) return false;
 	return true;
 }
-function validateEntityName(name) {
-	if (isName(name)) return name;
+function validateEntityName(name, xmlVersion) {
+	if (qName(name, { xmlVersion })) return name;
 	else throw new Error(`Invalid entity name ${name}`);
 }
 //#endregion
@@ -34293,7 +34340,7 @@ function handleInfinity(str, num, options) {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.7.3/node_modules/fast-xml-parser/src/ignoreAttributes.js
+//#region node_modules/.pnpm/fast-xml-parser@5.8.0/node_modules/fast-xml-parser/src/ignoreAttributes.js
 function getIgnoreAttributesFn$1(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -35062,7 +35109,7 @@ var Matcher = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.7.3/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.8.0/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
 /**
 * Extract raw attributes (without prefix) from prefixed attribute map
 * @param {object} prefixedAttrs - Attributes with prefix from buildAttributesMap
@@ -35276,6 +35323,7 @@ var parseXml = function(xmlData) {
 			if (attsMap) {
 				const ver = attsMap[this.options.attributeNamePrefix + "version"];
 				this.entityDecoder.setXmlVersion(Number(ver) || 1);
+				docTypeReader.setXmlVersion(Number(ver) || 1);
 			}
 			if (options.ignoreDeclaration && tagData.tagName === "?xml" || options.ignorePiTags) {} else {
 				const childNode = new XmlNode(tagData.tagName);
@@ -35574,7 +35622,7 @@ function sanitizeName(name, options) {
 	return name;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.7.3/node_modules/fast-xml-parser/src/xmlparser/node2json.js
+//#region node_modules/.pnpm/fast-xml-parser@5.8.0/node_modules/fast-xml-parser/src/xmlparser/node2json.js
 var METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
 /**
 * Helper function to strip attribute prefix from attribute map
@@ -35674,7 +35722,7 @@ function isLeafTag(obj, options) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.7.3/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.8.0/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
 var XMLParser = class {
 	constructor(options) {
 		this.externalEntities = {};
@@ -35734,40 +35782,6 @@ function safeCdata(val) {
 function escapeAttribute(val) {
 	return String(val).replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 }
-//#endregion
-//#region node_modules/.pnpm/xml-naming@0.1.0/node_modules/xml-naming/src/index.js
-/**
-* xml-naming
-* Validates XML Name productions as defined in the XML 1.0 and 1.1 specifications.
-* Covers: Name, NCName, QName, NMToken, NMTokens
-*
-* XML 1.0 spec: https://www.w3.org/TR/xml/#NT-Name
-* XML 1.1 spec: https://www.w3.org/TR/xml11/#NT-NameStartChar
-* XML NS spec:  https://www.w3.org/TR/xml-names/#NT-NCName
-*/
-var nameStartChar10 = ":A-Za-z_À-ÖØ-öø-˿Ͱ-ͽͿ-҆҈-῿‌-‍⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�";
-var nameChar10 = nameStartChar10 + "\\-\\.\\d·̀-ͯ‿-⁀";
-var nameStartChar11 = ":A-Za-z_À-˿Ͱ-ͽͿ-҆҈-῿‌-‍⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�𐀀-󯿿";
-var nameChar11 = nameStartChar11 + "\\-\\.\\d·̀-ͯ҇‿-⁀";
-var buildRegexes = (startChar, char, flags = "") => {
-	const ncNamePat = `[${startChar.replace(":", "")}][${char.replace(":", "")}]*`;
-	return {
-		name: new RegExp(`^[${startChar}][${char}]*$`, flags),
-		ncName: new RegExp(`^${ncNamePat}$`, flags),
-		qName: new RegExp(`^${ncNamePat}(?::${ncNamePat})?$`, flags),
-		nmToken: new RegExp(`^[${char}]+$`, flags),
-		nmTokens: new RegExp(`^[${char}]+(?:\\s+[${char}]+)*$`, flags)
-	};
-};
-var regexes10 = buildRegexes(nameStartChar10, nameChar10);
-var regexes11 = buildRegexes(nameStartChar11, nameChar11, "u");
-var getRegexes = (xmlVersion = "1.0") => xmlVersion === "1.1" ? regexes11 : regexes10;
-/**
-* Returns true if the string is a valid QName (Qualified Name).
-* Allows exactly one colon as a prefix separator: prefix:localName.
-* Used for: element and attribute names in namespace-aware XML/SVG.
-*/
-var qName = (str, { xmlVersion = "1.0" } = {}) => getRegexes(xmlVersion).qName.test(str);
 //#endregion
 //#region node_modules/.pnpm/fast-xml-builder@1.2.0/node_modules/fast-xml-builder/src/orderedJs2Xml.js
 var EOL$2 = "\n";
@@ -36376,10 +36390,10 @@ function isAttribute(name) {
 	else return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.7.3/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
+//#region node_modules/.pnpm/fast-xml-parser@5.8.0/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
 var json2xml_default = Builder;
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.7.3/node_modules/fast-xml-parser/src/fxp.js
+//#region node_modules/.pnpm/fast-xml-parser@5.8.0/node_modules/fast-xml-parser/src/fxp.js
 var XMLValidator = { validate };
 //#endregion
 //#region node_modules/.pnpm/@azure+core-xml@1.5.1/node_modules/@azure/core-xml/dist/esm/xml.js
