@@ -4452,7 +4452,7 @@ var require_timers = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	* @type {number}
 	* @default 499
 	*/
-	var TICK_MS = (RESOLUTION_MS >> 1) - 1;
+	var TICK_MS = 499;
 	/**
 	* fastNowTimeout is a Node.js timer used to manage and process
 	* the FastTimers stored in the `fastTimers` array.
@@ -7731,11 +7731,10 @@ var require_client_h1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var currentBufferRef = null;
 	var currentBufferSize = 0;
 	var currentBufferPtr = null;
-	var USE_NATIVE_TIMER = 0;
 	var USE_FAST_TIMER = 1;
-	var TIMEOUT_HEADERS = 2 | USE_FAST_TIMER;
-	var TIMEOUT_BODY = 4 | USE_FAST_TIMER;
-	var TIMEOUT_KEEP_ALIVE = 8 | USE_NATIVE_TIMER;
+	var TIMEOUT_HEADERS = 3;
+	var TIMEOUT_BODY = 5;
+	var TIMEOUT_KEEP_ALIVE = 8;
 	var Parser = class {
 		constructor(client, socket, { exports: exports$3 }) {
 			assert$21(Number.isFinite(client[kMaxHeadersSize]) && client[kMaxHeadersSize] > 0);
@@ -13940,7 +13939,6 @@ var require_fetch = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		let httpFetchParams = null;
 		let httpRequest = null;
 		let response = null;
-		const httpCache = null;
 		if (request.window === "no-window" && request.redirect === "error") {
 			httpFetchParams = fetchParams;
 			httpRequest = request;
@@ -13971,7 +13969,7 @@ var require_fetch = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		else httpRequest.headersList.append("accept-encoding", "gzip, deflate", true);
 		httpRequest.headersList.delete("host", true);
 		if (includeCredentials) {}
-		if (httpCache == null) httpRequest.cache = "no-store";
+		httpRequest.cache = "no-store";
 		if (httpRequest.cache !== "no-store" && httpRequest.cache !== "reload") {}
 		if (response == null) {
 			if (httpRequest.cache === "only-if-cached") return makeNetworkError("only if cached");
@@ -31995,10 +31993,7 @@ function convertHttpClient(requestPolicyClient) {
 }
 //#endregion
 //#region node_modules/.pnpm/fast-xml-parser@5.8.0/node_modules/fast-xml-parser/src/util.js
-var nameStartChar = ":A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD";
-nameStartChar + "";
-var nameRegexp = "[" + nameStartChar + "][:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040]*";
-var regexName = new RegExp("^" + nameRegexp + "$");
+var regexName = /* @__PURE__ */ new RegExp("^[:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD][:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040]*$");
 function getAllMatches(string, regex) {
 	const matches = [];
 	let match = regex.exec(string);
@@ -33985,9 +33980,9 @@ var XmlNode = class {
 * XML NS spec:  https://www.w3.org/TR/xml-names/#NT-NCName
 */
 var nameStartChar10 = ":A-Za-z_À-ÖØ-öø-˿Ͱ-ͽͿ-҆҈-῿‌-‍⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�";
-var nameChar10 = nameStartChar10 + "\\-\\.\\d·̀-ͯ‿-⁀";
+var nameChar10 = ":A-Za-z_À-ÖØ-öø-˿Ͱ-ͽͿ-҆҈-῿‌-‍⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�\\-\\.\\d·̀-ͯ‿-⁀";
 var nameStartChar11 = ":A-Za-z_À-˿Ͱ-ͽͿ-҆҈-῿‌-‍⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�𐀀-󯿿";
-var nameChar11 = nameStartChar11 + "\\-\\.\\d·̀-ͯ҇‿-⁀";
+var nameChar11 = ":A-Za-z_À-˿Ͱ-ͽͿ-҆҈-῿‌-‍⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�𐀀-󯿿\\-\\.\\d·̀-ͯ҇‿-⁀";
 var buildRegexes = (startChar, char, flags = "") => {
 	const ncNamePat = `[${startChar.replace(":", "")}][${char.replace(":", "")}]*`;
 	return {
