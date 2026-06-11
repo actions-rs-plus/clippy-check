@@ -70,7 +70,7 @@
         "@eslint/js": "10.0.1",
         "@stylistic/eslint-plugin": "5.10.0",
         "@types/eslint": "9.6.1",
-        "@types/node": "24.13.1",
+        "@types/node": "24.13.2",
         "@types/semver": "7.7.1",
         "@types/source-map-support": "0.5.10",
         "@typescript-eslint/parser": "8.61.0",
