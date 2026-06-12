@@ -117,8 +117,8 @@ importers:
         specifier: 7.3.0
         version: 7.3.0(eslint@10.4.1(jiti@2.7.0))
       eslint-plugin-unicorn:
-        specifier: 65.0.0
-        version: 65.0.0(eslint@10.4.1(jiti@2.7.0))
+        specifier: 65.0.1
+        version: 65.0.1(eslint@10.4.1(jiti@2.7.0))
       husky:
         specifier: 9.1.7
         version: 9.1.7
@@ -1331,8 +1331,8 @@ packages:
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
 
-  eslint-plugin-unicorn@65.0.0:
-    resolution: {integrity: sha512-wE75x2QqMuPgZXcoc8LgTz7+gk5+SZK93Cxe6jkfouKp6+FwYwjMGrbYQTMRH8HK8X6jeTBhPPI2Cun923EMLQ==}
+  eslint-plugin-unicorn@65.0.1:
+    resolution: {integrity: sha512-daCrQrgxOoOz2uMPWB3Y3vvv/5q+ncwICI8IjoebiwtW87CaY4tAN5EEiRXTYVnf7qi1v1BGBdHOSnZLV0rx6A==}
     engines: {node: ^20.10.0 || >=21.0.0}
     peerDependencies:
       eslint: '>=9.38.0'
@@ -2622,7 +2622,7 @@ snapshots:
       '@azure/core-rest-pipeline': 1.24.0
       '@azure/storage-blob': 12.32.0
       '@protobuf-ts/runtime-rpc': 2.11.1
-      semver: 7.8.3
+      semver: 7.8.4
     transitivePeerDependencies:
       - supports-color
 
@@ -2668,7 +2668,7 @@ snapshots:
       '@actions/exec': 3.0.0
       '@actions/http-client': 4.0.1
       '@actions/io': 3.0.2
-      semver: 7.8.3
+      semver: 7.8.4
 
   '@azure/abort-controller@2.1.2':
     dependencies:
@@ -3211,7 +3211,7 @@ snapshots:
       '@typescript-eslint/visitor-keys': 8.60.1
       debug: 4.4.3
       minimatch: 10.2.5
-      semver: 7.8.3
+      semver: 7.8.4
       tinyglobby: 0.2.17
       ts-api-utils: 2.5.0(typescript@6.0.3)
       typescript: 6.0.3
@@ -3792,7 +3792,7 @@ snapshots:
   eslint-compat-utils@0.5.1(eslint@10.4.1(jiti@2.7.0)):
     dependencies:
       eslint: 10.4.1(jiti@2.7.0)
-      semver: 7.8.3
+      semver: 7.8.4
 
   eslint-config-love@154.0.0(@typescript-eslint/parser@8.61.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-typescript@4.4.5)(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3):
     dependencies:
@@ -3972,7 +3972,7 @@ snapshots:
       '@eslint-community/eslint-utils': 4.9.1(eslint@10.4.1(jiti@2.7.0))
       eslint: 10.4.1(jiti@2.7.0)
 
-  eslint-plugin-unicorn@65.0.0(eslint@10.4.1(jiti@2.7.0)):
+  eslint-plugin-unicorn@65.0.1(eslint@10.4.1(jiti@2.7.0)):
     dependencies:
       '@babel/helper-validator-identifier': 7.29.7
       '@eslint-community/eslint-utils': 4.9.1(eslint@10.4.1(jiti@2.7.0))
@@ -3988,7 +3988,7 @@ snapshots:
       jsesc: 3.1.0
       pluralize: 8.0.0
       regjsparser: 0.13.1
-      semver: 7.8.3
+      semver: 7.8.4
       strip-indent: 4.1.1
 
   eslint-scope@9.1.2:
@@ -4536,7 +4536,7 @@ snapshots:
 
   make-dir@4.0.0:
     dependencies:
-      semver: 7.8.3
+      semver: 7.8.4
 
   math-intrinsics@1.1.0: {}
 
