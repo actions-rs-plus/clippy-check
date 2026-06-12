@@ -77,7 +77,7 @@
         "@vitest/coverage-v8": "4.1.8",
         "@vitest/ui": "4.1.8",
         "dependency-cruiser": "17.4.3",
-        "eslint": "10.4.1",
+        "eslint": "catalog:default",
         "eslint-config-love": "154.0.0",
         "eslint-config-prettier": "10.1.8",
         "eslint-import-resolver-node": "0.4.0",
@@ -97,7 +97,7 @@
         "semver": "7.8.4",
         "typescript": "6.0.3",
         "typescript-eslint": "8.61.0",
-        "vite": "8.0.16",
+        "vite": "catalog:default",
         "vite-plugin-checker": "0.14.1",
         "vitest": "4.1.8"
     }
