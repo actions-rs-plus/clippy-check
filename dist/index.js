@@ -24453,7 +24453,7 @@ function create(patterns, options) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/internal/constants.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/internal/constants.js
 var require_constants = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SEMVER_SPEC_VERSION = "2.0.0";
 	var MAX_LENGTH = 256;
@@ -24478,12 +24478,12 @@ var require_constants = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/internal/debug.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/internal/debug.js
 var require_debug = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = typeof process === "object" && process.env && process.env.NODE_DEBUG && /\bsemver\b/i.test(process.env.NODE_DEBUG) ? (...args) => console.error("SEMVER", ...args) : () => {};
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/internal/re.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/internal/re.js
 var require_re = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var { MAX_SAFE_COMPONENT_LENGTH, MAX_SAFE_BUILD_LENGTH, MAX_LENGTH } = require_constants();
 	var debug = require_debug();
@@ -24562,7 +24562,7 @@ var require_re = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	createToken("GTE0PRE", "^\\s*>=\\s*0\\.0\\.0-0\\s*$");
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/internal/parse-options.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/internal/parse-options.js
 var require_parse_options = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var looseOption = Object.freeze({ loose: true });
 	var emptyOpts = Object.freeze({});
@@ -24574,7 +24574,7 @@ var require_parse_options = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	module.exports = parseOptions;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/internal/identifiers.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/internal/identifiers.js
 var require_identifiers = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var numeric = /^[0-9]+$/;
 	var compareIdentifiers = (a, b) => {
@@ -24594,7 +24594,7 @@ var require_identifiers = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/classes/semver.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/classes/semver.js
 var require_semver$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var debug = require_debug();
 	var { MAX_LENGTH, MAX_SAFE_INTEGER } = require_constants();
@@ -24779,7 +24779,7 @@ var require_semver$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/parse.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/parse.js
 var require_parse = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var parse = (version, options, throwErrors = false) => {
@@ -24794,7 +24794,7 @@ var require_parse = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = parse;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/valid.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/valid.js
 var require_valid$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var parse = require_parse();
 	var valid = (version, options) => {
@@ -24804,7 +24804,7 @@ var require_valid$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = valid;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/clean.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/clean.js
 var require_clean = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var parse = require_parse();
 	var clean = (version, options) => {
@@ -24814,7 +24814,7 @@ var require_clean = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = clean;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/inc.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/inc.js
 var require_inc = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var inc = (version, release, options, identifier, identifierBase) => {
@@ -24832,7 +24832,7 @@ var require_inc = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = inc;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/diff.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/diff.js
 var require_diff = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var parse = require_parse();
 	var diff = (version1, version2) => {
@@ -24860,28 +24860,28 @@ var require_diff = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = diff;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/major.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/major.js
 var require_major = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var major = (a, loose) => new SemVer(a, loose).major;
 	module.exports = major;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/minor.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/minor.js
 var require_minor = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var minor = (a, loose) => new SemVer(a, loose).minor;
 	module.exports = minor;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/patch.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/patch.js
 var require_patch = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var patch = (a, loose) => new SemVer(a, loose).patch;
 	module.exports = patch;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/prerelease.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/prerelease.js
 var require_prerelease = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var parse = require_parse();
 	var prerelease = (version, options) => {
@@ -24891,28 +24891,28 @@ var require_prerelease = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = prerelease;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/compare.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/compare.js
 var require_compare = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var compare = (a, b, loose) => new SemVer(a, loose).compare(new SemVer(b, loose));
 	module.exports = compare;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/rcompare.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/rcompare.js
 var require_rcompare = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compare = require_compare();
 	var rcompare = (a, b, loose) => compare(b, a, loose);
 	module.exports = rcompare;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/compare-loose.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/compare-loose.js
 var require_compare_loose = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compare = require_compare();
 	var compareLoose = (a, b) => compare(a, b, true);
 	module.exports = compareLoose;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/compare-build.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/compare-build.js
 var require_compare_build = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var compareBuild = (a, b, loose) => {
@@ -24923,63 +24923,63 @@ var require_compare_build = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 	module.exports = compareBuild;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/sort.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/sort.js
 var require_sort = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compareBuild = require_compare_build();
 	var sort = (list, loose) => list.sort((a, b) => compareBuild(a, b, loose));
 	module.exports = sort;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/rsort.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/rsort.js
 var require_rsort = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compareBuild = require_compare_build();
 	var rsort = (list, loose) => list.sort((a, b) => compareBuild(b, a, loose));
 	module.exports = rsort;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/gt.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/gt.js
 var require_gt = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compare = require_compare();
 	var gt = (a, b, loose) => compare(a, b, loose) > 0;
 	module.exports = gt;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/lt.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/lt.js
 var require_lt = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compare = require_compare();
 	var lt = (a, b, loose) => compare(a, b, loose) < 0;
 	module.exports = lt;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/eq.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/eq.js
 var require_eq = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compare = require_compare();
 	var eq = (a, b, loose) => compare(a, b, loose) === 0;
 	module.exports = eq;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/neq.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/neq.js
 var require_neq = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compare = require_compare();
 	var neq = (a, b, loose) => compare(a, b, loose) !== 0;
 	module.exports = neq;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/gte.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/gte.js
 var require_gte = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compare = require_compare();
 	var gte = (a, b, loose) => compare(a, b, loose) >= 0;
 	module.exports = gte;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/lte.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/lte.js
 var require_lte = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var compare = require_compare();
 	var lte = (a, b, loose) => compare(a, b, loose) <= 0;
 	module.exports = lte;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/cmp.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/cmp.js
 var require_cmp = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var eq = require_eq();
 	var neq = require_neq();
@@ -25011,7 +25011,7 @@ var require_cmp = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = cmp;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/coerce.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/coerce.js
 var require_coerce = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var parse = require_parse();
@@ -25039,7 +25039,7 @@ var require_coerce = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = coerce;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/truncate.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/truncate.js
 var require_truncate = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var parse = require_parse();
 	var constants = require_constants();
@@ -25072,7 +25072,7 @@ var require_truncate = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = truncate;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/internal/lrucache.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/internal/lrucache.js
 var require_lrucache = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var LRUCache = class {
 		constructor() {
@@ -25105,7 +25105,7 @@ var require_lrucache = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = LRUCache;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/classes/range.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/classes/range.js
 var require_range = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SPACE_CHARACTERS = /\s+/g;
 	module.exports = class Range {
@@ -25249,6 +25249,7 @@ var require_range = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return comp;
 	};
 	var isX = (id) => !id || id.toLowerCase() === "x" || id === "*";
+	var invalidXRangeOrder = (M, m, p) => isX(M) && !isX(m) || isX(m) && p && !isX(p);
 	var replaceTildes = (comp, options) => {
 		return comp.trim().split(/\s+/).map((c) => replaceTilde(c, options)).join(" ");
 	};
@@ -25306,6 +25307,7 @@ var require_range = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		const r = options.loose ? re[t.XRANGELOOSE] : re[t.XRANGE];
 		return comp.replace(r, (ret, gtlt, M, m, p, pr) => {
 			debug("xRange", comp, ret, gtlt, M, m, p, pr);
+			if (invalidXRangeOrder(M, m, p)) return comp;
 			const xM = isX(M);
 			const xm = xM || isX(m);
 			const xp = xm || isX(p);
@@ -25379,7 +25381,7 @@ var require_range = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/classes/comparator.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/classes/comparator.js
 var require_comparator = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var ANY = Symbol("SemVer ANY");
 	module.exports = class Comparator {
@@ -25449,7 +25451,7 @@ var require_comparator = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Range = require_range();
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/functions/satisfies.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/functions/satisfies.js
 var require_satisfies = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Range = require_range();
 	var satisfies = (version, range, options) => {
@@ -25463,14 +25465,14 @@ var require_satisfies = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = satisfies;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/ranges/to-comparators.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/ranges/to-comparators.js
 var require_to_comparators = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Range = require_range();
 	var toComparators = (range, options) => new Range(range, options).set.map((comp) => comp.map((c) => c.value).join(" ").trim().split(" "));
 	module.exports = toComparators;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/ranges/max-satisfying.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/ranges/max-satisfying.js
 var require_max_satisfying = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var Range = require_range();
@@ -25496,7 +25498,7 @@ var require_max_satisfying = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 	module.exports = maxSatisfying;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/ranges/min-satisfying.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/ranges/min-satisfying.js
 var require_min_satisfying = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var Range = require_range();
@@ -25522,7 +25524,7 @@ var require_min_satisfying = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 	module.exports = minSatisfying;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/ranges/min-version.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/ranges/min-version.js
 var require_min_version = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var Range = require_range();
@@ -25562,7 +25564,7 @@ var require_min_version = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = minVersion;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/ranges/valid.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/ranges/valid.js
 var require_valid = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Range = require_range();
 	var validRange = (range, options) => {
@@ -25575,7 +25577,7 @@ var require_valid = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = validRange;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/ranges/outside.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/ranges/outside.js
 var require_outside = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var SemVer = require_semver$1();
 	var Comparator = require_comparator();
@@ -25628,21 +25630,21 @@ var require_outside = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = outside;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/ranges/gtr.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/ranges/gtr.js
 var require_gtr = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var outside = require_outside();
 	var gtr = (version, range, options) => outside(version, range, ">", options);
 	module.exports = gtr;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/ranges/ltr.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/ranges/ltr.js
 var require_ltr = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var outside = require_outside();
 	var ltr = (version, range, options) => outside(version, range, "<", options);
 	module.exports = ltr;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/ranges/intersects.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/ranges/intersects.js
 var require_intersects = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Range = require_range();
 	var intersects = (r1, r2, options) => {
@@ -25653,7 +25655,7 @@ var require_intersects = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = intersects;
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/ranges/simplify.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/ranges/simplify.js
 var require_simplify = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var satisfies = require_satisfies();
 	var compare = require_compare();
@@ -25683,7 +25685,7 @@ var require_simplify = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 }));
 //#endregion
-//#region node_modules/.pnpm/semver@7.8.3/node_modules/semver/ranges/subset.js
+//#region node_modules/.pnpm/semver@7.8.4/node_modules/semver/ranges/subset.js
 var require_subset = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Range = require_range();
 	var Comparator = require_comparator();
@@ -34322,7 +34324,189 @@ function validateEntityName(name, xmlVersion) {
 	else throw new Error(`Invalid entity name ${name}`);
 }
 //#endregion
-//#region node_modules/.pnpm/strnum@2.3.0/node_modules/strnum/strnum.js
+//#region node_modules/.pnpm/anynum@1.0.0/node_modules/anynum/digitTable.js
+/**
+* Flat lookup table: maps Unicode code point → ASCII digit (0-9).
+* Only decimal digit characters (Unicode category Nd) are included.
+*
+* Strategy: Int32Array of size (maxCodePoint - minCodePoint + 1).
+* Value 0xFF means "not a digit". Value 0-9 is the ASCII digit value.
+* This gives O(1) lookup with no branching, no bisect, no loop.
+*
+* Memory: range is 0x0660 to 0x1FBF0 → ~129,936 entries × 1 byte = ~127 KB.
+* Acceptable for a one-time init; lookup is a single array index.
+*/
+var SCRIPT_ZEROS = [
+	48,
+	1632,
+	1776,
+	2406,
+	2534,
+	2662,
+	2790,
+	2918,
+	3046,
+	3174,
+	3302,
+	3430,
+	3558,
+	3664,
+	3792,
+	3872,
+	4160,
+	4240,
+	6112,
+	6160,
+	6470,
+	6608,
+	6784,
+	6800,
+	6992,
+	7088,
+	7232,
+	7248,
+	65296,
+	120782,
+	120792,
+	120802,
+	120812,
+	120822,
+	66720,
+	68912,
+	69734,
+	69872,
+	69942,
+	70096,
+	70384,
+	70736,
+	70864,
+	71248,
+	71360,
+	71472,
+	71904,
+	72016,
+	72688,
+	72784,
+	73040,
+	73120,
+	73552,
+	92768,
+	92864,
+	93008,
+	123200,
+	123632,
+	124144,
+	125264,
+	130032
+];
+var HIGH_MAP = /* @__PURE__ */ new Map();
+var LOW_MAX = 65535;
+var TABLE_OFFSET = 1632;
+var TABLE = new Uint8Array(63904).fill(255);
+for (const zero of SCRIPT_ZEROS) for (let d = 0; d < 10; d++) {
+	const cp = zero + d;
+	if (cp <= LOW_MAX) TABLE[cp - TABLE_OFFSET] = d;
+	else HIGH_MAP.set(cp, d);
+}
+//#endregion
+//#region node_modules/.pnpm/anynum@1.0.0/node_modules/anynum/anynum.js
+var CHAR_0 = 48;
+var CHAR_9 = 57;
+var CHAR_MINUS = 45;
+var MINUS_SET = new Set([
+	8722,
+	65293,
+	65123
+]);
+/**
+* Normalize all Unicode decimal digit characters in a string to ASCII (0-9),
+* and normalize Unicode minus variants to ASCII '-' (U+002D).
+*
+* Non-digit, non-minus characters are passed through unchanged.
+*
+* Performance design:
+* - Fast path: if the string has no convertible characters, return it unchanged
+*   (zero allocation).
+* - BMP digits (0x0660..0xFFFF excl. surrogates): flat Uint8Array lookup (O(1)).
+* - Supplementary plane digits (> 0xFFFF, encoded as surrogate pairs): Map lookup.
+* - Minus variants: checked inline with a small fixed Set.
+*
+* @param {string} str
+* @returns {string}
+*/
+function anynum(str) {
+	if (typeof str !== "string") return str;
+	const len = str.length;
+	if (len === 0) return str;
+	let firstHit = -1;
+	for (let i = 0; i < len; i++) {
+		const cc = str.charCodeAt(i);
+		if (cc >= CHAR_0 && cc <= CHAR_9 || cc === CHAR_MINUS) continue;
+		if (cc < 1632) {
+			if (MINUS_SET.has(cc)) {
+				firstHit = i;
+				break;
+			}
+			continue;
+		}
+		if (cc >= 55296 && cc <= 56319) {
+			if (i + 1 < len) {
+				const low = str.charCodeAt(i + 1);
+				if (low >= 56320 && low <= 57343) {
+					const cp = 65536 + (cc - 55296 << 10) + (low - 56320);
+					if (HIGH_MAP.has(cp)) {
+						firstHit = i;
+						break;
+					}
+				}
+			}
+			continue;
+		}
+		if (TABLE[cc - 1632] !== 255 || MINUS_SET.has(cc)) {
+			firstHit = i;
+			break;
+		}
+	}
+	if (firstHit === -1) return str;
+	const chars = [];
+	if (firstHit > 0) chars.push(str.slice(0, firstHit));
+	for (let i = firstHit; i < len; i++) {
+		const cc = str.charCodeAt(i);
+		if (cc >= CHAR_0 && cc <= CHAR_9 || cc === CHAR_MINUS) {
+			chars.push(str[i]);
+			continue;
+		}
+		if (cc < 1632) {
+			chars.push(MINUS_SET.has(cc) ? "-" : str[i]);
+			continue;
+		}
+		if (cc >= 55296 && cc <= 56319) {
+			if (i + 1 < len) {
+				const low = str.charCodeAt(i + 1);
+				if (low >= 56320 && low <= 57343) {
+					const cp = 65536 + (cc - 55296 << 10) + (low - 56320);
+					const d = HIGH_MAP.get(cp);
+					if (d !== void 0) {
+						chars.push(String.fromCharCode(d + 48));
+						i++;
+						continue;
+					}
+				}
+			}
+			chars.push(str[i]);
+			continue;
+		}
+		if (MINUS_SET.has(cc)) {
+			chars.push("-");
+			continue;
+		}
+		const d = TABLE[cc - TABLE_OFFSET];
+		chars.push(d !== 255 ? String.fromCharCode(d + 48) : str[i]);
+	}
+	return chars.join("");
+}
+//#endregion
+//#region node_modules/.pnpm/strnum@2.4.0/node_modules/strnum/strnum.js
 var hexRegex = /^[-+]?0x[a-fA-F0-9]+$/;
 var binRegex = /^0b[01]+$/;
 var octRegex = /^0o[0-7]+$/;
@@ -34334,7 +34518,8 @@ var consider = {
 	leadingZeros: true,
 	decimalPoint: ".",
 	eNotation: true,
-	infinity: "original"
+	infinity: "original",
+	unicode: false
 };
 function toNumber(str, options = {}) {
 	options = Object.assign({}, consider, options);
@@ -34343,7 +34528,11 @@ function toNumber(str, options = {}) {
 	if (trimmedStr.length === 0) return str;
 	else if (options.skipLike !== void 0 && options.skipLike.test(trimmedStr)) return str;
 	else if (trimmedStr === "0") return 0;
-	else if (options.hex && hexRegex.test(trimmedStr)) return parse_int(trimmedStr, 16);
+	if (options.unicode) {
+		trimmedStr = anynum(trimmedStr);
+		if (trimmedStr === "0") return 0;
+	}
+	if (options.hex && hexRegex.test(trimmedStr)) return parse_int(trimmedStr, 16);
 	else if (options.binary && binRegex.test(trimmedStr)) return parse_int(trimmedStr, 2);
 	else if (options.octal && octRegex.test(trimmedStr)) return parse_int(trimmedStr, 8);
 	else if (!isFinite(trimmedStr)) return handleInfinity(str, Number(trimmedStr), options);
