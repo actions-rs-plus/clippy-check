@@ -4,11 +4,19 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    eslint:
+      specifier: 10.4.1
+      version: 10.4.1
+    vite:
+      specifier: 8.0.16
+      version: 8.0.16
+
 overrides:
   '@codecov/vite-plugin>vite': 8.0.16
   eslint-config-love>eslint: 10.4.1
   eslint-plugin-import>eslint: 10.4.1
-  eslint-plugin-react>eslint: 10.4.1
 
 importers:
 
@@ -79,7 +87,7 @@ importers:
         specifier: 17.4.3
         version: 17.4.3
       eslint:
-        specifier: 10.4.1
+        specifier: catalog:default
         version: 10.4.1(jiti@2.7.0)
       eslint-config-love:
         specifier: 154.0.0
@@ -139,7 +147,7 @@ importers:
         specifier: 8.61.0
         version: 8.61.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)
       vite:
-        specifier: 8.0.16
+        specifier: catalog:default
         version: 8.0.16(@types/node@24.13.2)(jiti@2.7.0)(yaml@2.9.0)
       vite-plugin-checker:
         specifier: 0.14.1

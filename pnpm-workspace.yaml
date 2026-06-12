@@ -1,7 +1,10 @@
+catalogs:
+  default:
+    eslint: "10.4.1"
+    vite: "8.0.16"
 allowBuilds:
   unrs-resolver: false
 overrides:
-  "@codecov/vite-plugin>vite": "$vite"
-  "eslint-config-love>eslint": "$eslint"
-  "eslint-plugin-import>eslint": "$eslint"
-  "eslint-plugin-react>eslint": "$eslint"
+  "@codecov/vite-plugin>vite": "catalog:default"
+  "eslint-config-love>eslint": "catalog:default"
+  "eslint-plugin-import>eslint": "catalog:default"
