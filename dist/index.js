@@ -32385,7 +32385,7 @@ function getPositionFromMatch(match) {
 	return match.startIndex + match[1].length;
 }
 //#endregion
-//#region node_modules/.pnpm/@nodable+entities@2.1.1/node_modules/@nodable/entities/src/entities.js
+//#region node_modules/.pnpm/@nodable+entities@2.2.0/node_modules/@nodable/entities/src/entities.js
 /**
 * Basic Latin & Special Characters
 * @type {Record<string, string>}
@@ -33519,7 +33519,26 @@ var COMMON_HTML = {
 	frac34: "¾"
 };
 //#endregion
-//#region node_modules/.pnpm/@nodable+entities@2.1.1/node_modules/@nodable/entities/src/EntityDecoder.js
+//#region node_modules/.pnpm/@nodable+entities@2.2.0/node_modules/@nodable/entities/src/EntityDecoder.js
+/**
+* Action constants for `onExternalEntity` and `onInputEntity` hooks.
+*
+* Use these instead of raw strings to avoid typos:
+*
+* @example
+* import EntityDecoder, { ENTITY_ACTION } from './EntityDecoder.js';
+* const dec = new EntityDecoder({
+*   onInputEntity: (name, value) => ENTITY_ACTION.BLOCK,
+* });
+*/
+var ENTITY_ACTION = Object.freeze({
+	/** Resolve and expand the entity normally. */
+	ALLOW: "allow",
+	/** Silently skip this entity — it will not be registered. */
+	BLOCK: "block",
+	/** Throw an error, aborting entity registration entirely. */
+	THROW: "throw"
+});
 var SPECIAL_CHARS = /* @__PURE__ */ new Set("!?\\\\/[]$%{}^&*()<>|+");
 /**
 * Validate that an entity name contains no dangerous characters.
@@ -33658,6 +33677,14 @@ var EntityDecoder = class {
 	*   the effective action is max(onNCR, rangeMinimum).
 	* @param {'remove'|'throw'} [options.ncr.nullNCR='remove']
 	*   Action for U+0000 (null). 'allow' and 'leave' are clamped to 'remove' since null is never safe.
+	* @param {((name: string, value: string) => 'allow'|'block'|'throw')|null} [options.onExternalEntity=null]
+	*   Hook called when an external entity is registered via `setExternalEntities()` or
+	*   `addExternalEntity()`. Return `ENTITY_ACTION.ALLOW` to accept the entity,
+	*   `ENTITY_ACTION.BLOCK` to silently skip it, or `ENTITY_ACTION.THROW` to abort with an error.
+	* @param {((name: string, value: string) => 'allow'|'block'|'throw')|null} [options.onInputEntity=null]
+	*   Hook called when an input entity is registered via `addInputEntities()`. Return
+	*   `ENTITY_ACTION.ALLOW` to accept, `ENTITY_ACTION.BLOCK` to silently skip, or
+	*   `ENTITY_ACTION.THROW` to abort with an error.
 	*/
 	constructor(options = {}) {
 		this._limit = options.limit || {};
@@ -33681,34 +33708,79 @@ var EntityDecoder = class {
 		this._ncrXmlVersion = ncrCfg.xmlVersion;
 		this._ncrOnLevel = ncrCfg.onLevel;
 		this._ncrNullLevel = ncrCfg.nullLevel;
+		/** @type {((name: string, value: string) => 'allow'|'block'|'throw')|null} */
+		this._onExternalEntity = typeof options.onExternalEntity === "function" ? options.onExternalEntity : null;
+		/** @type {((name: string, value: string) => 'allow'|'block'|'throw')|null} */
+		this._onInputEntity = typeof options.onInputEntity === "function" ? options.onInputEntity : null;
+	}
+	/**
+	* Invoke a registration hook for a single entity name/value pair.
+	* Returns true when the entity should be accepted, false when it should be
+	* silently skipped (BLOCK), and throws when the hook returns THROW.
+	*
+	* @param {((name: string, value: string) => 'allow'|'block'|'throw')|null} hook
+	* @param {string} name
+	* @param {string} value
+	* @param {string} context  — used in error messages ('external' | 'input')
+	* @returns {boolean}  true = accept, false = skip
+	*/
+	_applyRegistrationHook(hook, name, value, context) {
+		if (!hook) return true;
+		const action = hook(name, value);
+		if (action === ENTITY_ACTION.BLOCK) return false;
+		if (action === ENTITY_ACTION.THROW) throw new Error(`[EntityDecoder] Registration of ${context} entity "&${name};" was rejected by hook`);
+		return true;
 	}
 	/**
 	* Replace the full set of persistent external entities.
 	* All keys are validated — throws on invalid characters.
+	* If `onExternalEntity` is set, it is called once per entry; entries that
+	* return `ENTITY_ACTION.BLOCK` are silently omitted, `ENTITY_ACTION.THROW`
+	* aborts the whole call.
 	* @param {Record<string, string | { regex?: RegExp, val: string }>} map
 	*/
 	setExternalEntities(map) {
 		if (map) for (const key of Object.keys(map)) validateEntityName$1(key);
-		this._externalMap = mergeEntityMaps(map);
+		if (!this._onExternalEntity) {
+			this._externalMap = mergeEntityMaps(map);
+			return;
+		}
+		const flat = mergeEntityMaps(map);
+		const filtered = Object.create(null);
+		for (const [name, value] of Object.entries(flat)) if (this._applyRegistrationHook(this._onExternalEntity, name, value, "external")) filtered[name] = value;
+		this._externalMap = filtered;
 	}
 	/**
 	* Add a single persistent external entity.
+	* If `onExternalEntity` is set it is called before the entity is stored;
+	* `ENTITY_ACTION.BLOCK` silently skips storage, `ENTITY_ACTION.THROW` raises.
 	* @param {string} key
 	* @param {string} value
 	*/
 	addExternalEntity(key, value) {
 		validateEntityName$1(key);
-		if (typeof value === "string" && value.indexOf("&") === -1) this._externalMap[key] = value;
+		if (typeof value === "string" && value.indexOf("&") === -1) {
+			if (this._applyRegistrationHook(this._onExternalEntity, key, value, "external")) this._externalMap[key] = value;
+		}
 	}
 	/**
 	* Inject DOCTYPE entities for the current document.
 	* Also resets per-document expansion counters.
+	* If `onInputEntity` is set it is called once per entry; entries returning
+	* `ENTITY_ACTION.BLOCK` are silently omitted, `ENTITY_ACTION.THROW` aborts.
 	* @param {Record<string, string | { regx?: RegExp, regex?: RegExp, val: string }>} map
 	*/
 	addInputEntities(map) {
 		this._totalExpansions = 0;
 		this._expandedLength = 0;
-		this._inputMap = mergeEntityMaps(map);
+		if (!this._onInputEntity) {
+			this._inputMap = mergeEntityMaps(map);
+			return;
+		}
+		const flat = mergeEntityMaps(map);
+		const filtered = Object.create(null);
+		for (const [name, value] of Object.entries(flat)) if (this._applyRegistrationHook(this._onInputEntity, name, value, "input")) filtered[name] = value;
+		this._inputMap = filtered;
 	}
 	/**
 	* Wipe input/runtime entities and reset counters.
