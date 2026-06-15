@@ -64595,7 +64595,7 @@ var OutputParser = class OutputParser {
 		return this._stats;
 	}
 	get annotations() {
-		return [...this._uniqueAnnotations.values()];
+		return this._uniqueAnnotations.values().toArray();
 	}
 	static parseCargoJson(line) {
 		try {
@@ -64680,8 +64680,8 @@ var OutputParser = class OutputParser {
 };
 //#endregion
 //#region src/reporter.ts
-async function report(stats, annotations, context) {
-	for (const annotation of annotations) switch (annotation.level) {
+function logAnnotation(annotation) {
+	switch (annotation.level) {
 		case AnnotationLevel.Error:
 			error(annotation.message, annotation.properties);
 			break;
@@ -64692,6 +64692,9 @@ async function report(stats, annotations, context) {
 			warning(annotation.message, annotation.properties);
 			break;
 	}
+}
+async function report(stats, annotations, context) {
+	for (const annotation of annotations) logAnnotation(annotation);
 	summary.addHeading("Clippy summary", 2);
 	summary.addTable([
 		[{
@@ -64785,7 +64788,7 @@ async function runClippy(actionInput, program) {
 }
 function getProgram(useCross) {
 	if (useCross) return Cross.getOrInstall();
-	else return Cargo.get();
+	return Cargo.get();
 }
 async function run(actionInput) {
 	const program = await getProgram(actionInput.useCross);

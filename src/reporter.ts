@@ -3,26 +3,30 @@ import * as core from "@actions/core";
 import type { AnnotationWithMessageAndLevel, Context, Stats } from "./schema";
 import { AnnotationLevel } from "./schema";
 
+function logAnnotation(annotation: AnnotationWithMessageAndLevel): void {
+    switch (annotation.level) {
+        case AnnotationLevel.Error: {
+            core.error(annotation.message, annotation.properties);
+            break;
+        }
+        case AnnotationLevel.Notice: {
+            core.notice(annotation.message, annotation.properties);
+            break;
+        }
+        case AnnotationLevel.Warning: {
+            core.warning(annotation.message, annotation.properties);
+            break;
+        }
+    }
+}
+
 export async function report(
     stats: Stats,
     annotations: AnnotationWithMessageAndLevel[],
     context: Context,
 ): Promise<void> {
     for (const annotation of annotations) {
-        switch (annotation.level) {
-            case AnnotationLevel.Error: {
-                core.error(annotation.message, annotation.properties);
-                break;
-            }
-            case AnnotationLevel.Notice: {
-                core.notice(annotation.message, annotation.properties);
-                break;
-            }
-            case AnnotationLevel.Warning: {
-                core.warning(annotation.message, annotation.properties);
-                break;
-            }
-        }
+        logAnnotation(annotation);
     }
 
     core.summary.addHeading("Clippy summary", 2);
