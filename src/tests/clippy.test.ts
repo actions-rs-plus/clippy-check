@@ -71,9 +71,9 @@ describe("clippy", () => {
                 })
             ) {
                 return Promise.resolve(101);
-            } else {
-                return Promise.resolve(0);
             }
+
+            return Promise.resolve(0);
         });
 
         using whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {

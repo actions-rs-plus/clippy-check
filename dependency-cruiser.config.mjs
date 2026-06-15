@@ -213,14 +213,14 @@ export default {
       false: don't look at JSDoc imports (the default)
       true: dependency-cruiser will detect dependencies in JSDoc-style
       import statements. Implies "parser": "tsc", so the dependency-cruiser
-      will use the typescript parser for JavaScript files.
+      will use the TypeScript parser for JavaScript files.
 
-      For this to work the typescript compiler will need to be installed in the
+      For this to work the TypeScript compiler will need to be installed in the
       same spot as you're running dependency-cruiser from.
      */
         detectJSDocImports: true,
 
-        /* prefix for links in html and svg output (e.g. 'https://github.com/you/yourrepo/blob/main/'
+        /* prefix for links in HTML and SVG output (e.g. 'https://github.com/you/yourrepo/blob/main/'
        to open it on your online repo or `vscode://file/${process.cwd()}/` to
        open it in visual studio code),
      */
@@ -232,7 +232,7 @@ export default {
      */
         tsPreCompilationDeps: true,
 
-        /* list of extensions to scan that aren't javascript or compile-to-javascript.
+        /* list of extensions to scan that aren't JavaScript or compile-to-javascript.
        Empty by default. Only put extensions in here that you want to take into
        account that are _not_ parsable.
     */
@@ -282,7 +282,7 @@ export default {
         //   fileName: '.babelrc',
         // },
 
-        /* List of strings you have in use in addition to cjs/ es6 requires
+        /* List of strings you have in use in addition to CJS/ es6 requires
        & imports to declare module dependencies. Use this e.g. if you've
        re-declared require, use a require-wrapper or use window.require as
        a hack.

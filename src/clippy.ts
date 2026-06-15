@@ -115,9 +115,9 @@ async function runClippy(actionInput: input.ParsedInput, program: BaseProgram): 
 function getProgram(useCross: boolean): Promise<BaseProgram> {
     if (useCross) {
         return Cross.getOrInstall();
-    } else {
-        return Cargo.get();
     }
+
+    return Cargo.get();
 }
 
 export async function run(actionInput: input.ParsedInput): Promise<void> {

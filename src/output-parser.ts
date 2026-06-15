@@ -34,7 +34,7 @@ export class OutputParser {
     }
 
     public get annotations(): AnnotationWithMessageAndLevel[] {
-        return [...this._uniqueAnnotations.values()];
+        return this._uniqueAnnotations.values().toArray();
     }
 
     public static parseCargoJson(line: string): Message | null {

@@ -225,8 +225,22 @@ const config: ReturnType<typeof defineConfig> = defineConfig(
 
             "import-x/consistent-type-specifier-style": ["error", "prefer-top-level"],
 
+            // note that this CAN change the outcome of type resolution
             "perfectionist/sort-intersection-types": ["error"],
             "perfectionist/sort-union-types": ["error"],
+
+            "unicorn/class-reference-in-static-methods": ["error", { preferThis: false, preferSuper: false }],
+
+            "unicorn/consistent-class-member-order": ["off"],
+
+            // const go in top
+            "unicorn/no-declarations-before-early-exit": ["off"],
+
+            // this one doesn't consider types (e.g. `ip.is4() ? ip.to4().address : ip.address`, the `address` is not of the same type, yet it hits this rule)
+            "unicorn/prefer-minimal-ternary": ["off"],
+
+            // type order relies on perfectionist/sort-intersection-types
+            "unicorn/prefer-type-literal-last": ["off"],
         },
     },
 
