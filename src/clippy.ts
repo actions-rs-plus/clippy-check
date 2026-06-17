@@ -112,6 +112,7 @@ async function runClippy(actionInput: input.ParsedInput, program: BaseProgram): 
     };
 }
 
+// eslint-disable-next-line unicorn/consistent-boolean-name -- nonsensical here
 function getProgram(useCross: boolean): Promise<BaseProgram> {
     if (useCross) {
         return Cross.getOrInstall();
