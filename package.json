@@ -90,7 +90,7 @@
         "eslint-plugin-unicorn": "68.0.0",
         "husky": "9.1.7",
         "jiti": "2.7.0",
-        "lint-staged": "17.0.7",
+        "lint-staged": "17.0.8",
         "prettier": "3.8.4",
         "prettier-plugin-sh": "0.18.1",
         "prettier-plugin-toml": "2.0.6",
