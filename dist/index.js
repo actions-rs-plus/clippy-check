@@ -25852,7 +25852,7 @@ var require_subset = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = subset;
 }));
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.0.1/node_modules/@actions/cache/lib/internal/constants.js
+//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/constants.js
 var import_semver = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var internalRe = require_re();
 	var constants = require_constants();
@@ -25931,7 +25931,7 @@ var TarFilename = "cache.tar";
 var ManifestFilename = "manifest.txt";
 10 * Math.pow(1024, 3);
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.0.1/node_modules/@actions/cache/lib/internal/cacheUtils.js
+//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/cacheUtils.js
 var __awaiter$10 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -32179,7 +32179,7 @@ function convertHttpClient(requestPolicyClient) {
 	} };
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.0/node_modules/fast-xml-parser/src/util.js
+//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/util.js
 var regexName = /* @__PURE__ */ new RegExp("^[:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD][:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040]*$");
 function getAllMatches(string, regex) {
 	const matches = [];
@@ -32219,7 +32219,7 @@ var criticalProperties = [
 	"prototype"
 ];
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.0/node_modules/fast-xml-parser/src/validator.js
+//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/validator.js
 var defaultOptions$2 = {
 	allowBooleanAttributes: false,
 	unpairedTags: []
@@ -34056,7 +34056,7 @@ var EntityDecoder = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.0/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
+//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
 var defaultOnDangerousProperty = (name) => {
 	if (DANGEROUS_PROPERTY_NAMES.includes(name)) return "__" + name;
 	return name;
@@ -34183,7 +34183,7 @@ var buildOptions = function(options) {
 	return built;
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.0/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
+//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
 var METADATA_SYMBOL$1;
 if (typeof Symbol !== "function") METADATA_SYMBOL$1 = "@@xmlMetadata";
 else METADATA_SYMBOL$1 = Symbol("XML Node Metadata");
@@ -34246,7 +34246,7 @@ var getRegexes = (xmlVersion = "1.0") => xmlVersion === "1.1" ? regexes11 : rege
 */
 var qName = (str, { xmlVersion = "1.0" } = {}) => getRegexes(xmlVersion).qName.test(str);
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.0/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
+//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
 var DocTypeReader = class {
 	constructor(options, xmlVersion) {
 		this.suppressValidationErr = !options;
@@ -34469,7 +34469,7 @@ function validateEntityName(name, xmlVersion) {
 	else throw new Error(`Invalid entity name ${name}`);
 }
 //#endregion
-//#region node_modules/.pnpm/anynum@1.0.0/node_modules/anynum/digitTable.js
+//#region node_modules/.pnpm/anynum@1.0.1/node_modules/anynum/digitTable.js
 /**
 * Flat lookup table: maps Unicode code point → ASCII digit (0-9).
 * Only decimal digit characters (Unicode category Nd) are included.
@@ -34554,7 +34554,7 @@ for (const zero of SCRIPT_ZEROS) for (let d = 0; d < 10; d++) {
 	else HIGH_MAP.set(cp, d);
 }
 //#endregion
-//#region node_modules/.pnpm/anynum@1.0.0/node_modules/anynum/anynum.js
+//#region node_modules/.pnpm/anynum@1.0.1/node_modules/anynum/anynum.js
 var CHAR_0 = 48;
 var CHAR_9 = 57;
 var CHAR_MINUS = 45;
@@ -34651,7 +34651,7 @@ function anynum(str) {
 	return chars.join("");
 }
 //#endregion
-//#region node_modules/.pnpm/strnum@2.4.0/node_modules/strnum/strnum.js
+//#region node_modules/.pnpm/strnum@2.4.1/node_modules/strnum/strnum.js
 var hexRegex = /^[-+]?0x[a-fA-F0-9]+$/;
 var binRegex = /^0b[01]+$/;
 var octRegex = /^0o[0-7]+$/;
@@ -34765,7 +34765,7 @@ function handleInfinity(str, num, options) {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.0/node_modules/fast-xml-parser/src/ignoreAttributes.js
+//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/ignoreAttributes.js
 function getIgnoreAttributesFn$1(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -34777,7 +34777,7 @@ function getIgnoreAttributesFn$1(ignoreAttributes) {
 	return () => false;
 }
 //#endregion
-//#region node_modules/.pnpm/path-expression-matcher@1.5.0/node_modules/path-expression-matcher/src/Expression.js
+//#region node_modules/.pnpm/path-expression-matcher@1.6.0/node_modules/path-expression-matcher/src/Expression.js
 /**
 * Expression - Parses and stores a tag pattern expression
 * 
@@ -34929,7 +34929,7 @@ var Expression = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/path-expression-matcher@1.5.0/node_modules/path-expression-matcher/src/ExpressionSet.js
+//#region node_modules/.pnpm/path-expression-matcher@1.6.0/node_modules/path-expression-matcher/src/ExpressionSet.js
 /**
 * ExpressionSet - An indexed collection of Expressions for efficient bulk matching
 *
@@ -34963,6 +34963,8 @@ var ExpressionSet = class {
 		this._wildcardByDepth = /* @__PURE__ */ new Map();
 		/** @type {import('./Expression.js').default[]} expressions containing deep wildcard (..) */
 		this._deepWildcards = [];
+		/** @type {Map<string, import('./Expression.js').default[]>} terminalTag → deep wildcard expressions */
+		this._deepByTerminalTag = /* @__PURE__ */ new Map();
 		/** @type {Set<string>} pattern strings already added — used for deduplication */
 		this._patterns = /* @__PURE__ */ new Set();
 		/** @type {boolean} whether the set is sealed against further additions */
@@ -34985,7 +34987,12 @@ var ExpressionSet = class {
 		if (this._patterns.has(expression.pattern)) return this;
 		this._patterns.add(expression.pattern);
 		if (expression.hasDeepWildcard()) {
-			this._deepWildcards.push(expression);
+			const lastSeg = expression.segments[expression.segments.length - 1];
+			if (lastSeg && lastSeg.type !== "deep-wildcard" && lastSeg.tag !== "*") {
+				const tag = lastSeg.tag;
+				if (!this._deepByTerminalTag.has(tag)) this._deepByTerminalTag.set(tag, []);
+				this._deepByTerminalTag.get(tag).push(expression);
+			} else this._deepWildcards.push(expression);
 			return this;
 		}
 		const depth = expression.length;
@@ -35088,7 +35095,8 @@ var ExpressionSet = class {
 	*/
 	findMatch(matcher) {
 		const depth = matcher.getDepth();
-		const exactKey = `${depth}:${matcher.getCurrentTag()}`;
+		const tag = matcher.getCurrentTag();
+		const exactKey = `${depth}:${tag}`;
 		const exactBucket = this._byDepthAndTag.get(exactKey);
 		if (exactBucket) {
 			for (let i = 0; i < exactBucket.length; i++) if (matcher.matches(exactBucket[i])) return exactBucket[i];
@@ -35097,12 +35105,16 @@ var ExpressionSet = class {
 		if (wildcardBucket) {
 			for (let i = 0; i < wildcardBucket.length; i++) if (matcher.matches(wildcardBucket[i])) return wildcardBucket[i];
 		}
+		const deepBucket = this._deepByTerminalTag.get(tag);
+		if (deepBucket) {
+			for (let i = 0; i < deepBucket.length; i++) if (matcher.matches(deepBucket[i])) return deepBucket[i];
+		}
 		for (let i = 0; i < this._deepWildcards.length; i++) if (matcher.matches(this._deepWildcards[i])) return this._deepWildcards[i];
 		return null;
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/path-expression-matcher@1.5.0/node_modules/path-expression-matcher/src/Matcher.js
+//#region node_modules/.pnpm/path-expression-matcher@1.6.0/node_modules/path-expression-matcher/src/Matcher.js
 /**
 * MatcherView - A lightweight read-only view over a Matcher's internal state.
 *
@@ -35172,6 +35184,24 @@ var MatcherView = class {
 		if (path.length === 0) return false;
 		const current = path[path.length - 1];
 		return current.values !== void 0 && attrName in current.values;
+	}
+	/**
+	* Get the value of a "kept" attribute from the nearest ancestor (or
+	* current node) that declared it via `push(tag, attrs, ns, { keep: [...] })`.
+	* @param {string} attrName
+	* @returns {*}
+	*/
+	getAnyParentAttr(attrName) {
+		return this._matcher.getAnyParentAttr(attrName);
+	}
+	/**
+	* Check whether any ancestor (or the current node) kept the given
+	* attribute via `push(tag, attrs, ns, { keep: [...] })`.
+	* @param {string} attrName
+	* @returns {boolean}
+	*/
+	hasAnyParentAttr(attrName) {
+		return this._matcher.hasAnyParentAttr(attrName);
 	}
 	/**
 	* Get current node's sibling position (child index in parent).
@@ -35270,14 +35300,17 @@ var Matcher = class {
 		this.siblingStacks = [];
 		this._pathStringCache = null;
 		this._view = new MatcherView(this);
+		this._keptAttrs = [];
 	}
 	/**
 	* Push a new tag onto the path.
 	* @param {string} tagName
 	* @param {Object|null} [attrValues=null]
 	* @param {string|null} [namespace=null]
+	* @param {Object|null} [options=null]
+	* @param {string[]} [options.keep] - Names of attributes (from attrValues)
 	*/
-	push(tagName, attrValues = null, namespace = null) {
+	push(tagName, attrValues = null, namespace = null, options = null) {
 		this._pathStringCache = null;
 		if (this.path.length > 0) this.path[this.path.length - 1].values = void 0;
 		const currentLevel = this.path.length;
@@ -35296,6 +35329,16 @@ var Matcher = class {
 		if (namespace !== null && namespace !== void 0) node.namespace = namespace;
 		if (attrValues !== null && attrValues !== void 0) node.values = attrValues;
 		this.path.push(node);
+		const depth = this.path.length;
+		const keep = options !== null ? options.keep : null;
+		if (keep !== null && keep !== void 0 && keep.length > 0 && attrValues) for (let i = 0; i < keep.length; i++) {
+			const name = keep[i];
+			if (attrValues[name] !== void 0) this._keptAttrs.push({
+				depth,
+				name,
+				value: attrValues[name]
+			});
+		}
 	}
 	/**
 	* Pop the last tag from the path.
@@ -35306,6 +35349,8 @@ var Matcher = class {
 		this._pathStringCache = null;
 		const node = this.path.pop();
 		if (this.siblingStacks.length > this.path.length + 1) this.siblingStacks.length = this.path.length + 1;
+		const poppedDepth = this.path.length + 1;
+		while (this._keptAttrs.length > 0 && this._keptAttrs[this._keptAttrs.length - 1].depth >= poppedDepth) this._keptAttrs.pop();
 		return node;
 	}
 	/**
@@ -35351,6 +35396,31 @@ var Matcher = class {
 		if (this.path.length === 0) return false;
 		const current = this.path[this.path.length - 1];
 		return current.values !== void 0 && attrName in current.values;
+	}
+	/**
+	* Get the value of a "kept" attribute from the nearest ancestor (or
+	* current node) that declared it via `push(tag, attrs, ns, { keep: [...] })`.
+	* Unlike getAttrValue(), this works regardless of how deep the path has
+	* gone since the attribute was pushed — but only for attribute names that
+	* were explicitly marked with `keep` at push time. Cost is proportional to
+	* the number of currently-kept attributes (typically 0-3), not path depth.
+	* @param {string} attrName
+	* @returns {*} the value, or undefined if no ancestor kept this attribute
+	*/
+	getAnyParentAttr(attrName) {
+		const kept = this._keptAttrs;
+		for (let i = kept.length - 1; i >= 0; i--) if (kept[i].name === attrName) return kept[i].value;
+	}
+	/**
+	* Check whether any ancestor (or the current node) kept the given
+	* attribute via `push(tag, attrs, ns, { keep: [...] })`.
+	* @param {string} attrName
+	* @returns {boolean}
+	*/
+	hasAnyParentAttr(attrName) {
+		const kept = this._keptAttrs;
+		for (let i = kept.length - 1; i >= 0; i--) if (kept[i].name === attrName) return true;
+		return false;
 	}
 	/**
 	* Get current node's sibling position (child index in parent).
@@ -35413,6 +35483,7 @@ var Matcher = class {
 		this._pathStringCache = null;
 		this.path = [];
 		this.siblingStacks = [];
+		this._keptAttrs = [];
 	}
 	/**
 	* Match current path against an Expression.
@@ -35501,7 +35572,8 @@ var Matcher = class {
 	snapshot() {
 		return {
 			path: this.path.map((node) => ({ ...node })),
-			siblingStacks: this.siblingStacks.map((map) => new Map(map))
+			siblingStacks: this.siblingStacks.map((map) => new Map(map)),
+			keptAttrs: this._keptAttrs.map((entry) => ({ ...entry }))
 		};
 	}
 	/**
@@ -35512,6 +35584,7 @@ var Matcher = class {
 		this._pathStringCache = null;
 		this.path = snapshot.path.map((node) => ({ ...node }));
 		this.siblingStacks = snapshot.siblingStacks.map((map) => new Map(map));
+		this._keptAttrs = (snapshot.keptAttrs || []).map((entry) => ({ ...entry }));
 	}
 	/**
 	* Return the read-only {@link MatcherView} for this matcher.
@@ -36338,7 +36411,7 @@ function isUnsafe(value, context) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.0/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
 /**
 * Extract raw attributes (without prefix) from prefixed attribute map
 * @param {object} prefixedAttrs - Attributes with prefix from buildAttributesMap
@@ -36852,7 +36925,7 @@ function sanitizeName(name, options) {
 	return name;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.0/node_modules/fast-xml-parser/src/xmlparser/node2json.js
+//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/xmlparser/node2json.js
 var METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
 /**
 * Helper function to strip attribute prefix from attribute map
@@ -36952,7 +37025,7 @@ function isLeafTag(obj, options) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.0/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
 var XMLParser = class {
 	constructor(options) {
 		this.externalEntities = {};
@@ -37620,10 +37693,10 @@ function isAttribute(name) {
 	else return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.0/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
+//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
 var json2xml_default = Builder;
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.0/node_modules/fast-xml-parser/src/fxp.js
+//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/fxp.js
 var XMLValidator = { validate };
 //#endregion
 //#region node_modules/.pnpm/@azure+core-xml@1.5.1/node_modules/@azure/core-xml/dist/esm/xml.js
@@ -60489,7 +60562,7 @@ var PageBlobClient = class PageBlobClient extends BlobClient {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.0.1/node_modules/@actions/cache/lib/internal/shared/errors.js
+//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/shared/errors.js
 var InvalidResponseError = class extends Error {
 	constructor(message) {
 		super(message);
@@ -60531,7 +60604,7 @@ var RateLimitError = class extends Error {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.0.1/node_modules/@actions/cache/lib/internal/uploadUtils.js
+//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/uploadUtils.js
 var __awaiter$9 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -60672,7 +60745,7 @@ function uploadCacheArchiveSDK(signedUploadURL, archivePath, options) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.0.1/node_modules/@actions/cache/lib/internal/requestUtils.js
+//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/requestUtils.js
 var __awaiter$8 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -60774,7 +60847,7 @@ function retryHttpClientResponse(name_1, method_1) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.0.1/node_modules/@actions/cache/lib/internal/downloadUtils.js
+//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/downloadUtils.js
 var __awaiter$7 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -61074,7 +61147,7 @@ var promiseWithTimeout = (timeoutMs, promise) => __awaiter$7(void 0, void 0, voi
 	});
 });
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.0.1/node_modules/@actions/cache/lib/options.js
+//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/options.js
 /**
 * Returns a copy of the upload options with defaults filled in.
 *
@@ -61134,7 +61207,7 @@ function getDownloadOptions(copy) {
 	return result;
 }
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.0.1/node_modules/@actions/cache/lib/internal/config.js
+//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/config.js
 function isGhes() {
 	const hostname = new URL(process.env["GITHUB_SERVER_URL"] || "https://github.com").hostname.trimEnd().toUpperCase();
 	const isGitHubHost = hostname === "GITHUB.COM";
@@ -61155,7 +61228,7 @@ function getCacheServiceURL() {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.0.1/node_modules/@actions/cache/package.json
+//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/package.json
 var package_exports = /* @__PURE__ */ __exportAll$1({
 	bugs: () => bugs,
 	default: () => package_default,
@@ -61180,7 +61253,7 @@ var package_exports = /* @__PURE__ */ __exportAll$1({
 }), name, version$1, description, keywords, homepage, type, main$1, types, exports$1, directories, files, publishConfig, repository, scripts, bugs, dependencies, devDependencies, overrides, package_default;
 var init_package = __esmMin((() => {
 	name = "@actions/cache";
-	version$1 = "6.0.1";
+	version$1 = "6.1.0";
 	description = "Actions cache lib";
 	keywords = [
 		"github",
@@ -61256,7 +61329,7 @@ var init_package = __esmMin((() => {
 	};
 }));
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.0.1/node_modules/@actions/cache/lib/internal/shared/user-agent.js
+//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/shared/user-agent.js
 var import_package_version = (/* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = { version: (init_package(), __toCommonJS(package_exports).default).version };
 })))();
@@ -61267,7 +61340,7 @@ function getUserAgentString() {
 	return `@actions/cache-${import_package_version.version}`;
 }
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.0.1/node_modules/@actions/cache/lib/internal/cacheHttpClient.js
+//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/cacheHttpClient.js
 var __awaiter$6 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -63930,7 +64003,7 @@ var ServiceType = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.0.1/node_modules/@actions/cache/lib/generated/results/entities/v1/cachescope.js
+//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/generated/results/entities/v1/cachescope.js
 var CacheScope$Type = class extends MessageType {
 	constructor() {
 		super("github.actions.results.entities.v1.CacheScope", [{
@@ -63990,7 +64063,7 @@ var CacheScope$Type = class extends MessageType {
 */
 var CacheScope = new CacheScope$Type();
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.0.1/node_modules/@actions/cache/lib/generated/results/entities/v1/cachemetadata.js
+//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/generated/results/entities/v1/cachemetadata.js
 var CacheMetadata$Type = class extends MessageType {
 	constructor() {
 		super("github.actions.results.entities.v1.CacheMetadata", [{
@@ -64051,7 +64124,7 @@ var CacheMetadata$Type = class extends MessageType {
 */
 var CacheMetadata = new CacheMetadata$Type();
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.0.1/node_modules/@actions/cache/lib/generated/results/api/v1/cache.js
+//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/generated/results/api/v1/cache.js
 var CreateCacheEntryRequest$Type = class extends MessageType {
 	constructor() {
 		super("github.actions.results.api.v1.CreateCacheEntryRequest", [
@@ -64525,7 +64598,7 @@ new ServiceType("github.actions.results.api.v1.CacheService", [
 	}
 ]);
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.0.1/node_modules/@actions/cache/lib/generated/results/api/v1/cache.twirp-client.js
+//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/generated/results/api/v1/cache.twirp-client.js
 var CacheServiceClientJSON = class {
 	constructor(rpc) {
 		this.rpc = rpc;
@@ -64556,7 +64629,7 @@ var CacheServiceClientJSON = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.0.1/node_modules/@actions/cache/lib/internal/shared/util.js
+//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/shared/util.js
 /**
 * Masks the `sig` parameter in a URL and sets it as a secret.
 *
@@ -64616,7 +64689,7 @@ function maskSecretUrls(body) {
 	if ("signed_download_url" in body && typeof body.signed_download_url === "string") maskSigUrl(body.signed_download_url);
 }
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.0.1/node_modules/@actions/cache/lib/internal/shared/cacheTwirpClient.js
+//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/shared/cacheTwirpClient.js
 var __awaiter$5 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -64760,7 +64833,7 @@ function internalCacheTwirpClient(options) {
 	return new CacheServiceClientJSON(new CacheServiceClient(getUserAgentString(), options === null || options === void 0 ? void 0 : options.maxAttempts, options === null || options === void 0 ? void 0 : options.retryIntervalMs, options === null || options === void 0 ? void 0 : options.retryMultiplier));
 }
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.0.1/node_modules/@actions/cache/lib/internal/tar.js
+//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/tar.js
 var __awaiter$4 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -64937,7 +65010,7 @@ function createTar(archiveFolder, sourceDirectories, compressionMethod) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.0.1/node_modules/@actions/cache/lib/cache.js
+//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/cache.js
 var __awaiter$3 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -64977,6 +65050,26 @@ var ReserveCacheError = class ReserveCacheError extends Error {
 		super(message);
 		this.name = "ReserveCacheError";
 		Object.setPrototypeOf(this, ReserveCacheError.prototype);
+	}
+};
+/**
+* Raised when the cache backend refuses to reserve a writable cache entry
+* because the JWT issued for this run was scoped read-only (for example, the
+* run was triggered by an event the repository administrator classified as
+* untrusted). The receiver-supplied detail message always begins with
+* `cache write denied:` (the full error message includes additional context
+* like the cache key).
+*
+* Extends ReserveCacheError for source-compatibility: existing
+* `instanceof ReserveCacheError` checks and `typedError.name ===
+* ReserveCacheError.name` paths keep working, while consumers that want to
+* distinguish the policy case can match on this subclass.
+*/
+var CacheWriteDeniedError = class CacheWriteDeniedError extends ReserveCacheError {
+	constructor(message) {
+		super(message);
+		this.name = "CacheWriteDeniedError";
+		Object.setPrototypeOf(this, CacheWriteDeniedError.prototype);
 	}
 };
 var FinalizeCacheError = class FinalizeCacheError extends Error {
@@ -65053,11 +65146,11 @@ function restoreCacheV1(paths_1, primaryKey_1, restoreKeys_1, options_1) {
 			yield extractTar(archivePath, compressionMethod);
 			info("Cache restored successfully");
 			return cacheEntry.cacheKey;
-		} catch (error$3) {
-			const typedError = error$3;
-			if (typedError.name === ValidationError.name) throw error$3;
-			else if (typedError instanceof HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) error(`Failed to restore: ${error$3.message}`);
-			else warning(`Failed to restore: ${error$3.message}`);
+		} catch (error$2) {
+			const typedError = error$2;
+			if (typedError.name === ValidationError.name) throw error$2;
+			else if (typedError instanceof HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) error(`Failed to restore: ${error$2.message}`);
+			else warning(`Failed to restore: ${error$2.message}`);
 		} finally {
 			try {
 				yield unlinkFile(archivePath);
@@ -65116,11 +65209,11 @@ function restoreCacheV2(paths_1, primaryKey_1, restoreKeys_1, options_1) {
 			yield extractTar(archivePath, compressionMethod);
 			info("Cache restored successfully");
 			return response.matchedKey;
-		} catch (error$4) {
-			const typedError = error$4;
-			if (typedError.name === ValidationError.name) throw error$4;
-			else if (typedError instanceof HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) error(`Failed to restore: ${error$4.message}`);
-			else warning(`Failed to restore: ${error$4.message}`);
+		} catch (error$3) {
+			const typedError = error$3;
+			if (typedError.name === ValidationError.name) throw error$3;
+			else if (typedError instanceof HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) error(`Failed to restore: ${error$3.message}`);
+			else warning(`Failed to restore: ${error$3.message}`);
 		} finally {
 			try {
 				if (archivePath) yield unlinkFile(archivePath);
@@ -65162,7 +65255,7 @@ function saveCache(paths_1, key_1, options_1) {
 */
 function saveCacheV1(paths_1, key_1, options_1) {
 	return __awaiter$3(this, arguments, void 0, function* (paths, key, options, enableCrossOsArchive = false) {
-		var _a, _b, _c, _d, _e;
+		var _a, _b, _c, _d, _e, _f;
 		const compressionMethod = yield getCompressionMethod();
 		let cacheId = -1;
 		const cachePaths = yield resolvePaths(paths);
@@ -65187,12 +65280,17 @@ function saveCacheV1(paths_1, key_1, options_1) {
 			});
 			if ((_a = reserveCacheResponse === null || reserveCacheResponse === void 0 ? void 0 : reserveCacheResponse.result) === null || _a === void 0 ? void 0 : _a.cacheId) cacheId = (_b = reserveCacheResponse === null || reserveCacheResponse === void 0 ? void 0 : reserveCacheResponse.result) === null || _b === void 0 ? void 0 : _b.cacheId;
 			else if ((reserveCacheResponse === null || reserveCacheResponse === void 0 ? void 0 : reserveCacheResponse.statusCode) === 400) throw new Error((_d = (_c = reserveCacheResponse === null || reserveCacheResponse === void 0 ? void 0 : reserveCacheResponse.error) === null || _c === void 0 ? void 0 : _c.message) !== null && _d !== void 0 ? _d : `Cache size of ~${Math.round(archiveFileSize / (1024 * 1024))} MB (${archiveFileSize} B) is over the data cap limit, not saving cache.`);
-			else throw new ReserveCacheError(`Unable to reserve cache with key ${key}, another job may be creating this cache. More details: ${(_e = reserveCacheResponse === null || reserveCacheResponse === void 0 ? void 0 : reserveCacheResponse.error) === null || _e === void 0 ? void 0 : _e.message}`);
+			else {
+				const detailMessage = (_e = reserveCacheResponse === null || reserveCacheResponse === void 0 ? void 0 : reserveCacheResponse.error) === null || _e === void 0 ? void 0 : _e.message;
+				if (detailMessage === null || detailMessage === void 0 ? void 0 : detailMessage.startsWith("cache write denied:")) throw new CacheWriteDeniedError(`Unable to reserve cache with key ${key}. More details: ${detailMessage}`);
+				throw new ReserveCacheError(`Unable to reserve cache with key ${key}, another job may be creating this cache. More details: ${(_f = reserveCacheResponse === null || reserveCacheResponse === void 0 ? void 0 : reserveCacheResponse.error) === null || _f === void 0 ? void 0 : _f.message}`);
+			}
 			debug(`Saving Cache (ID: ${cacheId})`);
 			yield saveCache$1(cacheId, archivePath, "", options);
 		} catch (error$5) {
 			const typedError = error$5;
 			if (typedError.name === ValidationError.name) throw error$5;
+			else if (typedError.name === CacheWriteDeniedError.name) warning(`Failed to save: ${typedError.message}`);
 			else if (typedError.name === ReserveCacheError.name) info(`Failed to save: ${typedError.message}`);
 			else if (typedError instanceof HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) error(`Failed to save: ${typedError.message}`);
 			else warning(`Failed to save: ${typedError.message}`);
@@ -65217,6 +65315,7 @@ function saveCacheV1(paths_1, key_1, options_1) {
 */
 function saveCacheV2(paths_1, key_1, options_1) {
 	return __awaiter$3(this, arguments, void 0, function* (paths, key, options, enableCrossOsArchive = false) {
+		var _a;
 		options = Object.assign(Object.assign({}, options), {
 			uploadChunkSize: 64 * 1024 * 1024,
 			uploadConcurrency: 8,
@@ -65248,12 +65347,14 @@ function saveCacheV2(paths_1, key_1, options_1) {
 			try {
 				const response = yield twirpClient.CreateCacheEntry(request);
 				if (!response.ok) {
-					if (response.message) warning(`Cache reservation failed: ${response.message}`);
+					if (response.message && !response.message.startsWith("cache write denied:")) warning(`Cache reservation failed: ${response.message}`);
 					throw new Error(response.message || "Response was not ok");
 				}
 				signedUploadUrl = response.signedUploadUrl;
 			} catch (error) {
 				debug(`Failed to reserve cache: ${error}`);
+				const errorMessage = (_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "";
+				if (errorMessage.startsWith("cache write denied:")) throw new CacheWriteDeniedError(`Unable to reserve cache with key ${key}. More details: ${errorMessage}`);
 				throw new ReserveCacheError(`Unable to reserve cache with key ${key}, another job may be creating this cache.`);
 			}
 			debug(`Attempting to upload cache located at: ${archivePath}`);
@@ -65270,9 +65371,10 @@ function saveCacheV2(paths_1, key_1, options_1) {
 				throw new Error(`Unable to finalize cache with key ${key}, another job may be finalizing this cache.`);
 			}
 			cacheId = parseInt(finalizeResponse.entryId);
-		} catch (error$2) {
-			const typedError = error$2;
-			if (typedError.name === ValidationError.name) throw error$2;
+		} catch (error$4) {
+			const typedError = error$4;
+			if (typedError.name === ValidationError.name) throw error$4;
+			else if (typedError.name === CacheWriteDeniedError.name) warning(`Failed to save: ${typedError.message}`);
 			else if (typedError.name === ReserveCacheError.name) info(`Failed to save: ${typedError.message}`);
 			else if (typedError.name === FinalizeCacheError.name) warning(typedError.message);
 			else if (typedError instanceof HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) error(`Failed to save: ${typedError.message}`);
