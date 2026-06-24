@@ -30409,7 +30409,7 @@ function isTokenCredential(credential) {
 	return castCredential && typeof castCredential.getToken === "function" && (castCredential.signRequest === void 0 || castCredential.getToken.length > 0);
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/BuffersStream.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/BuffersStream.js
 /**
 * This class generates a readable stream from the data in an array of buffers.
 */
@@ -30483,7 +30483,7 @@ var BuffersStream = class extends Readable {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/PooledBuffer.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/PooledBuffer.js
 /**
 * maxBufferLength is max size of each buffer in the pooled buffers.
 */
@@ -30567,7 +30567,7 @@ var PooledBuffer = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/BufferScheduler.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/BufferScheduler.js
 /**
 * This class accepts a Node.js Readable stream as input, and keeps reading data
 * from the stream into the internal buffer structure, until it reaches maxBuffers.
@@ -30807,7 +30807,7 @@ var BufferScheduler = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/crc64.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/crc64.js
 var __isNode__ = typeof process === "object" && typeof process.versions === "object" && typeof process.versions.node === "string";
 var require$1;
 var __filename;
@@ -32646,7 +32646,7 @@ var NativeCRC64 = (() => {
 	});
 })();
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/StorageCRC64Calculator.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/StorageCRC64Calculator.js
 /**
 * Class used to calculator CRC64 checksum
 */
@@ -32696,7 +32696,7 @@ var StorageCRC64Calculator = class StorageCRC64Calculator {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/streamHelpers.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/streamHelpers.js
 /**
 * Signals the end of a stream by pushing null.
 * In Node.js, this is required to signal the end of a Readable stream.
@@ -32811,7 +32811,7 @@ var StructuredMessageEncoding = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/StructuredMessageEncodingStream.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/StructuredMessageEncodingStream.js
 function isNodeReadableStream(source) {
 	return source !== null && source instanceof Stream && typeof source._read === "function" && typeof source._readableState === "object" && typeof source.pipe === "function";
 }
@@ -32960,7 +32960,7 @@ var StructuredMessageEncodingStream = class extends Readable {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/StructuredMessageDecoding.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/StructuredMessageDecoding.js
 var MESSAGE_VERSION = 1;
 var MESSAGE_HEADER_LENGTH = 13;
 var SEGMENT_HEADER_LENGTH = 10;
@@ -33105,7 +33105,7 @@ var StructuredMessageDecoding = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/StructuredMessageDecodingStream.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/StructuredMessageDecodingStream.js
 /**
 * To decode structured body for CRC64 content validtion in storage downloading.
 * @param source -
@@ -33173,14 +33173,14 @@ var StructuredMessageDecodingStream = class extends Readable {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/cache.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/cache.js
 var _defaultHttpClient;
 function getCachedDefaultHttpClient$1() {
 	if (!_defaultHttpClient) _defaultHttpClient = createDefaultHttpClient();
 	return _defaultHttpClient;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/RequestPolicy.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/RequestPolicy.js
 /**
 * The base class from which all request policies derive.
 */
@@ -33213,7 +33213,7 @@ var BaseRequestPolicy = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageBrowserPolicy.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageBrowserPolicy.js
 /**
 * StorageBrowserPolicy will handle differences between Node.js and browser runtime, including:
 *
@@ -33246,7 +33246,7 @@ var StorageBrowserPolicy = class extends BaseRequestPolicy {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/StorageBrowserPolicyFactory.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/StorageBrowserPolicyFactory.js
 /**
 * StorageBrowserPolicyFactory is a factory class helping generating StorageBrowserPolicy objects.
 */
@@ -33262,7 +33262,7 @@ var StorageBrowserPolicyFactory = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/CredentialPolicy.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/CredentialPolicy.js
 /**
 * Credential policy used to sign HTTP(S) requests before sending. This is an
 * abstract class.
@@ -33287,7 +33287,7 @@ var CredentialPolicy = class extends BaseRequestPolicy {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/AnonymousCredentialPolicy.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/AnonymousCredentialPolicy.js
 /**
 * AnonymousCredentialPolicy is used with HTTP(S) requests that read public resources
 * or for use with Shared Access Signatures (SAS).
@@ -33303,7 +33303,7 @@ var AnonymousCredentialPolicy = class extends CredentialPolicy {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/credentials/Credential.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/credentials/Credential.js
 /**
 * Credential is an abstract class for Azure Storage HTTP requests signing. This
 * class will host an credentialPolicyCreator factory which generates CredentialPolicy.
@@ -33320,7 +33320,7 @@ var Credential = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/credentials/AnonymousCredential.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/credentials/AnonymousCredential.js
 /**
 * AnonymousCredential provides a credentialPolicyCreator member used to create
 * AnonymousCredentialPolicy objects. AnonymousCredentialPolicy is used with
@@ -33339,7 +33339,7 @@ var AnonymousCredential = class extends Credential {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/utils/constants.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/utils/constants.js
 var URLConstants$1 = { Parameters: {
 	FORCE_BROWSER_NO_CACHE: "_",
 	SIGNATURE: "sig",
@@ -33374,7 +33374,7 @@ var HeaderConstants = {
 	X_MS_CopySourceErrorCode: "x-ms-copy-source-error-code"
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/utils/utils.common.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/utils/utils.common.js
 /**
 * Set URL parameter name and value. If name exists in URL parameters, old value
 * will be replaced by name key. If not provide value, the parameter will be deleted.
@@ -33469,7 +33469,7 @@ async function delay(timeInMs, aborter, abortError) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/utils/SharedKeyComparator.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/utils/SharedKeyComparator.js
 var table_lv0 = new Uint32Array([
 	0,
 	0,
@@ -33891,7 +33891,7 @@ function isLessThan(lhs, rhs) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageSharedKeyCredentialPolicy.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageSharedKeyCredentialPolicy.js
 /**
 * StorageSharedKeyCredentialPolicy is a policy used to sign HTTP request with a shared key.
 */
@@ -34004,7 +34004,7 @@ var StorageSharedKeyCredentialPolicy = class extends CredentialPolicy {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/credentials/StorageSharedKeyCredential.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/credentials/StorageSharedKeyCredential.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -34048,13 +34048,13 @@ var StorageSharedKeyCredential = class extends Credential {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/log.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/log.js
 /**
 * The `@azure/logger` configuration for this package.
 */
 var logger$2 = createClientLogger("storage-common");
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicyType.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicyType.js
 /**
 * RetryPolicy types.
 */
@@ -34070,7 +34070,7 @@ var StorageRetryPolicyType;
 	StorageRetryPolicyType[StorageRetryPolicyType["FIXED"] = 1] = "FIXED";
 })(StorageRetryPolicyType || (StorageRetryPolicyType = {}));
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicy.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicy.js
 var DEFAULT_RETRY_OPTIONS$1 = {
 	maxRetryDelayInMs: 120 * 1e3,
 	maxTries: 4,
@@ -34222,7 +34222,7 @@ var StorageRetryPolicy = class extends BaseRequestPolicy {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/StorageRetryPolicyFactory.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/StorageRetryPolicyFactory.js
 /**
 * StorageRetryPolicyFactory is a factory class helping generating {@link StorageRetryPolicy} objects.
 */
@@ -34246,7 +34246,7 @@ var StorageRetryPolicyFactory = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageBrowserPolicyV2.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageBrowserPolicyV2.js
 /**
 * The programmatic identifier of the StorageBrowserPolicy.
 */
@@ -34266,7 +34266,7 @@ function storageBrowserPolicy() {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageCorrectContentLengthPolicy.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageCorrectContentLengthPolicy.js
 /**
 * The programmatic identifier of the storageCorrectContentLengthPolicy.
 */
@@ -34287,7 +34287,7 @@ function storageCorrectContentLengthPolicy() {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicyV2.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicyV2.js
 /**
 * Name of the {@link storageRetryPolicy}
 */
@@ -34422,7 +34422,7 @@ function storageRetryPolicy(options = {}) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageSharedKeyCredentialPolicyV2.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageSharedKeyCredentialPolicyV2.js
 /**
 * The programmatic identifier of the storageSharedKeyCredentialPolicy.
 */
@@ -34519,7 +34519,7 @@ function storageSharedKeyCredentialPolicy(options) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageRequestFailureDetailsParserPolicy.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageRequestFailureDetailsParserPolicy.js
 /**
 * The programmatic identifier of the StorageRequestFailureDetailsParserPolicy.
 */
@@ -34543,7 +34543,7 @@ function storageRequestFailureDetailsParserPolicy() {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.0_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/credentials/UserDelegationKeyCredential.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/credentials/UserDelegationKeyCredential.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -40674,7 +40674,7 @@ function getIgnoreAttributesFn$1(ignoreAttributes) {
 	return () => false;
 }
 //#endregion
-//#region node_modules/.pnpm/path-expression-matcher@1.6.0/node_modules/path-expression-matcher/src/Expression.js
+//#region node_modules/.pnpm/path-expression-matcher@1.6.1/node_modules/path-expression-matcher/src/Expression.js
 /**
 * Expression - Parses and stores a tag pattern expression
 * 
@@ -40826,7 +40826,7 @@ var Expression = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/path-expression-matcher@1.6.0/node_modules/path-expression-matcher/src/ExpressionSet.js
+//#region node_modules/.pnpm/path-expression-matcher@1.6.1/node_modules/path-expression-matcher/src/ExpressionSet.js
 /**
 * ExpressionSet - An indexed collection of Expressions for efficient bulk matching
 *
@@ -41011,7 +41011,7 @@ var ExpressionSet = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/path-expression-matcher@1.6.0/node_modules/path-expression-matcher/src/Matcher.js
+//#region node_modules/.pnpm/path-expression-matcher@1.6.1/node_modules/path-expression-matcher/src/Matcher.js
 /**
 * MatcherView - A lightweight read-only view over a Matcher's internal state.
 *
