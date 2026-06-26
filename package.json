@@ -76,7 +76,7 @@
         "@typescript-eslint/parser": "8.62.0",
         "@vitest/coverage-v8": "4.1.9",
         "@vitest/ui": "4.1.9",
-        "dependency-cruiser": "17.4.3",
+        "dependency-cruiser": "18.0.0",
         "eslint": "catalog:default",
         "eslint-config-love": "154.0.0",
         "eslint-config-prettier": "10.1.8",
