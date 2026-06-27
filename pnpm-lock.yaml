@@ -105,8 +105,8 @@ importers:
         specifier: 4.17.0
         version: 4.17.0(@typescript-eslint/utils@8.62.0(eslint@10.5.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.4.0)(eslint@10.5.0(jiti@2.7.0))
       eslint-plugin-n:
-        specifier: 18.2.0
-        version: 18.2.0(eslint@10.5.0(jiti@2.7.0))(typescript@6.0.3)
+        specifier: 18.2.1
+        version: 18.2.1(eslint@10.5.0(jiti@2.7.0))(typescript@6.0.3)
       eslint-plugin-perfectionist:
         specifier: 5.9.1
         version: 5.9.1(eslint@10.5.0(jiti@2.7.0))(typescript@6.0.3)
@@ -1237,8 +1237,8 @@ packages:
       '@typescript-eslint/parser':
         optional: true
 
-  eslint-plugin-n@18.2.0:
-    resolution: {integrity: sha512-Hf7bfQ5qBC1U/E5jLM9s3pE5su4HHnPmPxVsYzHgS3X0Eg7/9cK7lf+JBx29YEyZ09DqJ34bS/bcb4Dyv3Th9w==}
+  eslint-plugin-n@18.2.1:
+    resolution: {integrity: sha512-aO3C9//yq8JIvYOi/T+jPvcZ9hZzpwzbR8esrYpFtgE9vpbyM8kn42AQOtIqYspVmpaSWr8X+nrlQuAJYxXAaw==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
     peerDependencies:
       eslint: '>=8.57.1'
@@ -3678,7 +3678,7 @@ snapshots:
       '@typescript-eslint/utils': 8.62.0(eslint@10.5.0(jiti@2.7.0))(typescript@6.0.3)
       eslint: 10.5.0(jiti@2.7.0)
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.62.0(eslint@10.5.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-typescript@4.4.5)(eslint@10.5.0(jiti@2.7.0))
-      eslint-plugin-n: 18.2.0(eslint@10.5.0(jiti@2.7.0))(typescript@6.0.3)
+      eslint-plugin-n: 18.2.1(eslint@10.5.0(jiti@2.7.0))(typescript@6.0.3)
       eslint-plugin-promise: 7.3.0(eslint@10.5.0(jiti@2.7.0))
       typescript: 6.0.3
       typescript-eslint: 8.62.0(eslint@10.5.0(jiti@2.7.0))(typescript@6.0.3)
@@ -3797,10 +3797,10 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-n@18.2.0(eslint@10.5.0(jiti@2.7.0))(typescript@6.0.3):
+  eslint-plugin-n@18.2.1(eslint@10.5.0(jiti@2.7.0))(typescript@6.0.3):
     dependencies:
       '@eslint-community/eslint-utils': 4.9.1(eslint@10.5.0(jiti@2.7.0))
-      enhanced-resolve: 5.24.0
+      enhanced-resolve: 5.24.1
       eslint: 10.5.0(jiti@2.7.0)
       eslint-plugin-es-x: 7.8.0(eslint@10.5.0(jiti@2.7.0))
       get-tsconfig: 4.14.0
