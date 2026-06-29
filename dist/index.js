@@ -34583,7 +34583,7 @@ var UserDelegationKeyCredential = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/utils/RetriableReadableStream.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/utils/RetriableReadableStream.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -34677,7 +34677,7 @@ var RetriableReadableStream = class extends Readable {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/BlobDownloadResponse.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/BlobDownloadResponse.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -35143,7 +35143,7 @@ var BlobDownloadResponse = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroConstants.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroConstants.js
 var AVRO_INIT_BYTES = new Uint8Array([
 	79,
 	98,
@@ -35153,7 +35153,7 @@ var AVRO_INIT_BYTES = new Uint8Array([
 var AVRO_CODEC_KEY = "avro.codec";
 var AVRO_SCHEMA_KEY = "avro.schema";
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroParser.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroParser.js
 var AvroParser = class AvroParser {
 	/**
 	* Reads a fixed number of bytes from the stream.
@@ -35404,7 +35404,7 @@ var AvroRecordType = class extends AvroType {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/utils/utils.common.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/utils/utils.common.js
 function arraysEqual(a, b) {
 	if (a === b) return true;
 	if (a == null || b == null) return false;
@@ -35413,7 +35413,7 @@ function arraysEqual(a, b) {
 	return true;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroReader.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroReader.js
 var AvroReader = class {
 	_dataStream;
 	_headerStream;
@@ -35482,10 +35482,10 @@ var AvroReader = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroReadable.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroReadable.js
 var AvroReadable = class {};
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroReadableFromStream.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroReadableFromStream.js
 var ABORT_ERROR = new AbortError("Reading from the avro stream was aborted.");
 var AvroReadableFromStream = class extends AvroReadable {
 	_position;
@@ -35544,7 +35544,7 @@ var AvroReadableFromStream = class extends AvroReadable {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/utils/BlobQuickQueryStream.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/utils/BlobQuickQueryStream.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -35632,7 +35632,7 @@ var BlobQuickQueryStream = class extends Readable {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/BlobQueryResponse.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/BlobQueryResponse.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -35994,9 +35994,9 @@ var BlobQueryResponse = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/utils/constants.js
-var SDK_VERSION = "12.32.0";
-var SERVICE_VERSION = "2026-04-06";
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/utils/constants.js
+var SDK_VERSION = "12.33.0";
+var SERVICE_VERSION = "2026-06-06";
 var BLOCK_BLOB_MAX_UPLOAD_BLOB_BYTES = 256 * 1024 * 1024;
 var BLOCK_BLOB_MAX_STAGE_BLOCK_BYTES = 4e3 * 1024 * 1024;
 var BLOCK_BLOB_MAX_BLOCKS = 5e4;
@@ -36168,7 +36168,7 @@ var PathStylePorts = [
 	"11104"
 ];
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/models.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/models.js
 /**
 * Represents the access tier on a blob.
 * For detailed information about block blob level tiering see {@link https://learn.microsoft.com/azure/storage/blobs/storage-blob-storage-tiers|Hot, cool and archive storage tiers.}
@@ -36268,7 +36268,7 @@ var StorageBlobAudience;
 	StorageBlobAudience["DiskComputeOAuthScopes"] = "https://disk.compute.azure.com/.default";
 })(StorageBlobAudience || (StorageBlobAudience = {}));
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/PageBlobRangeResponse.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/PageBlobRangeResponse.js
 /**
 * Function that converts PageRange and ClearRange to a common Range object.
 * PageRange and ClearRange have start and end while Range offset and count
@@ -43658,13 +43658,13 @@ async function parseXML(str, opts = {}) {
 	return parsedXml;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/log.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/log.js
 /**
 * The `@azure/logger` configuration for this package.
 */
 var logger = createClientLogger("storage-blob");
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/Pipeline.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/Pipeline.js
 /**
 * A helper to decide if a given argument satisfies the Pipeline contract
 * @param pipeline - An argument that may be a Pipeline
@@ -44231,7 +44231,7 @@ var Poller = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/pollers/BlobStartCopyFromUrlPoller.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/pollers/BlobStartCopyFromUrlPoller.js
 /**
 * This is the poller returned by {@link BlobClient.beginCopyFromURL}.
 * This can not be instantiated directly outside of this package.
@@ -44337,7 +44337,7 @@ function makeBlobBeginCopyFromURLPollOperation(state) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/Range.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/Range.js
 /**
 * Generate a range string. For example:
 *
@@ -44351,7 +44351,7 @@ function rangeToString(iRange) {
 	return iRange.count ? `bytes=${iRange.offset}-${iRange.offset + iRange.count - 1}` : `bytes=${iRange.offset}-`;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/generated/src/models/mappers.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/generated/src/models/mappers.js
 var mappers_exports = /* @__PURE__ */ __exportAll$1({
 	AccessPolicy: () => AccessPolicy,
 	AppendBlobAppendBlockExceptionHeaders: () => AppendBlobAppendBlockExceptionHeaders,
@@ -45642,7 +45642,8 @@ var BlobPropertiesInternal = {
 						"Hot",
 						"Cool",
 						"Archive",
-						"Cold"
+						"Cold",
+						"Smart"
 					]
 				}
 			},
@@ -45659,7 +45660,33 @@ var BlobPropertiesInternal = {
 					allowedValues: [
 						"rehydrate-pending-to-hot",
 						"rehydrate-pending-to-cool",
-						"rehydrate-pending-to-cold"
+						"rehydrate-pending-to-cold",
+						"rehydrate-pending-to-smart"
+					]
+				}
+			},
+			smartAccessTier: {
+				serializedName: "SmartAccessTier",
+				xmlName: "SmartAccessTier",
+				type: {
+					name: "Enum",
+					allowedValues: [
+						"P4",
+						"P6",
+						"P10",
+						"P15",
+						"P20",
+						"P30",
+						"P40",
+						"P50",
+						"P60",
+						"P70",
+						"P80",
+						"Hot",
+						"Cool",
+						"Archive",
+						"Cold",
+						"Smart"
 					]
 				}
 			},
@@ -48179,6 +48206,11 @@ var BlobGetPropertiesHeaders = {
 				serializedName: "x-ms-access-tier-change-time",
 				xmlName: "x-ms-access-tier-change-time",
 				type: { name: "DateTimeRfc1123" }
+			},
+			smartAccessTier: {
+				serializedName: "x-ms-smart-access-tier",
+				xmlName: "x-ms-smart-access-tier",
+				type: { name: "String" }
 			},
 			versionId: {
 				serializedName: "x-ms-version-id",
@@ -51178,7 +51210,7 @@ var BlockBlobGetBlockListExceptionHeaders = {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/generated/src/models/parameters.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/generated/src/models/parameters.js
 var contentType = {
 	parameterPath: ["options", "contentType"],
 	mapper: {
@@ -51241,7 +51273,7 @@ var timeoutInSeconds = {
 var version$2 = {
 	parameterPath: "version",
 	mapper: {
-		defaultValue: "2026-04-06",
+		defaultValue: "2026-06-06",
 		isConstant: true,
 		serializedName: "x-ms-version",
 		type: { name: "String" }
@@ -52061,7 +52093,8 @@ var tier = {
 				"Hot",
 				"Cool",
 				"Archive",
-				"Cold"
+				"Cold",
+				"Smart"
 			]
 		}
 	}
@@ -52273,7 +52306,8 @@ var tier1 = {
 				"Hot",
 				"Cool",
 				"Archive",
-				"Cold"
+				"Cold",
+				"Smart"
 			]
 		}
 	}
@@ -52739,7 +52773,7 @@ var listType = {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/service.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/service.js
 /** Class containing Service operations. */
 var ServiceImpl = class {
 	client;
@@ -53060,7 +53094,7 @@ var filterBlobsOperationSpec$1 = {
 	serializer: xmlSerializer$5
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/container.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/container.js
 /** Class containing Container operations. */
 var ContainerImpl = class {
 	client;
@@ -53762,7 +53796,7 @@ var getAccountInfoOperationSpec$1 = {
 	serializer: xmlSerializer$4
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/blob.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/blob.js
 /** Class containing Blob operations. */
 var BlobImpl = class {
 	client;
@@ -54769,7 +54803,7 @@ var setTagsOperationSpec = {
 	serializer: xmlSerializer$3
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/pageBlob.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/pageBlob.js
 /** Class containing PageBlob operations. */
 var PageBlobImpl = class {
 	client;
@@ -55234,7 +55268,7 @@ var copyIncrementalOperationSpec = {
 	serializer: xmlSerializer$2
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/appendBlob.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/appendBlob.js
 /** Class containing AppendBlob operations. */
 var AppendBlobImpl = class {
 	client;
@@ -55455,7 +55489,7 @@ var sealOperationSpec = {
 	serializer: xmlSerializer$1
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/blockBlob.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/blockBlob.js
 /** Class containing BlockBlob operations. */
 var BlockBlobImpl = class {
 	client;
@@ -55837,7 +55871,7 @@ var getBlockListOperationSpec = {
 	serializer: xmlSerializer
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/generated/src/storageClient.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/generated/src/storageClient.js
 var StorageClient$1 = class extends ExtendedServiceClient {
 	url;
 	version;
@@ -55851,7 +55885,7 @@ var StorageClient$1 = class extends ExtendedServiceClient {
 		if (url === void 0) throw new Error("'url' cannot be null");
 		if (!options) options = {};
 		const defaults = { requestContentType: "application/json; charset=utf-8" };
-		const packageDetails = `azsdk-js-azure-storage-blob/12.32.0`;
+		const packageDetails = `azsdk-js-azure-storage-blob/12.33.0`;
 		const userAgentPrefix = options.userAgentOptions && options.userAgentOptions.userAgentPrefix ? `${options.userAgentOptions.userAgentPrefix} ${packageDetails}` : `${packageDetails}`;
 		const optionsWithDefaults = {
 			...defaults,
@@ -55861,7 +55895,7 @@ var StorageClient$1 = class extends ExtendedServiceClient {
 		};
 		super(optionsWithDefaults);
 		this.url = url;
-		this.version = options.version || "2026-04-06";
+		this.version = options.version || "2026-06-06";
 		this.service = new ServiceImpl(this);
 		this.container = new ContainerImpl(this);
 		this.blob = new BlobImpl(this);
@@ -55877,7 +55911,7 @@ var StorageClient$1 = class extends ExtendedServiceClient {
 	blockBlob;
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/StorageContextClient.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/StorageContextClient.js
 /**
 * @internal
 */
@@ -55889,7 +55923,14 @@ var StorageContextClient = class extends StorageClient$1 {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/utils/utils.common.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/utils/utils.common.js
+var accountNameSuffixes = [
+	"-secondary-ipv6",
+	"-secondary-dualstack",
+	"-ipv6",
+	"-dualstack",
+	"-secondary"
+];
 /**
 * Reserved URL characters must be properly escaped for Storage services like Blob or File.
 *
@@ -56165,8 +56206,16 @@ function getAccountNameFromUrl(url) {
 	const parsedUrl = new URL(url);
 	let accountName;
 	try {
-		if (parsedUrl.hostname.split(".")[1] === "blob") accountName = parsedUrl.hostname.split(".")[0];
-		else if (isIpEndpointStyle(parsedUrl)) accountName = parsedUrl.pathname.split("/")[1];
+		if (parsedUrl.hostname.split(".")[1] === "blob") {
+			accountName = parsedUrl.hostname.split(".")[0];
+			for (let i = 0; i < accountNameSuffixes.length; ++i) {
+				const suffix = accountNameSuffixes[i];
+				if (accountName.endsWith(suffix)) {
+					accountName = accountName.substring(0, accountName.length - suffix.length);
+					break;
+				}
+			}
+		} else if (isIpEndpointStyle(parsedUrl)) accountName = parsedUrl.pathname.split("/")[1];
 		else accountName = "";
 		return accountName;
 	} catch (error) {
@@ -56336,7 +56385,7 @@ async function setUploadChecksumParameters(body, contentLength, parameters, uplo
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/StorageClient.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/StorageClient.js
 /**
 * A StorageClient represents a based URL class for {@link BlobServiceClient}, {@link ContainerClient}
 * and etc.
@@ -56382,7 +56431,7 @@ var StorageClient = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/utils/Batch.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/utils/Batch.js
 /**
 * States for Batch.
 */
@@ -56495,7 +56544,7 @@ var Batch = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/utils/tracing.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/utils/tracing.js
 /**
 * Creates a span using the global tracer.
 * @internal
@@ -56506,7 +56555,7 @@ var tracingClient = createTracingClient({
 	namespace: "Microsoft.Storage"
 });
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/utils/utils.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/utils/utils.js
 /**
 * Reads a readable stream into buffer. Fill the buffer from offset to end.
 *
@@ -56580,7 +56629,7 @@ async function readStreamToLocalFile(rs, file) {
 var fsStat = util.promisify(fs.stat);
 var fsCreateReadStream = fs.createReadStream;
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/sas/BlobSASPermissions.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/sas/BlobSASPermissions.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -56725,7 +56774,7 @@ var BlobSASPermissions = class BlobSASPermissions {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/sas/ContainerSASPermissions.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/sas/ContainerSASPermissions.js
 /**
 * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a container.
 * Setting a value to true means that any SAS which uses these permissions will grant permissions for that operation.
@@ -56888,7 +56937,7 @@ var ContainerSASPermissions = class ContainerSASPermissions {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/sas/SasIPRange.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/sas/SasIPRange.js
 /**
 * Generate SasIPRange format string. For example:
 *
@@ -56900,7 +56949,7 @@ function ipRangeToString(ipRange) {
 	return ipRange.end ? `${ipRange.start}-${ipRange.end}` : ipRange.start;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/sas/SASQueryParameters.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/sas/SASQueryParameters.js
 /**
 * Protocols for generated SAS.
 */
@@ -57061,6 +57110,10 @@ var SASQueryParameters = class {
 	* Keys for request query parameters required in the SAS token
 	*/
 	requestQueryParameterKeys;
+	/** To indicate the depth of the virtual blob directory specified
+	* in the canonicalizedresource field of the string-to-sign.
+	*/
+	directoryDepth;
 	/**
 	* Optional. IP range allowed for this SAS.
 	*
@@ -57072,7 +57125,7 @@ var SASQueryParameters = class {
 			start: this.ipRangeInner.start
 		};
 	}
-	constructor(version, signature, permissionsOrOptions, services, resourceTypes, protocol, startsOn, expiresOn, ipRange, identifier, resource, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType, userDelegationKey, preauthorizedAgentObjectId, correlationId, encryptionScope, delegatedUserObjectId, requestHeaderKeys, requestQueryParameterKeys) {
+	constructor(version, signature, permissionsOrOptions, services, resourceTypes, protocol, startsOn, expiresOn, ipRange, identifier, resource, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType, userDelegationKey, preauthorizedAgentObjectId, correlationId, encryptionScope, delegatedUserObjectId, requestHeaderKeys, requestQueryParameterKeys, directoryDepth) {
 		this.version = version;
 		this.signature = signature;
 		if (permissionsOrOptions !== void 0 && typeof permissionsOrOptions !== "string") {
@@ -57094,6 +57147,7 @@ var SASQueryParameters = class {
 			this.contentType = permissionsOrOptions.contentType;
 			this.requestHeaderKeys = permissionsOrOptions.requestHeaderKeys;
 			this.requestQueryParameterKeys = permissionsOrOptions.requestQueryParameterKeys;
+			this.directoryDepth = permissionsOrOptions.directoryDepth;
 			if (permissionsOrOptions.userDelegationKey) {
 				this.signedOid = permissionsOrOptions.userDelegationKey.signedObjectId;
 				this.signedTenantId = permissionsOrOptions.userDelegationKey.signedTenantId;
@@ -57124,6 +57178,7 @@ var SASQueryParameters = class {
 			this.contentType = contentType;
 			this.requestHeaderKeys = requestHeaderKeys;
 			this.requestQueryParameterKeys = requestQueryParameterKeys;
+			this.directoryDepth = directoryDepth;
 			if (userDelegationKey) {
 				this.signedOid = userDelegationKey.signedObjectId;
 				this.signedTenantId = userDelegationKey.signedTenantId;
@@ -57167,6 +57222,7 @@ var SASQueryParameters = class {
 			"rsct",
 			"saoid",
 			"scid",
+			"sdd",
 			"sduoid",
 			"skdutid",
 			"srh",
@@ -57262,6 +57318,9 @@ var SASQueryParameters = class {
 			case "srq":
 				this.tryAppendQueryParameter(queries, param, this.requestQueryParameterKeys);
 				break;
+			case "sdd":
+				this.tryAppendQueryParameter(queries, param, this.directoryDepth !== void 0 ? this.directoryDepth.toString() : "");
+				break;
 		}
 		return queries.join("&");
 	}
@@ -57280,7 +57339,7 @@ var SASQueryParameters = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/sas/BlobSASSignatureValues.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/sas/BlobSASSignatureValues.js
 function generateBlobSASQueryParameters(blobSASSignatureValues, sharedKeyCredentialOrUserDelegationKey, accountName) {
 	return generateBlobSASQueryParametersInternal(blobSASSignatureValues, sharedKeyCredentialOrUserDelegationKey, accountName).sasQueryParameters;
 }
@@ -57294,7 +57353,8 @@ function generateBlobSASQueryParametersInternal(blobSASSignatureValues, sharedKe
 	else if (version >= "2026-04-06") return generateBlobSASQueryParametersUDK20260406(blobSASSignatureValues, userDelegationKeyCredential);
 	else if (version >= "2025-07-05") return generateBlobSASQueryParametersUDK20250705(blobSASSignatureValues, userDelegationKeyCredential);
 	else return generateBlobSASQueryParametersUDK20201206(blobSASSignatureValues, userDelegationKeyCredential);
-	if (version >= "2018-11-09") if (sharedKeyCredential !== void 0) return generateBlobSASQueryParameters20181109(blobSASSignatureValues, sharedKeyCredential);
+	if (version >= "2018-11-09") if (sharedKeyCredential !== void 0) if (version >= "2020-02-10") return generateBlobSASQueryParameters20200210(blobSASSignatureValues, sharedKeyCredential);
+	else return generateBlobSASQueryParameters20181109(blobSASSignatureValues, sharedKeyCredential);
 	else if (version >= "2020-02-10") return generateBlobSASQueryParametersUDK20200210(blobSASSignatureValues, userDelegationKeyCredential);
 	else return generateBlobSASQueryParametersUDK20181109(blobSASSignatureValues, userDelegationKeyCredential);
 	if (version >= "2015-04-05") if (sharedKeyCredential !== void 0) return generateBlobSASQueryParameters20150405(blobSASSignatureValues, sharedKeyCredential);
@@ -57403,6 +57463,65 @@ function generateBlobSASQueryParameters20181109(blobSASSignatureValues, sharedKe
 }
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
+* IMPLEMENTATION FOR API VERSION FROM 2020-02-10.
+*
+* Creates an instance of SASQueryParameters.
+*
+* Only accepts required settings needed to create a SAS. For optional settings please
+* set corresponding properties directly, such as permissions, startsOn and identifier.
+*
+* WARNING: When identifier is not provided, permissions and expiresOn are required.
+* You MUST assign value to identifier or expiresOn & permissions manually if you initial with
+* this constructor.
+*
+* @param blobSASSignatureValues -
+* @param sharedKeyCredential -
+*/
+function generateBlobSASQueryParameters20200210(blobSASSignatureValues, sharedKeyCredential) {
+	blobSASSignatureValues = SASSignatureValuesSanityCheckAndAutofill(blobSASSignatureValues);
+	if (!blobSASSignatureValues.identifier && !(blobSASSignatureValues.permissions && blobSASSignatureValues.expiresOn)) throw new RangeError("Must provide 'permissions' and 'expiresOn' for Blob SAS generation when 'identifier' is not provided.");
+	let resource = "c";
+	let timestamp = blobSASSignatureValues.snapshotTime;
+	let directoryDepth = void 0;
+	if (blobSASSignatureValues.blobName) if (blobSASSignatureValues.isDirectory === true) {
+		resource = "d";
+		directoryDepth = trimBlobName(blobSASSignatureValues.blobName).split("/").length;
+	} else {
+		resource = "b";
+		if (blobSASSignatureValues.snapshotTime) resource = "bs";
+		else if (blobSASSignatureValues.versionId) {
+			resource = "bv";
+			timestamp = blobSASSignatureValues.versionId;
+		}
+	}
+	let verifiedPermissions;
+	if (blobSASSignatureValues.permissions) if (blobSASSignatureValues.blobName) verifiedPermissions = BlobSASPermissions.parse(blobSASSignatureValues.permissions.toString()).toString();
+	else verifiedPermissions = ContainerSASPermissions.parse(blobSASSignatureValues.permissions.toString()).toString();
+	const stringToSign = [
+		verifiedPermissions ? verifiedPermissions : "",
+		blobSASSignatureValues.startsOn ? truncatedISO8061Date(blobSASSignatureValues.startsOn, false) : "",
+		blobSASSignatureValues.expiresOn ? truncatedISO8061Date(blobSASSignatureValues.expiresOn, false) : "",
+		getCanonicalName(sharedKeyCredential.accountName, blobSASSignatureValues.containerName, blobSASSignatureValues.blobName),
+		blobSASSignatureValues.identifier,
+		blobSASSignatureValues.ipRange ? ipRangeToString(blobSASSignatureValues.ipRange) : "",
+		blobSASSignatureValues.protocol ? blobSASSignatureValues.protocol : "",
+		blobSASSignatureValues.version,
+		resource,
+		timestamp,
+		blobSASSignatureValues.cacheControl ? blobSASSignatureValues.cacheControl : "",
+		blobSASSignatureValues.contentDisposition ? blobSASSignatureValues.contentDisposition : "",
+		blobSASSignatureValues.contentEncoding ? blobSASSignatureValues.contentEncoding : "",
+		blobSASSignatureValues.contentLanguage ? blobSASSignatureValues.contentLanguage : "",
+		blobSASSignatureValues.contentType ? blobSASSignatureValues.contentType : ""
+	].join("\n");
+	const signature = sharedKeyCredential.computeHMACSHA256(stringToSign);
+	return {
+		sasQueryParameters: new SASQueryParameters(blobSASSignatureValues.version, signature, verifiedPermissions, void 0, void 0, blobSASSignatureValues.protocol, blobSASSignatureValues.startsOn, blobSASSignatureValues.expiresOn, blobSASSignatureValues.ipRange, blobSASSignatureValues.identifier, resource, blobSASSignatureValues.cacheControl, blobSASSignatureValues.contentDisposition, blobSASSignatureValues.contentEncoding, blobSASSignatureValues.contentLanguage, blobSASSignatureValues.contentType, void 0, void 0, void 0, void 0, void 0, void 0, void 0, directoryDepth),
+		stringToSign
+	};
+}
+/**
+* ONLY AVAILABLE IN NODE.JS RUNTIME.
 * IMPLEMENTATION FOR API VERSION FROM 2020-12-06.
 *
 * Creates an instance of SASQueryParameters.
@@ -57422,7 +57541,11 @@ function generateBlobSASQueryParameters20201206(blobSASSignatureValues, sharedKe
 	if (!blobSASSignatureValues.identifier && !(blobSASSignatureValues.permissions && blobSASSignatureValues.expiresOn)) throw new RangeError("Must provide 'permissions' and 'expiresOn' for Blob SAS generation when 'identifier' is not provided.");
 	let resource = "c";
 	let timestamp = blobSASSignatureValues.snapshotTime;
-	if (blobSASSignatureValues.blobName) {
+	let directoryDepth = void 0;
+	if (blobSASSignatureValues.blobName) if (blobSASSignatureValues.isDirectory === true) {
+		resource = "d";
+		directoryDepth = trimBlobName(blobSASSignatureValues.blobName).split("/").length;
+	} else {
 		resource = "b";
 		if (blobSASSignatureValues.snapshotTime) resource = "bs";
 		else if (blobSASSignatureValues.versionId) {
@@ -57453,7 +57576,7 @@ function generateBlobSASQueryParameters20201206(blobSASSignatureValues, sharedKe
 	].join("\n");
 	const signature = sharedKeyCredential.computeHMACSHA256(stringToSign);
 	return {
-		sasQueryParameters: new SASQueryParameters(blobSASSignatureValues.version, signature, verifiedPermissions, void 0, void 0, blobSASSignatureValues.protocol, blobSASSignatureValues.startsOn, blobSASSignatureValues.expiresOn, blobSASSignatureValues.ipRange, blobSASSignatureValues.identifier, resource, blobSASSignatureValues.cacheControl, blobSASSignatureValues.contentDisposition, blobSASSignatureValues.contentEncoding, blobSASSignatureValues.contentLanguage, blobSASSignatureValues.contentType, void 0, void 0, void 0, blobSASSignatureValues.encryptionScope),
+		sasQueryParameters: new SASQueryParameters(blobSASSignatureValues.version, signature, verifiedPermissions, void 0, void 0, blobSASSignatureValues.protocol, blobSASSignatureValues.startsOn, blobSASSignatureValues.expiresOn, blobSASSignatureValues.ipRange, blobSASSignatureValues.identifier, resource, blobSASSignatureValues.cacheControl, blobSASSignatureValues.contentDisposition, blobSASSignatureValues.contentEncoding, blobSASSignatureValues.contentLanguage, blobSASSignatureValues.contentType, void 0, void 0, void 0, blobSASSignatureValues.encryptionScope, void 0, void 0, void 0, directoryDepth),
 		stringToSign
 	};
 }
@@ -57534,7 +57657,11 @@ function generateBlobSASQueryParametersUDK20200210(blobSASSignatureValues, userD
 	if (!blobSASSignatureValues.permissions || !blobSASSignatureValues.expiresOn) throw new RangeError("Must provide 'permissions' and 'expiresOn' for Blob SAS generation when generating user delegation SAS.");
 	let resource = "c";
 	let timestamp = blobSASSignatureValues.snapshotTime;
-	if (blobSASSignatureValues.blobName) {
+	let directoryDepth = void 0;
+	if (blobSASSignatureValues.blobName) if (blobSASSignatureValues.isDirectory === true) {
+		resource = "d";
+		directoryDepth = trimBlobName(blobSASSignatureValues.blobName).split("/").length;
+	} else {
 		resource = "b";
 		if (blobSASSignatureValues.snapshotTime) resource = "bs";
 		else if (blobSASSignatureValues.versionId) {
@@ -57572,7 +57699,7 @@ function generateBlobSASQueryParametersUDK20200210(blobSASSignatureValues, userD
 	].join("\n");
 	const signature = userDelegationKeyCredential.computeHMACSHA256(stringToSign);
 	return {
-		sasQueryParameters: new SASQueryParameters(blobSASSignatureValues.version, signature, verifiedPermissions, void 0, void 0, blobSASSignatureValues.protocol, blobSASSignatureValues.startsOn, blobSASSignatureValues.expiresOn, blobSASSignatureValues.ipRange, blobSASSignatureValues.identifier, resource, blobSASSignatureValues.cacheControl, blobSASSignatureValues.contentDisposition, blobSASSignatureValues.contentEncoding, blobSASSignatureValues.contentLanguage, blobSASSignatureValues.contentType, userDelegationKeyCredential.userDelegationKey, blobSASSignatureValues.preauthorizedAgentObjectId, blobSASSignatureValues.correlationId),
+		sasQueryParameters: new SASQueryParameters(blobSASSignatureValues.version, signature, verifiedPermissions, void 0, void 0, blobSASSignatureValues.protocol, blobSASSignatureValues.startsOn, blobSASSignatureValues.expiresOn, blobSASSignatureValues.ipRange, blobSASSignatureValues.identifier, resource, blobSASSignatureValues.cacheControl, blobSASSignatureValues.contentDisposition, blobSASSignatureValues.contentEncoding, blobSASSignatureValues.contentLanguage, blobSASSignatureValues.contentType, userDelegationKeyCredential.userDelegationKey, blobSASSignatureValues.preauthorizedAgentObjectId, blobSASSignatureValues.correlationId, void 0, void 0, void 0, void 0, directoryDepth),
 		stringToSign
 	};
 }
@@ -57595,7 +57722,11 @@ function generateBlobSASQueryParametersUDK20201206(blobSASSignatureValues, userD
 	if (!blobSASSignatureValues.permissions || !blobSASSignatureValues.expiresOn) throw new RangeError("Must provide 'permissions' and 'expiresOn' for Blob SAS generation when generating user delegation SAS.");
 	let resource = "c";
 	let timestamp = blobSASSignatureValues.snapshotTime;
-	if (blobSASSignatureValues.blobName) {
+	let directoryDepth = void 0;
+	if (blobSASSignatureValues.blobName) if (blobSASSignatureValues.isDirectory === true) {
+		resource = "d";
+		directoryDepth = trimBlobName(blobSASSignatureValues.blobName).split("/").length;
+	} else {
 		resource = "b";
 		if (blobSASSignatureValues.snapshotTime) resource = "bs";
 		else if (blobSASSignatureValues.versionId) {
@@ -57634,7 +57765,7 @@ function generateBlobSASQueryParametersUDK20201206(blobSASSignatureValues, userD
 	].join("\n");
 	const signature = userDelegationKeyCredential.computeHMACSHA256(stringToSign);
 	return {
-		sasQueryParameters: new SASQueryParameters(blobSASSignatureValues.version, signature, verifiedPermissions, void 0, void 0, blobSASSignatureValues.protocol, blobSASSignatureValues.startsOn, blobSASSignatureValues.expiresOn, blobSASSignatureValues.ipRange, blobSASSignatureValues.identifier, resource, blobSASSignatureValues.cacheControl, blobSASSignatureValues.contentDisposition, blobSASSignatureValues.contentEncoding, blobSASSignatureValues.contentLanguage, blobSASSignatureValues.contentType, userDelegationKeyCredential.userDelegationKey, blobSASSignatureValues.preauthorizedAgentObjectId, blobSASSignatureValues.correlationId, blobSASSignatureValues.encryptionScope),
+		sasQueryParameters: new SASQueryParameters(blobSASSignatureValues.version, signature, verifiedPermissions, void 0, void 0, blobSASSignatureValues.protocol, blobSASSignatureValues.startsOn, blobSASSignatureValues.expiresOn, blobSASSignatureValues.ipRange, blobSASSignatureValues.identifier, resource, blobSASSignatureValues.cacheControl, blobSASSignatureValues.contentDisposition, blobSASSignatureValues.contentEncoding, blobSASSignatureValues.contentLanguage, blobSASSignatureValues.contentType, userDelegationKeyCredential.userDelegationKey, blobSASSignatureValues.preauthorizedAgentObjectId, blobSASSignatureValues.correlationId, blobSASSignatureValues.encryptionScope, void 0, void 0, void 0, directoryDepth),
 		stringToSign
 	};
 }
@@ -57657,7 +57788,11 @@ function generateBlobSASQueryParametersUDK20250705(blobSASSignatureValues, userD
 	if (!blobSASSignatureValues.permissions || !blobSASSignatureValues.expiresOn) throw new RangeError("Must provide 'permissions' and 'expiresOn' for Blob SAS generation when generating user delegation SAS.");
 	let resource = "c";
 	let timestamp = blobSASSignatureValues.snapshotTime;
-	if (blobSASSignatureValues.blobName) {
+	let directoryDepth = void 0;
+	if (blobSASSignatureValues.blobName) if (blobSASSignatureValues.isDirectory === true) {
+		resource = "d";
+		directoryDepth = trimBlobName(blobSASSignatureValues.blobName).split("/").length;
+	} else {
 		resource = "b";
 		if (blobSASSignatureValues.snapshotTime) resource = "bs";
 		else if (blobSASSignatureValues.versionId) {
@@ -57698,7 +57833,7 @@ function generateBlobSASQueryParametersUDK20250705(blobSASSignatureValues, userD
 	].join("\n");
 	const signature = userDelegationKeyCredential.computeHMACSHA256(stringToSign);
 	return {
-		sasQueryParameters: new SASQueryParameters(blobSASSignatureValues.version, signature, verifiedPermissions, void 0, void 0, blobSASSignatureValues.protocol, blobSASSignatureValues.startsOn, blobSASSignatureValues.expiresOn, blobSASSignatureValues.ipRange, blobSASSignatureValues.identifier, resource, blobSASSignatureValues.cacheControl, blobSASSignatureValues.contentDisposition, blobSASSignatureValues.contentEncoding, blobSASSignatureValues.contentLanguage, blobSASSignatureValues.contentType, userDelegationKeyCredential.userDelegationKey, blobSASSignatureValues.preauthorizedAgentObjectId, blobSASSignatureValues.correlationId, blobSASSignatureValues.encryptionScope, blobSASSignatureValues.delegatedUserObjectId),
+		sasQueryParameters: new SASQueryParameters(blobSASSignatureValues.version, signature, verifiedPermissions, void 0, void 0, blobSASSignatureValues.protocol, blobSASSignatureValues.startsOn, blobSASSignatureValues.expiresOn, blobSASSignatureValues.ipRange, blobSASSignatureValues.identifier, resource, blobSASSignatureValues.cacheControl, blobSASSignatureValues.contentDisposition, blobSASSignatureValues.contentEncoding, blobSASSignatureValues.contentLanguage, blobSASSignatureValues.contentType, userDelegationKeyCredential.userDelegationKey, blobSASSignatureValues.preauthorizedAgentObjectId, blobSASSignatureValues.correlationId, blobSASSignatureValues.encryptionScope, blobSASSignatureValues.delegatedUserObjectId, void 0, void 0, directoryDepth),
 		stringToSign
 	};
 }
@@ -57721,7 +57856,11 @@ function generateBlobSASQueryParametersUDK20260406(blobSASSignatureValues, userD
 	if (!blobSASSignatureValues.permissions || !blobSASSignatureValues.expiresOn) throw new RangeError("Must provide 'permissions' and 'expiresOn' for Blob SAS generation when generating user delegation SAS.");
 	let resource = "c";
 	let timestamp = blobSASSignatureValues.snapshotTime;
-	if (blobSASSignatureValues.blobName) {
+	let directoryDepth = void 0;
+	if (blobSASSignatureValues.blobName) if (blobSASSignatureValues.isDirectory === true) {
+		resource = "d";
+		directoryDepth = trimBlobName(blobSASSignatureValues.blobName).split("/").length;
+	} else {
 		resource = "b";
 		if (blobSASSignatureValues.snapshotTime) resource = "bs";
 		else if (blobSASSignatureValues.versionId) {
@@ -57764,7 +57903,7 @@ function generateBlobSASQueryParametersUDK20260406(blobSASSignatureValues, userD
 	].join("\n");
 	const signature = userDelegationKeyCredential.computeHMACSHA256(stringToSign);
 	return {
-		sasQueryParameters: new SASQueryParameters(blobSASSignatureValues.version, signature, verifiedPermissions, void 0, void 0, blobSASSignatureValues.protocol, blobSASSignatureValues.startsOn, blobSASSignatureValues.expiresOn, blobSASSignatureValues.ipRange, blobSASSignatureValues.identifier, resource, blobSASSignatureValues.cacheControl, blobSASSignatureValues.contentDisposition, blobSASSignatureValues.contentEncoding, blobSASSignatureValues.contentLanguage, blobSASSignatureValues.contentType, userDelegationKeyCredential.userDelegationKey, blobSASSignatureValues.preauthorizedAgentObjectId, blobSASSignatureValues.correlationId, blobSASSignatureValues.encryptionScope, blobSASSignatureValues.delegatedUserObjectId, getKeysOfRequestHeaders(blobSASSignatureValues.requestHeaders), getKeysOfRequestHeaders(blobSASSignatureValues.requestQueryParameters)),
+		sasQueryParameters: new SASQueryParameters(blobSASSignatureValues.version, signature, verifiedPermissions, void 0, void 0, blobSASSignatureValues.protocol, blobSASSignatureValues.startsOn, blobSASSignatureValues.expiresOn, blobSASSignatureValues.ipRange, blobSASSignatureValues.identifier, resource, blobSASSignatureValues.cacheControl, blobSASSignatureValues.contentDisposition, blobSASSignatureValues.contentEncoding, blobSASSignatureValues.contentLanguage, blobSASSignatureValues.contentType, userDelegationKeyCredential.userDelegationKey, blobSASSignatureValues.preauthorizedAgentObjectId, blobSASSignatureValues.correlationId, blobSASSignatureValues.encryptionScope, blobSASSignatureValues.delegatedUserObjectId, getKeysOfRequestHeaders(blobSASSignatureValues.requestHeaders), getKeysOfRequestHeaders(blobSASSignatureValues.requestQueryParameters), directoryDepth),
 		stringToSign
 	};
 }
@@ -57817,8 +57956,14 @@ function SASSignatureValuesSanityCheckAndAutofill(blobSASSignatureValues) {
 	blobSASSignatureValues.version = version;
 	return blobSASSignatureValues;
 }
+function trimBlobName(blobName) {
+	let internalName = blobName;
+	while (internalName.startsWith("/")) internalName = internalName.substring(1);
+	while (internalName.endsWith("/")) internalName = internalName.substring(0, internalName.length - 1);
+	return internalName;
+}
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/BlobLeaseClient.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/BlobLeaseClient.js
 /**
 * A client that manages leases for a {@link ContainerClient} or a {@link BlobClient}.
 */
@@ -57986,7 +58131,7 @@ var BlobLeaseClient = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.32.0/node_modules/@azure/storage-blob/dist/esm/Clients.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/Clients.js
 /**
 * A BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob,
 * append blob, or page blob.
@@ -58114,6 +58259,7 @@ var BlobClient = class BlobClient extends StorageClient {
 	* ```ts snippet:ReadmeSampleDownloadBlob_Node
 	* import { BlobServiceClient } from "@azure/storage-blob";
 	* import { DefaultAzureCredential } from "@azure/identity";
+	* import { buffer } from "node:stream/consumers";
 	*
 	* const account = "<account>";
 	* const blobServiceClient = new BlobServiceClient(
@@ -58130,22 +58276,10 @@ var BlobClient = class BlobClient extends StorageClient {
 	* // In Node.js, get downloaded data by accessing downloadBlockBlobResponse.readableStreamBody
 	* const downloadBlockBlobResponse = await blobClient.download();
 	* if (downloadBlockBlobResponse.readableStreamBody) {
-	*   const downloaded = await streamToString(downloadBlockBlobResponse.readableStreamBody);
-	*   console.log(`Downloaded blob content: ${downloaded}`);
-	* }
-	*
-	* async function streamToString(stream: NodeJS.ReadableStream): Promise<string> {
-	*   const result = await new Promise<Buffer<ArrayBuffer>>((resolve, reject) => {
-	*     const chunks: Buffer[] = [];
-	*     stream.on("data", (data) => {
-	*       chunks.push(Buffer.isBuffer(data) ? data : Buffer.from(data));
-	*     });
-	*     stream.on("end", () => {
-	*       resolve(Buffer.concat(chunks));
-	*     });
-	*     stream.on("error", reject);
-	*   });
-	*   return result.toString();
+	*   // Download the raw bytes of the blob. Use `text` from "node:stream/consumers"
+	*   // instead if you want to read the content as a string directly.
+	*   const downloaded = await buffer(downloadBlockBlobResponse.readableStreamBody);
+	*   console.log(`Downloaded blob content: ${downloaded.toString()}`);
 	* }
 	* ```
 	*
@@ -59329,6 +59463,7 @@ var BlockBlobClient = class BlockBlobClient extends BlobClient {
 	* ```ts snippet:ClientsQuery
 	* import { BlobServiceClient } from "@azure/storage-blob";
 	* import { DefaultAzureCredential } from "@azure/identity";
+	* import { buffer } from "node:stream/consumers";
 	*
 	* const account = "<account>";
 	* const blobServiceClient = new BlobServiceClient(
@@ -59344,22 +59479,10 @@ var BlockBlobClient = class BlockBlobClient extends BlobClient {
 	* // Query and convert a blob to a string
 	* const queryBlockBlobResponse = await blockBlobClient.query("select from BlobStorage");
 	* if (queryBlockBlobResponse.readableStreamBody) {
-	*   const downloadedBuffer = await streamToBuffer(queryBlockBlobResponse.readableStreamBody);
-	*   const downloaded = downloadedBuffer.toString();
-	*   console.log(`Query blob content: ${downloaded}`);
-	* }
-	*
-	* async function streamToBuffer(readableStream: NodeJS.ReadableStream): Promise<Buffer> {
-	*   return new Promise((resolve, reject) => {
-	*     const chunks: Buffer[] = [];
-	*     readableStream.on("data", (data) => {
-	*       chunks.push(data instanceof Buffer ? data : Buffer.from(data));
-	*     });
-	*     readableStream.on("end", () => {
-	*       resolve(Buffer.concat(chunks));
-	*     });
-	*     readableStream.on("error", reject);
-	*   });
+	*   // Read the response bytes. Use `text` from "node:stream/consumers" instead
+	*   // if you want the response as a string directly.
+	*   const downloadedBuffer = await buffer(queryBlockBlobResponse.readableStreamBody);
+	*   console.log(`Query blob content: ${downloadedBuffer.toString()}`);
 	* }
 	* ```
 	*
