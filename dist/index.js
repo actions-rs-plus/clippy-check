@@ -34,6 +34,10 @@ import fs from "node:fs";
 //#region \0rolldown/runtime.js
 var __create = Object.create;
 var __defProp$1 = Object.defineProperty;
+var __name = (target, value) => __defProp$1(target, "name", {
+	value,
+	configurable: true
+});
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
@@ -157,7 +161,8 @@ var require_base64_vlq = /* @__PURE__ */ __commonJSMin(((exports) => {
 		var strLen = aStr.length;
 		var result = 0;
 		var shift = 0;
-		var continuation, digit;
+		var continuation;
+		var digit;
 		do {
 			if (aIndex >= strLen) throw new Error("Expected more digits in base 64 VLQ value.");
 			digit = base64.decode(aStr.charCodeAt(aIndex++));
@@ -1323,7 +1328,11 @@ var require_source_map_consumer = /* @__PURE__ */ __commonJSMin(((exports) => {
 		var temp = {};
 		var originalMappings = [];
 		var generatedMappings = [];
-		var mapping, str, segment, end, value;
+		var mapping;
+		var str;
+		var segment;
+		var end;
+		var value;
 		while (index < length) if (aStr.charAt(index) === ";") {
 			generatedLine++;
 			index++;
@@ -1810,7 +1819,8 @@ var require_source_node = /* @__PURE__ */ __commonJSMin(((exports) => {
 				return remainingLinesIndex < remainingLines.length ? remainingLines[remainingLinesIndex++] : void 0;
 			}
 		};
-		var lastGeneratedLine = 1, lastGeneratedColumn = 0;
+		var lastGeneratedLine = 1;
+		var lastGeneratedColumn = 0;
 		var lastMapping = null;
 		aSourceMapConsumer.eachMapping(function(mapping) {
 			if (lastMapping !== null) if (lastGeneratedLine < mapping.generatedLine) {
@@ -2188,7 +2198,8 @@ var require_buffer_from = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		} catch (e) {}
 		fileData = retrieveFile(source);
 		var re = /(?:\/\/[@#][\s]*sourceMappingURL=([^\s'"]+)[\s]*$)|(?:\/\*[@#][\s]*sourceMappingURL=([^\s*'"]+)[\s]*(?:\*\/)[\s]*$)/gm;
-		var lastMatch, match;
+		var lastMatch;
+		var match;
 		while (match = re.exec(fileData)) lastMatch = match;
 		if (!lastMatch) return null;
 		return lastMatch[1];
@@ -18812,7 +18823,7 @@ var HttpClient = class {
 		});
 	}
 };
-var lowercaseKeys$1 = (obj) => Object.keys(obj).reduce((c, k) => (c[k.toLowerCase()] = obj[k], c), {});
+var lowercaseKeys$1 = /* @__PURE__ */ __name((obj) => Object.keys(obj).reduce((c, k) => (c[k.toLowerCase()] = obj[k], c), {}), "lowercaseKeys");
 //#endregion
 //#region node_modules/.pnpm/@actions+http-client@4.0.1/node_modules/@actions/http-client/lib/auth.js
 var __awaiter$23 = function(thisArg, _arguments, P, generator) {
@@ -19251,6 +19262,7 @@ function normalizeSeparators$1(p) {
 	}
 	return p.replace(/\/\/+/g, "/");
 }
+__name(normalizeSeparators$1, "normalizeSeparators");
 function isUnixExecutable(stats) {
 	return (stats.mode & 1) > 0 || (stats.mode & 8) > 0 && process.getgid !== void 0 && stats.gid === process.getgid() || (stats.mode & 64) > 0 && process.getuid !== void 0 && stats.uid === process.getuid();
 }
@@ -19816,6 +19828,7 @@ function getInput$1(name, options) {
 	if (options && options.trimWhitespace === false) return val;
 	return val.trim();
 }
+__name(getInput$1, "getInput");
 /**
 * Sets the action status to failed.
 * When the action exits it will be with an exit code of 1
@@ -19904,7 +19917,9 @@ var Context = class {
 	* Hydrate the context from the environment
 	*/
 	constructor() {
-		var _a, _b, _c;
+		var _a;
+		var _b;
+		var _c;
 		this.payload = {};
 		if (process.env.GITHUB_EVENT_PATH) if (existsSync(process.env.GITHUB_EVENT_PATH)) this.payload = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, { encoding: "utf8" }));
 		else {
@@ -20752,6 +20767,7 @@ function isPlainObject$1(value) {
 	const Ctor = Object.prototype.hasOwnProperty.call(proto, "constructor") && proto.constructor;
 	return typeof Ctor === "function" && Ctor instanceof Ctor && Function.prototype.call(Ctor) === Function.prototype.call(value);
 }
+__name(isPlainObject$1, "isPlainObject");
 function mergeDeep(defaults, options) {
 	const result = Object.assign({}, defaults);
 	Object.keys(options).forEach((key) => {
@@ -20829,7 +20845,8 @@ function isKeyOperator(operator) {
 	return operator === ";" || operator === "&" || operator === "?";
 }
 function getValues(context, operator, key, modifier) {
-	var value = context[key], result = [];
+	var value = context[key];
+	var result = [];
 	if (isDefined(value) && value !== "") if (typeof value === "string" || typeof value === "number" || typeof value === "bigint" || typeof value === "boolean") {
 		value = value.toString();
 		if (modifier && modifier !== "*") value = value.substring(0, parseInt(modifier, 10));
@@ -20932,6 +20949,7 @@ function parse$2(options) {
 		headers
 	}, typeof body !== "undefined" ? { body } : null, options.request ? { request: options.request } : null);
 }
+__name(parse$2, "parse");
 function endpointWithDefaults(defaults, route, options) {
 	return parse$2(merge(defaults, route, options));
 }
@@ -20945,6 +20963,7 @@ function withDefaults$2(oldDefaults, newDefaults) {
 		parse: parse$2
 	});
 }
+__name(withDefaults$2, "withDefaults");
 var endpoint = withDefaults$2(null, DEFAULTS);
 /*!
 * content-type
@@ -21241,7 +21260,7 @@ function isPlainObject(value) {
 	const Ctor = Object.prototype.hasOwnProperty.call(proto, "constructor") && proto.constructor;
 	return typeof Ctor === "function" && Ctor instanceof Ctor && Function.prototype.call(Ctor) === Function.prototype.call(value);
 }
-var noop$1 = () => "";
+var noop$1 = /* @__PURE__ */ __name(() => "", "noop");
 async function fetchWrapper(requestOptions) {
 	const fetch = requestOptions.request?.fetch || globalThis.fetch;
 	if (!fetch) throw new Error("fetch is not set. Please pass a fetch implementation as new Octokit({ request: { fetch }}). Learn more at https://github.com/octokit/octokit.js/#fetch-missing");
@@ -21366,6 +21385,7 @@ function withDefaults$1(oldEndpoint, newDefaults) {
 		defaults: withDefaults$1.bind(null, endpoint2)
 	});
 }
+__name(withDefaults$1, "withDefaults");
 var request = withDefaults$1(endpoint, defaults_default);
 /* v8 ignore next -- @preserve */
 /* v8 ignore else -- @preserve */
@@ -23161,6 +23181,7 @@ function dirname$1(p) {
 	if (IS_WINDOWS$6 && /^\\\\[^\\]+\\[^\\]+\\$/.test(result)) result = safeTrimTrailingSeparator(result);
 	return result;
 }
+__name(dirname$1, "dirname");
 /**
 * Roots the path if not already rooted. On Windows, relative roots like `\`
 * or `C:` are expanded based on the current working directory.
@@ -23337,7 +23358,11 @@ var require_balanced_match = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 	}
 	balanced.range = range;
 	function range(a, b, str) {
-		var begs, beg, left, right, result;
+		var begs;
+		var beg;
+		var left;
+		var right;
+		var result;
 		var ai = str.indexOf(a);
 		var bi = str.indexOf(b, ai + 1);
 		var i = ai;
@@ -24038,7 +24063,10 @@ var import_minimatch = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((
 		return partial || null;
 	};
 	Minimatch.prototype._matchOne = function(file, pattern, partial, fileIndex, patternIndex) {
-		var fi, pi, fl, pl;
+		var fi;
+		var pi;
+		var fl;
+		var pl;
 		for (fi = fileIndex, pi = patternIndex, fl = file.length, pl = pattern.length; fi < fl && pi < pl; fi++, pi++) {
 			this.debug("matchOne loop");
 			var p = pattern[pi];
@@ -24306,7 +24334,8 @@ var __awaiter$13 = function(thisArg, _arguments, P, generator) {
 };
 var __asyncValues$2 = function(o) {
 	if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-	var m = o[Symbol.asyncIterator], i;
+	var m = o[Symbol.asyncIterator];
+	var i;
 	return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function() {
 		return this;
 	}, i);
@@ -24331,7 +24360,9 @@ var __await = function(v) {
 };
 var __asyncGenerator = function(thisArg, _arguments, generator) {
 	if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-	var g = generator.apply(thisArg, _arguments || []), i, q = [];
+	var g = generator.apply(thisArg, _arguments || []);
+	var i;
+	var q = [];
 	return i = Object.create((typeof AsyncIterator === "function" ? AsyncIterator : Object).prototype), verb("next"), verb("throw"), verb("return", awaitReturn), i[Symbol.asyncIterator] = function() {
 		return this;
 	}, i;
@@ -24387,7 +24418,10 @@ var DefaultGlobber = class DefaultGlobber {
 	}
 	glob() {
 		return __awaiter$13(this, void 0, void 0, function* () {
-			var _a, e_1, _b, _c;
+			var _a;
+			var e_1;
+			var _b;
+			var _c;
 			const result = [];
 			try {
 				for (var _d = true, _e = __asyncValues$2(this.globGenerator()), _f; _f = yield _e.next(), _a = _f.done, !_a; _d = true) {
@@ -25672,7 +25706,11 @@ var require_outside = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var outside = (version, range, hilo, options) => {
 		version = new SemVer(version, options);
 		range = new Range(range, options);
-		let gtfn, ltefn, ltfn, comp, ecomp;
+		let gtfn;
+		let ltefn;
+		let ltfn;
+		let comp;
+		let ecomp;
 		switch (hilo) {
 			case ">":
 				gtfn = gt;
@@ -25798,7 +25836,8 @@ var require_subset = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		if (dom.length === 1 && dom[0].semver === ANY) if (options.includePrerelease) return true;
 		else dom = minimumVersion;
 		const eqSet = /* @__PURE__ */ new Set();
-		let gt, lt;
+		let gt;
+		let lt;
 		for (const c of sub) if (c.operator === ">" || c.operator === ">=") gt = higherGT(gt, c, options);
 		else if (c.operator === "<" || c.operator === "<=") lt = lowerLT(lt, c, options);
 		else eqSet.add(c.semver);
@@ -25815,8 +25854,10 @@ var require_subset = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			for (const c of dom) if (!satisfies(eq, String(c), options)) return false;
 			return true;
 		}
-		let higher, lower;
-		let hasDomLT, hasDomGT;
+		let higher;
+		let lower;
+		let hasDomLT;
+		let hasDomGT;
 		let needDomLTPre = lt && !options.includePrerelease && lt.semver.prerelease.length ? lt.semver : false;
 		let needDomGTPre = gt && !options.includePrerelease && gt.semver.prerelease.length ? gt.semver : false;
 		if (needDomLTPre && needDomLTPre.prerelease.length === 1 && lt.operator === "<" && needDomLTPre.prerelease[0] === 0) needDomLTPre = false;
@@ -25970,7 +26011,8 @@ var __awaiter$10 = function(thisArg, _arguments, P, generator) {
 };
 var __asyncValues = function(o) {
 	if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-	var m = o[Symbol.asyncIterator], i;
+	var m = o[Symbol.asyncIterator];
+	var i;
 	return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function() {
 		return this;
 	}, i);
@@ -26012,7 +26054,10 @@ function getArchiveFileSizeInBytes(filePath) {
 }
 function resolvePaths(patterns) {
 	return __awaiter$10(this, void 0, void 0, function* () {
-		var _a, e_1, _b, _c;
+		var _a;
+		var e_1;
+		var _b;
+		var _c;
 		var _d;
 		const paths = [];
 		const workspace = (_d = process.env["GITHUB_WORKSPACE"]) !== null && _d !== void 0 ? _d : process.cwd();
@@ -26328,6 +26373,7 @@ context$1.logger;
 function createClientLogger$1(namespace) {
 	return context$1.createClientLogger(namespace);
 }
+__name(createClientLogger$1, "createClientLogger");
 //#endregion
 //#region node_modules/.pnpm/@azure+logger@1.3.0/node_modules/@azure/logger/dist/esm/index.js
 var context = createLoggerContext({
@@ -26364,6 +26410,7 @@ function agentPolicy$1(agent) {
 		}
 	};
 }
+__name(agentPolicy$1, "agentPolicy");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/policies/decompressResponsePolicy.js
 /**
@@ -26383,6 +26430,7 @@ function decompressResponsePolicy$1() {
 		}
 	};
 }
+__name(decompressResponsePolicy$1, "decompressResponsePolicy");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/util/random.js
 /**
@@ -26443,6 +26491,9 @@ function calculateRetryDelay(retryAttempt, config) {
 * ```
 */
 var AbortError$1 = class extends Error {
+	static {
+		__name(this, "AbortError");
+	}
 	constructor(message) {
 		super(message);
 		this.name = "AbortError";
@@ -26483,6 +26534,7 @@ function delay$2(delayInMs, value, options) {
 		if (options?.abortSignal) options.abortSignal.addEventListener("abort", onAborted);
 	});
 }
+__name(delay$2, "delay");
 /**
 * @internal
 * @returns the parsed value or undefined if the parsed value is invalid.
@@ -26620,6 +26672,7 @@ function isError$1(e) {
 	}
 	return false;
 }
+__name(isError$1, "isError");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/util/inspect.js
 var custom = inspect.custom;
@@ -26739,6 +26792,9 @@ var errorSanitizer = new Sanitizer();
 * A custom error type for failed pipeline requests.
 */
 var RestError$1 = class RestError$1 extends Error {
+	static {
+		__name(this, "RestError");
+	}
 	/**
 	* Something went wrong when making the request.
 	* This means the actual request failed for some reason,
@@ -26813,6 +26869,7 @@ function isRestError$1(e) {
 	if (e instanceof RestError$1) return true;
 	return isError$1(e) && e.name === "RestError";
 }
+__name(isRestError$1, "isRestError");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/policies/retryPolicy.js
 var retryPolicyLogger = createClientLogger$1("ts-http-runtime retryPolicy");
@@ -26914,6 +26971,7 @@ function defaultRetryPolicy$1(options = {}) {
 		sendRequest: retryPolicy([throttlingRetryStrategy(), exponentialRetryStrategy(options)], { maxRetries: options.maxRetries ?? 3 }).sendRequest
 	};
 }
+__name(defaultRetryPolicy$1, "defaultRetryPolicy");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/util/bytesEncoding.js
 /**
@@ -26925,6 +26983,7 @@ function defaultRetryPolicy$1(options = {}) {
 function uint8ArrayToString$1(bytes, format) {
 	return Buffer.from(bytes).toString(format);
 }
+__name(uint8ArrayToString$1, "uint8ArrayToString");
 /**
 * The helper that transforms string to specific character encoded bytes array.
 * @param value - the string to be converted
@@ -26934,6 +26993,7 @@ function uint8ArrayToString$1(bytes, format) {
 function stringToUint8Array$1(value, format) {
 	return Buffer.from(value, format);
 }
+__name(stringToUint8Array$1, "stringToUint8Array");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/formData.js
 /**
@@ -27039,6 +27099,7 @@ var HttpHeadersImpl = class {
 function createHttpHeaders$1(rawHeaders) {
 	return new HttpHeadersImpl(rawHeaders);
 }
+__name(createHttpHeaders$1, "createHttpHeaders");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/policies/formDataPolicy.js
 /**
@@ -27067,6 +27128,7 @@ function formDataPolicy$1() {
 		}
 	};
 }
+__name(formDataPolicy$1, "formDataPolicy");
 function wwwFormUrlEncode(formData) {
 	const urlSearchParams = new URLSearchParams();
 	for (const [key, value] of Object.entries(formData)) if (Array.isArray(value)) for (const subValue of value) urlSearchParams.append(key, subValue.toString());
@@ -27126,6 +27188,7 @@ function logPolicy$1(options = {}) {
 		}
 	};
 }
+__name(logPolicy$1, "logPolicy");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/util/typeGuards.js
 function isBlob(x) {
@@ -27141,6 +27204,7 @@ function isBlob(x) {
 function randomUUID$1() {
 	return crypto.randomUUID();
 }
+__name(randomUUID$1, "randomUUID");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/util/concat.js
 async function* streamAsyncIterator() {
@@ -27262,6 +27326,7 @@ function multipartPolicy$1() {
 		}
 	};
 }
+__name(multipartPolicy$1, "multipartPolicy");
 //#endregion
 //#region node_modules/.pnpm/ms@2.1.3/node_modules/ms/index.js
 var require_ms = /* @__PURE__ */ __commonJSMin(((exports, module) => {
@@ -28694,6 +28759,7 @@ function getDefaultProxySettings$1(proxyUrl) {
 		password: parsedUrl.password
 	};
 }
+__name(getDefaultProxySettings$1, "getDefaultProxySettings");
 /**
 * This method attempts to parse a proxy URL from the environment
 * variables `HTTPS_PROXY` or `HTTP_PROXY`.
@@ -28746,6 +28812,7 @@ function proxyPolicy$1(proxySettings, options) {
 		}
 	};
 }
+__name(proxyPolicy$1, "proxyPolicy");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/policies/redirectPolicy.js
 /**
@@ -28771,6 +28838,7 @@ function redirectPolicy$1(options = {}) {
 		}
 	};
 }
+__name(redirectPolicy$1, "redirectPolicy");
 async function handleRedirect(next, response, maxRetries, allowCrossOriginRedirects, currentRetries = 0) {
 	const { request, status, headers } = response;
 	const locationHeader = headers.get("location");
@@ -28812,6 +28880,7 @@ function tlsPolicy$1(tlsSettings) {
 		}
 	};
 }
+__name(tlsPolicy$1, "tlsPolicy");
 //#endregion
 //#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/logPolicy.js
 /**
@@ -28876,6 +28945,7 @@ var PipelineRequestImpl = class {
 function createPipelineRequest$1(options) {
 	return new PipelineRequestImpl(options);
 }
+__name(createPipelineRequest$1, "createPipelineRequest");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/pipeline.js
 var ValidPhaseNames = /* @__PURE__ */ new Set([
@@ -29075,6 +29145,7 @@ var HttpPipeline = class HttpPipeline {
 function createEmptyPipeline$1() {
 	return HttpPipeline.create();
 }
+__name(createEmptyPipeline$1, "createEmptyPipeline");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/nodeHttpClient.js
 var DEFAULT_TLS_SETTINGS = {};
@@ -29321,6 +29392,7 @@ function createNodeHttpClient() {
 function createDefaultHttpClient$1() {
 	return createNodeHttpClient();
 }
+__name(createDefaultHttpClient$1, "createDefaultHttpClient");
 //#endregion
 //#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/pipeline.js
 /**
@@ -29377,6 +29449,7 @@ function getUserAgentString$1(telemetryInfo) {
 	}
 	return parts.join(" ");
 }
+__name(getUserAgentString$1, "getUserAgentString");
 /**
 * @internal
 */
@@ -29449,6 +29522,7 @@ function getRawContent$1(blob) {
 	if (hasRawContent(blob)) return blob[rawContent]();
 	else return blob;
 }
+__name(getRawContent$1, "getRawContent");
 //#endregion
 //#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/multipartPolicy.js
 /**
@@ -29585,6 +29659,7 @@ function delay$1(timeInMs, options) {
 		abortErrorMsg: abortErrorMsg ?? StandardAbortMessage
 	});
 }
+__name(delay$1, "delay");
 //#endregion
 //#region node_modules/.pnpm/@azure+core-util@1.13.1/node_modules/@azure/core-util/dist/esm/error.js
 /**
@@ -30539,7 +30614,11 @@ var PooledBuffer = class {
 	*/
 	fill(buffers, totalLength) {
 		this._size = Math.min(this.capacity, totalLength);
-		let i = 0, j = 0, targetOffset = 0, sourceOffset = 0, totalCopiedNum = 0;
+		let i = 0;
+		let j = 0;
+		let targetOffset = 0;
+		let sourceOffset = 0;
+		let totalCopiedNum = 0;
 		while (totalCopiedNum < this._size) {
 			const source = buffers[i];
 			const target = this.buffers[j];
@@ -30824,7 +30903,8 @@ var NativeCRC64 = (() => {
 	return (function(NativeCRC64) {
 		NativeCRC64 = NativeCRC64 || {};
 		var Module = typeof NativeCRC64 != "undefined" ? NativeCRC64 : {};
-		var readyPromiseResolve, readyPromiseReject;
+		var readyPromiseResolve;
+		var readyPromiseReject;
 		Module["ready"] = new Promise(function(resolve, reject) {
 			readyPromiseResolve = resolve;
 			readyPromiseReject = reject;
@@ -31026,7 +31106,10 @@ var NativeCRC64 = (() => {
 		function UTF8ToString(ptr, maxBytesToRead) {
 			return ptr ? UTF8ArrayToString(HEAPU8, ptr, maxBytesToRead) : "";
 		}
-		var buffer, HEAPU8, HEAP32, HEAPU32;
+		var buffer;
+		var HEAPU8;
+		var HEAP32;
+		var HEAPU32;
 		function updateGlobalBufferAndViews(buf) {
 			buffer = buf;
 			Module["HEAP8"] = new Int8Array(buf);
@@ -33180,6 +33263,7 @@ function getCachedDefaultHttpClient$1() {
 	if (!_defaultHttpClient) _defaultHttpClient = createDefaultHttpClient();
 	return _defaultHttpClient;
 }
+__name(getCachedDefaultHttpClient$1, "getCachedDefaultHttpClient");
 //#endregion
 //#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/RequestPolicy.js
 /**
@@ -33399,6 +33483,7 @@ function setURLParameter$1(url, name, value) {
 	urlParsed.search = searchPieces.length ? `?${searchPieces.join("&")}` : "";
 	return urlParsed.toString();
 }
+__name(setURLParameter$1, "setURLParameter");
 /**
 * Set URL host.
 *
@@ -35180,7 +35265,9 @@ var AvroParser = class AvroParser {
 	static async readZigZagLong(stream, options = {}) {
 		let zigZagEncoded = 0;
 		let significanceInBit = 0;
-		let byte, haveMoreByte, significanceInFloat;
+		let byte;
+		let haveMoreByte;
+		let significanceInFloat;
 		do {
 			byte = await AvroParser.readByte(stream, options);
 			haveMoreByte = byte & 128;
@@ -39521,6 +39608,7 @@ function validateEntityName$1(name) {
 	for (const ch of name) if (SPECIAL_CHARS.has(ch)) throw new Error(`[EntityReplacer] Invalid character '${ch}' in entity name: "${name}"`);
 	return name;
 }
+__name(validateEntityName$1, "validateEntityName");
 /**
 * Merge one or more entity maps into a flat name→string map.
 * Accepts either:
@@ -40160,12 +40248,14 @@ var DocTypeReader = class {
 		if (xmlData[i + 3] === "O" && xmlData[i + 4] === "C" && xmlData[i + 5] === "T" && xmlData[i + 6] === "Y" && xmlData[i + 7] === "P" && xmlData[i + 8] === "E") {
 			i = i + 9;
 			let angleBracketsCount = 1;
-			let hasBody = false, comment = false;
+			let hasBody = false;
+			let comment = false;
 			let exp = "";
 			for (; i < xmlData.length; i++) if (xmlData[i] === "<" && !comment) {
 				if (hasBody && hasSeq(xmlData, "!ENTITY", i)) {
 					i += 7;
-					let entityName, val;
+					let entityName;
+					let val;
 					[entityName, val, i] = this.readEntityExp(xmlData, i + 1, this.suppressValidationErr);
 					if (val.indexOf("&") === -1) {
 						if (this.options.enabled !== false && this.options.maxEntityCount != null && entityCount >= this.options.maxEntityCount) throw new Error(`Entity count (${entityCount + 1}) exceeds maximum allowed (${this.options.maxEntityCount})`);
@@ -40674,6 +40764,7 @@ function getIgnoreAttributesFn$1(ignoreAttributes) {
 	};
 	return () => false;
 }
+__name(getIgnoreAttributesFn$1, "getIgnoreAttributesFn");
 //#endregion
 //#region node_modules/.pnpm/path-expression-matcher@1.6.1/node_modules/path-expression-matcher/src/Expression.js
 /**
@@ -42668,6 +42759,7 @@ function replaceEntitiesValue$1(val, tagName, jPath) {
 	}
 	return this.entityDecoder.decode(val);
 }
+__name(replaceEntitiesValue$1, "replaceEntitiesValue");
 function saveTextToParentTag(textData, parentNode, matcher, isLeafNode) {
 	if (textData) {
 		if (isLeafNode === void 0) isLeafNode = parentNode.child.length === 0;
@@ -42902,6 +42994,7 @@ function propName$1(obj) {
 		if (key !== ":@") return key;
 	}
 }
+__name(propName$1, "propName");
 function assignAttributes(obj, attrMap, readonlyMatcher, options) {
 	if (attrMap) {
 		const keys = Object.keys(attrMap);
@@ -43026,6 +43119,7 @@ function resolveTagName$1(name, isAttribute, options, matcher, xmlVersion) {
 		matcher: matcher.readOnly()
 	});
 }
+__name(resolveTagName$1, "resolveTagName");
 /**
 * @param {array} jArray
 * @param {any} options
@@ -55874,6 +55968,9 @@ var getBlockListOperationSpec = {
 //#endregion
 //#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/generated/src/storageClient.js
 var StorageClient$1 = class extends ExtendedServiceClient {
+	static {
+		__name(this, "StorageClient");
+	}
 	url;
 	version;
 	/**
@@ -56161,6 +56258,7 @@ function truncatedISO8061Date(date, withMilliseconds = true) {
 function base64encode$1(content) {
 	return !isNodeLike ? btoa(content) : Buffer.from(content).toString("base64");
 }
+__name(base64encode$1, "base64encode");
 /**
 * Generate a 64 bytes base64 block ID string.
 *
@@ -61653,6 +61751,7 @@ function saveCache$1(cacheId, archivePath, signedUploadURL, options) {
 		}
 	});
 }
+__name(saveCache$1, "saveCache");
 //#endregion
 //#region node_modules/.pnpm/@protobuf-ts+runtime@2.11.1/node_modules/@protobuf-ts/runtime/build/es2015/binary-format-contract.js
 /**
@@ -61882,7 +61981,10 @@ var RepeatType;
 * Turns PartialFieldInfo into FieldInfo.
 */
 function normalizeFieldInfo(field) {
-	var _a, _b, _c, _d;
+	var _a;
+	var _b;
+	var _c;
+	var _d;
 	field.localName = (_a = field.localName) !== null && _a !== void 0 ? _a : lowerCamelCase(field.name);
 	field.jsonName = (_b = field.jsonName) !== null && _b !== void 0 ? _b : lowerCamelCase(field.name);
 	field.repeat = (_c = field.repeat) !== null && _c !== void 0 ? _c : RepeatType.NO;
@@ -61937,7 +62039,9 @@ var ReflectionTypeCheck = class {
 	}
 	prepare() {
 		if (this.data) return;
-		const req = [], known = [], oneofs = [];
+		const req = [];
+		const known = [];
+		const oneofs = [];
 		for (let field of this.fields) if (field.oneof) {
 			if (!oneofs.includes(field.oneof)) {
 				oneofs.push(field.oneof);
@@ -61989,7 +62093,8 @@ var ReflectionTypeCheck = class {
 		if (depth < 0) return true;
 		if (message === null || message === void 0 || typeof message != "object") return false;
 		this.prepare();
-		let keys = Object.keys(message), data = this.data;
+		let keys = Object.keys(message);
+		let data = this.data;
 		if (keys.length < data.req.length || data.req.some((n) => !keys.includes(n))) return false;
 		if (!allowExcessProperties) {
 			if (keys.some((k) => !data.known.includes(k))) return false;
@@ -62132,7 +62237,11 @@ function base64decode(base64Str) {
 	let es = base64Str.length * 3 / 4;
 	if (base64Str[base64Str.length - 2] == "=") es -= 2;
 	else if (base64Str[base64Str.length - 1] == "=") es -= 1;
-	let bytes = new Uint8Array(es), bytePos = 0, groupPos = 0, b, p = 0;
+	let bytes = new Uint8Array(es);
+	let bytePos = 0;
+	let groupPos = 0;
+	let b;
+	let p = 0;
 	for (let i = 0; i < base64Str.length; i++) {
 		b = decTable[base64Str.charCodeAt(i)];
 		if (b === void 0) switch (base64Str[i]) {
@@ -62173,7 +62282,10 @@ function base64decode(base64Str) {
 * Does not insert newlines.
 */
 function base64encode(bytes) {
-	let base64 = "", groupPos = 0, b, p = 0;
+	let base64 = "";
+	let groupPos = 0;
+	let b;
+	let p = 0;
 	for (let i = 0; i < bytes.length; i++) {
 		b = bytes[i];
 		switch (groupPos) {
@@ -62551,7 +62663,8 @@ var PbLong = class PbLong extends SharedPbLong {
 	* Invert all the bits and add one to the result.
 	*/
 	negate() {
-		let hi = ~this.hi, lo = this.lo;
+		let hi = ~this.hi;
+		let lo = this.lo;
 		if (lo) lo = ~lo + 1;
 		else hi += 1;
 		return new PbLong(lo, hi);
@@ -62589,7 +62702,12 @@ PbLong.ZERO = new PbLong(0, 0);
 function assert$1(condition, msg) {
 	if (!condition) throw new Error(msg);
 }
-var FLOAT32_MAX = 34028234663852886e22, FLOAT32_MIN = -34028234663852886e22, UINT32_MAX = 4294967295, INT32_MAX = 2147483647, INT32_MIN = -2147483648;
+__name(assert$1, "assert");
+var FLOAT32_MAX = 34028234663852886e22;
+var FLOAT32_MIN = -34028234663852886e22;
+var UINT32_MAX = 4294967295;
+var INT32_MAX = 2147483647;
+var INT32_MIN = -2147483648;
 function assertInt32(arg) {
 	if (typeof arg !== "number") throw new Error("invalid int 32: " + typeof arg);
 	if (!Number.isInteger(arg) || arg > INT32_MAX || arg < INT32_MIN) throw new Error("invalid int 32: " + arg);
@@ -62860,7 +62978,8 @@ var ReflectionJsonWriter = class {
 	* Converts the message to a JSON object, based on the field descriptors.
 	*/
 	write(message, options) {
-		const json = {}, source = message;
+		const json = {};
+		const source = message;
 		for (const field of this.fields) {
 			if (!field.oneof) {
 				let jsonValue = this.field(field, source[field.localName], options);
@@ -63076,7 +63195,8 @@ var ReflectionBinaryReader = class {
 		this.prepare();
 		const end = length === void 0 ? reader.len : reader.pos + length;
 		while (reader.pos < end) {
-			const [fieldNo, wireType] = reader.tag(), field = this.fieldNoToField.get(fieldNo);
+			const [fieldNo, wireType] = reader.tag();
+			const field = this.fieldNoToField.get(fieldNo);
 			if (!field) {
 				let u = options.readUnknownField;
 				if (u == "throw") throw new Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.info.typeName}`);
@@ -63084,7 +63204,9 @@ var ReflectionBinaryReader = class {
 				if (u !== false) (u === true ? UnknownFieldHandler.onRead : u)(this.info.typeName, message, fieldNo, wireType, d);
 				continue;
 			}
-			let target = message, repeated = field.repeat, localName = field.localName;
+			let target = message;
+			let repeated = field.repeat;
+			let localName = field.localName;
 			if (field.oneof) {
 				target = target[field.oneof];
 				if (target.oneofKind !== localName) target = message[field.oneof] = { oneofKind: localName };
@@ -63207,7 +63329,10 @@ var ReflectionBinaryWriter = class {
 	write(message, writer, options) {
 		this.prepare();
 		for (const field of this.fields) {
-			let value, emitDefault, repeated = field.repeat, localName = field.localName;
+			let value;
+			let emitDefault;
+			let repeated = field.repeat;
+			let localName = field.localName;
 			if (field.oneof) {
 				const group = message[field.oneof];
 				if (group.oneofKind !== localName) continue;
@@ -63448,7 +63573,9 @@ function reflectionCreate(type) {
 * which appends repeated fields.
 */
 function reflectionMergePartial(info, target, source) {
-	let fieldValue, input = source, output;
+	let fieldValue;
+	let input = source;
+	let output;
 	for (let field of info.fields) {
 		let name = field.localName;
 		if (field.oneof) {
@@ -63501,7 +63628,8 @@ var defaultsWrite$1 = {
 	enumAsInteger: false,
 	useProtoFieldName: false,
 	prettySpaces: 0
-}, defaultsRead$1 = { ignoreUnknownFields: false };
+};
+var defaultsRead$1 = { ignoreUnknownFields: false };
 /**
 * Make options for reading JSON data from partial options.
 */
@@ -63773,7 +63901,8 @@ var BinaryWriter = class {
 	* Write a `sint64` value, a signed, zig-zag-encoded 64-bit varint.
 	*/
 	sint64(value) {
-		let long = PbLong.from(value), sign = long.hi >> 31;
+		let long = PbLong.from(value);
+		let sign = long.hi >> 31;
 		varint64write(long.lo << 1 ^ sign, (long.hi << 1 | long.lo >>> 31) ^ sign, this.buf);
 		return this;
 	}
@@ -63818,7 +63947,9 @@ var BinaryReader = class {
 	* Reads a tag - field number and wire type.
 	*/
 	tag() {
-		let tag = this.uint32(), fieldNo = tag >>> 3, wireType = tag & 7;
+		let tag = this.uint32();
+		let fieldNo = tag >>> 3;
+		let wireType = tag & 7;
 		if (fieldNo <= 0 || wireType < 0 || wireType > 5) throw new Error("illegal tag: field no " + fieldNo + " wire type " + wireType);
 		return [fieldNo, wireType];
 	}
@@ -64115,7 +64246,9 @@ var MessageType = class {
 * Turns PartialMethodInfo into MethodInfo.
 */
 function normalizeMethodInfo(method, service) {
-	var _a, _b, _c;
+	var _a;
+	var _b;
+	var _c;
 	let m = method;
 	m.service = service;
 	m.localName = (_a = m.localName) !== null && _a !== void 0 ? _a : lowerCamelCase(m.name);
@@ -64163,7 +64296,8 @@ var CacheScope$Type = class extends MessageType {
 		return message;
 	}
 	internalBinaryRead(reader, length, options, target) {
-		let message = target !== null && target !== void 0 ? target : this.create(), end = reader.pos + length;
+		let message = target !== null && target !== void 0 ? target : this.create();
+		let end = reader.pos + length;
 		while (reader.pos < end) {
 			let [fieldNo, wireType] = reader.tag();
 			switch (fieldNo) {
@@ -64224,7 +64358,8 @@ var CacheMetadata$Type = class extends MessageType {
 		return message;
 	}
 	internalBinaryRead(reader, length, options, target) {
-		let message = target !== null && target !== void 0 ? target : this.create(), end = reader.pos + length;
+		let message = target !== null && target !== void 0 ? target : this.create();
+		let end = reader.pos + length;
 		while (reader.pos < end) {
 			let [fieldNo, wireType] = reader.tag();
 			switch (fieldNo) {
@@ -64293,7 +64428,8 @@ var CreateCacheEntryRequest$Type = class extends MessageType {
 		return message;
 	}
 	internalBinaryRead(reader, length, options, target) {
-		let message = target !== null && target !== void 0 ? target : this.create(), end = reader.pos + length;
+		let message = target !== null && target !== void 0 ? target : this.create();
+		let end = reader.pos + length;
 		while (reader.pos < end) {
 			let [fieldNo, wireType] = reader.tag();
 			switch (fieldNo) {
@@ -64365,7 +64501,8 @@ var CreateCacheEntryResponse$Type = class extends MessageType {
 		return message;
 	}
 	internalBinaryRead(reader, length, options, target) {
-		let message = target !== null && target !== void 0 ? target : this.create(), end = reader.pos + length;
+		let message = target !== null && target !== void 0 ? target : this.create();
+		let end = reader.pos + length;
 		while (reader.pos < end) {
 			let [fieldNo, wireType] = reader.tag();
 			switch (fieldNo) {
@@ -64443,7 +64580,8 @@ var FinalizeCacheEntryUploadRequest$Type = class extends MessageType {
 		return message;
 	}
 	internalBinaryRead(reader, length, options, target) {
-		let message = target !== null && target !== void 0 ? target : this.create(), end = reader.pos + length;
+		let message = target !== null && target !== void 0 ? target : this.create();
+		let end = reader.pos + length;
 		while (reader.pos < end) {
 			let [fieldNo, wireType] = reader.tag();
 			switch (fieldNo) {
@@ -64519,7 +64657,8 @@ var FinalizeCacheEntryUploadResponse$Type = class extends MessageType {
 		return message;
 	}
 	internalBinaryRead(reader, length, options, target) {
-		let message = target !== null && target !== void 0 ? target : this.create(), end = reader.pos + length;
+		let message = target !== null && target !== void 0 ? target : this.create();
+		let end = reader.pos + length;
 		while (reader.pos < end) {
 			let [fieldNo, wireType] = reader.tag();
 			switch (fieldNo) {
@@ -64598,7 +64737,8 @@ var GetCacheEntryDownloadURLRequest$Type = class extends MessageType {
 		return message;
 	}
 	internalBinaryRead(reader, length, options, target) {
-		let message = target !== null && target !== void 0 ? target : this.create(), end = reader.pos + length;
+		let message = target !== null && target !== void 0 ? target : this.create();
+		let end = reader.pos + length;
 		while (reader.pos < end) {
 			let [fieldNo, wireType] = reader.tag();
 			switch (fieldNo) {
@@ -64674,7 +64814,8 @@ var GetCacheEntryDownloadURLResponse$Type = class extends MessageType {
 		return message;
 	}
 	internalBinaryRead(reader, length, options, target) {
-		let message = target !== null && target !== void 0 ? target : this.create(), end = reader.pos + length;
+		let message = target !== null && target !== void 0 ? target : this.create();
+		let end = reader.pos + length;
 		while (reader.pos < end) {
 			let [fieldNo, wireType] = reader.tag();
 			switch (fieldNo) {
@@ -65387,7 +65528,12 @@ function saveCache(paths_1, key_1, options_1) {
 */
 function saveCacheV1(paths_1, key_1, options_1) {
 	return __awaiter$3(this, arguments, void 0, function* (paths, key, options, enableCrossOsArchive = false) {
-		var _a, _b, _c, _d, _e, _f;
+		var _a;
+		var _b;
+		var _c;
+		var _d;
+		var _e;
+		var _f;
 		const compressionMethod = yield getCompressionMethod();
 		let cacheId = -1;
 		const cachePaths = yield resolvePaths(paths);
