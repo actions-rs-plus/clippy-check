@@ -36,6 +36,9 @@ const configFunction: ViteUserConfigFn = defineConfig(({ mode }) => {
             ssr: true,
             rolldownOptions: {
                 treeshake: true,
+                output: {
+                    keepNames: true,
+                },
             },
         },
         ssr: buildSsr(),
