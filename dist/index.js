@@ -20971,7 +20971,7 @@ var endpoint = withDefaults$2(null, DEFAULTS);
 * MIT Licensed
 */
 //#endregion
-//#region node_modules/.pnpm/json-with-bigint@3.5.8/node_modules/json-with-bigint/json-with-bigint.js
+//#region node_modules/.pnpm/json-with-bigint@3.5.10/node_modules/json-with-bigint/json-with-bigint.js
 var import_dist$2 = (/* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.parse = parse;
@@ -21091,12 +21091,164 @@ var noiseValue = /^-?\d+n+$/;
 var originalStringify = JSON.stringify;
 var originalParse = JSON.parse;
 var customFormat = /^-?\d+n$/;
-var bigIntsStringify = /([\[:])?"(-?\d+)n"($|([\\n]|\s)*(\s|[\\n])*[,\}\]])/g;
-var noiseStringify = /([\[:])?("-?\d+n+)n("$|"([\\n]|\s)*(\s|[\\n])*[,\}\]])/g;
+var bigIntsStringify = /([\[:])?"(-?\d+)n"($|\s*[,\}\]])/g;
+var noiseStringify = /([\[:])?("-?\d+n+)n("$|"\s*[,\}\]])/g;
 /**
 * @typedef {(this: any, key: string | number | undefined, value: any) => any} Replacer
 * @typedef {(key: string | number | undefined, value: any, context?: { source: string }) => any} Reviver
 */
+/**
+* Checks if a value is unstringifiable according to native JSON.stringify rules.
+*
+* @param {any} val The value to check.
+* @returns {boolean} True if the value is undefined, a function, or a symbol.
+*/
+var isUnstringifiable = (val) => val === void 0 || typeof val === "function" || typeof val === "symbol";
+/**
+* Checks if a value is a native JSON.rawJSON object (Node.js 22+).
+*
+* @param {any} val The value to check.
+* @returns {boolean} True if the value is a RawJSON instance.
+*/
+var isRawJSON = (val) => val !== null && typeof val === "object" && val.constructor && val.constructor.name === "RawJSON";
+/**
+* Iteratively converts a JS value to a JSON string.
+* Used as a fallback when the native JSON.stringify hits the Maximum Call Stack size.
+* Fully compliant with JSON formatting (space), replacers, and toJSON behaviors.
+*
+* @param {any} rootValue The value to stringify.
+* @param {Replacer | Array<string | number> | null} [replacer] User's custom replacer function.
+* @param {string | number} [spaceParam] Indentation for pretty-printing.
+* @returns {string | undefined} The generated JSON string.
+*/
+var stringifyIteratively = (rootValue, replacer, spaceParam) => {
+	let space = "";
+	if (typeof spaceParam === "number") space = " ".repeat(Math.min(10, Math.max(0, Math.floor(spaceParam))));
+	else if (typeof spaceParam === "string") space = spaceParam.slice(0, 10);
+	const isFunctionReplacer = typeof replacer === "function";
+	const propertyList = Array.isArray(replacer) ? new Set(replacer.map(String)) : null;
+	/**
+	* Prepares a value for stringification by resolving toJSON, handling BigInts,
+	* applying custom replacers, and unwrapping primitive objects.
+	*
+	* @param {object|Array} parent The parent object or array holding the value.
+	* @param {string} key The key associated with the value.
+	* @param {any} val The raw value to process.
+	* @returns {any} The processed value ready for stringification.
+	*/
+	const prepareVal = (parent, key, val) => {
+		if (val !== null && typeof val === "object" && typeof val.toJSON === "function") val = val.toJSON(key);
+		if (typeof val === "string" && noiseValue.test(val)) return val + "n";
+		if (typeof val === "bigint") {
+			if ("rawJSON" in JSON) return JSON.rawJSON(val.toString());
+			return val.toString() + "n";
+		}
+		if (isFunctionReplacer) val = replacer.call(parent, key, val);
+		if (val !== null && typeof val === "object") {
+			if (val instanceof Number || val instanceof String || val instanceof Boolean) val = val.valueOf();
+		}
+		return val;
+	};
+	const rootProcessed = prepareVal({ "": rootValue }, "", rootValue);
+	if (isUnstringifiable(rootProcessed)) return;
+	const isRootPrimitive = rootProcessed === null || typeof rootProcessed !== "object";
+	const isRootNativeRawJSON = isRawJSON(rootProcessed);
+	if (isRootPrimitive || isRootNativeRawJSON) return originalStringify(rootProcessed);
+	const chunks = [];
+	let level = 0;
+	const stack = [{
+		parent: { "": rootProcessed },
+		key: "",
+		val: rootProcessed,
+		isArray: Array.isArray(rootProcessed),
+		keys: Array.isArray(rootProcessed) ? null : Object.keys(rootProcessed),
+		index: 0,
+		first: true
+	}];
+	const visited = new WeakSet([rootProcessed]);
+	while (stack.length > 0) {
+		const node = stack[stack.length - 1];
+		if (node.index === 0) {
+			chunks.push(node.isArray ? "[" : "{");
+			level++;
+		}
+		let isDone = false;
+		if (node.isArray) if (node.index < node.val.length) {
+			if (!node.first) chunks.push(",");
+			if (space) chunks.push("\n" + space.repeat(level));
+			const childRaw = node.val[node.index];
+			const childVal = prepareVal(node.val, String(node.index), childRaw);
+			if (isUnstringifiable(childVal)) {
+				chunks.push("null");
+				node.first = false;
+				node.index++;
+			} else {
+				const isComplexObject = childVal !== null && typeof childVal === "object";
+				const isNativeRaw = isRawJSON(childVal);
+				if (isComplexObject && !isNativeRaw) {
+					if (visited.has(childVal)) throw new TypeError("Converting circular structure to JSON");
+					visited.add(childVal);
+					stack.push({
+						parent: node.val,
+						key: String(node.index),
+						val: childVal,
+						isArray: Array.isArray(childVal),
+						keys: Array.isArray(childVal) ? null : Object.keys(childVal),
+						index: 0,
+						first: true
+					});
+					node.first = false;
+					node.index++;
+				} else {
+					chunks.push(originalStringify(childVal));
+					node.first = false;
+					node.index++;
+				}
+			}
+		} else isDone = true;
+		else {
+			while (node.index < node.keys.length) {
+				const k = node.keys[node.index++];
+				if (propertyList && !propertyList.has(k)) continue;
+				const childRaw = node.val[k];
+				const childVal = prepareVal(node.val, k, childRaw);
+				if (isUnstringifiable(childVal)) continue;
+				if (!node.first) chunks.push(",");
+				if (space) chunks.push("\n" + space.repeat(level) + originalStringify(k) + ": ");
+				else chunks.push(originalStringify(k) + ":");
+				const isComplexObject = childVal !== null && typeof childVal === "object";
+				const isNativeRaw = isRawJSON(childVal);
+				if (isComplexObject && !isNativeRaw) {
+					if (visited.has(childVal)) throw new TypeError("Converting circular structure to JSON");
+					visited.add(childVal);
+					stack.push({
+						parent: node.val,
+						key: k,
+						val: childVal,
+						isArray: Array.isArray(childVal),
+						keys: Array.isArray(childVal) ? null : Object.keys(childVal),
+						index: 0,
+						first: true
+					});
+					node.first = false;
+					break;
+				} else {
+					chunks.push(originalStringify(childVal));
+					node.first = false;
+				}
+			}
+			if (node.index >= node.keys.length && stack[stack.length - 1] === node) isDone = true;
+		}
+		if (isDone) {
+			level--;
+			if (!node.first && space) chunks.push("\n" + space.repeat(level));
+			chunks.push(node.isArray ? "]" : "}");
+			visited.delete(node.val);
+			stack.pop();
+		}
+	}
+	return chunks.join("");
+};
 /**
 * Converts a JavaScript value to a JSON string.
 *
@@ -21108,27 +21260,37 @@ var noiseStringify = /([\[:])?("-?\d+n+)n("$|"([\\n]|\s)*(\s|[\\n])*[,\}\]])/g;
 *
 * @param {*} value The value to convert to a JSON string.
 * @param {Replacer | Array<string | number> | null} [replacer]
-*   A function that alters the behavior of the stringification process,
-*   or an array of strings/numbers to indicate properties to exclude.
+* A function that alters the behavior of the stringification process,
+* or an array of strings/numbers to indicate properties to exclude.
 * @param {string | number} [space]
-*   A string or number to specify indentation or pretty-printing.
+* A string or number to specify indentation or pretty-printing.
 * @returns {string} The JSON string representation.
 */
 var JSONStringify = (value, replacer, space) => {
-	if ("rawJSON" in JSON) return originalStringify(value, (key, value) => {
-		if (typeof value === "bigint") return JSON.rawJSON(value.toString());
-		if (typeof replacer === "function") return replacer(key, value);
-		if (Array.isArray(replacer) && replacer.includes(key)) return value;
-		return value;
-	}, space);
-	if (!value) return originalStringify(value, replacer, space);
-	return originalStringify(value, (key, value) => {
-		if (typeof value === "string" && noiseValue.test(value)) return value.toString() + "n";
-		if (typeof value === "bigint") return value.toString() + "n";
-		if (typeof replacer === "function") return replacer(key, value);
-		if (Array.isArray(replacer) && replacer.includes(key)) return value;
-		return value;
-	}, space).replace(bigIntsStringify, "$1$2$3").replace(noiseStringify, "$1$2$3");
+	try {
+		if ("rawJSON" in JSON) return originalStringify(value, (key, val) => {
+			if (typeof val === "bigint") return JSON.rawJSON(val.toString());
+			if (typeof replacer === "function") return replacer(key, val);
+			if (Array.isArray(replacer) && replacer.includes(key)) return val;
+			return val;
+		}, space);
+		if (!value) return originalStringify(value, replacer, space);
+		return originalStringify(value, (key, val) => {
+			if (typeof val === "string" && noiseValue.test(val)) return val.toString() + "n";
+			if (typeof val === "bigint") return val.toString() + "n";
+			if (typeof replacer === "function") return replacer(key, val);
+			if (Array.isArray(replacer) && replacer.includes(key)) return val;
+			return val;
+		}, space).replace(bigIntsStringify, "$1$2$3").replace(noiseStringify, "$1$2$3");
+	} catch (error) {
+		if (error instanceof RangeError) {
+			const convertedJSON = stringifyIteratively(value, replacer, space);
+			if (convertedJSON === void 0) return void 0;
+			if ("rawJSON" in JSON) return convertedJSON;
+			return convertedJSON.replace(bigIntsStringify, "$1$2$3").replace(noiseStringify, "$1$2$3");
+		}
+		throw error;
+	}
 };
 var featureCache = /* @__PURE__ */ new Map();
 /**
@@ -21164,7 +21326,7 @@ var isContextSourceSupported = () => {
 var convertMarkedBigIntsReviver = (key, value, context, userReviver) => {
 	if (typeof value === "string" && customFormat.test(value)) return BigInt(value.slice(0, -1));
 	if (typeof value === "string" && noiseValue.test(value)) return value.slice(0, -1);
-	if (typeof userReviver !== "function") return value;
+	if (!(typeof userReviver === "function")) return value;
 	return userReviver(key, value, context);
 };
 /**
@@ -21180,10 +21342,12 @@ var convertMarkedBigIntsReviver = (key, value, context, userReviver) => {
 */
 var JSONParseV2 = (text, reviver) => {
 	return JSON.parse(text, (key, value, context) => {
-		const isBigNumber = typeof value === "number" && (value > Number.MAX_SAFE_INTEGER || value < Number.MIN_SAFE_INTEGER);
+		const isNumber = typeof value === "number";
+		const isOutOfBounds = value > Number.MAX_SAFE_INTEGER || value < Number.MIN_SAFE_INTEGER;
+		const isBigNumber = isNumber && isOutOfBounds;
 		const isInt = context && intRegex.test(context.source);
 		if (isBigNumber && isInt) return BigInt(context.source);
-		if (typeof reviver !== "function") return value;
+		if (!(typeof reviver === "function")) return value;
 		return reviver(key, value, context);
 	});
 };
@@ -21191,6 +21355,66 @@ var MAX_INT = Number.MAX_SAFE_INTEGER.toString();
 var MAX_DIGITS = MAX_INT.length;
 var stringsOrLargeNumbers = /"(?:\\.|[^"])*"|-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?/g;
 var noiseValueWithQuotes = /^"-?\d+n+"$/;
+/**
+* Iteratively traverses the parsed object bottom-up (post-order),
+* emulating the native JSON.parse reviver behavior.
+* This avoids Call Stack overflows (RangeError) on deeply nested structures.
+*
+* @param {any} parsed The natively parsed JSON object.
+* @param {Reviver} [userReviver] User's custom reviver function.
+* @returns {any} The fully processed object.
+*/
+var applyReviverIteratively = (parsed, userReviver) => {
+	const rootHolder = { "": parsed };
+	const stack = [{
+		parent: rootHolder,
+		key: "",
+		visited: false
+	}];
+	while (stack.length > 0) {
+		const node = stack[stack.length - 1];
+		if (!node.visited) {
+			node.visited = true;
+			const value = node.parent[node.key];
+			if (value !== null && typeof value === "object") {
+				const keys = Object.keys(value);
+				for (let i = keys.length - 1; i >= 0; i--) stack.push({
+					parent: value,
+					key: keys[i],
+					visited: false
+				});
+			}
+		} else {
+			const { parent, key } = node;
+			let value = parent[key];
+			if (typeof value === "string") {
+				if (customFormat.test(value)) value = BigInt(value.slice(0, -1));
+				else if (noiseValue.test(value)) value = value.slice(0, -1);
+			}
+			if (typeof userReviver === "function") value = userReviver.call(parent, key, value);
+			if (value === void 0) delete parent[key];
+			else parent[key] = value;
+			stack.pop();
+		}
+	}
+	return rootHolder[""];
+};
+/**
+* Pre-processes the JSON string to mark large numbers with an 'n' suffix.
+*
+* @param {string} text The raw JSON string.
+* @returns {string} The serialized string with marked BigInts.
+*/
+var serializeBigInts = (text) => {
+	return text.replace(stringsOrLargeNumbers, (match, digits, fractional, exponential) => {
+		const isString = match[0] === "\"";
+		if (isString && noiseValueWithQuotes.test(match)) return match.substring(0, match.length - 1) + "n\"";
+		const hasFractionalOrExponential = fractional || exponential;
+		const isLessThanMaxSafeInt = digits && (digits.length < MAX_DIGITS || digits.length === MAX_DIGITS && digits <= MAX_INT);
+		if (isString || hasFractionalOrExponential || isLessThanMaxSafeInt) return match;
+		return "\"" + match + "n\"";
+	});
+};
 /**
 * Converts a JSON string into a JavaScript value.
 *
@@ -21202,23 +21426,21 @@ var noiseValueWithQuotes = /^"-?\d+n+"$/;
 *
 * @param {string} text A valid JSON string.
 * @param {Reviver} [reviver]
-*   A function that transforms the results. This function is called for each member
-*   of the object. If a member contains nested objects, the nested objects are
-*   transformed before the parent object is.
+* A function that transforms the results. This function is called for each member
+* of the object. If a member contains nested objects, the nested objects are
+* transformed before the parent object is.
 * @returns {any} The parsed JavaScript value.
 * @throws {SyntaxError} If text is not valid JSON.
 */
 var JSONParse = (text, reviver) => {
 	if (!text) return originalParse(text, reviver);
-	if (isContextSourceSupported()) return JSONParseV2(text, reviver);
-	return originalParse(text.replace(stringsOrLargeNumbers, (text, digits, fractional, exponential) => {
-		const isString = text[0] === "\"";
-		if (isString && noiseValueWithQuotes.test(text)) return text.substring(0, text.length - 1) + "n\"";
-		const isFractionalOrExponential = fractional || exponential;
-		const isLessThanMaxSafeInt = digits && (digits.length < MAX_DIGITS || digits.length === MAX_DIGITS && digits <= MAX_INT);
-		if (isString || isFractionalOrExponential || isLessThanMaxSafeInt) return text;
-		return "\"" + text + "n\"";
-	}), (key, value, context) => convertMarkedBigIntsReviver(key, value, context, reviver));
+	try {
+		if (isContextSourceSupported()) return JSONParseV2(text, reviver);
+		return originalParse(serializeBigInts(text), (key, value, context) => convertMarkedBigIntsReviver(key, value, context, reviver));
+	} catch (error) {
+		if (error instanceof RangeError) return applyReviverIteratively(originalParse(serializeBigInts(text)), reviver);
+		throw error;
+	}
 };
 //#endregion
 //#region node_modules/.pnpm/@octokit+request-error@7.1.0/node_modules/@octokit/request-error/dist-src/index.js
@@ -23391,7 +23613,7 @@ var require_balanced_match = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 	}
 }));
 //#endregion
-//#region node_modules/.pnpm/brace-expansion@1.1.15/node_modules/brace-expansion/index.js
+//#region node_modules/.pnpm/brace-expansion@1.1.16/node_modules/brace-expansion/index.js
 var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var concatMap = require_concat_map();
 	var balanced = require_balanced_match();
@@ -23449,74 +23671,77 @@ var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) =
 	}
 	function expand(str, max, isTop) {
 		var expansions = [];
-		var m = balanced("{", "}", str);
-		if (!m || /\$$/.test(m.pre)) return [str];
-		var isNumericSequence = /^-?\d+\.\.-?\d+(?:\.\.-?\d+)?$/.test(m.body);
-		var isAlphaSequence = /^[a-zA-Z]\.\.[a-zA-Z](?:\.\.-?\d+)?$/.test(m.body);
-		var isSequence = isNumericSequence || isAlphaSequence;
-		var isOptions = m.body.indexOf(",") >= 0;
-		if (!isSequence && !isOptions) {
-			if (m.post.match(/,(?!,).*\}/)) {
-				str = m.pre + "{" + m.body + escClose + m.post;
-				return expand(str, max, true);
-			}
-			return [str];
-		}
-		var n;
-		if (isSequence) n = m.body.split(/\.\./);
-		else {
-			n = parseCommaParts(m.body);
-			if (n.length === 1) {
-				n = expand(n[0], max, false).map(embrace);
-				if (n.length === 1) {
-					var post = m.post.length ? expand(m.post, max, false) : [""];
-					return post.map(function(p) {
-						return m.pre + n[0] + p;
-					});
+		for (;;) {
+			var m = balanced("{", "}", str);
+			if (!m || /\$$/.test(m.pre)) return [str];
+			var isNumericSequence = /^-?\d+\.\.-?\d+(?:\.\.-?\d+)?$/.test(m.body);
+			var isAlphaSequence = /^[a-zA-Z]\.\.[a-zA-Z](?:\.\.-?\d+)?$/.test(m.body);
+			var isSequence = isNumericSequence || isAlphaSequence;
+			var isOptions = m.body.indexOf(",") >= 0;
+			if (!isSequence && !isOptions) {
+				if (m.post.match(/,(?!,).*\}/)) {
+					str = m.pre + "{" + m.body + escClose + m.post;
+					isTop = true;
+					continue;
 				}
+				return [str];
 			}
-		}
-		var pre = m.pre;
-		var post = m.post.length ? expand(m.post, max, false) : [""];
-		var N;
-		if (isSequence) {
-			var x = numeric(n[0]);
-			var y = numeric(n[1]);
-			var width = Math.max(n[0].length, n[1].length);
-			var incr = n.length == 3 ? Math.max(Math.abs(numeric(n[2])), 1) : 1;
-			var test = lte;
-			if (y < x) {
-				incr *= -1;
-				test = gte;
-			}
-			var pad = n.some(isPadded);
-			N = [];
-			for (var i = x; test(i, y) && N.length < max; i += incr) {
-				var c;
-				if (isAlphaSequence) {
-					c = String.fromCharCode(i);
-					if (c === "\\") c = "";
-				} else {
-					c = String(i);
-					if (pad) {
-						var need = width - c.length;
-						if (need > 0) {
-							var z = new Array(need + 1).join("0");
-							if (i < 0) c = "-" + z + c.slice(1);
-							else c = z + c;
-						}
+			var n;
+			if (isSequence) n = m.body.split(/\.\./);
+			else {
+				n = parseCommaParts(m.body);
+				if (n.length === 1) {
+					n = expand(n[0], max, false).map(embrace);
+					if (n.length === 1) {
+						var post = m.post.length ? expand(m.post, max, false) : [""];
+						return post.map(function(p) {
+							return m.pre + n[0] + p;
+						});
 					}
 				}
-				N.push(c);
 			}
-		} else N = concatMap(n, function(el) {
-			return expand(el, max, false);
-		});
-		for (var j = 0; j < N.length; j++) for (var k = 0; k < post.length && expansions.length < max; k++) {
-			var expansion = pre + N[j] + post[k];
-			if (!isTop || isSequence || expansion) expansions.push(expansion);
+			var pre = m.pre;
+			var post = m.post.length ? expand(m.post, max, false) : [""];
+			var N;
+			if (isSequence) {
+				var x = numeric(n[0]);
+				var y = numeric(n[1]);
+				var width = Math.max(n[0].length, n[1].length);
+				var incr = n.length == 3 ? Math.max(Math.abs(numeric(n[2])), 1) : 1;
+				var test = lte;
+				if (y < x) {
+					incr *= -1;
+					test = gte;
+				}
+				var pad = n.some(isPadded);
+				N = [];
+				for (var i = x; test(i, y) && N.length < max; i += incr) {
+					var c;
+					if (isAlphaSequence) {
+						c = String.fromCharCode(i);
+						if (c === "\\") c = "";
+					} else {
+						c = String(i);
+						if (pad) {
+							var need = width - c.length;
+							if (need > 0) {
+								var z = new Array(need + 1).join("0");
+								if (i < 0) c = "-" + z + c.slice(1);
+								else c = z + c;
+							}
+						}
+					}
+					N.push(c);
+				}
+			} else N = concatMap(n, function(el) {
+				return expand(el, max, false);
+			});
+			for (var j = 0; j < N.length; j++) for (var k = 0; k < post.length && expansions.length < max; k++) {
+				var expansion = pre + N[j] + post[k];
+				if (!isTop || isSequence || expansion) expansions.push(expansion);
+			}
+			return expansions;
 		}
-		return expansions;
 	}
 }));
 //#endregion
@@ -32265,7 +32490,7 @@ function convertHttpClient(requestPolicyClient) {
 	} };
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/util.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/util.js
 var regexName = /* @__PURE__ */ new RegExp("^[:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD][:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040]*$");
 function getAllMatches(string, regex) {
 	const matches = [];
@@ -32305,7 +32530,7 @@ var criticalProperties = [
 	"prototype"
 ];
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/validator.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/validator.js
 var defaultOptions$2 = {
 	allowBooleanAttributes: false,
 	unpairedTags: []
@@ -34143,7 +34368,7 @@ var EntityDecoder = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
 var defaultOnDangerousProperty = (name) => {
 	if (DANGEROUS_PROPERTY_NAMES.includes(name)) return "__" + name;
 	return name;
@@ -34270,7 +34495,7 @@ var buildOptions = function(options) {
 	return built;
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
 var METADATA_SYMBOL$1;
 if (typeof Symbol !== "function") METADATA_SYMBOL$1 = "@@xmlMetadata";
 else METADATA_SYMBOL$1 = Symbol("XML Node Metadata");
@@ -34299,7 +34524,7 @@ var XmlNode = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/xml-naming@0.1.0/node_modules/xml-naming/src/index.js
+//#region node_modules/.pnpm/xml-naming@0.3.0/node_modules/xml-naming/src/index.js
 /**
 * xml-naming
 * Validates XML Name productions as defined in the XML 1.0 and 1.1 specifications.
@@ -34325,15 +34550,56 @@ var buildRegexes = (startChar, char, flags = "") => {
 };
 var regexes10 = buildRegexes(nameStartChar10, nameChar10);
 var regexes11 = buildRegexes(nameStartChar11, nameChar11, "u");
-var getRegexes = (xmlVersion = "1.0") => xmlVersion === "1.1" ? regexes11 : regexes10;
+var regexesAscii = buildRegexes(":A-Za-z_", ":A-Za-z_\\-\\.\\d");
+var getRegexes = (xmlVersion = "1.0", asciiOnly = false) => {
+	if (asciiOnly) return regexesAscii;
+	return xmlVersion === "1.1" ? regexes11 : regexes10;
+};
 /**
 * Returns true if the string is a valid QName (Qualified Name).
 * Allows exactly one colon as a prefix separator: prefix:localName.
 * Used for: element and attribute names in namespace-aware XML/SVG.
+*
+* @param {{ xmlVersion?: '1.0'|'1.1', asciiOnly?: boolean }} [opts]
+*   asciiOnly: skip unicode-aware matching, ASCII names only (default false).
 */
-var qName = (str, { xmlVersion = "1.0" } = {}) => getRegexes(xmlVersion).qName.test(str);
+var qName = (str, { xmlVersion = "1.0", asciiOnly = false } = {}) => getRegexes(xmlVersion, asciiOnly).qName.test(str);
+var PRODUCTIONS = [
+	"name",
+	"ncName",
+	"qName",
+	"nmToken",
+	"nmTokens"
+];
+/**
+* Returns a memoized boolean validator function for a single production,
+* with opts fixed at creation time.
+*
+* @param {'name'|'ncName'|'qName'|'nmToken'|'nmTokens'} production
+* @param {{ xmlVersion?: '1.0'|'1.1', asciiOnly?: boolean, maxCacheSize?: number }} [opts]
+*   maxCacheSize: max number of distinct strings to cache (default 2048).
+*   Once reached, new strings are validated but not cached; existing cached
+*   entries keep being served.
+* @returns {((str: string) => boolean) & { reset: () => void }}
+*/
+var createValidator = (production, { xmlVersion = "1.0", asciiOnly = false, maxCacheSize = 2048 } = {}) => {
+	if (!PRODUCTIONS.includes(production)) throw new TypeError(`Unknown production "${production}". Must be one of: ${PRODUCTIONS.join(", ")}`);
+	const regex = getRegexes(xmlVersion, asciiOnly)[production];
+	let cache = /* @__PURE__ */ new Map();
+	const validator = (str) => {
+		const cached = cache.get(str);
+		if (cached !== void 0) return cached;
+		const result = regex.test(str);
+		if (cache.size < maxCacheSize) cache.set(str, result);
+		return result;
+	};
+	validator.reset = () => {
+		cache = /* @__PURE__ */ new Map();
+	};
+	return validator;
+};
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
 var DocTypeReader = class {
 	constructor(options, xmlVersion) {
 		this.suppressValidationErr = !options;
@@ -34854,7 +35120,7 @@ function handleInfinity(str, num, options) {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/ignoreAttributes.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/ignoreAttributes.js
 function getIgnoreAttributesFn$1(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -34867,7 +35133,7 @@ function getIgnoreAttributesFn$1(ignoreAttributes) {
 }
 __name(getIgnoreAttributesFn$1, "getIgnoreAttributesFn");
 //#endregion
-//#region node_modules/.pnpm/path-expression-matcher@1.6.1/node_modules/path-expression-matcher/src/Expression.js
+//#region node_modules/.pnpm/path-expression-matcher@1.6.2/node_modules/path-expression-matcher/src/Expression.js
 /**
 * Expression - Parses and stores a tag pattern expression
 * 
@@ -35019,7 +35285,7 @@ var Expression = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/path-expression-matcher@1.6.1/node_modules/path-expression-matcher/src/ExpressionSet.js
+//#region node_modules/.pnpm/path-expression-matcher@1.6.2/node_modules/path-expression-matcher/src/ExpressionSet.js
 /**
 * ExpressionSet - An indexed collection of Expressions for efficient bulk matching
 *
@@ -35204,7 +35470,7 @@ var ExpressionSet = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/path-expression-matcher@1.6.1/node_modules/path-expression-matcher/src/Matcher.js
+//#region node_modules/.pnpm/path-expression-matcher@1.6.2/node_modules/path-expression-matcher/src/Matcher.js
 /**
 * MatcherView - A lightweight read-only view over a Matcher's internal state.
 *
@@ -35404,13 +35670,19 @@ var Matcher = class {
 		this._pathStringCache = null;
 		if (this.path.length > 0) this.path[this.path.length - 1].values = void 0;
 		const currentLevel = this.path.length;
-		if (!this.siblingStacks[currentLevel]) this.siblingStacks[currentLevel] = /* @__PURE__ */ new Map();
-		const siblings = this.siblingStacks[currentLevel];
+		let level = this.siblingStacks[currentLevel];
+		if (!level) {
+			level = {
+				counts: /* @__PURE__ */ new Map(),
+				total: 0
+			};
+			this.siblingStacks[currentLevel] = level;
+		}
 		const siblingKey = namespace ? `${namespace}:${tagName}` : tagName;
-		const counter = siblings.get(siblingKey) || 0;
-		let position = 0;
-		for (const count of siblings.values()) position += count;
-		siblings.set(siblingKey, counter + 1);
+		const counter = level.counts.get(siblingKey) || 0;
+		const position = level.total;
+		level.counts.set(siblingKey, counter + 1);
+		level.total++;
 		const node = {
 			tag: tagName,
 			position,
@@ -35662,7 +35934,10 @@ var Matcher = class {
 	snapshot() {
 		return {
 			path: this.path.map((node) => ({ ...node })),
-			siblingStacks: this.siblingStacks.map((map) => new Map(map)),
+			siblingStacks: this.siblingStacks.map((level) => level ? {
+				counts: new Map(level.counts),
+				total: level.total
+			} : level),
 			keptAttrs: this._keptAttrs.map((entry) => ({ ...entry }))
 		};
 	}
@@ -35673,7 +35948,10 @@ var Matcher = class {
 	restore(snapshot) {
 		this._pathStringCache = null;
 		this.path = snapshot.path.map((node) => ({ ...node }));
-		this.siblingStacks = snapshot.siblingStacks.map((map) => new Map(map));
+		this.siblingStacks = snapshot.siblingStacks.map((level) => level ? {
+			counts: new Map(level.counts),
+			total: level.total
+		} : level);
 		this._keptAttrs = (snapshot.keptAttrs || []).map((entry) => ({ ...entry }));
 	}
 	/**
@@ -35697,7 +35975,7 @@ var Matcher = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/is-unsafe@1.0.1/node_modules/is-unsafe/src/contexts/html.js
+//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/contexts/html.js
 /**
 * HTML context patterns.
 *
@@ -35795,7 +36073,7 @@ var HTML_PATTERNS = [
 	}
 ];
 //#endregion
-//#region node_modules/.pnpm/is-unsafe@1.0.1/node_modules/is-unsafe/src/contexts/xml.js
+//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/contexts/xml.js
 /**
 * XML context patterns.
 *
@@ -35870,7 +36148,7 @@ var XML_PATTERNS = [
 	}
 ];
 //#endregion
-//#region node_modules/.pnpm/is-unsafe@1.0.1/node_modules/is-unsafe/src/contexts/svg.js
+//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/contexts/svg.js
 /**
 * SVG context patterns.
 *
@@ -35948,7 +36226,7 @@ var SVG_PATTERNS = [
 	}
 ];
 //#endregion
-//#region node_modules/.pnpm/is-unsafe@1.0.1/node_modules/is-unsafe/src/contexts/sql.js
+//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/contexts/sql.js
 /**
 * SQL context patterns — high-precision rules only.
 *
@@ -36040,49 +36318,7 @@ var SQL_PATTERNS = [
 	}
 ];
 //#endregion
-//#region node_modules/.pnpm/is-unsafe@1.0.1/node_modules/is-unsafe/src/contexts/sql-strict.js
-/**
-* SQL-STRICT context patterns.
-*
-* Extends the base 'SQL' context with three additional rules that are
-* effective at detecting real injections but carry a higher false-positive
-* risk on general free-text input.
-*
-* Use 'SQL-STRICT' when:
-*   - The string is specifically a SQL fragment or database identifier
-*   - You control the input domain (e.g. a dedicated SQL search field)
-*   - You can tolerate occasional false positives in exchange for broader coverage
-*
-* Use 'SQL' (not STRICT) when:
-*   - The field is general user text (names, descriptions, comments)
-*   - False positives would block legitimate content (e.g. "see note -- above")
-*
-* Rules moved here from 'SQL' due to false-positive risk:
-*
-*   sql-line-comment   — "--" fires on "see note -- above", "value--", CSS var(--primary)
-*   sql-stacked-query  — "; SELECT" fires on legitimate prose with semicolons + SQL words
-*   sql-hex-encoding   — "0xDEAD" fires on hex values in technical docs and log output
-*/
-var SQL_STRICT_EXTRA = [
-	{
-		id: "sql-line-comment",
-		description: "SQL line comment: -- followed by whitespace or end of string",
-		pattern: /--(?:\s|$)/
-	},
-	{
-		id: "sql-stacked-query",
-		description: "Stacked queries: semicolon immediately followed by a SQL keyword",
-		pattern: /;\s{0,10}(?:SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC)\b/i
-	},
-	{
-		id: "sql-hex-encoding",
-		description: "Hex-encoded string injection: 0x41414141 style (MySQL)",
-		pattern: /\b0x[0-9a-f]{4,}/i
-	}
-];
-var SQL_STRICT_PATTERNS = [...SQL_PATTERNS, ...SQL_STRICT_EXTRA];
-//#endregion
-//#region node_modules/.pnpm/is-unsafe@1.0.1/node_modules/is-unsafe/src/contexts/shell.js
+//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/contexts/shell.js
 /**
 * SHELL context patterns.
 *
@@ -36183,7 +36419,7 @@ var SHELL_PATTERNS = [
 	}
 ];
 //#endregion
-//#region node_modules/.pnpm/is-unsafe@1.0.1/node_modules/is-unsafe/src/contexts/redos.js
+//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/contexts/redos.js
 /**
 * REDOS context patterns.
 *
@@ -36238,24 +36474,228 @@ var REDOS_PATTERNS = [
 	}
 ];
 //#endregion
-//#region node_modules/.pnpm/is-unsafe@1.0.1/node_modules/is-unsafe/src/contexts/nosql.js
+//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/contexts/nosql.js
 var sep = "[\"'\\s]*:";
+var NOSQL_PATTERNS = [
+	{
+		id: "nosql-where-operator",
+		description: "$where — executes arbitrary JavaScript server-side in MongoDB",
+		pattern: new RegExp(`\\$where${sep}`, "i")
+	},
+	{
+		id: "nosql-ne-operator",
+		description: "$ne — \"not equal\" operator used to bypass equality checks",
+		pattern: new RegExp(`\\$ne${sep}`, "i")
+	},
+	{
+		id: "nosql-gt-operator",
+		description: "$gt — \"greater than\" used to bypass password/value checks",
+		pattern: new RegExp(`\\$gte?${sep}`, "i")
+	},
+	{
+		id: "nosql-lt-operator",
+		description: "$lt / $lte — \"less than\" bypass variants",
+		pattern: new RegExp(`\\$lte?${sep}`, "i")
+	},
+	{
+		id: "nosql-regex-operator",
+		description: "$regex — can be used to extract data character by character (blind injection)",
+		pattern: new RegExp(`\\$regex${sep}`, "i")
+	},
+	{
+		id: "nosql-or-operator",
+		description: "$or — logical OR; used to create always-true conditions",
+		pattern: new RegExp(`\\$or${sep}\\s*\\[`, "i")
+	},
+	{
+		id: "nosql-and-operator",
+		description: "$and — logical AND operator injection",
+		pattern: new RegExp(`\\$and${sep}\\s*\\[`, "i")
+	},
+	{
+		id: "nosql-nor-operator",
+		description: "$nor — logical NOR operator injection",
+		pattern: new RegExp(`\\$nor${sep}\\s*\\[`, "i")
+	},
+	{
+		id: "nosql-exists-operator",
+		description: "$exists — can enumerate fields to determine schema",
+		pattern: new RegExp(`\\$exists${sep}`, "i")
+	},
+	{
+		id: "nosql-in-operator",
+		description: "$in — matches any value in a list; can enumerate values",
+		pattern: new RegExp(`\\$in${sep}\\s*\\[`, "i")
+	},
+	{
+		id: "nosql-expr-operator",
+		description: "$expr — allows aggregation expressions in queries (MongoDB 3.6+)",
+		pattern: new RegExp(`\\$expr${sep}`, "i")
+	},
+	{
+		id: "nosql-function-operator",
+		description: "$function — executes arbitrary JavaScript in MongoDB 4.4+",
+		pattern: new RegExp(`\\$function${sep}`, "i")
+	},
+	{
+		id: "nosql-accumulator-operator",
+		description: "$accumulator — custom aggregation with arbitrary JS execution",
+		pattern: new RegExp(`\\$accumulator${sep}`, "i")
+	},
+	{
+		id: "nosql-proto-pollution",
+		description: "__proto__ — prototype pollution via object key injection",
+		pattern: /__proto__/
+	},
+	{
+		id: "nosql-constructor-prototype",
+		description: "constructor.prototype — alternative prototype pollution vector (dot notation or JSON key)",
+		pattern: /constructor[\s"':.,{\[]*prototype/i
+	},
+	{
+		id: "nosql-proto-bracket",
+		description: "[\"__proto__\"] — bracket-notation prototype pollution",
+		pattern: /\[["']__proto__["']\]/
+	}
+];
 //#endregion
-//#region node_modules/.pnpm/is-unsafe@1.0.1/node_modules/is-unsafe/src/registry.js
+//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/contexts/log.js
 /**
-* Context registry — maps context name strings to their pattern arrays.
+* LOG context patterns.
 *
-* Adding a new context: create a file in ./contexts/, export a default array
-* of pattern objects, and register it here.
+* Detects injection vectors that are dangerous when a string is written
+* to a log file, passed to a logging framework, or interpolated into
+* a log message that will be parsed or displayed.
 *
-* Context name guide:
-*   SQL        — high-precision rules; safe for general text fields
-*   SQL-STRICT — SQL + three noisier rules (line comments, stacked queries, hex);
-*                use only for SQL-specific inputs
-*   REDOS      — detects ReDoS-prone patterns when string will be compiled as RegExp
+* Attack categories:
+*   1. CRLF injection — injects fake log lines by embedding newlines
+*   2. Log4Shell (CVE-2021-44228) — ${jndi:...} triggers JNDI lookup in Log4j
+*   3. SSTI in log templates — {{...}}, #{...} trigger template evaluation
+*      if the log message is passed through a template engine
+*   4. Null byte injection — truncates log entries in some implementations
+*   5. ANSI escape injection — manipulates terminal output when logs are
+*      tailed in a terminal (colour codes, cursor movement, etc.)
+*
+* Note: Newline characters (\n, \r) will produce false positives for
+* multi-line legitimate values. Use this context only for single-line
+* log field values (usernames, IDs, request parameters, etc.).
 */
-/** @type {Record<string, Array<{id: string, description: string, pattern: RegExp}>>} */
-var CONTEXT_REGISTRY = {
+var LOG_PATTERNS = [
+	{
+		id: "log-crlf-injection",
+		description: "CRLF injection: literal \\r or \\n embeds fake log lines",
+		pattern: /[\r\n]/
+	},
+	{
+		id: "log-url-encoded-crlf",
+		description: "URL-encoded CRLF: %0d, %0a, %0D, %0A — decoded by some log parsers",
+		pattern: /%0[dDaA]/
+	},
+	{
+		id: "log-unicode-newline",
+		description: "Unicode newline variants: U+2028 (line separator), U+2029 (paragraph separator)",
+		pattern: /[\u2028\u2029]/
+	},
+	{
+		id: "log-log4shell-jndi",
+		description: "Log4Shell: ${jndi:...} triggers remote code execution in Apache Log4j",
+		pattern: /\$\{jndi\s*:/i
+	},
+	{
+		id: "log-log4shell-obfuscated",
+		description: "Obfuscated Log4Shell: ${::-j}... lookup-bypass prefix used to evade WAF detection",
+		pattern: /\$\{::-/
+	},
+	{
+		id: "log-log4j-lookup",
+		description: "Log4j lookup syntax: ${env:...}, ${sys:...}, ${ctx:...} — data exfiltration",
+		pattern: /\$\{(?:env|sys|ctx|main|map|sd|web|docker|k8s|spring)\s*:/i
+	},
+	{
+		id: "log-ssti-double-brace",
+		description: "SSTI double-brace: {{expression}} — Jinja2, Twig, Handlebars, etc.",
+		pattern: /\{\{[\s\S]{0,80}\}\}/
+	},
+	{
+		id: "log-ssti-hash-brace",
+		description: "SSTI hash-brace: #{expression} — Thymeleaf, Velocity, Ruby ERB",
+		pattern: /#\{[\s\S]{0,80}\}/
+	},
+	{
+		id: "log-ssti-dollar-brace",
+		description: "SSTI/EL injection: ${expression with operators or method calls} — JSP EL, Freemarker, SpEL",
+		pattern: /\$\{[^}]*(?:\.|\(|\*|\+|\bclass\b|\bruntime\b|\bprocess\b|\bexec\b)[^}]{0,80}\}/i
+	},
+	{
+		id: "log-ssti-percent-tag",
+		description: "SSTI ERB/ASP tag: <%= expression %> — Ruby ERB, ASP",
+		pattern: /<%=[\s\S]{0,80}%>/
+	},
+	{
+		id: "log-null-byte",
+		description: "Null byte: \\x00 or %00 — can truncate log entries in C-backed loggers",
+		pattern: /\x00|%00/
+	},
+	{
+		id: "log-ansi-escape",
+		description: "ANSI escape sequence: ESC[ — can manipulate terminal output when logs are tailed",
+		pattern: /\x1b\[/
+	}
+];
+//#endregion
+//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/contexts/sql-strict.js
+/**
+* SQL-STRICT context patterns.
+*
+* Extends the base 'SQL' context with three additional rules that are
+* effective at detecting real injections but carry a higher false-positive
+* risk on general free-text input.
+*
+* Use 'SQL-STRICT' when:
+*   - The string is specifically a SQL fragment or database identifier
+*   - You control the input domain (e.g. a dedicated SQL search field)
+*   - You can tolerate occasional false positives in exchange for broader coverage
+*
+* Use 'SQL' (not STRICT) when:
+*   - The field is general user text (names, descriptions, comments)
+*   - False positives would block legitimate content (e.g. "see note -- above")
+*
+* Rules moved here from 'SQL' due to false-positive risk:
+*
+*   sql-line-comment   — "--" fires on "see note -- above", "value--", CSS var(--primary)
+*   sql-stacked-query  — "; SELECT" fires on legitimate prose with semicolons + SQL words
+*   sql-hex-encoding   — "0xDEAD" fires on hex values in technical docs and log output
+*/
+var SQL_STRICT_EXTRA = [
+	{
+		id: "sql-line-comment",
+		description: "SQL line comment: -- followed by whitespace or end of string",
+		pattern: /--(?:\s|$)/
+	},
+	{
+		id: "sql-stacked-query",
+		description: "Stacked queries: semicolon immediately followed by a SQL keyword",
+		pattern: /;\s{0,10}(?:SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC)\b/i
+	},
+	{
+		id: "sql-hex-encoding",
+		description: "Hex-encoded string injection: 0x41414141 style (MySQL)",
+		pattern: /\b0x[0-9a-f]{4,}/i
+	}
+];
+var SQL_STRICT_PATTERNS = [...SQL_PATTERNS, ...SQL_STRICT_EXTRA];
+//#endregion
+//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/index.js
+HTML_PATTERNS.label = "HTML";
+XML_PATTERNS.label = "XML";
+SVG_PATTERNS.label = "SVG";
+SQL_PATTERNS.label = "SQL";
+SQL_STRICT_PATTERNS.label = "SQL-STRICT";
+SHELL_PATTERNS.label = "SHELL";
+REDOS_PATTERNS.label = "REDOS";
+NOSQL_PATTERNS.label = "NOSQL";
+LOG_PATTERNS.label = "LOG";
+Object.freeze({
 	HTML: HTML_PATTERNS,
 	XML: XML_PATTERNS,
 	SVG: SVG_PATTERNS,
@@ -36263,213 +36703,73 @@ var CONTEXT_REGISTRY = {
 	"SQL-STRICT": SQL_STRICT_PATTERNS,
 	SHELL: SHELL_PATTERNS,
 	REDOS: REDOS_PATTERNS,
-	NOSQL: [
-		{
-			id: "nosql-where-operator",
-			description: "$where — executes arbitrary JavaScript server-side in MongoDB",
-			pattern: new RegExp(`\\$where${sep}`, "i")
-		},
-		{
-			id: "nosql-ne-operator",
-			description: "$ne — \"not equal\" operator used to bypass equality checks",
-			pattern: new RegExp(`\\$ne${sep}`, "i")
-		},
-		{
-			id: "nosql-gt-operator",
-			description: "$gt — \"greater than\" used to bypass password/value checks",
-			pattern: new RegExp(`\\$gte?${sep}`, "i")
-		},
-		{
-			id: "nosql-lt-operator",
-			description: "$lt / $lte — \"less than\" bypass variants",
-			pattern: new RegExp(`\\$lte?${sep}`, "i")
-		},
-		{
-			id: "nosql-regex-operator",
-			description: "$regex — can be used to extract data character by character (blind injection)",
-			pattern: new RegExp(`\\$regex${sep}`, "i")
-		},
-		{
-			id: "nosql-or-operator",
-			description: "$or — logical OR; used to create always-true conditions",
-			pattern: new RegExp(`\\$or${sep}\\s*\\[`, "i")
-		},
-		{
-			id: "nosql-and-operator",
-			description: "$and — logical AND operator injection",
-			pattern: new RegExp(`\\$and${sep}\\s*\\[`, "i")
-		},
-		{
-			id: "nosql-nor-operator",
-			description: "$nor — logical NOR operator injection",
-			pattern: new RegExp(`\\$nor${sep}\\s*\\[`, "i")
-		},
-		{
-			id: "nosql-exists-operator",
-			description: "$exists — can enumerate fields to determine schema",
-			pattern: new RegExp(`\\$exists${sep}`, "i")
-		},
-		{
-			id: "nosql-in-operator",
-			description: "$in — matches any value in a list; can enumerate values",
-			pattern: new RegExp(`\\$in${sep}\\s*\\[`, "i")
-		},
-		{
-			id: "nosql-expr-operator",
-			description: "$expr — allows aggregation expressions in queries (MongoDB 3.6+)",
-			pattern: new RegExp(`\\$expr${sep}`, "i")
-		},
-		{
-			id: "nosql-function-operator",
-			description: "$function — executes arbitrary JavaScript in MongoDB 4.4+",
-			pattern: new RegExp(`\\$function${sep}`, "i")
-		},
-		{
-			id: "nosql-accumulator-operator",
-			description: "$accumulator — custom aggregation with arbitrary JS execution",
-			pattern: new RegExp(`\\$accumulator${sep}`, "i")
-		},
-		{
-			id: "nosql-proto-pollution",
-			description: "__proto__ — prototype pollution via object key injection",
-			pattern: /__proto__/
-		},
-		{
-			id: "nosql-constructor-prototype",
-			description: "constructor.prototype — alternative prototype pollution vector (dot notation or JSON key)",
-			pattern: /constructor[\s"':.,{\[]*prototype/i
-		},
-		{
-			id: "nosql-proto-bracket",
-			description: "[\"__proto__\"] — bracket-notation prototype pollution",
-			pattern: /\[["']__proto__["']\]/
-		}
-	],
-	LOG: [
-		{
-			id: "log-crlf-injection",
-			description: "CRLF injection: literal \\r or \\n embeds fake log lines",
-			pattern: /[\r\n]/
-		},
-		{
-			id: "log-url-encoded-crlf",
-			description: "URL-encoded CRLF: %0d, %0a, %0D, %0A — decoded by some log parsers",
-			pattern: /%0[dDaA]/
-		},
-		{
-			id: "log-unicode-newline",
-			description: "Unicode newline variants: U+2028 (line separator), U+2029 (paragraph separator)",
-			pattern: /[\u2028\u2029]/
-		},
-		{
-			id: "log-log4shell-jndi",
-			description: "Log4Shell: ${jndi:...} triggers remote code execution in Apache Log4j",
-			pattern: /\$\{jndi\s*:/i
-		},
-		{
-			id: "log-log4shell-obfuscated",
-			description: "Obfuscated Log4Shell: ${::-j}... lookup-bypass prefix used to evade WAF detection",
-			pattern: /\$\{::-/
-		},
-		{
-			id: "log-log4j-lookup",
-			description: "Log4j lookup syntax: ${env:...}, ${sys:...}, ${ctx:...} — data exfiltration",
-			pattern: /\$\{(?:env|sys|ctx|main|map|sd|web|docker|k8s|spring)\s*:/i
-		},
-		{
-			id: "log-ssti-double-brace",
-			description: "SSTI double-brace: {{expression}} — Jinja2, Twig, Handlebars, etc.",
-			pattern: /\{\{[\s\S]{0,80}\}\}/
-		},
-		{
-			id: "log-ssti-hash-brace",
-			description: "SSTI hash-brace: #{expression} — Thymeleaf, Velocity, Ruby ERB",
-			pattern: /#\{[\s\S]{0,80}\}/
-		},
-		{
-			id: "log-ssti-dollar-brace",
-			description: "SSTI/EL injection: ${expression with operators or method calls} — JSP EL, Freemarker, SpEL",
-			pattern: /\$\{[^}]*(?:\.|\(|\*|\+|\bclass\b|\bruntime\b|\bprocess\b|\bexec\b)[^}]{0,80}\}/i
-		},
-		{
-			id: "log-ssti-percent-tag",
-			description: "SSTI ERB/ASP tag: <%= expression %> — Ruby ERB, ASP",
-			pattern: /<%=[\s\S]{0,80}%>/
-		},
-		{
-			id: "log-null-byte",
-			description: "Null byte: \\x00 or %00 — can truncate log entries in C-backed loggers",
-			pattern: /\x00|%00/
-		},
-		{
-			id: "log-ansi-escape",
-			description: "ANSI escape sequence: ESC[ — can manipulate terminal output when logs are tailed",
-			pattern: /\x1b\[/
-		}
-	]
-};
+	NOSQL: NOSQL_PATTERNS,
+	LOG: LOG_PATTERNS
+});
 /**
-* Enum of valid context names — e.g. `VALID_CONTEXTS.HTML === 'HTML'`.
-* @type {Record<string, string>}
-*/
-var VALID_CONTEXTS = Object.freeze(Object.fromEntries(Object.keys(CONTEXT_REGISTRY).map((k) => [k, k])));
-//#endregion
-//#region node_modules/.pnpm/is-unsafe@1.0.1/node_modules/is-unsafe/src/index.js
-/**
-* is-unsafe
-*
-* Zero-dependency, DOM-free, pure predicate for detecting unsafe strings
-* across HTML, XML, SVG, SQL, SQL-STRICT, SHELL, REDOS, NOSQL, and LOG contexts.
-*
-* @module is-unsafe
+* @typedef {{ id: string, description: string, pattern: RegExp }} Rule
 */
 /**
-* @typedef {'HTML'|'XML'|'SVG'|'SQL'|'SQL-STRICT'|'SHELL'|'REDOS'|'NOSQL'|'LOG'} ContextName
+* @typedef {Rule[]} PatternList
 */
 /**
 * @typedef {Object} MatchResult
-* @property {string} context   - The context in which the match was found
-* @property {string} id        - Rule identifier
+* @property {string} context     - Label identifying which context matched ('HTML', 'CUSTOM', etc.)
+* @property {string} id          - Rule identifier
 * @property {string} description - Human-readable description of what was matched
-* @property {RegExp} pattern   - The pattern that matched
+* @property {RegExp} pattern     - The pattern that matched
 */
 /**
-* Validate that `value` is a string. Throws TypeError if not.
 * @param {unknown} value
 */
 function assertString(value) {
 	if (typeof value !== "string") throw new TypeError(`is-unsafe: first argument must be a string, got ${typeof value}`);
 }
 /**
-* Validate that `context` is a recognised context name, an array of them,
-* or a RegExp instance. Throws TypeError if not.
-* @param {ContextName|ContextName[]|RegExp} context
+* @param {unknown} context
 */
 function assertContext(context) {
 	if (context instanceof RegExp) return;
-	if (typeof context === "string") {
-		if (!CONTEXT_REGISTRY[context]) throw new TypeError(`is-unsafe: unknown context "${context}". Valid contexts: ${Object.keys(VALID_CONTEXTS).join(", ")}`);
-		return;
-	}
 	if (Array.isArray(context)) {
-		if (context.length === 0) throw new TypeError("is-unsafe: context array must not be empty");
-		for (const c of context) if (typeof c !== "string" || !CONTEXT_REGISTRY[c]) throw new TypeError(`is-unsafe: unknown context "${c}" in array. Valid contexts: ${Object.keys(VALID_CONTEXTS).join(", ")}`);
+		if (context.length === 0) throw new TypeError("is-unsafe: context must not be an empty array");
+		if (Array.isArray(context[0])) {
+			for (const list of context) if (!Array.isArray(list) || list.length === 0) throw new TypeError("is-unsafe: each context in the array must be a non-empty pattern array (PatternList)");
+		}
 		return;
 	}
-	throw new TypeError(`is-unsafe: second argument must be a context string, array of context strings, or RegExp. Got: ${typeof context}`);
+	throw new TypeError(`is-unsafe: second argument must be a PatternList (e.g. HTML), an array of PatternLists (e.g. [HTML, XML]), or a RegExp. Got: ${typeof context}`);
 }
 /**
-* Test a single value against one named context's patterns.
-* Returns the first matching MatchResult, or null if nothing matched.
+* Normalise any valid context arg into an array of PatternLists.
+*
+* @param {Rule[]|Rule[][]|RegExp} context
+* @returns {{ lists: Rule[][]|null, regex: RegExp|null }}
+*/
+function normalise(context) {
+	if (context instanceof RegExp) return {
+		lists: null,
+		regex: context
+	};
+	if (Array.isArray(context[0])) return {
+		lists: context,
+		regex: null
+	};
+	return {
+		lists: [context],
+		regex: null
+	};
+}
+/**
+* Test value against a single PatternList. Returns the first MatchResult or null.
 *
 * @param {string} value
-* @param {string} contextName
+* @param {Rule[]} list
 * @returns {MatchResult|null}
 */
-function matchContext(value, contextName) {
-	const patterns = CONTEXT_REGISTRY[contextName];
-	for (const rule of patterns) if (rule.pattern.test(value)) return {
-		context: contextName,
+function matchList(value, list) {
+	const label = list.label ?? "CUSTOM";
+	for (const rule of list) if (rule.pattern.test(value)) return {
+		context: label,
 		id: rule.id,
 		description: rule.description,
 		pattern: rule.pattern
@@ -36479,29 +36779,31 @@ function matchContext(value, contextName) {
 /**
 * Returns `true` if `value` is unsafe in the given context(s), `false` otherwise.
 *
-* @param {string} value           - The string to test
-* @param {ContextName|ContextName[]|RegExp} context
-*   - A named context ('HTML', 'XML', 'SVG', 'SQL', 'SQL-STRICT', 'SHELL', 'REDOS', 'NOSQL', 'LOG')
-*   - An array of named contexts — returns true if unsafe in **any** of them
+* @param {string} value - The string to test
+* @param {PatternList | PatternList[] | RegExp} context
+*   - A PatternList imported from is-unsafe (e.g. `HTML`, `XML`)
+*   - An array of PatternLists — returns true if unsafe in **any** of them
 *   - A custom RegExp — returns true if the pattern matches
 * @returns {boolean}
 *
 * @example
-* isUnsafe('<script>alert(1)<\/script>', 'HTML')  // true
-* isUnsafe('hello world', 'HTML')                // false
-* isUnsafe('value', ['HTML', 'SQL'])             // false
-* isUnsafe('value', /my-pattern/i)               // false
+* import { isUnsafe, HTML, SQL } from 'is-unsafe';
+*
+* isUnsafe('<script>alert(1)<\/script>', HTML)       // true
+* isUnsafe('hello world', HTML)                     // false
+* isUnsafe('value', [HTML, SQL])                    // false
+* isUnsafe('value', /my-pattern/i)                  // false
 */
 function isUnsafe(value, context) {
 	assertString(value);
 	assertContext(context);
-	if (context instanceof RegExp) return context.test(value);
-	if (typeof context === "string") return matchContext(value, context) !== null;
-	for (const c of context) if (matchContext(value, c) !== null) return true;
+	const { lists, regex } = normalise(context);
+	if (regex) return regex.test(value);
+	for (const list of lists) if (matchList(value, list) !== null) return true;
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
 /**
 * Extract raw attributes (without prefix) from prefixed attribute map
 * @param {object} prefixedAttrs - Attributes with prefix from buildAttributesMap
@@ -36568,7 +36870,7 @@ var OrderedObjParser = class {
 					maxExpandedLength: this.options.processEntities.maxExpandedLength,
 					applyLimitsTo: this.options.processEntities.appliesTo
 				},
-				onInputEntity: (name, value) => isUnsafe(value, [VALID_CONTEXTS.HTML, VALID_CONTEXTS.XML]) ? ENTITY_ACTION.BLOCK : ENTITY_ACTION.ALLOW
+				onInputEntity: (name, value) => isUnsafe(value, [HTML_PATTERNS, XML_PATTERNS]) ? ENTITY_ACTION.BLOCK : ENTITY_ACTION.ALLOW
 			});
 		}
 		this.matcher = new Matcher();
@@ -37016,7 +37318,7 @@ function sanitizeName(name, options) {
 	return name;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/xmlparser/node2json.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/xmlparser/node2json.js
 var METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
 /**
 * Helper function to strip attribute prefix from attribute map
@@ -37117,7 +37419,7 @@ function isLeafTag(obj, options) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
 var XMLParser = class {
 	constructor(options) {
 		this.externalEntities = {};
@@ -37167,7 +37469,7 @@ var XMLParser = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.2.1/node_modules/fast-xml-builder/src/util.js
+//#region node_modules/.pnpm/fast-xml-builder@1.3.0/node_modules/fast-xml-builder/src/util.js
 function safeComment(val) {
 	return String(val).replace(/--/g, "- -").replace(/--/g, "- -").replace(/-$/, "- ");
 }
@@ -37178,7 +37480,7 @@ function escapeAttribute(val) {
 	return String(val).replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.2.1/node_modules/fast-xml-builder/src/orderedJs2Xml.js
+//#region node_modules/.pnpm/fast-xml-builder@1.3.0/node_modules/fast-xml-builder/src/orderedJs2Xml.js
 var EOL$2 = "\n";
 /**
 * Detect XML version from the first element of the ordered array input.
@@ -37210,11 +37512,11 @@ function detectXmlVersionFromArray(jArray, options) {
 * @param {boolean} isAttribute - true when resolving an attribute name
 * @param {object}  options
 * @param {Matcher} matcher     - current matcher state (readonly from callback perspective)
-* @param {string}  xmlVersion  - '1.0' or '1.1', forwarded to xml-naming
+* @param {function} qNameValidator - function to validate tag names
 */
-function resolveTagName$1(name, isAttribute, options, matcher, xmlVersion) {
+function resolveTagName$1(name, isAttribute, options, matcher, qNameValidator) {
 	if (!options.sanitizeName) return name;
-	if (qName(name, { xmlVersion })) return name;
+	if (qNameValidator(name)) return name;
 	return options.sanitizeName(name, {
 		isAttribute,
 		matcher: matcher.readOnly()
@@ -37235,11 +37537,11 @@ function toXml(jArray, options) {
 		if (typeof node === "string") stopNodeExpressions.push(new Expression(node));
 		else if (node instanceof Expression) stopNodeExpressions.push(node);
 	}
-	const xmlVersion = detectXmlVersionFromArray(jArray, options);
+	const qNameValidator = createValidator("qName", { xmlVersion: detectXmlVersionFromArray(jArray, options) });
 	const matcher = new Matcher();
-	return arrToStr(jArray, options, indentation, matcher, stopNodeExpressions, xmlVersion);
+	return arrToStr(jArray, options, indentation, matcher, stopNodeExpressions, qNameValidator);
 }
-function arrToStr(arr, options, indentation, matcher, stopNodeExpressions, xmlVersion) {
+function arrToStr(arr, options, indentation, matcher, stopNodeExpressions, qNameValidator) {
 	let xmlStr = "";
 	let isPreviousElementTag = false;
 	if (options.maxNestedTags && matcher.getDepth() > options.maxNestedTags) throw new Error("Maximum nested tags exceeded");
@@ -37255,7 +37557,7 @@ function arrToStr(arr, options, indentation, matcher, stopNodeExpressions, xmlVe
 		const tagObj = arr[i];
 		const rawTagName = propName(tagObj);
 		if (rawTagName === void 0) continue;
-		const tagName = rawTagName === options.textNodeName || rawTagName === options.cdataPropName || rawTagName === options.commentPropName || rawTagName[0] === "?" ? rawTagName : resolveTagName$1(rawTagName, false, options, matcher, xmlVersion);
+		const tagName = rawTagName === options.textNodeName || rawTagName === options.cdataPropName || rawTagName === options.commentPropName || rawTagName[0] === "?" ? rawTagName : resolveTagName$1(rawTagName, false, options, matcher, qNameValidator);
 		const attrValues = extractAttributeValues(tagObj[":@"], options);
 		matcher.push(tagName, attrValues);
 		const isStopNode = checkStopNode(matcher, stopNodeExpressions);
@@ -37286,7 +37588,7 @@ function arrToStr(arr, options, indentation, matcher, stopNodeExpressions, xmlVe
 			matcher.pop();
 			continue;
 		} else if (tagName[0] === "?") {
-			const attStr = attr_to_str(tagObj[":@"], options, isStopNode, matcher, xmlVersion);
+			const attStr = attr_to_str(tagObj[":@"], options, isStopNode, matcher, qNameValidator);
 			xmlStr += (tagName === "?xml" ? "" : indentation) + `<${tagName}${attStr}?>`;
 			isPreviousElementTag = true;
 			matcher.pop();
@@ -37294,10 +37596,10 @@ function arrToStr(arr, options, indentation, matcher, stopNodeExpressions, xmlVe
 		}
 		let newIdentation = indentation;
 		if (newIdentation !== "") newIdentation += options.indentBy;
-		const tagStart = indentation + `<${tagName}${attr_to_str(tagObj[":@"], options, isStopNode, matcher, xmlVersion)}`;
+		const tagStart = indentation + `<${tagName}${attr_to_str(tagObj[":@"], options, isStopNode, matcher, qNameValidator)}`;
 		let tagValue;
 		if (isStopNode) tagValue = getRawContent(tagObj[rawTagName], options);
-		else tagValue = arrToStr(tagObj[rawTagName], options, newIdentation, matcher, stopNodeExpressions, xmlVersion);
+		else tagValue = arrToStr(tagObj[rawTagName], options, newIdentation, matcher, stopNodeExpressions, qNameValidator);
 		if (options.unpairedTags.indexOf(tagName) !== -1) if (options.suppressUnpairedNode) xmlStr += tagStart + ">";
 		else xmlStr += tagStart + "/>";
 		else if ((!tagValue || tagValue.length === 0) && options.suppressEmptyNode) xmlStr += tagStart + "/>";
@@ -37380,12 +37682,12 @@ function propName(obj) {
 * Build attribute string, resolving attribute names through sanitizeName when configured.
 * Accepts matcher so the callback has path context.
 */
-function attr_to_str(attrMap, options, isStopNode, matcher, xmlVersion) {
+function attr_to_str(attrMap, options, isStopNode, matcher, qNameValidator) {
 	let attrStr = "";
 	if (attrMap && !options.ignoreAttributes) for (let attr in attrMap) {
 		if (!Object.prototype.hasOwnProperty.call(attrMap, attr)) continue;
 		const cleanAttrName = attr.substr(options.attributeNamePrefix.length);
-		const resolvedAttrName = isStopNode ? cleanAttrName : resolveTagName$1(cleanAttrName, true, options, matcher, xmlVersion);
+		const resolvedAttrName = isStopNode ? cleanAttrName : resolveTagName$1(cleanAttrName, true, options, matcher, qNameValidator);
 		let attrVal;
 		if (isStopNode) attrVal = attrMap[attr];
 		else {
@@ -37410,7 +37712,7 @@ function replaceEntitiesValue(textValue, options) {
 	return textValue;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.2.1/node_modules/fast-xml-builder/src/ignoreAttributes.js
+//#region node_modules/.pnpm/fast-xml-builder@1.3.0/node_modules/fast-xml-builder/src/ignoreAttributes.js
 function getIgnoreAttributesFn(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -37422,7 +37724,7 @@ function getIgnoreAttributesFn(ignoreAttributes) {
 	return () => false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.2.1/node_modules/fast-xml-builder/src/fxb.js
+//#region node_modules/.pnpm/fast-xml-builder@1.3.0/node_modules/fast-xml-builder/src/fxb.js
 var defaultOptions = {
 	attributeNamePrefix: "@_",
 	attributesGroupName: false,
@@ -37532,11 +37834,11 @@ function detectXmlVersionFromObj(jObj, options) {
 * @param {boolean} isAttribute - true when resolving an attribute name
 * @param {object}  options
 * @param {Matcher} matcher     - current matcher state (readonly from callback perspective)
-* @param {string}  xmlVersion  - '1.0' or '1.1', forwarded to xml-naming
+* @param {function} qNameValidator - function to validate tag names
 */
-function resolveTagName(name, isAttribute, options, matcher, xmlVersion) {
+function resolveTagName(name, isAttribute, options, matcher, qNameValidator) {
 	if (!options.sanitizeName) return name;
-	if (qName(name, { xmlVersion })) return name;
+	if (qNameValidator(name)) return name;
 	return options.sanitizeName(name, {
 		isAttribute,
 		matcher: matcher.readOnly()
@@ -37547,11 +37849,11 @@ Builder.prototype.build = function(jObj) {
 	else {
 		if (Array.isArray(jObj) && this.options.arrayNodeName && this.options.arrayNodeName.length > 1) jObj = { [this.options.arrayNodeName]: jObj };
 		const matcher = new Matcher();
-		const xmlVersion = detectXmlVersionFromObj(jObj, this.options);
-		return this.j2x(jObj, 0, matcher, xmlVersion).val;
+		const qNameValidator = createValidator("qName", { xmlVersion: detectXmlVersionFromObj(jObj, this.options) });
+		return this.j2x(jObj, 0, matcher, qNameValidator).val;
 	}
 };
-Builder.prototype.j2x = function(jObj, level, matcher, xmlVersion) {
+Builder.prototype.j2x = function(jObj, level, matcher, qNameValidator) {
 	let attrStr = "";
 	let val = "";
 	if (this.options.maxNestedTags && matcher.getDepth() >= this.options.maxNestedTags) throw new Error("Maximum nested tags exceeded");
@@ -37559,7 +37861,7 @@ Builder.prototype.j2x = function(jObj, level, matcher, xmlVersion) {
 	const isCurrentStopNode = this.checkStopNode(matcher);
 	for (let key in jObj) {
 		if (!Object.prototype.hasOwnProperty.call(jObj, key)) continue;
-		const resolvedKey = key === this.options.textNodeName || key === this.options.cdataPropName || key === this.options.commentPropName || this.options.attributesGroupName && key === this.options.attributesGroupName || this.isAttribute(key) || key[0] === "?" ? key : resolveTagName(key, false, this.options, matcher, xmlVersion);
+		const resolvedKey = key === this.options.textNodeName || key === this.options.cdataPropName || key === this.options.commentPropName || this.options.attributesGroupName && key === this.options.attributesGroupName || this.isAttribute(key) || key[0] === "?" ? key : resolveTagName(key, false, this.options, matcher, qNameValidator);
 		if (typeof jObj[key] === "undefined") {
 			if (this.isAttribute(key)) val += "";
 		} else if (jObj[key] === null) if (this.isAttribute(key)) val += "";
@@ -37570,7 +37872,7 @@ Builder.prototype.j2x = function(jObj, level, matcher, xmlVersion) {
 		else if (typeof jObj[key] !== "object") {
 			const attr = this.isAttribute(key);
 			if (attr && !this.ignoreAttributesFn(attr, jPath)) {
-				const resolvedAttr = resolveTagName(attr, true, this.options, matcher, xmlVersion);
+				const resolvedAttr = resolveTagName(attr, true, this.options, matcher, qNameValidator);
 				attrStr += this.buildAttrPairStr(resolvedAttr, "" + jObj[key], isCurrentStopNode);
 			} else if (!attr) if (key === this.options.textNodeName) {
 				let newval = this.options.tagValueProcessor(key, "" + jObj[key]);
@@ -37595,11 +37897,11 @@ Builder.prototype.j2x = function(jObj, level, matcher, xmlVersion) {
 				else val += this.indentate(level) + "<" + resolvedKey + "/" + this.tagEndChar;
 				else if (typeof item === "object") if (this.options.oneListGroup) {
 					matcher.push(resolvedKey);
-					const result = this.j2x(item, level + 1, matcher, xmlVersion);
+					const result = this.j2x(item, level + 1, matcher, qNameValidator);
 					matcher.pop();
 					listTagVal += result.val;
 					if (this.options.attributesGroupName && item.hasOwnProperty(this.options.attributesGroupName)) listTagAttr += result.attrStr;
-				} else listTagVal += this.processTextOrObjNode(item, resolvedKey, level, matcher, xmlVersion);
+				} else listTagVal += this.processTextOrObjNode(item, resolvedKey, level, matcher, qNameValidator);
 				else if (this.options.oneListGroup) {
 					let textValue = this.options.tagValueProcessor(resolvedKey, item);
 					textValue = this.replaceEntitiesValue(textValue);
@@ -37621,10 +37923,10 @@ Builder.prototype.j2x = function(jObj, level, matcher, xmlVersion) {
 			const Ks = Object.keys(jObj[key]);
 			const L = Ks.length;
 			for (let j = 0; j < L; j++) {
-				const resolvedAttr = resolveTagName(Ks[j], true, this.options, matcher, xmlVersion);
+				const resolvedAttr = resolveTagName(Ks[j], true, this.options, matcher, qNameValidator);
 				attrStr += this.buildAttrPairStr(resolvedAttr, "" + jObj[key][Ks[j]], isCurrentStopNode);
 			}
-		} else val += this.processTextOrObjNode(jObj[key], resolvedKey, level, matcher, xmlVersion);
+		} else val += this.processTextOrObjNode(jObj[key], resolvedKey, level, matcher, qNameValidator);
 	}
 	return {
 		attrStr,
@@ -37639,7 +37941,7 @@ Builder.prototype.buildAttrPairStr = function(attrName, val, isStopNode) {
 	if (this.options.suppressBooleanAttributes && val === "true") return " " + attrName;
 	else return " " + attrName + "=\"" + escapeAttribute(val) + "\"";
 };
-function processTextOrObjNode(object, key, level, matcher, xmlVersion) {
+function processTextOrObjNode(object, key, level, matcher, qNameValidator) {
 	const attrValues = this.extractAttributes(object);
 	matcher.push(key, attrValues);
 	if (this.checkStopNode(matcher)) {
@@ -37648,7 +37950,7 @@ function processTextOrObjNode(object, key, level, matcher, xmlVersion) {
 		matcher.pop();
 		return this.buildObjectNode(rawContent, key, attrStr, level);
 	}
-	const result = this.j2x(object, level + 1, matcher, xmlVersion);
+	const result = this.j2x(object, level + 1, matcher, qNameValidator);
 	matcher.pop();
 	if (key[0] === "?") return this.buildTextValNode("", key, result.attrStr, level, matcher);
 	else if (object[this.options.textNodeName] !== void 0 && Object.keys(object).length === 1) return this.buildTextValNode(object[this.options.textNodeName], key, result.attrStr, level, matcher);
@@ -37786,10 +38088,10 @@ function isAttribute(name) {
 	else return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
 var json2xml_default = Builder;
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.9.3/node_modules/fast-xml-parser/src/fxp.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/fxp.js
 var XMLValidator = { validate };
 //#endregion
 //#region node_modules/.pnpm/@azure+core-xml@1.5.1/node_modules/@azure/core-xml/dist/esm/xml.js
@@ -63604,8 +63906,7 @@ var ReflectionBinaryReader = class {
 		this.prepare();
 		const end = length === void 0 ? reader.len : reader.pos + length;
 		while (reader.pos < end) {
-			const [fieldNo, wireType] = reader.tag();
-			const field = this.fieldNoToField.get(fieldNo);
+			const [fieldNo, wireType] = reader.tag(), field = this.fieldNoToField.get(fieldNo);
 			if (!field) {
 				let u = options.readUnknownField;
 				if (u == "throw") throw new Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.info.typeName}`);
