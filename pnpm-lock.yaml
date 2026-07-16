@@ -90,8 +90,8 @@ importers:
         specifier: catalog:default
         version: 10.7.0(jiti@2.7.0)
       eslint-config-love:
-        specifier: 154.0.0
-        version: 154.0.0(@typescript-eslint/parser@8.64.0(eslint@10.7.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-typescript@4.4.5)(eslint@10.7.0(jiti@2.7.0))(typescript@6.0.3)
+        specifier: 154.1.0
+        version: 154.1.0(@typescript-eslint/parser@8.64.0(eslint@10.7.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-typescript@4.4.5)(eslint@10.7.0(jiti@2.7.0))(typescript@6.0.3)
       eslint-config-prettier:
         specifier: 10.1.8
         version: 10.1.8(eslint@10.7.0(jiti@2.7.0))
@@ -1213,8 +1213,8 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
-  eslint-config-love@154.0.0:
-    resolution: {integrity: sha512-vPWss66epd/UTPWC3ItR0VMY1Hkd3JWuOlVxWp40wq9Fpki0w07DsvdT33tgA2LUatV6XhxObpNmfIQkZ+rT1A==}
+  eslint-config-love@154.1.0:
+    resolution: {integrity: sha512-WIozQbYQztzL9OOQwYsf20K+WC2B0xNSZq/tf0xgbOKx2bQr7BXpQZ/sGJ33449Vt0hseBIH2ocdmV8aHvmeCg==}
     peerDependencies:
       eslint: 10.7.0
       typescript: '*'
@@ -3208,7 +3208,7 @@ snapshots:
   '@typescript-eslint/project-service@8.63.0(typescript@6.0.3)':
     dependencies:
       '@typescript-eslint/tsconfig-utils': 8.63.0(typescript@6.0.3)
-      '@typescript-eslint/types': 8.63.0
+      '@typescript-eslint/types': 8.64.0
       debug: 4.4.3
       typescript: 6.0.3
     transitivePeerDependencies:
@@ -3861,10 +3861,10 @@ snapshots:
       eslint: 10.7.0(jiti@2.7.0)
       semver: 7.8.5
 
-  eslint-config-love@154.0.0(@typescript-eslint/parser@8.64.0(eslint@10.7.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-typescript@4.4.5)(eslint@10.7.0(jiti@2.7.0))(typescript@6.0.3):
+  eslint-config-love@154.1.0(@typescript-eslint/parser@8.64.0(eslint@10.7.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-typescript@4.4.5)(eslint@10.7.0(jiti@2.7.0))(typescript@6.0.3):
     dependencies:
       '@eslint-community/eslint-plugin-eslint-comments': 4.7.2(eslint@10.7.0(jiti@2.7.0))
-      '@typescript-eslint/utils': 8.63.0(eslint@10.7.0(jiti@2.7.0))(typescript@6.0.3)
+      '@typescript-eslint/utils': 8.64.0(eslint@10.7.0(jiti@2.7.0))(typescript@6.0.3)
       eslint: 10.7.0(jiti@2.7.0)
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.64.0(eslint@10.7.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-typescript@4.4.5)(eslint@10.7.0(jiti@2.7.0))
       eslint-plugin-n: 18.2.2(eslint@10.7.0(jiti@2.7.0))(typescript@6.0.3)
