@@ -4,7 +4,7 @@ import * as fs$1 from "fs";
 import { constants, existsSync, promises, readFileSync, writeFileSync } from "fs";
 import * as os$4 from "os";
 import os, { EOL } from "os";
-import * as crypto$1 from "crypto";
+import * as crypto from "crypto";
 import * as http$4 from "http";
 import * as https$3 from "https";
 import * as events from "events";
@@ -19899,7 +19899,7 @@ function endGroup() {
 	issue("endgroup");
 }
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.5/node_modules/@actions-rs-plus/core/dist/_virtual/_rolldown/runtime.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.5_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/_virtual/_rolldown/runtime.js
 var __defProp = Object.defineProperty;
 var __exportAll = (all, no_symbols) => {
 	let target = {};
@@ -23319,7 +23319,7 @@ var defaults = {
 Octokit.plugin(restEndpointMethods, paginateRest).defaults(defaults);
 new Context();
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.5/node_modules/@actions-rs-plus/core/dist/commands/base-program.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.5_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/base-program.js
 var BaseProgram = class {
 	path;
 	constructor(path) {
@@ -23330,7 +23330,7 @@ var BaseProgram = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.5/node_modules/@actions-rs-plus/core/dist/commands/crates.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.5_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/crates.js
 async function resolveVersion(crate) {
 	const url = `https://crates.io/api/v1/crates/${crate}`;
 	const response = await new HttpClient("@actions-rs-plus (https://github.com/actions-rs-plus/)").getJson(url);
@@ -26127,7 +26127,7 @@ var require_subset = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = subset;
 }));
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/constants.js
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/constants.js
 var import_semver = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var internalRe = require_re();
 	var constants = require_constants();
@@ -26205,8 +26205,9 @@ var SystemTarPathOnWindows = `${process.env["SYSTEMDRIVE"]}\\Windows\\System32\\
 var TarFilename = "cache.tar";
 var ManifestFilename = "manifest.txt";
 10 * Math.pow(1024, 3);
+var CacheReadDeniedMessagePrefix = "cache read denied:";
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/cacheUtils.js
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/cacheUtils.js
 var __awaiter$10 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -26269,7 +26270,7 @@ function createTempDirectory() {
 			else baseLocation = "/home";
 			tempDirectory = path$2.join(baseLocation, "actions", "temp");
 		}
-		const dest = path$2.join(tempDirectory, crypto$1.randomUUID());
+		const dest = path$2.join(tempDirectory, crypto.randomUUID());
 		yield mkdirP(dest);
 		return dest;
 	});
@@ -26362,7 +26363,7 @@ function getCacheVersion(paths, compressionMethod, enableCrossOsArchive = false)
 	if (compressionMethod) components.push(compressionMethod);
 	if (process.platform === "win32" && !enableCrossOsArchive) components.push("windows-only");
 	components.push(versionSalt);
-	return crypto$1.createHash("sha256").update(components.join("|")).digest("hex");
+	return crypto.createHash("sha256").update(components.join("|")).digest("hex");
 }
 function getRuntimeToken() {
 	const token = process.env["ACTIONS_RUNTIME_TOKEN"];
@@ -26370,7 +26371,7 @@ function getRuntimeToken() {
 	return token;
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/abort-controller/AbortError.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/abort-controller/AbortError.js
 /**
 * This error is thrown when an asynchronous operation has been aborted.
 * Check for this error by testing the `name` that the name property of the
@@ -26410,12 +26411,12 @@ var AbortError$1 = class extends Error {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/logger/log.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/logger/log.js
 function log(message, ...args) {
 	process$1.stderr.write(`${util.format(message, ...args)}${EOL$1}`);
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/env.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/env.js
 /**
 * Returns the value of the specified environment variable.
 *
@@ -26427,7 +26428,7 @@ function getEnvironmentVariable(name) {
 typeof process$1.versions.deno === "string" && process$1.versions.deno.length;
 typeof process$1.versions.bun === "string" && process$1.versions.bun.length;
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/logger/debug.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/logger/debug.js
 var debugEnvVariable = getEnvironmentVariable("DEBUG");
 var enabledString;
 var enabledNamespaces = [];
@@ -26549,7 +26550,7 @@ function extend(namespace) {
 	return newDebugger;
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/logger/logger.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/logger/logger.js
 var TYPESPEC_RUNTIME_LOG_LEVELS = [
 	"verbose",
 	"info",
@@ -26640,7 +26641,7 @@ function createClientLogger$1(namespace) {
 }
 __name(createClientLogger$1, "createClientLogger");
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/httpHeaders.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/httpHeaders.js
 function normalizeName(name) {
 	return name.toLowerCase();
 }
@@ -26726,18 +26727,18 @@ function createHttpHeaders$1(rawHeaders) {
 }
 __name(createHttpHeaders$1, "createHttpHeaders");
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/util/uuidUtils.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/uuidUtils.js
 /**
 * Generated Universally Unique Identifier
 *
 * @returns RFC4122 v4 UUID.
 */
 function randomUUID$1() {
-	return crypto.randomUUID();
+	return globalThis.crypto.randomUUID();
 }
 __name(randomUUID$1, "randomUUID");
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/pipelineRequest.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/pipelineRequest.js
 var PipelineRequestImpl = class {
 	url;
 	method;
@@ -26790,7 +26791,7 @@ function createPipelineRequest$1(options) {
 }
 __name(createPipelineRequest$1, "createPipelineRequest");
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/pipeline.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/pipeline.js
 var ValidPhaseNames = /* @__PURE__ */ new Set([
 	"Deserialize",
 	"Serialize",
@@ -26990,7 +26991,7 @@ function createEmptyPipeline$1() {
 }
 __name(createEmptyPipeline$1, "createEmptyPipeline");
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/util/object.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/object.js
 /**
 * Helper to determine when an input is a generic JS object.
 * @returns true when input is an object type that is not null, Array, RegExp, or Date.
@@ -26999,7 +27000,7 @@ function isObject(input) {
 	return typeof input === "object" && input !== null && !Array.isArray(input) && !(input instanceof RegExp) && !(input instanceof Date);
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/util/error.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/error.js
 /**
 * Typeguard for an error object shape (has name and message)
 * @param e - Something caught by a catch clause.
@@ -27014,10 +27015,10 @@ function isError$1(e) {
 }
 __name(isError$1, "isError");
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/util/inspect.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/inspect.js
 var custom = inspect.custom;
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/util/sanitizer.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/sanitizer.js
 var RedactedString = "REDACTED";
 var defaultAllowedHeaderNames = [
 	"x-ms-client-request-id",
@@ -27126,7 +27127,7 @@ var Sanitizer = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/restError.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/restError.js
 var errorSanitizer = new Sanitizer();
 /**
 * A custom error type for failed pipeline requests.
@@ -27211,7 +27212,7 @@ function isRestError$1(e) {
 }
 __name(isRestError$1, "isRestError");
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/util/bytesEncoding.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/bytesEncoding.js
 /**
 * The helper that transforms bytes with specific character encoding into string
 * @param bytes - the uint8array bytes
@@ -27233,10 +27234,10 @@ function stringToUint8Array$1(value, format) {
 }
 __name(stringToUint8Array$1, "stringToUint8Array");
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/log.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/log.js
 var logger$4 = createClientLogger$1("ts-http-runtime");
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/nodeHttpClient.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/nodeHttpClient.js
 var DEFAULT_TLS_SETTINGS = {};
 function isReadableStream(body) {
 	return body && typeof body.pipe === "function";
@@ -27474,7 +27475,7 @@ function createNodeHttpClient() {
 	return new NodeHttpClient();
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/defaultHttpClient.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/defaultHttpClient.js
 /**
 * Create the correct HttpClient for the current environment.
 */
@@ -27483,7 +27484,7 @@ function createDefaultHttpClient$1() {
 }
 __name(createDefaultHttpClient$1, "createDefaultHttpClient");
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/policies/logPolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/logPolicy.js
 /**
 * The programmatic identifier of the logPolicy.
 */
@@ -27505,14 +27506,14 @@ function logPolicy$1(options = {}) {
 			logger(`Request: ${sanitizer.sanitize(request)}`);
 			const response = await next(request);
 			logger(`Response status code: ${response.status}`);
-			logger(`Headers: ${sanitizer.sanitize(response.headers)}`);
+			logger(`Headers: ${sanitizer.sanitize({ headers: response.headers })}`);
 			return response;
 		}
 	};
 }
 __name(logPolicy$1, "logPolicy");
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/util/random.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/random.js
 /**
 * Returns a random integer value between a lower and upper bound,
 * inclusive of both bounds.
@@ -27527,7 +27528,7 @@ function getRandomIntegerInclusive(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/util/delay.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/delay.js
 /**
 * Calculates the delay interval for retry attempts using exponential delay with jitter.
 * @param retryAttempt - The current retry attempt number.
@@ -27540,7 +27541,7 @@ function calculateRetryDelay(retryAttempt, config) {
 	return { retryAfterInMs: clampedDelay / 2 + getRandomIntegerInclusive(0, clampedDelay / 2) };
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/util/helpers.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/helpers.js
 var StandardAbortMessage$1 = "The operation was aborted.";
 /**
 * A wrapper for setTimeout that resolves a promise after delayInMs milliseconds.
@@ -27587,7 +27588,7 @@ function parseHeaderValueAsNumber(response, headerName) {
 	return valueAsNum;
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/retryStrategies/throttlingRetryStrategy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/retryStrategies/throttlingRetryStrategy.js
 /**
 * The header that comes back from services representing
 * the amount of time (minimum) to wait to retry (in seconds or timestamp after which we can retry).
@@ -27647,7 +27648,7 @@ function throttlingRetryStrategy() {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/retryStrategies/exponentialRetryStrategy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/retryStrategies/exponentialRetryStrategy.js
 var DEFAULT_CLIENT_RETRY_INTERVAL = 1e3;
 var DEFAULT_CLIENT_MAX_RETRY_INTERVAL = 1e3 * 64;
 /**
@@ -27690,7 +27691,7 @@ function isSystemError(err) {
 	return err.code === "ETIMEDOUT" || err.code === "ESOCKETTIMEDOUT" || err.code === "ECONNREFUSED" || err.code === "ECONNRESET" || err.code === "ENOENT" || err.code === "ENOTFOUND";
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/policies/retryPolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/retryPolicy.js
 var retryPolicyLogger = createClientLogger$1("ts-http-runtime retryPolicy");
 /**
 * The programmatic identifier of the retryPolicy.
@@ -27773,7 +27774,7 @@ function retryPolicy(strategies, options = { maxRetries: 3 }) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/policies/defaultRetryPolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/defaultRetryPolicy.js
 /**
 * Name of the {@link defaultRetryPolicy}
 */
@@ -27792,7 +27793,7 @@ function defaultRetryPolicy$1(options = {}) {
 }
 __name(defaultRetryPolicy$1, "defaultRetryPolicy");
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/formData.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/formData.js
 /**
 * If the request body is a native FormData, convert it to our FormDataMap
 * representation and clear the body. Node.js's HTTP stack doesn't handle
@@ -27812,7 +27813,7 @@ function convertBodyToFormDataMap(body) {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/policies/formDataPolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/formDataPolicy.js
 /**
 * The programmatic identifier of the formDataPolicy.
 */
@@ -27869,7 +27870,7 @@ async function prepareFormData(formData, request) {
 	request.multipartBody = { parts };
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/policies/agentPolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/agentPolicy.js
 /**
 * Name of the Agent Policy
 */
@@ -27888,7 +27889,7 @@ function agentPolicy$1(agent) {
 }
 __name(agentPolicy$1, "agentPolicy");
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/policies/tlsPolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/tlsPolicy.js
 /**
 * Name of the TLS Policy
 */
@@ -28025,7 +28026,7 @@ var require_ms = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 }));
 //#endregion
-//#region node_modules/.pnpm/debug@4.4.3/node_modules/debug/src/common.js
+//#region node_modules/.pnpm/debug@4.4.3_supports-color@7.2.0/node_modules/debug/src/common.js
 var require_common = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* This is the common logic for both the Node.js and web browser
@@ -28227,7 +28228,7 @@ var require_common = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = setup;
 }));
 //#endregion
-//#region node_modules/.pnpm/debug@4.4.3/node_modules/debug/src/browser.js
+//#region node_modules/.pnpm/debug@4.4.3_supports-color@7.2.0/node_modules/debug/src/browser.js
 var require_browser = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* This is the web browser implementation of `debug()`.
@@ -28501,7 +28502,7 @@ var require_supports_color = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 	};
 }));
 //#endregion
-//#region node_modules/.pnpm/debug@4.4.3/node_modules/debug/src/node.js
+//#region node_modules/.pnpm/debug@4.4.3_supports-color@7.2.0/node_modules/debug/src/node.js
 var require_node = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Module dependencies.
@@ -28708,7 +28709,7 @@ var require_node = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 }));
 //#endregion
-//#region node_modules/.pnpm/debug@4.4.3/node_modules/debug/src/index.js
+//#region node_modules/.pnpm/debug@4.4.3_supports-color@7.2.0/node_modules/debug/src/index.js
 var require_src = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	/**
 	* Detect Electron renderer / nwjs process, which is node, but we should
@@ -28912,7 +28913,7 @@ var require_dist$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.Agent = Agent;
 }));
 //#endregion
-//#region node_modules/.pnpm/https-proxy-agent@7.0.6/node_modules/https-proxy-agent/dist/parse-proxy-response.js
+//#region node_modules/.pnpm/https-proxy-agent@7.0.6_supports-color@7.2.0/node_modules/https-proxy-agent/dist/parse-proxy-response.js
 var require_parse_proxy_response = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var __importDefault = exports && exports.__importDefault || function(mod) {
 		return mod && mod.__esModule ? mod : { "default": mod };
@@ -28997,7 +28998,7 @@ var require_parse_proxy_response = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.parseProxyResponse = parseProxyResponse;
 }));
 //#endregion
-//#region node_modules/.pnpm/https-proxy-agent@7.0.6/node_modules/https-proxy-agent/dist/index.js
+//#region node_modules/.pnpm/https-proxy-agent@7.0.6_supports-color@7.2.0/node_modules/https-proxy-agent/dist/index.js
 var require_dist$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var __createBinding = exports && exports.__createBinding || (Object.create ? (function(o, m, k, k2) {
 		if (k2 === void 0) k2 = k;
@@ -29144,7 +29145,7 @@ var require_dist$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	}
 }));
 //#endregion
-//#region node_modules/.pnpm/http-proxy-agent@7.0.2/node_modules/http-proxy-agent/dist/index.js
+//#region node_modules/.pnpm/http-proxy-agent@7.0.2_supports-color@7.2.0/node_modules/http-proxy-agent/dist/index.js
 var require_dist = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var __createBinding = exports && exports.__createBinding || (Object.create ? (function(o, m, k, k2) {
 		if (k2 === void 0) k2 = k;
@@ -29265,7 +29266,7 @@ var require_dist = /* @__PURE__ */ __commonJSMin(((exports) => {
 	}
 }));
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/policies/proxyPolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/proxyPolicy.js
 var import_dist = require_dist$1();
 var import_dist$1 = require_dist();
 var HTTPS_PROXY = "HTTPS_PROXY";
@@ -29393,7 +29394,7 @@ function proxyPolicy$1(proxySettings, options) {
 }
 __name(proxyPolicy$1, "proxyPolicy");
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/policies/decompressResponsePolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/decompressResponsePolicy.js
 /**
 * The programmatic identifier of the decompressResponsePolicy.
 */
@@ -29413,7 +29414,7 @@ function decompressResponsePolicy$1() {
 }
 __name(decompressResponsePolicy$1, "decompressResponsePolicy");
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/policies/redirectPolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/redirectPolicy.js
 /**
 * The programmatic identifier of the redirectPolicy.
 */
@@ -29462,12 +29463,12 @@ async function handleRedirect(next, response, maxRetries, allowCrossOriginRedire
 	return response;
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/util/typeGuards.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/typeGuards.js
 function isBlob(x) {
 	return x instanceof Blob;
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/util/concat.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/concat.js
 async function* streamAsyncIterator() {
 	const reader = this.getReader();
 	try {
@@ -29513,7 +29514,7 @@ async function concat(sources) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.6/node_modules/@typespec/ts-http-runtime/dist/esm/policies/multipartPolicy.js
+//#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.7_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/multipartPolicy.js
 function generateBoundary() {
 	return `----AzSDKFormBoundary${randomUUID$1()}`;
 }
@@ -29589,7 +29590,7 @@ function multipartPolicy$1() {
 }
 __name(multipartPolicy$1, "multipartPolicy");
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/pipeline.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/pipeline.js
 /**
 * Creates a totally empty pipeline.
 * Useful for testing or creating a custom one.
@@ -29598,7 +29599,7 @@ function createEmptyPipeline() {
 	return createEmptyPipeline$1();
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+logger@1.3.0/node_modules/@azure/logger/dist/esm/index.js
+//#region node_modules/.pnpm/@azure+logger@1.4.0_supports-color@7.2.0/node_modules/@azure/logger/dist/esm/index.js
 var context = createLoggerContext({
 	logLevelEnvVarName: "AZURE_LOG_LEVEL",
 	namespace: "azure"
@@ -29613,10 +29614,10 @@ function createClientLogger(namespace) {
 	return context.createClientLogger(namespace);
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/log.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/log.js
 var logger$3 = createClientLogger("core-rest-pipeline");
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/logPolicy.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/logPolicy.js
 /**
 * A policy that logs all requests and responses.
 * @param options - Options to configure logPolicy.
@@ -29628,7 +29629,7 @@ function logPolicy(options = {}) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/redirectPolicy.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/redirectPolicy.js
 /**
 * The programmatic identifier of the redirectPolicy.
 */
@@ -29643,7 +29644,7 @@ function redirectPolicy(options = {}) {
 	return redirectPolicy$1(options);
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/util/userAgentPlatform.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/util/userAgentPlatform.js
 /**
 * @internal
 */
@@ -29662,10 +29663,10 @@ async function setPlatformSpecificData(map) {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/constants.js
-var SDK_VERSION$1 = "1.24.0";
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/constants.js
+var SDK_VERSION$1 = "1.25.0";
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/util/userAgent.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/util/userAgent.js
 function getUserAgentString$1(telemetryInfo) {
 	const parts = [];
 	for (const [key, value] of telemetryInfo) {
@@ -29692,7 +29693,7 @@ async function getUserAgentValue(prefix) {
 	return prefix ? `${prefix} ${defaultAgent}` : defaultAgent;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/userAgentPolicy.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/userAgentPolicy.js
 var UserAgentHeaderName = getUserAgentHeaderName();
 /**
 * The programmatic identifier of the userAgentPolicy.
@@ -29714,7 +29715,7 @@ function userAgentPolicy(options = {}) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/util/file.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/util/file.js
 /**
 * Private symbol used as key on objects created using createFile containing the
 * original source of the file object.
@@ -29749,7 +29750,7 @@ function getRawContent$1(blob) {
 }
 __name(getRawContent$1, "getRawContent");
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/multipartPolicy.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/multipartPolicy.js
 /**
 * Name of multipart policy
 */
@@ -29770,7 +29771,7 @@ function multipartPolicy() {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/decompressResponsePolicy.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/decompressResponsePolicy.js
 /**
 * The programmatic identifier of the decompressResponsePolicy.
 */
@@ -29783,7 +29784,7 @@ function decompressResponsePolicy() {
 	return decompressResponsePolicy$1();
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/defaultRetryPolicy.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/defaultRetryPolicy.js
 /**
 * A policy that retries according to three strategies:
 * - When the server sends a 429 response with a Retry-After header.
@@ -29794,7 +29795,7 @@ function defaultRetryPolicy(options = {}) {
 	return defaultRetryPolicy$1(options);
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/formDataPolicy.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/formDataPolicy.js
 /**
 * A policy that encodes FormData on the request into the body.
 */
@@ -29802,20 +29803,30 @@ function formDataPolicy() {
 	return formDataPolicy$1();
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+abort-controller@2.1.2/node_modules/@azure/abort-controller/dist/esm/AbortError.js
+//#region node_modules/.pnpm/@azure+abort-controller@2.2.0/node_modules/@azure/abort-controller/dist/esm/AbortError.js
 /**
 * This error is thrown when an asynchronous operation has been aborted.
 * Check for this error by testing the `name` that the name property of the
 * error matches `"AbortError"`.
 *
 * @example
-* ```ts
+* ```ts snippet:AbortErrorSample
+* import { AbortError } from "@azure/abort-controller";
+*
+* async function doAsyncWork(options: { abortSignal: AbortSignal }): Promise<void> {
+*   if (options.abortSignal.aborted) {
+*     throw new AbortError();
+*   }
+*
+*   // do async work
+* }
+*
 * const controller = new AbortController();
 * controller.abort();
 * try {
-*   doAsyncWork(controller.signal)
+*   doAsyncWork({ abortSignal: controller.signal });
 * } catch (e) {
-*   if (e.name === 'AbortError') {
+*   if (e instanceof Error && e.name === "AbortError") {
 *     // handle abort error here.
 *   }
 * }
@@ -29828,7 +29839,7 @@ var AbortError = class extends Error {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+core-util@1.13.1/node_modules/@azure/core-util/dist/esm/createAbortablePromise.js
+//#region node_modules/.pnpm/@azure+core-util@1.14.0_supports-color@7.2.0/node_modules/@azure/core-util/dist/esm/createAbortablePromise.js
 /**
 * Creates an abortable promise.
 * @param buildPromise - A function that takes the resolve and reject functions as parameters.
@@ -29865,7 +29876,7 @@ function createAbortablePromise(buildPromise, options) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-util@1.13.1/node_modules/@azure/core-util/dist/esm/delay.js
+//#region node_modules/.pnpm/@azure+core-util@1.14.0_supports-color@7.2.0/node_modules/@azure/core-util/dist/esm/delay.js
 var StandardAbortMessage = "The delay was aborted.";
 /**
 * A wrapper for setTimeout that resolves a promise after timeInMs milliseconds.
@@ -29886,7 +29897,7 @@ function delay$1(timeInMs, options) {
 }
 __name(delay$1, "delay");
 //#endregion
-//#region node_modules/.pnpm/@azure+core-util@1.13.1/node_modules/@azure/core-util/dist/esm/error.js
+//#region node_modules/.pnpm/@azure+core-util@1.14.0_supports-color@7.2.0/node_modules/@azure/core-util/dist/esm/error.js
 /**
 * Given what is thought to be an error object, return the message if possible.
 * If the message is missing, returns a stringified version of the input.
@@ -29907,7 +29918,7 @@ function getErrorMessage(e) {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-util@1.13.1/node_modules/@azure/core-util/dist/esm/index.js
+//#region node_modules/.pnpm/@azure+core-util@1.14.0_supports-color@7.2.0/node_modules/@azure/core-util/dist/esm/index.js
 /**
 * Typeguard for an error object shape (has name and message)
 *
@@ -29947,7 +29958,7 @@ function stringToUint8Array(value, format) {
 	return stringToUint8Array$1(value, format);
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/proxyPolicy.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/proxyPolicy.js
 /**
 * This method converts a proxy url into `ProxySettings` for use with ProxyPolicy.
 * If no argument is given, it attempts to parse a proxy URL from the environment
@@ -29969,7 +29980,7 @@ function proxyPolicy(proxySettings, options) {
 	return proxyPolicy$1(proxySettings, options);
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/setClientRequestIdPolicy.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/setClientRequestIdPolicy.js
 /**
 * The programmatic identifier of the setClientRequestIdPolicy.
 */
@@ -29990,7 +30001,7 @@ function setClientRequestIdPolicy(requestIdHeaderName = "x-ms-client-request-id"
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/agentPolicy.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/agentPolicy.js
 /**
 * Gets a pipeline policy that sets http.agent
 */
@@ -29998,7 +30009,7 @@ function agentPolicy(agent) {
 	return agentPolicy$1(agent);
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/tlsPolicy.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/tlsPolicy.js
 /**
 * Gets a pipeline policy that adds the client certificate to the HttpClient agent for authentication.
 */
@@ -30006,7 +30017,7 @@ function tlsPolicy(tlsSettings) {
 	return tlsPolicy$1(tlsSettings);
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-tracing@1.3.1/node_modules/@azure/core-tracing/dist/esm/tracingContext.js
+//#region node_modules/.pnpm/@azure+core-tracing@1.4.0/node_modules/@azure/core-tracing/dist/esm/tracingContext.js
 /** @internal */
 var knownContextKeys = {
 	span: Symbol.for("@azure/core-tracing span"),
@@ -30059,7 +30070,7 @@ var state$1 = (/* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.state = { instrumenterImplementation: void 0 };
 })))().state;
 //#endregion
-//#region node_modules/.pnpm/@azure+core-tracing@1.3.1/node_modules/@azure/core-tracing/dist/esm/instrumenter.js
+//#region node_modules/.pnpm/@azure+core-tracing@1.4.0/node_modules/@azure/core-tracing/dist/esm/instrumenter.js
 function createDefaultTracingSpan() {
 	return {
 		end: () => {},
@@ -30097,7 +30108,7 @@ function getInstrumenter() {
 	return state$1.instrumenterImplementation;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-tracing@1.3.1/node_modules/@azure/core-tracing/dist/esm/tracingClient.js
+//#region node_modules/.pnpm/@azure+core-tracing@1.4.0/node_modules/@azure/core-tracing/dist/esm/tracingClient.js
 /**
 * Creates a new tracing client.
 *
@@ -30128,7 +30139,7 @@ function createTracingClient(options) {
 	async function withSpan(name, operationOptions, callback, spanOptions) {
 		const { span, updatedOptions } = startSpan(name, operationOptions, spanOptions);
 		try {
-			const result = await withContext(updatedOptions.tracingOptions.tracingContext, () => Promise.resolve(callback(updatedOptions, span)));
+			const result = await withContext(updatedOptions.tracingOptions.tracingContext, () => callback(updatedOptions, span));
 			span.setStatus({ status: "success" });
 			return result;
 		} catch (err) {
@@ -30171,7 +30182,7 @@ function createTracingClient(options) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/restError.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/restError.js
 /**
 * A custom error type for failed pipeline requests.
 */
@@ -30184,7 +30195,7 @@ function isRestError(e) {
 	return isRestError$1(e);
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/tracingPolicy.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/tracingPolicy.js
 /**
 * The programmatic identifier of the tracingPolicy.
 */
@@ -30281,7 +30292,7 @@ function tryProcessResponse(span, response) {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/util/wrapAbortSignal.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/util/wrapAbortSignal.js
 /**
 * Creates a native AbortSignal which reflects the state of the provided AbortSignalLike.
 * If the AbortSignalLike is already a native AbortSignal, it is returned as is.
@@ -30310,7 +30321,7 @@ function wrapAbortSignalLike(abortSignalLike) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/wrapAbortSignalLikePolicy.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/wrapAbortSignalLikePolicy.js
 var wrapAbortSignalLikePolicyName = "wrapAbortSignalLikePolicy";
 /**
 * Policy that ensure that any AbortSignalLike is wrapped in a native AbortSignal for processing by the pipeline.
@@ -30334,7 +30345,7 @@ function wrapAbortSignalLikePolicy() {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/createPipelineFromOptions.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/createPipelineFromOptions.js
 /**
 * Create a new pipeline with a default set of customizable policies.
 * @param options - Options to configure a custom pipeline.
@@ -30362,7 +30373,7 @@ function createPipelineFromOptions(options) {
 	return pipeline;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/defaultHttpClient.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/defaultHttpClient.js
 /**
 * Create the correct HttpClient for the current environment.
 */
@@ -30379,7 +30390,7 @@ function createDefaultHttpClient() {
 	} };
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/httpHeaders.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/httpHeaders.js
 /**
 * Creates an object that satisfies the `HttpHeaders` interface.
 * @param rawHeaders - A simple object representing initial headers
@@ -30388,7 +30399,7 @@ function createHttpHeaders(rawHeaders) {
 	return createHttpHeaders$1(rawHeaders);
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/pipelineRequest.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/pipelineRequest.js
 /**
 * Creates a new pipeline request with the given options.
 * This method is to allow for the easy setting of default values and not required.
@@ -30398,7 +30409,7 @@ function createPipelineRequest(options) {
 	return createPipelineRequest$1(options);
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/util/tokenCycler.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/util/tokenCycler.js
 var DEFAULT_CYCLER_OPTIONS = {
 	forcedRefreshWindowInMs: 1e3,
 	retryIntervalInMs: 3e3,
@@ -30516,7 +30527,7 @@ function createTokenCycler(credential, tokenCyclerOptions) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/bearerTokenAuthenticationPolicy.js
+//#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/bearerTokenAuthenticationPolicy.js
 /**
 * The programmatic identifier of the bearerTokenAuthenticationPolicy.
 */
@@ -30699,7 +30710,7 @@ function getCaeChallengeClaims(challenges) {
 	return parseChallenges(challenges).find((x) => x.scheme === "Bearer" && x.params.claims && x.params.error === "insufficient_claims")?.params.claims;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-auth@1.10.1/node_modules/@azure/core-auth/dist/esm/tokenCredential.js
+//#region node_modules/.pnpm/@azure+core-auth@1.11.0_supports-color@7.2.0/node_modules/@azure/core-auth/dist/esm/tokenCredential.js
 /**
 * Tests an object to determine whether it implements TokenCredential.
 *
@@ -30710,12 +30721,12 @@ function isTokenCredential(credential) {
 	return castCredential && typeof castCredential.getToken === "function" && (castCredential.signRequest === void 0 || castCredential.getToken.length > 0);
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-http-compat@2.4.0_@azure+core-client@1.10.2_@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-http-compat/dist/esm/policies/disableKeepAlivePolicy.js
+//#region node_modules/.pnpm/@azure+core-http-compat@2.5.0_@azure+core-client@1.11.0_supports-color@7.2.0__@azure+co_d787bc7df786cb651d567e8aaf5a6964/node_modules/@azure/core-http-compat/dist/esm/policies/disableKeepAlivePolicy.js
 var disableKeepAlivePolicyName = "DisableKeepAlivePolicy";
 function createDisableKeepAlivePolicy() {
 	return {
 		name: disableKeepAlivePolicyName,
-		async sendRequest(request, next) {
+		sendRequest(request, next) {
 			request.disableKeepAlive = true;
 			return next(request);
 		}
@@ -30728,7 +30739,7 @@ function pipelineContainsDisableKeepAlivePolicy(pipeline) {
 	return pipeline.getOrderedPolicies().some((policy) => policy.name === disableKeepAlivePolicyName);
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-client@1.10.2/node_modules/@azure/core-client/dist/esm/base64.js
+//#region node_modules/.pnpm/@azure+core-client@1.11.0_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/base64.js
 /**
 * Encodes a byte array in base64 format.
 * @param value - the Uint8Array to encode
@@ -30746,7 +30757,7 @@ function decodeString(value) {
 	return stringToUint8Array(value, "base64");
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-client@1.10.2/node_modules/@azure/core-client/dist/esm/utils.js
+//#region node_modules/.pnpm/@azure+core-client@1.11.0_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/utils.js
 /**
 * A type guard for a primitive response body.
 * @param value - Value to test
@@ -30837,7 +30848,7 @@ function flattenResponse(fullResponse, responseSpec) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-client@1.10.2/node_modules/@azure/core-client/dist/esm/serializer.js
+//#region node_modules/.pnpm/@azure+core-client@1.11.0_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/serializer.js
 var SerializerImpl = class {
 	modelMappers;
 	isXML;
@@ -31401,7 +31412,7 @@ var state = (/* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.state = { operationRequestMap: /* @__PURE__ */ new WeakMap() };
 })))().state;
 //#endregion
-//#region node_modules/.pnpm/@azure+core-client@1.10.2/node_modules/@azure/core-client/dist/esm/operationHelpers.js
+//#region node_modules/.pnpm/@azure+core-client@1.11.0_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/operationHelpers.js
 /**
 * @internal
 * Retrieves the value to use for a given operation argument
@@ -31473,7 +31484,7 @@ function getOperationRequestInfo(request) {
 	return info;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-client@1.10.2/node_modules/@azure/core-client/dist/esm/deserializationPolicy.js
+//#region node_modules/.pnpm/@azure+core-client@1.11.0_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/deserializationPolicy.js
 var defaultJsonContentTypes = ["application/json", "text/json"];
 var defaultXmlContentTypes = ["application/xml", "application/atom+xml"];
 /**
@@ -31626,7 +31637,7 @@ async function parse(jsonContentTypes, xmlContentTypes, operationResponse, opts,
 	return operationResponse;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-client@1.10.2/node_modules/@azure/core-client/dist/esm/interfaceHelpers.js
+//#region node_modules/.pnpm/@azure+core-client@1.11.0_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/interfaceHelpers.js
 /**
 * Gets the list of status codes for streaming responses.
 * @internal
@@ -31651,7 +31662,7 @@ function getPathStringFromParameter(parameter) {
 	return result;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-client@1.10.2/node_modules/@azure/core-client/dist/esm/serializationPolicy.js
+//#region node_modules/.pnpm/@azure+core-client@1.11.0_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/serializationPolicy.js
 /**
 * The programmatic identifier of the serializationPolicy.
 */
@@ -31767,7 +31778,7 @@ function prepareXMLRootList(obj, elementName, xmlNamespaceKey, xmlNamespace) {
 	return result;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-client@1.10.2/node_modules/@azure/core-client/dist/esm/pipeline.js
+//#region node_modules/.pnpm/@azure+core-client@1.11.0_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/pipeline.js
 /**
 * Creates a new Pipeline for use with a Service Client.
 * Adds in deserializationPolicy by default.
@@ -31785,7 +31796,7 @@ function createClientPipeline(options = {}) {
 	return pipeline;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-client@1.10.2/node_modules/@azure/core-client/dist/esm/httpClientCache.js
+//#region node_modules/.pnpm/@azure+core-client@1.11.0_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/httpClientCache.js
 var cachedHttpClient;
 function getCachedDefaultHttpClient$1() {
 	if (!cachedHttpClient) cachedHttpClient = createDefaultHttpClient();
@@ -31793,7 +31804,7 @@ function getCachedDefaultHttpClient$1() {
 }
 __name(getCachedDefaultHttpClient$1, "getCachedDefaultHttpClient");
 //#endregion
-//#region node_modules/.pnpm/@azure+core-client@1.10.2/node_modules/@azure/core-client/dist/esm/urlHelpers.js
+//#region node_modules/.pnpm/@azure+core-client@1.11.0_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/urlHelpers.js
 var CollectionFormatToDelimiterMap = {
 	CSV: ",",
 	SSV: " ",
@@ -31926,10 +31937,10 @@ function appendQueryParams(url, queryParams, sequenceParams, noOverwrite = false
 	return parsedUrl.toString();
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-client@1.10.2/node_modules/@azure/core-client/dist/esm/log.js
+//#region node_modules/.pnpm/@azure+core-client@1.11.0_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/log.js
 var logger$2 = createClientLogger("core-client");
 //#endregion
-//#region node_modules/.pnpm/@azure+core-client@1.10.2/node_modules/@azure/core-client/dist/esm/serviceClient.js
+//#region node_modules/.pnpm/@azure+core-client@1.11.0_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/serviceClient.js
 /**
 * Initializes a new instance of the ServiceClient.
 */
@@ -32043,7 +32054,7 @@ function getCredentialScopes(options) {
 	if (options.credential) throw new Error(`When using credentials, the ServiceClientOptions must contain either a endpoint or a credentialScopes. Unable to create a bearerTokenAuthenticationPolicy`);
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-client@1.10.2/node_modules/@azure/core-client/dist/esm/authorizeRequestOnTenantChallenge.js
+//#region node_modules/.pnpm/@azure+core-client@1.11.0_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/authorizeRequestOnTenantChallenge.js
 /**
 * A set of constants used internally when processing requests.
 */
@@ -32136,9 +32147,25 @@ function requestToOptions(request) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-http-compat@2.4.0_@azure+core-client@1.10.2_@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-http-compat/dist/esm/util.js
+//#region node_modules/.pnpm/@azure+core-http-compat@2.5.0_@azure+core-client@1.11.0_supports-color@7.2.0__@azure+co_d787bc7df786cb651d567e8aaf5a6964/node_modules/@azure/core-http-compat/dist/esm/util.js
 var originalRequestSymbol = Symbol("Original PipelineRequest");
 var originalClientRequestSymbol = Symbol.for("@azure/core-client original request");
+var passThroughProps = /* @__PURE__ */ new Set([
+	"url",
+	"method",
+	"withCredentials",
+	"timeout",
+	"requestId",
+	"abortSignal",
+	"body",
+	"formData",
+	"onDownloadProgress",
+	"onUploadProgress",
+	"proxySettings",
+	"streamResponseStatusCodes",
+	"agent",
+	"requestOverrides"
+]);
 function toPipelineRequest(webResource, options = {}) {
 	const request = webResource[originalRequestSymbol];
 	const headers = createHttpHeaders(webResource.headers.toJson({ preserveCase: true }));
@@ -32210,22 +32237,7 @@ function toWebResourceLike(request, options) {
 		},
 		set(target, prop, value, receiver) {
 			if (prop === "keepAlive") request.disableKeepAlive = !value;
-			if (typeof prop === "string" && [
-				"url",
-				"method",
-				"withCredentials",
-				"timeout",
-				"requestId",
-				"abortSignal",
-				"body",
-				"formData",
-				"onDownloadProgress",
-				"onUploadProgress",
-				"proxySettings",
-				"streamResponseStatusCodes",
-				"agent",
-				"requestOverrides"
-			].includes(prop)) request[prop] = value;
+			if (typeof prop === "string" && passThroughProps.has(prop)) request[prop] = value;
 			return Reflect.set(target, prop, value, receiver);
 		}
 	});
@@ -32358,7 +32370,7 @@ var HttpHeaders = class HttpHeaders {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+core-http-compat@2.4.0_@azure+core-client@1.10.2_@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-http-compat/dist/esm/response.js
+//#region node_modules/.pnpm/@azure+core-http-compat@2.5.0_@azure+core-client@1.11.0_supports-color@7.2.0__@azure+co_d787bc7df786cb651d567e8aaf5a6964/node_modules/@azure/core-http-compat/dist/esm/response.js
 var originalResponse = Symbol("Original FullOperationResponse");
 /**
 * A helper to convert response objects from the new pipeline back to the old one.
@@ -32404,7 +32416,7 @@ function toPipelineResponse(compatResponse) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-http-compat@2.4.0_@azure+core-client@1.10.2_@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-http-compat/dist/esm/extendedClient.js
+//#region node_modules/.pnpm/@azure+core-http-compat@2.5.0_@azure+core-client@1.11.0_supports-color@7.2.0__@azure+co_d787bc7df786cb651d567e8aaf5a6964/node_modules/@azure/core-http-compat/dist/esm/extendedClient.js
 /**
 * Client to provide compatability between core V1 & V2.
 */
@@ -32438,7 +32450,7 @@ var ExtendedServiceClient = class extends ServiceClient {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+core-http-compat@2.4.0_@azure+core-client@1.10.2_@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-http-compat/dist/esm/policies/requestPolicyFactoryPolicy.js
+//#region node_modules/.pnpm/@azure+core-http-compat@2.5.0_@azure+core-client@1.11.0_supports-color@7.2.0__@azure+co_d787bc7df786cb651d567e8aaf5a6964/node_modules/@azure/core-http-compat/dist/esm/policies/requestPolicyFactoryPolicy.js
 /**
 * An enum for compatibility with RequestPolicy
 */
@@ -32478,7 +32490,7 @@ function createRequestPolicyFactoryPolicy(factories) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-http-compat@2.4.0_@azure+core-client@1.10.2_@azure+core-rest-pipeline@1.24.0/node_modules/@azure/core-http-compat/dist/esm/httpClientAdapter.js
+//#region node_modules/.pnpm/@azure+core-http-compat@2.5.0_@azure+core-client@1.11.0_supports-color@7.2.0__@azure+co_d787bc7df786cb651d567e8aaf5a6964/node_modules/@azure/core-http-compat/dist/esm/httpClientAdapter.js
 /**
 * Converts a RequestPolicy based HttpClient to a PipelineRequest based HttpClient.
 * @param requestPolicyClient - A HttpClient compatible with core-http
@@ -32490,7 +32502,7 @@ function convertHttpClient(requestPolicyClient) {
 	} };
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/util.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/util.js
 var regexName = /* @__PURE__ */ new RegExp("^[:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD][:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040]*$");
 function getAllMatches(string, regex) {
 	const matches = [];
@@ -32530,7 +32542,7 @@ var criticalProperties = [
 	"prototype"
 ];
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/validator.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/validator.js
 var defaultOptions$2 = {
 	allowBooleanAttributes: false,
 	unpairedTags: []
@@ -32768,981 +32780,7 @@ function getPositionFromMatch(match) {
 	return match.startIndex + match[1].length;
 }
 //#endregion
-//#region node_modules/.pnpm/@nodable+entities@2.2.0/node_modules/@nodable/entities/src/entities.js
-/**
-* Basic Latin & Special Characters
-* @type {Record<string, string>}
-*/
-var BASIC_LATIN = {
-	amp: "&",
-	AMP: "&",
-	lt: "<",
-	LT: "<",
-	gt: ">",
-	GT: ">",
-	quot: "\"",
-	QUOT: "\"",
-	apos: "'",
-	lsquo: "‘",
-	rsquo: "’",
-	ldquo: "“",
-	rdquo: "”",
-	lsquor: "‚",
-	rsquor: "’",
-	ldquor: "„",
-	bdquo: "„",
-	comma: ",",
-	period: ".",
-	colon: ":",
-	semi: ";",
-	excl: "!",
-	quest: "?",
-	num: "#",
-	dollar: "$",
-	percent: "%",
-	ast: "*",
-	commat: "@",
-	lowbar: "_",
-	verbar: "|",
-	vert: "|",
-	sol: "/",
-	bsol: "\\",
-	lbrace: "{",
-	rbrace: "}",
-	lbrack: "[",
-	rbrack: "]",
-	lpar: "(",
-	rpar: ")",
-	nbsp: "\xA0",
-	iexcl: "¡",
-	cent: "¢",
-	pound: "£",
-	curren: "¤",
-	yen: "¥",
-	brvbar: "¦",
-	sect: "§",
-	uml: "¨",
-	copy: "©",
-	COPY: "©",
-	ordf: "ª",
-	laquo: "«",
-	not: "¬",
-	shy: "­",
-	reg: "®",
-	REG: "®",
-	macr: "¯",
-	deg: "°",
-	plusmn: "±",
-	sup2: "²",
-	sup3: "³",
-	acute: "´",
-	micro: "µ",
-	para: "¶",
-	middot: "·",
-	cedil: "¸",
-	sup1: "¹",
-	ordm: "º",
-	raquo: "»",
-	frac14: "¼",
-	frac12: "½",
-	half: "½",
-	frac34: "¾",
-	iquest: "¿",
-	times: "×",
-	div: "÷",
-	divide: "÷"
-};
-/**
-* Latin Extended & Accented Letters (A-Z)
-* @type {Record<string, string>}
-*/
-var LATIN_ACCENTS = {
-	Agrave: "À",
-	agrave: "à",
-	Aacute: "Á",
-	aacute: "á",
-	Acirc: "Â",
-	acirc: "â",
-	Atilde: "Ã",
-	atilde: "ã",
-	Auml: "Ä",
-	auml: "ä",
-	Aring: "Å",
-	aring: "å",
-	AElig: "Æ",
-	aelig: "æ",
-	Ccedil: "Ç",
-	ccedil: "ç",
-	Egrave: "È",
-	egrave: "è",
-	Eacute: "É",
-	eacute: "é",
-	Ecirc: "Ê",
-	ecirc: "ê",
-	Euml: "Ë",
-	euml: "ë",
-	Igrave: "Ì",
-	igrave: "ì",
-	Iacute: "Í",
-	iacute: "í",
-	Icirc: "Î",
-	icirc: "î",
-	Iuml: "Ï",
-	iuml: "ï",
-	ETH: "Ð",
-	eth: "ð",
-	Ntilde: "Ñ",
-	ntilde: "ñ",
-	Ograve: "Ò",
-	ograve: "ò",
-	Oacute: "Ó",
-	oacute: "ó",
-	Ocirc: "Ô",
-	ocirc: "ô",
-	Otilde: "Õ",
-	otilde: "õ",
-	Ouml: "Ö",
-	ouml: "ö",
-	Oslash: "Ø",
-	oslash: "ø",
-	Ugrave: "Ù",
-	ugrave: "ù",
-	Uacute: "Ú",
-	uacute: "ú",
-	Ucirc: "Û",
-	ucirc: "û",
-	Uuml: "Ü",
-	uuml: "ü",
-	Yacute: "Ý",
-	yacute: "ý",
-	THORN: "Þ",
-	thorn: "þ",
-	szlig: "ß",
-	yuml: "ÿ",
-	Yuml: "Ÿ"
-};
-/**
-* Latin Extended (Letters with diacritics)
-* @type {Record<string, string>}
-*/
-var LATIN_EXTENDED = {
-	Amacr: "Ā",
-	amacr: "ā",
-	Abreve: "Ă",
-	abreve: "ă",
-	Aogon: "Ą",
-	aogon: "ą",
-	Cacute: "Ć",
-	cacute: "ć",
-	Ccirc: "Ĉ",
-	ccirc: "ĉ",
-	Cdot: "Ċ",
-	cdot: "ċ",
-	Ccaron: "Č",
-	ccaron: "č",
-	Dcaron: "Ď",
-	dcaron: "ď",
-	Dstrok: "Đ",
-	dstrok: "đ",
-	Emacr: "Ē",
-	emacr: "ē",
-	Ecaron: "Ě",
-	ecaron: "ě",
-	Edot: "Ė",
-	edot: "ė",
-	Eogon: "Ę",
-	eogon: "ę",
-	Gcirc: "Ĝ",
-	gcirc: "ĝ",
-	Gbreve: "Ğ",
-	gbreve: "ğ",
-	Gdot: "Ġ",
-	gdot: "ġ",
-	Gcedil: "Ģ",
-	Hcirc: "Ĥ",
-	hcirc: "ĥ",
-	Hstrok: "Ħ",
-	hstrok: "ħ",
-	Itilde: "Ĩ",
-	itilde: "ĩ",
-	Imacr: "Ī",
-	imacr: "ī",
-	Iogon: "Į",
-	iogon: "į",
-	Idot: "İ",
-	IJlig: "Ĳ",
-	ijlig: "ĳ",
-	Jcirc: "Ĵ",
-	jcirc: "ĵ",
-	Kcedil: "Ķ",
-	kcedil: "ķ",
-	kgreen: "ĸ",
-	Lacute: "Ĺ",
-	lacute: "ĺ",
-	Lcedil: "Ļ",
-	lcedil: "ļ",
-	Lcaron: "Ľ",
-	lcaron: "ľ",
-	Lmidot: "Ŀ",
-	lmidot: "ŀ",
-	Lstrok: "Ł",
-	lstrok: "ł",
-	Nacute: "Ń",
-	nacute: "ń",
-	Ncaron: "Ň",
-	ncaron: "ň",
-	Ncedil: "Ņ",
-	ncedil: "ņ",
-	ENG: "Ŋ",
-	eng: "ŋ",
-	Omacr: "Ō",
-	omacr: "ō",
-	Odblac: "Ő",
-	odblac: "ő",
-	OElig: "Œ",
-	oelig: "œ",
-	Racute: "Ŕ",
-	racute: "ŕ",
-	Rcaron: "Ř",
-	rcaron: "ř",
-	Rcedil: "Ŗ",
-	rcedil: "ŗ",
-	Sacute: "Ś",
-	sacute: "ś",
-	Scirc: "Ŝ",
-	scirc: "ŝ",
-	Scedil: "Ş",
-	scedil: "ş",
-	Scaron: "Š",
-	scaron: "š",
-	Tcedil: "Ţ",
-	tcedil: "ţ",
-	Tcaron: "Ť",
-	tcaron: "ť",
-	Tstrok: "Ŧ",
-	tstrok: "ŧ",
-	Utilde: "Ũ",
-	utilde: "ũ",
-	Umacr: "Ū",
-	umacr: "ū",
-	Ubreve: "Ŭ",
-	ubreve: "ŭ",
-	Uring: "Ů",
-	uring: "ů",
-	Udblac: "Ű",
-	udblac: "ű",
-	Uogon: "Ų",
-	uogon: "ų",
-	Wcirc: "Ŵ",
-	wcirc: "ŵ",
-	Ycirc: "Ŷ",
-	ycirc: "ŷ",
-	Zacute: "Ź",
-	zacute: "ź",
-	Zdot: "Ż",
-	zdot: "ż",
-	Zcaron: "Ž",
-	zcaron: "ž"
-};
-/**
-* Greek Letters
-* @type {Record<string, string>}
-*/
-var GREEK = {
-	Alpha: "Α",
-	alpha: "α",
-	Beta: "Β",
-	beta: "β",
-	Gamma: "Γ",
-	gamma: "γ",
-	Delta: "Δ",
-	delta: "δ",
-	Epsilon: "Ε",
-	epsilon: "ε",
-	epsiv: "ϵ",
-	varepsilon: "ϵ",
-	Zeta: "Ζ",
-	zeta: "ζ",
-	Eta: "Η",
-	eta: "η",
-	Theta: "Θ",
-	theta: "θ",
-	thetasym: "ϑ",
-	vartheta: "ϑ",
-	Iota: "Ι",
-	iota: "ι",
-	Kappa: "Κ",
-	kappa: "κ",
-	kappav: "ϰ",
-	varkappa: "ϰ",
-	Lambda: "Λ",
-	lambda: "λ",
-	Mu: "Μ",
-	mu: "μ",
-	Nu: "Ν",
-	nu: "ν",
-	Xi: "Ξ",
-	xi: "ξ",
-	Omicron: "Ο",
-	omicron: "ο",
-	Pi: "Π",
-	pi: "π",
-	piv: "ϖ",
-	varpi: "ϖ",
-	Rho: "Ρ",
-	rho: "ρ",
-	rhov: "ϱ",
-	varrho: "ϱ",
-	Sigma: "Σ",
-	sigma: "σ",
-	sigmaf: "ς",
-	sigmav: "ς",
-	varsigma: "ς",
-	Tau: "Τ",
-	tau: "τ",
-	Upsilon: "Υ",
-	upsilon: "υ",
-	upsi: "υ",
-	Upsi: "ϒ",
-	upsih: "ϒ",
-	Phi: "Φ",
-	phi: "φ",
-	phiv: "ϕ",
-	varphi: "ϕ",
-	Chi: "Χ",
-	chi: "χ",
-	Psi: "Ψ",
-	psi: "ψ",
-	Omega: "Ω",
-	omega: "ω",
-	ohm: "Ω",
-	Gammad: "Ϝ",
-	gammad: "ϝ",
-	digamma: "ϝ"
-};
-/**
-* Cyrillic Letters
-* @type {Record<string, string>}
-*/
-var CYRILLIC = {
-	Afr: "𝔄",
-	afr: "𝔞",
-	Acy: "А",
-	acy: "а",
-	Bcy: "Б",
-	bcy: "б",
-	Vcy: "В",
-	vcy: "в",
-	Gcy: "Г",
-	gcy: "г",
-	Dcy: "Д",
-	dcy: "д",
-	IEcy: "Е",
-	iecy: "е",
-	IOcy: "Ё",
-	iocy: "ё",
-	ZHcy: "Ж",
-	zhcy: "ж",
-	Zcy: "З",
-	zcy: "з",
-	Icy: "И",
-	icy: "и",
-	Jcy: "Й",
-	jcy: "й",
-	Kcy: "К",
-	kcy: "к",
-	Lcy: "Л",
-	lcy: "л",
-	Mcy: "М",
-	mcy: "м",
-	Ncy: "Н",
-	ncy: "н",
-	Ocy: "О",
-	ocy: "о",
-	Pcy: "П",
-	pcy: "п",
-	Rcy: "Р",
-	rcy: "р",
-	Scy: "С",
-	scy: "с",
-	Tcy: "Т",
-	tcy: "т",
-	Ucy: "У",
-	ucy: "у",
-	Fcy: "Ф",
-	fcy: "ф",
-	KHcy: "Х",
-	khcy: "х",
-	TScy: "Ц",
-	tscy: "ц",
-	CHcy: "Ч",
-	chcy: "ч",
-	SHcy: "Ш",
-	shcy: "ш",
-	SHCHcy: "Щ",
-	shchcy: "щ",
-	HARDcy: "Ъ",
-	hardcy: "ъ",
-	Ycy: "Ы",
-	ycy: "ы",
-	SOFTcy: "Ь",
-	softcy: "ь",
-	Ecy: "Э",
-	ecy: "э",
-	YUcy: "Ю",
-	yucy: "ю",
-	YAcy: "Я",
-	yacy: "я",
-	DJcy: "Ђ",
-	djcy: "ђ",
-	GJcy: "Ѓ",
-	gjcy: "ѓ",
-	Jukcy: "Є",
-	jukcy: "є",
-	DScy: "Ѕ",
-	dscy: "ѕ",
-	Iukcy: "І",
-	iukcy: "і",
-	YIcy: "Ї",
-	yicy: "ї",
-	Jsercy: "Ј",
-	jsercy: "ј",
-	LJcy: "Љ",
-	ljcy: "љ",
-	NJcy: "Њ",
-	njcy: "њ",
-	TSHcy: "Ћ",
-	tshcy: "ћ",
-	KJcy: "Ќ",
-	kjcy: "ќ",
-	Ubrcy: "Ў",
-	ubrcy: "ў",
-	DZcy: "Џ",
-	dzcy: "џ"
-};
-/**
-* Mathematical Operators & Relations
-* @type {Record<string, string>}
-*/
-var MATH = {
-	plus: "+",
-	pm: "±",
-	times: "×",
-	div: "÷",
-	divide: "÷",
-	sdot: "⋅",
-	star: "☆",
-	starf: "★",
-	bigstar: "★",
-	lowast: "∗",
-	ast: "*",
-	midast: "*",
-	compfn: "∘",
-	smallcircle: "∘",
-	bullet: "•",
-	bull: "•",
-	nbsp: "\xA0",
-	hellip: "…",
-	mldr: "…",
-	prime: "′",
-	Prime: "″",
-	tprime: "‴",
-	bprime: "‵",
-	backprime: "‵",
-	minus: "−",
-	minusd: "∸",
-	dotminus: "∸",
-	plusdo: "∔",
-	dotplus: "∔",
-	plusmn: "±",
-	minusplus: "∓",
-	mnplus: "∓",
-	mp: "∓",
-	setminus: "∖",
-	smallsetminus: "∖",
-	Backslash: "∖",
-	setmn: "∖",
-	ssetmn: "∖",
-	lowbar: "_",
-	verbar: "|",
-	vert: "|",
-	VerticalLine: "|",
-	colon: ":",
-	Colon: "∷",
-	Proportion: "∷",
-	ratio: "∶",
-	equals: "=",
-	ne: "≠",
-	nequiv: "≢",
-	equiv: "≡",
-	Congruent: "≡",
-	sim: "∼",
-	thicksim: "∼",
-	thksim: "∼",
-	sime: "≃",
-	simeq: "≃",
-	TildeEqual: "≃",
-	asymp: "≈",
-	approx: "≈",
-	thickapprox: "≈",
-	thkap: "≈",
-	TildeTilde: "≈",
-	ncong: "≇",
-	cong: "≅",
-	TildeFullEqual: "≅",
-	asympeq: "≍",
-	CupCap: "≍",
-	bump: "≎",
-	Bumpeq: "≎",
-	HumpDownHump: "≎",
-	bumpe: "≏",
-	bumpeq: "≏",
-	HumpEqual: "≏",
-	le: "≤",
-	LessEqual: "≤",
-	ge: "≥",
-	GreaterEqual: "≥",
-	lesseqgtr: "⋚",
-	lesseqqgtr: "⪋",
-	greater: ">",
-	less: "<"
-};
-/**
-* Mathematical Operators (Advanced)
-* @type {Record<string, string>}
-*/
-var MATH_ADVANCED = {
-	alefsym: "ℵ",
-	aleph: "ℵ",
-	beth: "ℶ",
-	gimel: "ℷ",
-	daleth: "ℸ",
-	forall: "∀",
-	ForAll: "∀",
-	part: "∂",
-	PartialD: "∂",
-	exist: "∃",
-	Exists: "∃",
-	nexist: "∄",
-	nexists: "∄",
-	empty: "∅",
-	emptyset: "∅",
-	emptyv: "∅",
-	varnothing: "∅",
-	nabla: "∇",
-	Del: "∇",
-	isin: "∈",
-	isinv: "∈",
-	in: "∈",
-	Element: "∈",
-	notin: "∉",
-	notinva: "∉",
-	ni: "∋",
-	niv: "∋",
-	SuchThat: "∋",
-	ReverseElement: "∋",
-	notni: "∌",
-	notniva: "∌",
-	prod: "∏",
-	Product: "∏",
-	coprod: "∐",
-	Coproduct: "∐",
-	sum: "∑",
-	Sum: "∑",
-	minus: "−",
-	mp: "∓",
-	plusdo: "∔",
-	dotplus: "∔",
-	setminus: "∖",
-	lowast: "∗",
-	radic: "√",
-	Sqrt: "√",
-	prop: "∝",
-	propto: "∝",
-	Proportional: "∝",
-	varpropto: "∝",
-	infin: "∞",
-	infintie: "⧝",
-	ang: "∠",
-	angle: "∠",
-	angmsd: "∡",
-	measuredangle: "∡",
-	angsph: "∢",
-	mid: "∣",
-	VerticalBar: "∣",
-	nmid: "∤",
-	nsmid: "∤",
-	npar: "∦",
-	parallel: "∥",
-	spar: "∥",
-	nparallel: "∦",
-	nspar: "∦",
-	and: "∧",
-	wedge: "∧",
-	or: "∨",
-	vee: "∨",
-	cap: "∩",
-	cup: "∪",
-	int: "∫",
-	Integral: "∫",
-	conint: "∮",
-	ContourIntegral: "∮",
-	Conint: "∯",
-	DoubleContourIntegral: "∯",
-	Cconint: "∰",
-	there4: "∴",
-	therefore: "∴",
-	Therefore: "∴",
-	becaus: "∵",
-	because: "∵",
-	Because: "∵",
-	ratio: "∶",
-	Proportion: "∷",
-	minusd: "∸",
-	dotminus: "∸",
-	mDDot: "∺",
-	homtht: "∻",
-	sim: "∼",
-	bsimg: "∽",
-	backsim: "∽",
-	ac: "∾",
-	mstpos: "∾",
-	acd: "∿",
-	VerticalTilde: "≀",
-	wr: "≀",
-	wreath: "≀",
-	nsime: "≄",
-	nsimeq: "≄",
-	ncong: "≇",
-	simne: "≆",
-	ncongdot: "⩭̸",
-	ngsim: "≵",
-	nsim: "≁",
-	napprox: "≉",
-	nap: "≉",
-	ngeq: "≱",
-	nge: "≱",
-	nleq: "≰",
-	nle: "≰",
-	ngtr: "≯",
-	ngt: "≯",
-	nless: "≮",
-	nlt: "≮",
-	nprec: "⊀",
-	npr: "⊀",
-	nsucc: "⊁",
-	nsc: "⊁"
-};
-/**
-* Arrows
-* @type {Record<string, string>}
-*/
-var ARROWS = {
-	larr: "←",
-	leftarrow: "←",
-	LeftArrow: "←",
-	uarr: "↑",
-	uparrow: "↑",
-	UpArrow: "↑",
-	rarr: "→",
-	rightarrow: "→",
-	RightArrow: "→",
-	darr: "↓",
-	downarrow: "↓",
-	DownArrow: "↓",
-	harr: "↔",
-	leftrightarrow: "↔",
-	LeftRightArrow: "↔",
-	varr: "↕",
-	updownarrow: "↕",
-	UpDownArrow: "↕",
-	nwarr: "↖",
-	nwarrow: "↖",
-	UpperLeftArrow: "↖",
-	nearr: "↗",
-	nearrow: "↗",
-	UpperRightArrow: "↗",
-	searr: "↘",
-	searrow: "↘",
-	LowerRightArrow: "↘",
-	swarr: "↙",
-	swarrow: "↙",
-	LowerLeftArrow: "↙",
-	lArr: "⇐",
-	Leftarrow: "⇐",
-	uArr: "⇑",
-	Uparrow: "⇑",
-	rArr: "⇒",
-	Rightarrow: "⇒",
-	dArr: "⇓",
-	Downarrow: "⇓",
-	hArr: "⇔",
-	Leftrightarrow: "⇔",
-	iff: "⇔",
-	vArr: "⇕",
-	Updownarrow: "⇕",
-	lAarr: "⇚",
-	Lleftarrow: "⇚",
-	rAarr: "⇛",
-	Rrightarrow: "⇛",
-	lrarr: "⇆",
-	leftrightarrows: "⇆",
-	rlarr: "⇄",
-	rightleftarrows: "⇄",
-	lrhar: "⇋",
-	leftrightharpoons: "⇋",
-	ReverseEquilibrium: "⇋",
-	rlhar: "⇌",
-	rightleftharpoons: "⇌",
-	Equilibrium: "⇌",
-	udarr: "⇅",
-	UpArrowDownArrow: "⇅",
-	duarr: "⇵",
-	DownArrowUpArrow: "⇵",
-	llarr: "⇇",
-	leftleftarrows: "⇇",
-	rrarr: "⇉",
-	rightrightarrows: "⇉",
-	ddarr: "⇊",
-	downdownarrows: "⇊",
-	har: "↽",
-	lhard: "↽",
-	leftharpoondown: "↽",
-	lharu: "↼",
-	leftharpoonup: "↼",
-	rhard: "⇁",
-	rightharpoondown: "⇁",
-	rharu: "⇀",
-	rightharpoonup: "⇀",
-	lsh: "↰",
-	Lsh: "↰",
-	rsh: "↱",
-	Rsh: "↱",
-	ldsh: "↲",
-	rdsh: "↳",
-	hookleftarrow: "↩",
-	hookrightarrow: "↪",
-	mapstoleft: "↤",
-	mapstoup: "↥",
-	map: "↦",
-	mapsto: "↦",
-	mapstodown: "↧",
-	crarr: "↵",
-	nleftarrow: "↚",
-	nleftrightarrow: "↮",
-	nrightarrow: "↛",
-	nrarr: "↛",
-	larrtl: "↢",
-	rarrtl: "↣",
-	leftarrowtail: "↢",
-	rightarrowtail: "↣",
-	twoheadleftarrow: "↞",
-	twoheadrightarrow: "↠",
-	Larr: "↞",
-	Rarr: "↠",
-	larrhk: "↩",
-	rarrhk: "↪",
-	larrlp: "↫",
-	looparrowleft: "↫",
-	rarrlp: "↬",
-	looparrowright: "↬",
-	harrw: "↭",
-	leftrightsquigarrow: "↭",
-	nrarrw: "↝̸",
-	rarrw: "↝",
-	rightsquigarrow: "↝",
-	larrbfs: "⤟",
-	rarrbfs: "⤠",
-	nvHarr: "⤄",
-	nvlArr: "⤂",
-	nvrArr: "⤃",
-	larrfs: "⤝",
-	rarrfs: "⤞",
-	Map: "⤅",
-	larrsim: "⥳",
-	rarrsim: "⥴",
-	harrcir: "⥈",
-	Uarrocir: "⥉",
-	lurdshar: "⥊",
-	ldrdhar: "⥧",
-	ldrushar: "⥋",
-	rdldhar: "⥩",
-	lrhard: "⥭",
-	uharr: "↾",
-	uharl: "↿",
-	dharr: "⇂",
-	dharl: "⇃",
-	Uarr: "↟",
-	Darr: "↡",
-	zigrarr: "⇝",
-	nwArr: "⇖",
-	neArr: "⇗",
-	seArr: "⇘",
-	swArr: "⇙",
-	nharr: "↮",
-	nhArr: "⇎",
-	nlarr: "↚",
-	nlArr: "⇍",
-	nrArr: "⇏",
-	larrb: "⇤",
-	LeftArrowBar: "⇤",
-	rarrb: "⇥",
-	RightArrowBar: "⇥"
-};
-/**
-* Geometric Shapes
-* @type {Record<string, string>}
-*/
-var SHAPES = {
-	square: "□",
-	Square: "□",
-	squ: "□",
-	squf: "▪",
-	squarf: "▪",
-	blacksquar: "▪",
-	blacksquare: "▪",
-	FilledVerySmallSquare: "▪",
-	blk34: "▓",
-	blk12: "▒",
-	blk14: "░",
-	block: "█",
-	srect: "▭",
-	rect: "▭",
-	sdot: "⋅",
-	sdotb: "⊡",
-	dotsquare: "⊡",
-	triangle: "▵",
-	tri: "▵",
-	trine: "▵",
-	utri: "▵",
-	triangledown: "▿",
-	dtri: "▿",
-	tridown: "▿",
-	triangleleft: "◃",
-	ltri: "◃",
-	triangleright: "▹",
-	rtri: "▹",
-	blacktriangle: "▴",
-	utrif: "▴",
-	blacktriangledown: "▾",
-	dtrif: "▾",
-	blacktriangleleft: "◂",
-	ltrif: "◂",
-	blacktriangleright: "▸",
-	rtrif: "▸",
-	loz: "◊",
-	lozenge: "◊",
-	blacklozenge: "⧫",
-	lozf: "⧫",
-	bigcirc: "◯",
-	xcirc: "◯",
-	circ: "ˆ",
-	Circle: "○",
-	cir: "○",
-	o: "○",
-	bullet: "•",
-	bull: "•",
-	hellip: "…",
-	mldr: "…",
-	nldr: "‥",
-	boxh: "─",
-	HorizontalLine: "─",
-	boxv: "│",
-	boxdr: "┌",
-	boxdl: "┐",
-	boxur: "└",
-	boxul: "┘",
-	boxvr: "├",
-	boxvl: "┤",
-	boxhd: "┬",
-	boxhu: "┴",
-	boxvh: "┼",
-	boxH: "═",
-	boxV: "║",
-	boxdR: "╒",
-	boxDr: "╓",
-	boxDR: "╔",
-	boxDl: "╕",
-	boxdL: "╖",
-	boxDL: "╗",
-	boxuR: "╘",
-	boxUr: "╙",
-	boxUR: "╚",
-	boxUl: "╜",
-	boxuL: "╛",
-	boxUL: "╝",
-	boxvR: "╞",
-	boxVr: "╟",
-	boxVR: "╠",
-	boxVl: "╢",
-	boxvL: "╡",
-	boxVL: "╣",
-	boxHd: "╤",
-	boxhD: "╥",
-	boxHD: "╦",
-	boxHu: "╧",
-	boxhU: "╨",
-	boxHU: "╩",
-	boxvH: "╪",
-	boxVh: "╫",
-	boxVH: "╬"
-};
-/**
-* Punctuation & Diacritics
-* @type {Record<string, string>}
-*/
-var PUNCTUATION = {
-	excl: "!",
-	iexcl: "¡",
-	brvbar: "¦",
-	sect: "§",
-	uml: "¨",
-	copy: "©",
-	ordf: "ª",
-	laquo: "«",
-	not: "¬",
-	shy: "­",
-	reg: "®",
-	macr: "¯",
-	deg: "°",
-	plusmn: "±",
-	sup2: "²",
-	sup3: "³",
-	acute: "´",
-	micro: "µ",
-	para: "¶",
-	middot: "·",
-	cedil: "¸",
-	sup1: "¹",
-	ordm: "º",
-	raquo: "»",
-	frac14: "¼",
-	frac12: "½",
-	frac34: "¾",
-	iquest: "¿",
-	nbsp: "\xA0",
-	comma: ",",
-	period: ".",
-	colon: ":",
-	semi: ";",
-	vert: "|",
-	Verbar: "‖",
-	verbar: "|",
-	dblac: "˝",
-	circ: "ˆ",
-	caron: "ˇ",
-	breve: "˘",
-	dot: "˙",
-	ring: "˚",
-	ogon: "˛",
-	tilde: "˜",
-	DiacriticalGrave: "`",
-	DiacriticalAcute: "´",
-	DiacriticalTilde: "˜",
-	DiacriticalDot: "˙",
-	DiacriticalDoubleAcute: "˝",
-	grave: "`"
-};
+//#region node_modules/.pnpm/@nodable+entities@3.0.0/node_modules/@nodable/entities/src/entities.js
 /**
 * Currency Symbols
 * @type {Record<string, string>}
@@ -33764,114 +32802,6 @@ var CURRENCY = {
 	yuan: "¥",
 	cedil: "¸"
 };
-/**
-* Fractions
-* @type {Record<string, string>}
-*/
-var FRACTIONS = {
-	frac12: "½",
-	half: "½",
-	frac13: "⅓",
-	frac14: "¼",
-	frac15: "⅕",
-	frac16: "⅙",
-	frac18: "⅛",
-	frac23: "⅔",
-	frac25: "⅖",
-	frac34: "¾",
-	frac35: "⅗",
-	frac38: "⅜",
-	frac45: "⅘",
-	frac56: "⅚",
-	frac58: "⅝",
-	frac78: "⅞",
-	frasl: "⁄"
-};
-/**
-* Miscellaneous Symbols
-* @type {Record<string, string>}
-*/
-var MISC_SYMBOLS = {
-	trade: "™",
-	TRADE: "™",
-	telrec: "⌕",
-	target: "⌖",
-	ulcorn: "⌜",
-	ulcorner: "⌜",
-	urcorn: "⌝",
-	urcorner: "⌝",
-	dlcorn: "⌞",
-	llcorner: "⌞",
-	drcorn: "⌟",
-	lrcorner: "⌟",
-	intercal: "⊺",
-	intcal: "⊺",
-	oplus: "⊕",
-	CirclePlus: "⊕",
-	ominus: "⊖",
-	CircleMinus: "⊖",
-	otimes: "⊗",
-	CircleTimes: "⊗",
-	osol: "⊘",
-	odot: "⊙",
-	CircleDot: "⊙",
-	oast: "⊛",
-	circledast: "⊛",
-	odash: "⊝",
-	circleddash: "⊝",
-	ocirc: "⊚",
-	circledcirc: "⊚",
-	boxplus: "⊞",
-	plusb: "⊞",
-	boxminus: "⊟",
-	minusb: "⊟",
-	boxtimes: "⊠",
-	timesb: "⊠",
-	boxdot: "⊡",
-	sdotb: "⊡",
-	veebar: "⊻",
-	vee: "∨",
-	barvee: "⊽",
-	and: "∧",
-	wedge: "∧",
-	Cap: "⋒",
-	Cup: "⋓",
-	Fork: "⋔",
-	pitchfork: "⋔",
-	epar: "⋕",
-	ltlarr: "⥶",
-	nvap: "≍⃒",
-	nvsim: "∼⃒",
-	nvge: "≥⃒",
-	nvle: "≤⃒",
-	nvlt: "<⃒",
-	nvgt: ">⃒",
-	nvltrie: "⊴⃒",
-	nvrtrie: "⊵⃒",
-	Vdash: "⊩",
-	dashv: "⊣",
-	vDash: "⊨",
-	Vvdash: "⊪",
-	nvdash: "⊬",
-	nvDash: "⊭",
-	nVdash: "⊮",
-	nVDash: "⊯"
-};
-({
-	...BASIC_LATIN,
-	...LATIN_ACCENTS,
-	...LATIN_EXTENDED,
-	...GREEK,
-	...CYRILLIC,
-	...MATH,
-	...MATH_ADVANCED,
-	...ARROWS,
-	...SHAPES,
-	...PUNCTUATION,
-	...CURRENCY,
-	...FRACTIONS,
-	...MISC_SYMBOLS
-});
 var XML = {
 	amp: "&",
 	apos: "'",
@@ -33902,7 +32832,7 @@ var COMMON_HTML = {
 	frac34: "¾"
 };
 //#endregion
-//#region node_modules/.pnpm/@nodable+entities@2.2.0/node_modules/@nodable/entities/src/EntityDecoder.js
+//#region node_modules/.pnpm/@nodable+entities@3.0.0/node_modules/@nodable/entities/src/EntityDecoder.js
 /**
 * Action constants for `onExternalEntity` and `onInputEntity` hooks.
 *
@@ -34368,7 +33298,7 @@ var EntityDecoder = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
 var defaultOnDangerousProperty = (name) => {
 	if (DANGEROUS_PROPERTY_NAMES.includes(name)) return "__" + name;
 	return name;
@@ -34495,7 +33425,7 @@ var buildOptions = function(options) {
 	return built;
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
 var METADATA_SYMBOL$1;
 if (typeof Symbol !== "function") METADATA_SYMBOL$1 = "@@xmlMetadata";
 else METADATA_SYMBOL$1 = Symbol("XML Node Metadata");
@@ -34599,7 +33529,7 @@ var createValidator = (production, { xmlVersion = "1.0", asciiOnly = false, maxC
 	return validator;
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
 var DocTypeReader = class {
 	constructor(options, xmlVersion) {
 		this.suppressValidationErr = !options;
@@ -35120,7 +34050,7 @@ function handleInfinity(str, num, options) {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/ignoreAttributes.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/ignoreAttributes.js
 function getIgnoreAttributesFn$1(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -36803,7 +35733,7 @@ function isUnsafe(value, context) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
 /**
 * Extract raw attributes (without prefix) from prefixed attribute map
 * @param {object} prefixedAttrs - Attributes with prefix from buildAttributesMap
@@ -36851,6 +35781,7 @@ var OrderedObjParser = class {
 		this.ignoreAttributesFn = getIgnoreAttributesFn$1(this.options.ignoreAttributes);
 		this.entityExpansionCount = 0;
 		this.currentExpandedLength = 0;
+		this.doctypefound = false;
 		let namedEntities = { ...XML };
 		if (this.options.entityDecoder) this.entityDecoder = this.options.entityDecoder;
 		else {
@@ -36985,6 +35916,7 @@ var parseXml = function(xmlData) {
 	this.entityDecoder.reset();
 	this.entityExpansionCount = 0;
 	this.currentExpandedLength = 0;
+	this.doctypefound = false;
 	const options = this.options;
 	const docTypeReader = new DocTypeReader(options.processEntities);
 	const xmlLen = xmlData.length;
@@ -37036,6 +35968,8 @@ var parseXml = function(xmlData) {
 			}
 			i = endIndex;
 		} else if (c1 === 33 && xmlData.charCodeAt(i + 2) === 68) {
+			if (this.doctypefound) throw new Error("Multiple DOCTYPE declarations found.");
+			this.doctypefound = true;
 			const result = docTypeReader.readDocType(xmlData, i);
 			this.entityDecoder.addInputEntities(result.entities);
 			i = result.i;
@@ -37318,7 +36252,7 @@ function sanitizeName(name, options) {
 	return name;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/xmlparser/node2json.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/xmlparser/node2json.js
 var METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
 /**
 * Helper function to strip attribute prefix from attribute map
@@ -37419,7 +36353,7 @@ function isLeafTag(obj, options) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
 var XMLParser = class {
 	constructor(options) {
 		this.externalEntities = {};
@@ -38088,13 +37022,13 @@ function isAttribute(name) {
 	else return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
 var json2xml_default = Builder;
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.0/node_modules/fast-xml-parser/src/fxp.js
+//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/fxp.js
 var XMLValidator = { validate };
 //#endregion
-//#region node_modules/.pnpm/@azure+core-xml@1.5.1/node_modules/@azure/core-xml/dist/esm/xml.js
+//#region node_modules/.pnpm/@azure+core-xml@1.6.0/node_modules/@azure/core-xml/dist/esm/xml.js
 function getCommonOptions(options) {
 	return {
 		attributesGroupName: "$",
@@ -38149,20 +37083,23 @@ async function parseXML(str, opts = {}) {
 	if (validation !== true) throw validation;
 	const parsedXml = new XMLParser(getParserOptions(opts)).parse(str);
 	if (parsedXml["?xml"]) delete parsedXml["?xml"];
-	if (!opts.includeRoot) for (const key of Object.keys(parsedXml)) {
-		const value = parsedXml[key];
-		return typeof value === "object" ? { ...value } : value;
+	if (!opts.includeRoot) {
+		const key = Object.keys(parsedXml)[0];
+		if (key !== void 0) {
+			const value = parsedXml[key];
+			return typeof value === "object" ? { ...value } : value;
+		}
 	}
 	return parsedXml;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/log.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/log.js
 /**
 * The `@azure/logger` configuration for this package.
 */
 var logger$1 = createClientLogger("storage-blob");
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/BuffersStream.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/BuffersStream.js
 /**
 * This class generates a readable stream from the data in an array of buffers.
 */
@@ -38236,7 +37173,7 @@ var BuffersStream = class extends Readable {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/PooledBuffer.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/PooledBuffer.js
 /**
 * maxBufferLength is max size of each buffer in the pooled buffers.
 */
@@ -38324,7 +37261,7 @@ var PooledBuffer = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/BufferScheduler.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/BufferScheduler.js
 /**
 * This class accepts a Node.js Readable stream as input, and keeps reading data
 * from the stream into the internal buffer structure, until it reaches maxBuffers.
@@ -38564,7 +37501,7 @@ var BufferScheduler = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/crc64.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/crc64.js
 var __isNode__ = typeof process === "object" && typeof process.versions === "object" && typeof process.versions.node === "string";
 var require$1;
 var __filename;
@@ -40407,7 +39344,7 @@ var NativeCRC64 = (() => {
 	});
 })();
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/StorageCRC64Calculator.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/StorageCRC64Calculator.js
 /**
 * Class used to calculator CRC64 checksum
 */
@@ -40457,7 +39394,7 @@ var StorageCRC64Calculator = class StorageCRC64Calculator {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/streamHelpers.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/streamHelpers.js
 /**
 * Signals the end of a stream by pushing null.
 * In Node.js, this is required to signal the end of a Readable stream.
@@ -40572,7 +39509,7 @@ var StructuredMessageEncoding = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/StructuredMessageEncodingStream.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/StructuredMessageEncodingStream.js
 function isNodeReadableStream(source) {
 	return source !== null && source instanceof Stream && typeof source._read === "function" && typeof source._readableState === "object" && typeof source.pipe === "function";
 }
@@ -40721,7 +39658,7 @@ var StructuredMessageEncodingStream = class extends Readable {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/StructuredMessageDecoding.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/StructuredMessageDecoding.js
 var MESSAGE_VERSION = 1;
 var MESSAGE_HEADER_LENGTH = 13;
 var SEGMENT_HEADER_LENGTH = 10;
@@ -40866,7 +39803,7 @@ var StructuredMessageDecoding = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/StructuredMessageDecodingStream.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/StructuredMessageDecodingStream.js
 /**
 * To decode structured body for CRC64 content validtion in storage downloading.
 * @param source -
@@ -40934,14 +39871,14 @@ var StructuredMessageDecodingStream = class extends Readable {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/cache.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/cache.js
 var _defaultHttpClient;
 function getCachedDefaultHttpClient() {
 	if (!_defaultHttpClient) _defaultHttpClient = createDefaultHttpClient();
 	return _defaultHttpClient;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/RequestPolicy.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/RequestPolicy.js
 /**
 * The base class from which all request policies derive.
 */
@@ -40974,7 +39911,7 @@ var BaseRequestPolicy = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageBrowserPolicy.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageBrowserPolicy.js
 /**
 * StorageBrowserPolicy will handle differences between Node.js and browser runtime, including:
 *
@@ -41007,7 +39944,7 @@ var StorageBrowserPolicy = class extends BaseRequestPolicy {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/StorageBrowserPolicyFactory.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/StorageBrowserPolicyFactory.js
 /**
 * StorageBrowserPolicyFactory is a factory class helping generating StorageBrowserPolicy objects.
 */
@@ -41023,7 +39960,7 @@ var StorageBrowserPolicyFactory = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/CredentialPolicy.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/CredentialPolicy.js
 /**
 * Credential policy used to sign HTTP(S) requests before sending. This is an
 * abstract class.
@@ -41048,7 +39985,7 @@ var CredentialPolicy = class extends BaseRequestPolicy {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/AnonymousCredentialPolicy.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/AnonymousCredentialPolicy.js
 /**
 * AnonymousCredentialPolicy is used with HTTP(S) requests that read public resources
 * or for use with Shared Access Signatures (SAS).
@@ -41064,7 +40001,7 @@ var AnonymousCredentialPolicy = class extends CredentialPolicy {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/credentials/Credential.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/credentials/Credential.js
 /**
 * Credential is an abstract class for Azure Storage HTTP requests signing. This
 * class will host an credentialPolicyCreator factory which generates CredentialPolicy.
@@ -41081,7 +40018,7 @@ var Credential = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/credentials/AnonymousCredential.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/credentials/AnonymousCredential.js
 /**
 * AnonymousCredential provides a credentialPolicyCreator member used to create
 * AnonymousCredentialPolicy objects. AnonymousCredentialPolicy is used with
@@ -41100,7 +40037,7 @@ var AnonymousCredential = class extends Credential {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/utils/constants.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/utils/constants.js
 var URLConstants$1 = { Parameters: {
 	FORCE_BROWSER_NO_CACHE: "_",
 	SIGNATURE: "sig",
@@ -41135,7 +40072,7 @@ var HeaderConstants = {
 	X_MS_CopySourceErrorCode: "x-ms-copy-source-error-code"
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/utils/utils.common.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/utils/utils.common.js
 /**
 * Set URL parameter name and value. If name exists in URL parameters, old value
 * will be replaced by name key. If not provide value, the parameter will be deleted.
@@ -41231,7 +40168,7 @@ async function delay(timeInMs, aborter, abortError) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/utils/SharedKeyComparator.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/utils/SharedKeyComparator.js
 var table_lv0 = new Uint32Array([
 	0,
 	0,
@@ -41653,7 +40590,7 @@ function isLessThan(lhs, rhs) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageSharedKeyCredentialPolicy.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageSharedKeyCredentialPolicy.js
 /**
 * StorageSharedKeyCredentialPolicy is a policy used to sign HTTP request with a shared key.
 */
@@ -41766,7 +40703,7 @@ var StorageSharedKeyCredentialPolicy = class extends CredentialPolicy {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/credentials/StorageSharedKeyCredential.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/credentials/StorageSharedKeyCredential.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -41810,13 +40747,13 @@ var StorageSharedKeyCredential = class extends Credential {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/log.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/log.js
 /**
 * The `@azure/logger` configuration for this package.
 */
 var logger = createClientLogger("storage-common");
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicyType.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicyType.js
 /**
 * RetryPolicy types.
 */
@@ -41832,7 +40769,7 @@ var StorageRetryPolicyType;
 	StorageRetryPolicyType[StorageRetryPolicyType["FIXED"] = 1] = "FIXED";
 })(StorageRetryPolicyType || (StorageRetryPolicyType = {}));
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicy.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicy.js
 var DEFAULT_RETRY_OPTIONS$1 = {
 	maxRetryDelayInMs: 120 * 1e3,
 	maxTries: 4,
@@ -41984,7 +40921,7 @@ var StorageRetryPolicy = class extends BaseRequestPolicy {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/StorageRetryPolicyFactory.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/StorageRetryPolicyFactory.js
 /**
 * StorageRetryPolicyFactory is a factory class helping generating {@link StorageRetryPolicy} objects.
 */
@@ -42008,7 +40945,7 @@ var StorageRetryPolicyFactory = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageBrowserPolicyV2.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageBrowserPolicyV2.js
 /**
 * The programmatic identifier of the StorageBrowserPolicy.
 */
@@ -42028,7 +40965,7 @@ function storageBrowserPolicy() {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageCorrectContentLengthPolicy.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageCorrectContentLengthPolicy.js
 /**
 * The programmatic identifier of the storageCorrectContentLengthPolicy.
 */
@@ -42049,7 +40986,7 @@ function storageCorrectContentLengthPolicy() {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicyV2.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicyV2.js
 /**
 * Name of the {@link storageRetryPolicy}
 */
@@ -42184,7 +41121,7 @@ function storageRetryPolicy(options = {}) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageSharedKeyCredentialPolicyV2.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageSharedKeyCredentialPolicyV2.js
 /**
 * The programmatic identifier of the storageSharedKeyCredentialPolicy.
 */
@@ -42281,7 +41218,7 @@ function storageSharedKeyCredentialPolicy(options) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/policies/StorageRequestFailureDetailsParserPolicy.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageRequestFailureDetailsParserPolicy.js
 /**
 * The programmatic identifier of the StorageRequestFailureDetailsParserPolicy.
 */
@@ -42305,7 +41242,7 @@ function storageRequestFailureDetailsParserPolicy() {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.10.2/node_modules/@azure/storage-common/dist/esm/credentials/UserDelegationKeyCredential.js
+//#region node_modules/.pnpm/@azure+storage-common@12.4.1_@azure+core-client@1.11.0_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/credentials/UserDelegationKeyCredential.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -42345,7 +41282,7 @@ var UserDelegationKeyCredential = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/utils/constants.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/utils/constants.js
 var SDK_VERSION = "12.33.0";
 var SERVICE_VERSION = "2026-06-06";
 var BLOCK_BLOB_MAX_UPLOAD_BLOB_BYTES = 256 * 1024 * 1024;
@@ -42519,7 +41456,7 @@ var PathStylePorts = [
 	"11104"
 ];
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/Pipeline.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/Pipeline.js
 /**
 * A helper to decide if a given argument satisfies the Pipeline contract
 * @param pipeline - An argument that may be a Pipeline
@@ -42720,7 +41657,7 @@ function isCoreHttpPolicyFactory(factory) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/generated/src/models/mappers.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/generated/src/models/mappers.js
 var mappers_exports = /* @__PURE__ */ __exportAll$1({
 	AccessPolicy: () => AccessPolicy,
 	AppendBlobAppendBlockExceptionHeaders: () => AppendBlobAppendBlockExceptionHeaders,
@@ -49579,7 +48516,7 @@ var BlockBlobGetBlockListExceptionHeaders = {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/generated/src/models/parameters.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/generated/src/models/parameters.js
 var contentType = {
 	parameterPath: ["options", "contentType"],
 	mapper: {
@@ -51142,7 +50079,7 @@ var listType = {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/service.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/service.js
 /** Class containing Service operations. */
 var ServiceImpl = class {
 	client;
@@ -51463,7 +50400,7 @@ var filterBlobsOperationSpec$1 = {
 	serializer: xmlSerializer$5
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/container.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/container.js
 /** Class containing Container operations. */
 var ContainerImpl = class {
 	client;
@@ -52165,7 +51102,7 @@ var getAccountInfoOperationSpec$1 = {
 	serializer: xmlSerializer$4
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/blob.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/blob.js
 /** Class containing Blob operations. */
 var BlobImpl = class {
 	client;
@@ -53172,7 +52109,7 @@ var setTagsOperationSpec = {
 	serializer: xmlSerializer$3
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/pageBlob.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/pageBlob.js
 /** Class containing PageBlob operations. */
 var PageBlobImpl = class {
 	client;
@@ -53637,7 +52574,7 @@ var copyIncrementalOperationSpec = {
 	serializer: xmlSerializer$2
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/appendBlob.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/appendBlob.js
 /** Class containing AppendBlob operations. */
 var AppendBlobImpl = class {
 	client;
@@ -53858,7 +52795,7 @@ var sealOperationSpec = {
 	serializer: xmlSerializer$1
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/blockBlob.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/generated/src/operations/blockBlob.js
 /** Class containing BlockBlob operations. */
 var BlockBlobImpl = class {
 	client;
@@ -54240,7 +53177,7 @@ var getBlockListOperationSpec = {
 	serializer: xmlSerializer
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/generated/src/storageClient.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/generated/src/storageClient.js
 var StorageClient$1 = class extends ExtendedServiceClient {
 	static {
 		__name(this, "StorageClient");
@@ -54283,7 +53220,7 @@ var StorageClient$1 = class extends ExtendedServiceClient {
 	blockBlob;
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/StorageContextClient.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/StorageContextClient.js
 /**
 * @internal
 */
@@ -54295,7 +53232,7 @@ var StorageContextClient = class extends StorageClient$1 {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/utils/utils.common.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/utils/utils.common.js
 var accountNameSuffixes = [
 	"-secondary-ipv6",
 	"-secondary-dualstack",
@@ -54758,7 +53695,7 @@ async function setUploadChecksumParameters(body, contentLength, parameters, uplo
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/StorageClient.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/StorageClient.js
 /**
 * A StorageClient represents a based URL class for {@link BlobServiceClient}, {@link ContainerClient}
 * and etc.
@@ -54804,7 +53741,7 @@ var StorageClient = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/utils/tracing.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/utils/tracing.js
 /**
 * Creates a span using the global tracer.
 * @internal
@@ -54815,7 +53752,7 @@ var tracingClient = createTracingClient({
 	namespace: "Microsoft.Storage"
 });
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/sas/BlobSASPermissions.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/sas/BlobSASPermissions.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -54960,7 +53897,7 @@ var BlobSASPermissions = class BlobSASPermissions {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/sas/ContainerSASPermissions.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/sas/ContainerSASPermissions.js
 /**
 * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a container.
 * Setting a value to true means that any SAS which uses these permissions will grant permissions for that operation.
@@ -55123,7 +54060,7 @@ var ContainerSASPermissions = class ContainerSASPermissions {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/sas/SasIPRange.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/sas/SasIPRange.js
 /**
 * Generate SasIPRange format string. For example:
 *
@@ -55135,7 +54072,7 @@ function ipRangeToString(ipRange) {
 	return ipRange.end ? `${ipRange.start}-${ipRange.end}` : ipRange.start;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/sas/SASQueryParameters.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/sas/SASQueryParameters.js
 /**
 * Protocols for generated SAS.
 */
@@ -55525,7 +54462,7 @@ var SASQueryParameters = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/sas/BlobSASSignatureValues.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/sas/BlobSASSignatureValues.js
 function generateBlobSASQueryParameters(blobSASSignatureValues, sharedKeyCredentialOrUserDelegationKey, accountName) {
 	return generateBlobSASQueryParametersInternal(blobSASSignatureValues, sharedKeyCredentialOrUserDelegationKey, accountName).sasQueryParameters;
 }
@@ -56149,7 +55086,7 @@ function trimBlobName(blobName) {
 	return internalName;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/BlobLeaseClient.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/BlobLeaseClient.js
 /**
 * A client that manages leases for a {@link ContainerClient} or a {@link BlobClient}.
 */
@@ -56317,7 +55254,7 @@ var BlobLeaseClient = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/utils/RetriableReadableStream.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/utils/RetriableReadableStream.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -56411,7 +55348,7 @@ var RetriableReadableStream = class extends Readable {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/BlobDownloadResponse.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/BlobDownloadResponse.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -56877,7 +55814,7 @@ var BlobDownloadResponse = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroConstants.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroConstants.js
 var AVRO_INIT_BYTES = new Uint8Array([
 	79,
 	98,
@@ -56887,7 +55824,7 @@ var AVRO_INIT_BYTES = new Uint8Array([
 var AVRO_CODEC_KEY = "avro.codec";
 var AVRO_SCHEMA_KEY = "avro.schema";
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroParser.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroParser.js
 var AvroParser = class AvroParser {
 	/**
 	* Reads a fixed number of bytes from the stream.
@@ -57140,7 +56077,7 @@ var AvroRecordType = class extends AvroType {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/utils/utils.common.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/utils/utils.common.js
 function arraysEqual(a, b) {
 	if (a === b) return true;
 	if (a == null || b == null) return false;
@@ -57149,7 +56086,7 @@ function arraysEqual(a, b) {
 	return true;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroReader.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroReader.js
 var AvroReader = class {
 	_dataStream;
 	_headerStream;
@@ -57218,10 +56155,10 @@ var AvroReader = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroReadable.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroReadable.js
 var AvroReadable = class {};
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroReadableFromStream.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/internal-avro/AvroReadableFromStream.js
 var ABORT_ERROR = new AbortError("Reading from the avro stream was aborted.");
 var AvroReadableFromStream = class extends AvroReadable {
 	_position;
@@ -57280,7 +56217,7 @@ var AvroReadableFromStream = class extends AvroReadable {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/utils/BlobQuickQueryStream.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/utils/BlobQuickQueryStream.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -57368,7 +56305,7 @@ var BlobQuickQueryStream = class extends Readable {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/BlobQueryResponse.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/BlobQueryResponse.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -57730,7 +56667,7 @@ var BlobQueryResponse = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/models.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/models.js
 /**
 * Represents the access tier on a blob.
 * For detailed information about block blob level tiering see {@link https://learn.microsoft.com/azure/storage/blobs/storage-blob-storage-tiers|Hot, cool and archive storage tiers.}
@@ -57830,7 +56767,7 @@ var StorageBlobAudience;
 	StorageBlobAudience["DiskComputeOAuthScopes"] = "https://disk.compute.azure.com/.default";
 })(StorageBlobAudience || (StorageBlobAudience = {}));
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/PageBlobRangeResponse.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/PageBlobRangeResponse.js
 /**
 * Function that converts PageRange and ClearRange to a common Range object.
 * PageRange and ClearRange have start and end while Range offset and count
@@ -57860,7 +56797,7 @@ function rangeResponseFromModel(response) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+core-lro@2.7.2/node_modules/@azure/core-lro/dist/esm/legacy/poller.js
+//#region node_modules/.pnpm/@azure+core-lro@2.7.2_supports-color@7.2.0/node_modules/@azure/core-lro/dist/esm/legacy/poller.js
 /**
 * When a poller is manually stopped through the `stopPolling` method,
 * the poller will be rejected with an instance of the PollerStoppedError.
@@ -58226,7 +57163,7 @@ var Poller = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/pollers/BlobStartCopyFromUrlPoller.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/pollers/BlobStartCopyFromUrlPoller.js
 /**
 * This is the poller returned by {@link BlobClient.beginCopyFromURL}.
 * This can not be instantiated directly outside of this package.
@@ -58332,7 +57269,7 @@ function makeBlobBeginCopyFromURLPollOperation(state) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/Range.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/Range.js
 /**
 * Generate a range string. For example:
 *
@@ -58346,7 +57283,7 @@ function rangeToString(iRange) {
 	return iRange.count ? `bytes=${iRange.offset}-${iRange.offset + iRange.count - 1}` : `bytes=${iRange.offset}-`;
 }
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/utils/Batch.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/utils/Batch.js
 /**
 * States for Batch.
 */
@@ -58459,7 +57396,7 @@ var Batch = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/utils/utils.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/utils/utils.js
 /**
 * Reads a readable stream into buffer. Fill the buffer from offset to end.
 *
@@ -58533,7 +57470,7 @@ async function readStreamToLocalFile(rs, file) {
 var fsStat = util.promisify(fs.stat);
 var fsCreateReadStream = fs.createReadStream;
 //#endregion
-//#region node_modules/.pnpm/@azure+storage-blob@12.33.0/node_modules/@azure/storage-blob/dist/esm/Clients.js
+//#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/Clients.js
 /**
 * A BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob,
 * append blob, or page blob.
@@ -61095,7 +60032,7 @@ var PageBlobClient = class PageBlobClient extends BlobClient {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/shared/errors.js
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/shared/errors.js
 var InvalidResponseError = class extends Error {
 	constructor(message) {
 		super(message);
@@ -61137,7 +60074,7 @@ var RateLimitError = class extends Error {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/uploadUtils.js
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/uploadUtils.js
 var __awaiter$9 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -61278,7 +60215,7 @@ function uploadCacheArchiveSDK(signedUploadURL, archivePath, options) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/requestUtils.js
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/requestUtils.js
 var __awaiter$8 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -61380,7 +60317,7 @@ function retryHttpClientResponse(name_1, method_1) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/downloadUtils.js
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/downloadUtils.js
 var __awaiter$7 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -61680,7 +60617,7 @@ var promiseWithTimeout = (timeoutMs, promise) => __awaiter$7(void 0, void 0, voi
 	});
 });
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/options.js
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/options.js
 /**
 * Returns a copy of the upload options with defaults filled in.
 *
@@ -61740,7 +60677,7 @@ function getDownloadOptions(copy) {
 	return result;
 }
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/config.js
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/config.js
 function isGhes() {
 	const hostname = new URL(process.env["GITHUB_SERVER_URL"] || "https://github.com").hostname.trimEnd().toUpperCase();
 	const isGitHubHost = hostname === "GITHUB.COM";
@@ -61752,6 +60689,23 @@ function getCacheServiceVersion() {
 	if (isGhes()) return "v1";
 	return process.env["ACTIONS_CACHE_SERVICE_V2"] ? "v2" : "v1";
 }
+var KNOWN_CACHE_MODES = [
+	"none",
+	"read",
+	"write",
+	"write-only"
+];
+function getCacheMode() {
+	return (process.env["ACTIONS_CACHE_MODE"] || "").trim().toLowerCase();
+}
+function isCacheReadable(mode) {
+	if (!KNOWN_CACHE_MODES.includes(mode)) return true;
+	return mode === "read" || mode === "write";
+}
+function isCacheWritable(mode) {
+	if (!KNOWN_CACHE_MODES.includes(mode)) return true;
+	return mode === "write" || mode === "write-only";
+}
 function getCacheServiceURL() {
 	const version = getCacheServiceVersion();
 	switch (version) {
@@ -61761,7 +60715,7 @@ function getCacheServiceURL() {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/package.json
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/package.json
 var package_exports = /* @__PURE__ */ __exportAll$1({
 	bugs: () => bugs,
 	default: () => package_default,
@@ -61786,7 +60740,7 @@ var package_exports = /* @__PURE__ */ __exportAll$1({
 }), name, version$1, description, keywords, homepage, type, main$1, types, exports$1, directories, files, publishConfig, repository, scripts, bugs, dependencies, devDependencies, overrides, package_default;
 var init_package = __esmMin((() => {
 	name = "@actions/cache";
-	version$1 = "6.1.0";
+	version$1 = "6.2.0";
 	description = "Actions cache lib";
 	keywords = [
 		"github",
@@ -61862,7 +60816,7 @@ var init_package = __esmMin((() => {
 	};
 }));
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/shared/user-agent.js
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/shared/user-agent.js
 var import_package_version = (/* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = { version: (init_package(), __toCommonJS(package_exports).default).version };
 })))();
@@ -61873,7 +60827,7 @@ function getUserAgentString() {
 	return `@actions/cache-${import_package_version.version}`;
 }
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/cacheHttpClient.js
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/cacheHttpClient.js
 var __awaiter$6 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -61920,6 +60874,7 @@ function createHttpClient() {
 }
 function getCacheEntry(keys, paths, options) {
 	return __awaiter$6(this, void 0, void 0, function* () {
+		var _a;
 		const httpClient = createHttpClient();
 		const version = getCacheVersion(paths, options === null || options === void 0 ? void 0 : options.compressionMethod, options === null || options === void 0 ? void 0 : options.enableCrossOsArchive);
 		const resource = `cache?keys=${encodeURIComponent(keys.join(","))}&version=${version}`;
@@ -61930,7 +60885,11 @@ function getCacheEntry(keys, paths, options) {
 			if (isDebug()) yield printCachesListForDiagnostics(keys[0], httpClient, version);
 			return null;
 		}
-		if (!isSuccessStatusCode(response.statusCode)) throw new Error(`Cache service responded with ${response.statusCode}`);
+		if (!isSuccessStatusCode(response.statusCode)) {
+			const errorMessage = (_a = response.error) === null || _a === void 0 ? void 0 : _a.message;
+			if (errorMessage === null || errorMessage === void 0 ? void 0 : errorMessage.includes("cache read denied:")) throw new Error(errorMessage);
+			throw new Error(`Cache service responded with ${response.statusCode}`);
+		}
 		const cacheResult = response.result;
 		const cacheDownloadUrl = cacheResult === null || cacheResult === void 0 ? void 0 : cacheResult.archiveLocation;
 		if (!cacheDownloadUrl) throw new Error("Cache not found.");
@@ -64570,7 +63529,7 @@ var ServiceType = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/generated/results/entities/v1/cachescope.js
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/generated/results/entities/v1/cachescope.js
 var CacheScope$Type = class extends MessageType {
 	constructor() {
 		super("github.actions.results.entities.v1.CacheScope", [{
@@ -64631,7 +63590,7 @@ var CacheScope$Type = class extends MessageType {
 */
 var CacheScope = new CacheScope$Type();
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/generated/results/entities/v1/cachemetadata.js
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/generated/results/entities/v1/cachemetadata.js
 var CacheMetadata$Type = class extends MessageType {
 	constructor() {
 		super("github.actions.results.entities.v1.CacheMetadata", [{
@@ -64693,7 +63652,7 @@ var CacheMetadata$Type = class extends MessageType {
 */
 var CacheMetadata = new CacheMetadata$Type();
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/generated/results/api/v1/cache.js
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/generated/results/api/v1/cache.js
 var CreateCacheEntryRequest$Type = class extends MessageType {
 	constructor() {
 		super("github.actions.results.api.v1.CreateCacheEntryRequest", [
@@ -65173,7 +64132,7 @@ new ServiceType("github.actions.results.api.v1.CacheService", [
 	}
 ]);
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/generated/results/api/v1/cache.twirp-client.js
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/generated/results/api/v1/cache.twirp-client.js
 var CacheServiceClientJSON = class {
 	constructor(rpc) {
 		this.rpc = rpc;
@@ -65204,7 +64163,7 @@ var CacheServiceClientJSON = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/shared/util.js
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/shared/util.js
 /**
 * Masks the `sig` parameter in a URL and sets it as a secret.
 *
@@ -65264,7 +64223,7 @@ function maskSecretUrls(body) {
 	if ("signed_download_url" in body && typeof body.signed_download_url === "string") maskSigUrl(body.signed_download_url);
 }
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/shared/cacheTwirpClient.js
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/shared/cacheTwirpClient.js
 var __awaiter$5 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -65408,7 +64367,7 @@ function internalCacheTwirpClient(options) {
 	return new CacheServiceClientJSON(new CacheServiceClient(getUserAgentString(), options === null || options === void 0 ? void 0 : options.maxAttempts, options === null || options === void 0 ? void 0 : options.retryIntervalMs, options === null || options === void 0 ? void 0 : options.retryMultiplier));
 }
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/internal/tar.js
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/tar.js
 var __awaiter$4 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -65585,7 +64544,7 @@ function createTar(archiveFolder, sourceDirectories, compressionMethod) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.1.0/node_modules/@actions/cache/lib/cache.js
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/cache.js
 var __awaiter$3 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
@@ -65631,7 +64590,7 @@ var ReserveCacheError = class ReserveCacheError extends Error {
 * Raised when the cache backend refuses to reserve a writable cache entry
 * because the JWT issued for this run was scoped read-only (for example, the
 * run was triggered by an event the repository administrator classified as
-* untrusted). The receiver-supplied detail message always begins with
+* untrusted). The service-supplied detail message always begins with
 * `cache write denied:` (the full error message includes additional context
 * like the cache key).
 *
@@ -65645,6 +64604,14 @@ var CacheWriteDeniedError = class CacheWriteDeniedError extends ReserveCacheErro
 		super(message);
 		this.name = "CacheWriteDeniedError";
 		Object.setPrototypeOf(this, CacheWriteDeniedError.prototype);
+	}
+};
+var CACHE_READ_DENIED_PREFIX = CacheReadDeniedMessagePrefix;
+var CacheReadDeniedError = class CacheReadDeniedError extends Error {
+	constructor(message) {
+		super(message);
+		this.name = "CacheReadDeniedError";
+		Object.setPrototypeOf(this, CacheReadDeniedError.prototype);
 	}
 };
 var FinalizeCacheError = class FinalizeCacheError extends Error {
@@ -65676,6 +64643,12 @@ function restoreCache(paths_1, primaryKey_1, restoreKeys_1, options_1) {
 		const cacheServiceVersion = getCacheServiceVersion();
 		debug(`Cache service version: ${cacheServiceVersion}`);
 		checkPaths(paths);
+		const cacheMode = getCacheMode();
+		if (!isCacheReadable(cacheMode)) {
+			info(`Cache restore skipped: the effective cache-mode '${cacheMode}' does not permit reads.`);
+			debug(`Skipped restore for paths [${paths.join(", ")}] with primary key '${primaryKey}'.`);
+			return;
+		}
 		switch (cacheServiceVersion) {
 			case "v2": return yield restoreCacheV2(paths, primaryKey, restoreKeys, options, enableCrossOsArchive);
 			default: return yield restoreCacheV1(paths, primaryKey, restoreKeys, options, enableCrossOsArchive);
@@ -65694,6 +64667,7 @@ function restoreCache(paths_1, primaryKey_1, restoreKeys_1, options_1) {
 */
 function restoreCacheV1(paths_1, primaryKey_1, restoreKeys_1, options_1) {
 	return __awaiter$3(this, arguments, void 0, function* (paths, primaryKey, restoreKeys, options, enableCrossOsArchive = false) {
+		var _a;
 		restoreKeys = restoreKeys || [];
 		const keys = [primaryKey, ...restoreKeys];
 		debug("Resolved Keys:");
@@ -65703,10 +64677,17 @@ function restoreCacheV1(paths_1, primaryKey_1, restoreKeys_1, options_1) {
 		const compressionMethod = yield getCompressionMethod();
 		let archivePath = "";
 		try {
-			const cacheEntry = yield getCacheEntry(keys, paths, {
-				compressionMethod,
-				enableCrossOsArchive
-			});
+			let cacheEntry;
+			try {
+				cacheEntry = yield getCacheEntry(keys, paths, {
+					compressionMethod,
+					enableCrossOsArchive
+				});
+			} catch (error) {
+				const errorMessage = (_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "";
+				if (errorMessage.includes(CACHE_READ_DENIED_PREFIX)) throw new CacheReadDeniedError(errorMessage);
+				throw error;
+			}
 			if (!(cacheEntry === null || cacheEntry === void 0 ? void 0 : cacheEntry.archiveLocation)) return;
 			if (options === null || options === void 0 ? void 0 : options.lookupOnly) {
 				info("Lookup only - skipping download");
@@ -65721,11 +64702,11 @@ function restoreCacheV1(paths_1, primaryKey_1, restoreKeys_1, options_1) {
 			yield extractTar(archivePath, compressionMethod);
 			info("Cache restored successfully");
 			return cacheEntry.cacheKey;
-		} catch (error$3) {
-			const typedError = error$3;
-			if (typedError.name === ValidationError.name) throw error$3;
-			else if (typedError instanceof HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) error(`Failed to restore: ${error$3.message}`);
-			else warning(`Failed to restore: ${error$3.message}`);
+		} catch (error$2) {
+			const typedError = error$2;
+			if (typedError.name === ValidationError.name) throw error$2;
+			else if (typedError instanceof HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) error(`Failed to restore: ${error$2.message}`);
+			else warning(`Failed to restore: ${error$2.message}`);
 		} finally {
 			try {
 				yield unlinkFile(archivePath);
@@ -65747,6 +64728,7 @@ function restoreCacheV1(paths_1, primaryKey_1, restoreKeys_1, options_1) {
 */
 function restoreCacheV2(paths_1, primaryKey_1, restoreKeys_1, options_1) {
 	return __awaiter$3(this, arguments, void 0, function* (paths, primaryKey, restoreKeys, options, enableCrossOsArchive = false) {
+		var _a;
 		options = Object.assign(Object.assign({}, options), { useAzureSdk: true });
 		restoreKeys = restoreKeys || [];
 		const keys = [primaryKey, ...restoreKeys];
@@ -65763,7 +64745,14 @@ function restoreCacheV2(paths_1, primaryKey_1, restoreKeys_1, options_1) {
 				restoreKeys,
 				version: getCacheVersion(paths, compressionMethod, enableCrossOsArchive)
 			};
-			const response = yield twirpClient.GetCacheEntryDownloadURL(request);
+			let response;
+			try {
+				response = yield twirpClient.GetCacheEntryDownloadURL(request);
+			} catch (error) {
+				const errorMessage = (_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "";
+				if (errorMessage.includes(CACHE_READ_DENIED_PREFIX)) throw new CacheReadDeniedError(errorMessage);
+				throw error;
+			}
 			if (!response.ok) {
 				debug(`Cache not found for version ${request.version} of keys: ${keys.join(", ")}`);
 				return;
@@ -65784,11 +64773,11 @@ function restoreCacheV2(paths_1, primaryKey_1, restoreKeys_1, options_1) {
 			yield extractTar(archivePath, compressionMethod);
 			info("Cache restored successfully");
 			return response.matchedKey;
-		} catch (error$2) {
-			const typedError = error$2;
-			if (typedError.name === ValidationError.name) throw error$2;
-			else if (typedError instanceof HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) error(`Failed to restore: ${error$2.message}`);
-			else warning(`Failed to restore: ${error$2.message}`);
+		} catch (error$3) {
+			const typedError = error$3;
+			if (typedError.name === ValidationError.name) throw error$3;
+			else if (typedError instanceof HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) error(`Failed to restore: ${error$3.message}`);
+			else warning(`Failed to restore: ${error$3.message}`);
 		} finally {
 			try {
 				if (archivePath) yield unlinkFile(archivePath);
@@ -65813,6 +64802,12 @@ function saveCache(paths_1, key_1, options_1) {
 		debug(`Cache service version: ${cacheServiceVersion}`);
 		checkPaths(paths);
 		checkKey(key);
+		const cacheMode = getCacheMode();
+		if (!isCacheWritable(cacheMode)) {
+			info(`Cache save skipped: the effective cache-mode '${cacheMode}' does not permit writes.`);
+			debug(`Skipped save for paths [${paths.join(", ")}] with key '${key}'.`);
+			return -1;
+		}
 		switch (cacheServiceVersion) {
 			case "v2": return yield saveCacheV2(paths, key, options, enableCrossOsArchive);
 			default: return yield saveCacheV1(paths, key, options, enableCrossOsArchive);
@@ -65870,7 +64865,6 @@ function saveCacheV1(paths_1, key_1, options_1) {
 		} catch (error$4) {
 			const typedError = error$4;
 			if (typedError.name === ValidationError.name) throw error$4;
-			else if (typedError.name === CacheWriteDeniedError.name) warning(`Failed to save: ${typedError.message}`);
 			else if (typedError.name === ReserveCacheError.name) info(`Failed to save: ${typedError.message}`);
 			else if (typedError instanceof HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) error(`Failed to save: ${typedError.message}`);
 			else warning(`Failed to save: ${typedError.message}`);
@@ -65954,7 +64948,6 @@ function saveCacheV2(paths_1, key_1, options_1) {
 		} catch (error$5) {
 			const typedError = error$5;
 			if (typedError.name === ValidationError.name) throw error$5;
-			else if (typedError.name === CacheWriteDeniedError.name) warning(`Failed to save: ${typedError.message}`);
 			else if (typedError.name === ReserveCacheError.name) info(`Failed to save: ${typedError.message}`);
 			else if (typedError.name === FinalizeCacheError.name) warning(typedError.message);
 			else if (typedError instanceof HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) error(`Failed to save: ${typedError.message}`);
@@ -65970,7 +64963,7 @@ function saveCacheV2(paths_1, key_1, options_1) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.5/node_modules/@actions-rs-plus/core/dist/commands/cargo.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.5_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cargo.js
 var Cargo = class Cargo extends BaseProgram {
 	constructor(pathToCargo) {
 		super(pathToCargo);
@@ -66057,7 +65050,7 @@ var Cargo = class Cargo extends BaseProgram {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.5/node_modules/@actions-rs-plus/core/dist/commands/cross.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.5_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cross.js
 var Cross = class Cross extends BaseProgram {
 	constructor(path) {
 		super(path);
@@ -66087,7 +65080,7 @@ var Cross = class Cross extends BaseProgram {
 process.platform;
 process.platform;
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.5/node_modules/@actions-rs-plus/core/dist/input.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.5_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/input.js
 var input_exports = /* @__PURE__ */ __exportAll({
 	getInput: () => getInput,
 	getInputAsArray: () => getInputAsArray,
