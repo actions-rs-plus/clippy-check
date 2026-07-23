@@ -98,7 +98,7 @@
         "typescript": "6.0.3",
         "typescript-eslint": "8.65.0",
         "vite": "catalog:default",
-        "vite-plugin-checker": "0.14.4",
+        "vite-plugin-checker": "0.14.5",
         "vitest": "4.1.10"
     }
 }
