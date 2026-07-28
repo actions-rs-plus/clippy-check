@@ -126,7 +126,7 @@ export class OutputParser {
 
     /// Convert parsed JSON line into GH annotation objects, one per primary span
     ///
-    /// https://developer.github.com/v3/checks/runs/#annotations-object
+    /// https://docs.github.com/en/rest/checks/runs#create-a-check-run
     private makeAnnotations(contents: CompilerMessage): AnnotationWithMessageAndLevel[] {
         const level = OutputParser.parseLevel(contents.message.level);
 
@@ -172,7 +172,10 @@ export class OutputParser {
                 },
             };
 
-            // Omit these parameters if `start_line` and `end_line` have different values.
+            // GitHub annotations only support columns when the span is on a single line.
+            // Workflow commands (::error etc.) silently drop the columns on a multi-line span,
+            // but we omit them anyway to mirror the check-run API, which fails with a 422:
+            // https://docs.github.com/en/rest/checks/runs#create-a-check-run
             if (primarySpan.line_start === primarySpan.line_end) {
                 annotation.properties.startColumn = primarySpan.column_start;
                 annotation.properties.endColumn = primarySpan.column_end;
