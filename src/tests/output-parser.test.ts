@@ -220,6 +220,73 @@ describe("outputParser", () => {
         ]);
     });
 
+    it("emits one annotation per primary span, counting the diagnostic once", () => {
+        const outputParser = new OutputParser();
+
+        outputParser.tryParseClippyLine(
+            JSON.stringify({
+                reason: defaultMessage.reason,
+                message: {
+                    ...defaultMessage.message,
+                    spans: [
+                        {
+                            is_primary: true,
+                            column_start: 10,
+                            column_end: 15,
+                            line_start: 30,
+                            line_end: 30,
+                            file_name: "main.rs",
+                        },
+                        {
+                            is_primary: false,
+                            column_start: 1,
+                            column_end: 5,
+                            line_start: 28,
+                            line_end: 28,
+                            file_name: "main.rs",
+                        },
+                        {
+                            is_primary: true,
+                            column_start: 3,
+                            column_end: 7,
+                            line_start: 12,
+                            line_end: 12,
+                            file_name: "lib.rs",
+                        },
+                    ],
+                },
+            }),
+        );
+
+        expect(outputParser.stats).toEqual({ ...emptyStats, warning: 1 });
+        expect(outputParser.annotations).toEqual([
+            {
+                level: 1,
+                message: "rendered",
+                properties: {
+                    endColumn: 15,
+                    endLine: 30,
+                    file: "main.rs",
+                    startColumn: 10,
+                    startLine: 30,
+                    title: "message",
+                },
+            },
+            {
+                level: 1,
+                message: "rendered",
+                properties: {
+                    endColumn: 7,
+                    endLine: 12,
+                    file: "lib.rs",
+                    startColumn: 3,
+                    startLine: 12,
+                    title: "message",
+                },
+            },
+        ]);
+    });
+
     it("parses multiple annotations into AnnotationWithMessageAndLevel", () => {
         const outputParser = new OutputParser();
 
