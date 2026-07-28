@@ -64,7 +64,7 @@ render_always = true
 # An array of regex based postprocessors to modify the changelog.
 postprocessors = [
     # Replace the placeholder `<REPO>` with a URL.
-    { pattern = '<REPO>', replace = "https://github.com/kristof-mattei/rust-seed" }, # replace repository URL
+    { pattern = '<REPO>', replace = "https://github.com/actions-rs-plus/clippy-check" }, # replace repository URL
 ]
 
 [git]
