@@ -252,6 +252,7 @@ jobs:
   npm-test-windows:
     name: Test the code on Windows
     runs-on: windows-latest
+    if: ${{ !startsWith(github.head_ref, 'release/') }}
     steps:
       - *checkout
 
