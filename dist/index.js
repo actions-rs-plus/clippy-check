@@ -65290,23 +65290,21 @@ var OutputParser = class OutputParser {
 		this._uniqueAnnotations.set(key, parsedAnnotation);
 	}
 	makeAnnotation(contents) {
-		const primarySpan = contents.message.spans.find((span) => {
-			return span.is_primary;
-		});
-		if (primarySpan === void 0) throw new Error("Unable to find primary span for message");
-		let pathToFile = primarySpan.file_name;
-		if (this._workingDirectory !== null) pathToFile = path.join(this._workingDirectory, pathToFile);
-		if (os$1.platform() === "win32") pathToFile = pathToFile.split(path.win32.sep).join(path.posix.sep);
 		const annotation = {
 			level: OutputParser.parseLevel(contents.message.level),
 			message: contents.message.rendered,
-			properties: {
-				file: pathToFile,
-				startLine: primarySpan.line_start,
-				endLine: primarySpan.line_end,
-				title: contents.message.message
-			}
+			properties: { title: contents.message.message }
 		};
+		const primarySpan = contents.message.spans.find((span) => {
+			return span.is_primary;
+		});
+		if (primarySpan === void 0) return annotation;
+		let pathToFile = primarySpan.file_name;
+		if (this._workingDirectory !== null) pathToFile = path.join(this._workingDirectory, pathToFile);
+		if (os$1.platform() === "win32") pathToFile = pathToFile.split(path.win32.sep).join(path.posix.sep);
+		annotation.properties.file = pathToFile;
+		annotation.properties.startLine = primarySpan.line_start;
+		annotation.properties.endLine = primarySpan.line_end;
 		if (primarySpan.line_start === primarySpan.line_end) {
 			annotation.properties.startColumn = primarySpan.column_start;
 			annotation.properties.endColumn = primarySpan.column_end;
