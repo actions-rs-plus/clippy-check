@@ -21,18 +21,18 @@ to install the most recent `nightly` clippy version.
 on: push
 name: Clippy check
 jobs:
-    clippy_check:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4.2.2
-            - uses: actions-rs/toolchain@v1
-              with:
-                  toolchain: nightly
-                  components: clippy
-                  override: true
-            - uses: actions-rs-plus/clippy-check@v2.3.0
-              with:
-                  args: --all-features
+  clippy_check:
+    runs-on: ubuntu-latest
+    steps:
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          components: clippy
+          override: true
+      - uses: actions-rs-plus/clippy-check@ca09b7b0955125d97749648eed836a9100ec25f4 # v2.6.0
+        with:
+          args: --all-features
 ```
 
 ### With stable clippy
@@ -41,14 +41,14 @@ jobs:
 on: push
 name: Clippy check
 jobs:
-    clippy_check:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4.2.2
-            - run: rustup component add clippy
-            - uses: actions-rs-plus/clippy-check@v2.3.0
-              with:
-                  args: --all-features
+  clippy_check:
+    runs-on: ubuntu-latest
+    steps:
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: rustup component add clippy
+      - uses: actions-rs-plus/clippy-check@ca09b7b0955125d97749648eed836a9100ec25f4 # v2.6.0
+        with:
+          args: --all-features
 ```
 
 ## Inputs
