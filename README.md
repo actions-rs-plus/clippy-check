@@ -24,7 +24,7 @@ jobs:
   clippy_check:
     runs-on: ubuntu-latest
     steps:
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: nightly
@@ -44,7 +44,7 @@ jobs:
   clippy_check:
     runs-on: ubuntu-latest
     steps:
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - run: rustup component add clippy
       - uses: actions-rs-plus/clippy-check@ca09b7b0955125d97749648eed836a9100ec25f4 # v2.6.0
         with:
