@@ -31,7 +31,7 @@ const config: Config = {
             },
         },
         {
-            files: ["*.yaml", "*.yml"],
+            files: ["*.md", "*.yaml", "*.yml"],
             options: {
                 tabWidth: 2,
             },
