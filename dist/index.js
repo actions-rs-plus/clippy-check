@@ -65231,7 +65231,7 @@ var OutputParser = class OutputParser {
 		return this._stats;
 	}
 	get annotations() {
-		return this._uniqueAnnotations.values().toArray();
+		return this._uniqueAnnotations.values().toArray().flat();
 	}
 	static parseCargoJson(line) {
 		try {
@@ -65266,8 +65266,8 @@ var OutputParser = class OutputParser {
 			return;
 		}
 		if (!OutputParser.validateMessageIsCargoMessage(message)) return;
-		const parsedAnnotation = this.makeAnnotation(message);
-		const key = JSON.stringify(parsedAnnotation);
+		const parsedAnnotations = this.makeAnnotations(message);
+		const key = JSON.stringify(parsedAnnotations);
 		if (this._uniqueAnnotations.has(key)) return;
 		switch (message.message.level) {
 			case "help":
@@ -65287,29 +65287,38 @@ var OutputParser = class OutputParser {
 				break;
 			default: break;
 		}
-		this._uniqueAnnotations.set(key, parsedAnnotation);
+		this._uniqueAnnotations.set(key, parsedAnnotations);
 	}
-	makeAnnotation(contents) {
-		const annotation = {
-			level: OutputParser.parseLevel(contents.message.level),
-			message: contents.message.rendered,
-			properties: { title: contents.message.message }
-		};
-		const primarySpan = contents.message.spans.find((span) => {
+	makeAnnotations(contents) {
+		const level = OutputParser.parseLevel(contents.message.level);
+		const primarySpans = contents.message.spans.filter((span) => {
 			return span.is_primary;
 		});
-		if (primarySpan === void 0) return annotation;
-		let pathToFile = primarySpan.file_name;
-		if (this._workingDirectory !== null) pathToFile = path.join(this._workingDirectory, pathToFile);
-		if (os$1.platform() === "win32") pathToFile = pathToFile.split(path.win32.sep).join(path.posix.sep);
-		annotation.properties.file = pathToFile;
-		annotation.properties.startLine = primarySpan.line_start;
-		annotation.properties.endLine = primarySpan.line_end;
-		if (primarySpan.line_start === primarySpan.line_end) {
-			annotation.properties.startColumn = primarySpan.column_start;
-			annotation.properties.endColumn = primarySpan.column_end;
-		}
-		return annotation;
+		if (primarySpans.length === 0) return [{
+			level,
+			message: contents.message.rendered,
+			properties: { title: contents.message.message }
+		}];
+		return primarySpans.map((primarySpan) => {
+			let pathToFile = primarySpan.file_name;
+			if (this._workingDirectory !== null) pathToFile = path.join(this._workingDirectory, pathToFile);
+			if (os$1.platform() === "win32") pathToFile = pathToFile.split(path.win32.sep).join(path.posix.sep);
+			const annotation = {
+				level,
+				message: contents.message.rendered,
+				properties: {
+					file: pathToFile,
+					startLine: primarySpan.line_start,
+					endLine: primarySpan.line_end,
+					title: contents.message.message
+				}
+			};
+			if (primarySpan.line_start === primarySpan.line_end) {
+				annotation.properties.startColumn = primarySpan.column_start;
+				annotation.properties.endColumn = primarySpan.column_end;
+			}
+			return annotation;
+		});
 	}
 };
 //#endregion

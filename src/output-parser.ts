@@ -14,7 +14,7 @@ import { AnnotationLevel } from "./schema";
 
 export class OutputParser {
     private readonly _workingDirectory: null | string;
-    private readonly _uniqueAnnotations: Map<string, AnnotationWithMessageAndLevel>;
+    private readonly _uniqueAnnotations: Map<string, AnnotationWithMessageAndLevel[]>;
     private readonly _stats: Stats;
 
     public constructor(workingDirectory?: string) {
@@ -34,7 +34,7 @@ export class OutputParser {
     }
 
     public get annotations(): AnnotationWithMessageAndLevel[] {
-        return this._uniqueAnnotations.values().toArray();
+        return this._uniqueAnnotations.values().toArray().flat();
     }
 
     public static parseCargoJson(line: string): Message | null {
@@ -87,9 +87,9 @@ export class OutputParser {
             return;
         }
 
-        const parsedAnnotation = this.makeAnnotation(message);
+        const parsedAnnotations = this.makeAnnotations(message);
 
-        const key = JSON.stringify(parsedAnnotation);
+        const key = JSON.stringify(parsedAnnotations);
 
         if (this._uniqueAnnotations.has(key)) {
             return;
@@ -121,53 +121,64 @@ export class OutputParser {
             }
         }
 
-        this._uniqueAnnotations.set(key, parsedAnnotation);
+        this._uniqueAnnotations.set(key, parsedAnnotations);
     }
 
-    /// Convert parsed JSON line into the GH annotation object
+    /// Convert parsed JSON line into GH annotation objects, one per primary span
     ///
     /// https://developer.github.com/v3/checks/runs/#annotations-object
-    private makeAnnotation(contents: CompilerMessage): AnnotationWithMessageAndLevel {
-        const annotation: AnnotationWithMessageAndLevel = {
-            level: OutputParser.parseLevel(contents.message.level),
-            message: contents.message.rendered,
-            properties: {
-                title: contents.message.message,
-            },
-        };
+    private makeAnnotations(contents: CompilerMessage): AnnotationWithMessageAndLevel[] {
+        const level = OutputParser.parseLevel(contents.message.level);
 
-        const primarySpan = contents.message.spans.find((span) => {
+        const primarySpans = contents.message.spans.filter((span) => {
             return span.is_primary;
         });
 
         // Per https://doc.rust-lang.org/rustc/json.html, a top-level message
         // with one or more spans always has at least one primary span, so
         // this only matches span-less diagnostics, e.g. removed lints.
-        if (primarySpan === undefined) {
+        if (primarySpans.length === 0) {
+            return [
+                {
+                    level,
+                    message: contents.message.rendered,
+                    properties: {
+                        title: contents.message.message,
+                    },
+                },
+            ];
+        }
+
+        return primarySpans.map((primarySpan) => {
+            let pathToFile = primarySpan.file_name;
+
+            if (this._workingDirectory !== null) {
+                pathToFile = path.join(this._workingDirectory, pathToFile);
+            }
+
+            if (os.platform() === "win32") {
+                // `.\\foo\\bar.cs` to `./foo/bar.cs`
+                pathToFile = pathToFile.split(path.win32.sep).join(path.posix.sep);
+            }
+
+            const annotation: AnnotationWithMessageAndLevel = {
+                level,
+                message: contents.message.rendered,
+                properties: {
+                    file: pathToFile,
+                    startLine: primarySpan.line_start,
+                    endLine: primarySpan.line_end,
+                    title: contents.message.message,
+                },
+            };
+
+            // Omit these parameters if `start_line` and `end_line` have different values.
+            if (primarySpan.line_start === primarySpan.line_end) {
+                annotation.properties.startColumn = primarySpan.column_start;
+                annotation.properties.endColumn = primarySpan.column_end;
+            }
+
             return annotation;
-        }
-
-        let pathToFile = primarySpan.file_name;
-
-        if (this._workingDirectory !== null) {
-            pathToFile = path.join(this._workingDirectory, pathToFile);
-        }
-
-        if (os.platform() === "win32") {
-            // `.\\foo\\bar.cs` to `./foo/bar.cs`
-            pathToFile = pathToFile.split(path.win32.sep).join(path.posix.sep);
-        }
-
-        annotation.properties.file = pathToFile;
-        annotation.properties.startLine = primarySpan.line_start;
-        annotation.properties.endLine = primarySpan.line_end;
-
-        // Omit these parameters if `start_line` and `end_line` have different values.
-        if (primarySpan.line_start === primarySpan.line_end) {
-            annotation.properties.startColumn = primarySpan.column_start;
-            annotation.properties.endColumn = primarySpan.column_end;
-        }
-
-        return annotation;
+        });
     }
 }
