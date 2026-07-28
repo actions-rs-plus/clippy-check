@@ -19980,7 +19980,7 @@ function endGroup() {
 	issue("endgroup");
 }
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.5_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/_virtual/_rolldown/runtime.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.6_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/_virtual/_rolldown/runtime.js
 var __defProp = Object.defineProperty;
 var __exportAll = (all, no_symbols) => {
 	let target = {};
@@ -23400,7 +23400,7 @@ var defaults = {
 Octokit.plugin(restEndpointMethods, paginateRest).defaults(defaults);
 new Context();
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.5_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/base-program.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.6_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/base-program.js
 var BaseProgram = class {
 	path;
 	constructor(path) {
@@ -23411,7 +23411,7 @@ var BaseProgram = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.5_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/crates.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.6_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/crates.js
 async function resolveVersion(crate) {
 	const url = `https://crates.io/api/v1/crates/${crate}`;
 	const response = await new HttpClient("@actions-rs-plus (https://github.com/actions-rs-plus/)").getJson(url);
@@ -65044,14 +65044,15 @@ function saveCacheV2(paths_1, key_1, options_1) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.5_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cargo.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.6_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cargo.js
 var Cargo = class Cargo extends BaseProgram {
 	constructor(pathToCargo) {
 		super(pathToCargo);
 	}
 	static async get() {
 		try {
-			return new Cargo(await which("cargo", true));
+			const pathToCargo = await which("cargo", true);
+			return new Cargo(pathToCargo);
 		} catch (error$1) {
 			error("cargo is not installed by default for some virtual environments, see https://help.github.com/en/articles/software-in-virtual-environments-for-github-actions");
 			error("To install it, use this action: https://github.com/actions-rs/toolchain");
@@ -65099,7 +65100,7 @@ var Cargo = class Cargo extends BaseProgram {
 		} catch (error) {
 			if (error instanceof Error) {
 				if (error.name === ValidationError.name) throw error;
-				else if (error.name === ReserveCacheError.name) warning(error.message);
+				if (error.name === ReserveCacheError.name) warning(error.message);
 			} else if (typeof error === "string") warning(error);
 			else throw error;
 		}
@@ -65131,7 +65132,7 @@ var Cargo = class Cargo extends BaseProgram {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.5_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cross.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.6_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cross.js
 var Cross = class Cross extends BaseProgram {
 	constructor(path) {
 		super(path);
@@ -65145,14 +65146,16 @@ var Cross = class Cross extends BaseProgram {
 		}
 	}
 	static async get() {
-		return new Cross(await which("cross", true));
+		const path = await which("cross", true);
+		return new Cross(path);
 	}
 	static async install(version) {
 		const cargo = await Cargo.get();
 		const cwd = process.cwd();
 		process.chdir(os$2.tmpdir());
 		try {
-			return new Cross(await cargo.installCached("cross", version));
+			const crossPath = await cargo.installCached("cross", version);
+			return new Cross(crossPath);
 		} finally {
 			process.chdir(cwd);
 		}
@@ -65161,7 +65164,7 @@ var Cross = class Cross extends BaseProgram {
 process.platform;
 process.platform;
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.5_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/input.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.6_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/input.js
 var input_exports = /* @__PURE__ */ __exportAll({
 	getInput: () => getInput,
 	getInputAsArray: () => getInputAsArray,
@@ -65183,8 +65186,7 @@ function getInput(name, options) {
 }
 function getInputBool(name, options) {
 	const value = getInput(name, options);
-	if (value === "true" || value === "1") return true;
-	else return false;
+	return value === "true" || value === "1";
 }
 function getInputList(name, options) {
 	return getInput(name, options).split(",").map((item) => {
