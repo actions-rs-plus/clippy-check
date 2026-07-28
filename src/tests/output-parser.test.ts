@@ -130,7 +130,7 @@ describe("outputParser", () => {
         expect(outputParser.stats).toEqual({ ...emptyStats, [defaultMessage.message.level]: 1 });
     });
 
-    it("fails when primary span cannot be found", () => {
+    it("creates an annotation without file location when primary span cannot be found", () => {
         const outputParser = new OutputParser();
 
         const output: CompilerMessage = {
@@ -141,9 +141,18 @@ describe("outputParser", () => {
             },
         };
 
-        expect(() => {
-            outputParser.tryParseClippyLine(JSON.stringify(output));
-        }).toThrow(/Unable to find primary span for message/v);
+        outputParser.tryParseClippyLine(JSON.stringify(output));
+
+        expect(outputParser.stats).toEqual({ ...emptyStats, warning: 1 });
+        expect(outputParser.annotations).toEqual([
+            {
+                level: 1,
+                message: "rendered",
+                properties: {
+                    title: "message",
+                },
+            },
+        ]);
     });
 
     it("parses annotations into AnnotationWithMessageAndLevel different `line_start` and `line_end`", () => {

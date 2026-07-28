@@ -128,13 +128,23 @@ export class OutputParser {
     ///
     /// https://developer.github.com/v3/checks/runs/#annotations-object
     private makeAnnotation(contents: CompilerMessage): AnnotationWithMessageAndLevel {
+        const annotation: AnnotationWithMessageAndLevel = {
+            level: OutputParser.parseLevel(contents.message.level),
+            message: contents.message.rendered,
+            properties: {
+                title: contents.message.message,
+            },
+        };
+
         const primarySpan = contents.message.spans.find((span) => {
             return span.is_primary;
         });
 
-        // TODO: Handle it properly
+        // Per https://doc.rust-lang.org/rustc/json.html, a top-level message
+        // with one or more spans always has at least one primary span, so
+        // this only matches span-less diagnostics, e.g. removed lints.
         if (primarySpan === undefined) {
-            throw new Error("Unable to find primary span for message");
+            return annotation;
         }
 
         let pathToFile = primarySpan.file_name;
@@ -148,16 +158,9 @@ export class OutputParser {
             pathToFile = pathToFile.split(path.win32.sep).join(path.posix.sep);
         }
 
-        const annotation: AnnotationWithMessageAndLevel = {
-            level: OutputParser.parseLevel(contents.message.level),
-            message: contents.message.rendered,
-            properties: {
-                file: pathToFile,
-                startLine: primarySpan.line_start,
-                endLine: primarySpan.line_end,
-                title: contents.message.message,
-            },
-        };
+        annotation.properties.file = pathToFile;
+        annotation.properties.startLine = primarySpan.line_start;
+        annotation.properties.endLine = primarySpan.line_end;
 
         // Omit these parameters if `start_line` and `end_line` have different values.
         if (primarySpan.line_start === primarySpan.line_end) {
