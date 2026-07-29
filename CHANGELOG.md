@@ -1,4 +1,18 @@
 <!-- header goes here -->
+## [2.7.1](https://github.com/actions-rs-plus/clippy-check/compare/v2.7.0..v2.7.1) - 2026-07-29
+
+### 🐛 Bug Fixes
+
+- *(deps)* Update @actions-rs-plus/core (npm) to v0.9.1 by [@renovate[bot]](https://github.com/renovate[bot]) ([`ce0dce5`](https://github.com/actions-rs-plus/clippy-check/commit/ce0dce5587c44cde86a562d7ff0e5f9fed493a43))
+- Reword test names by [@kristof-mattei](https://github.com/kristof-mattei) ([`8802847`](https://github.com/actions-rs-plus/clippy-check/commit/880284723c0d8032a5cd1fe5c6423ca2770c5086))
+- Verify working directory is forwarded to cargo clippy by [@kristof-mattei](https://github.com/kristof-mattei) ([`5da20ae`](https://github.com/actions-rs-plus/clippy-check/commit/5da20aee10dbcb3c963bf9379fd3a361eae909a0))
+- Prefix annotation paths with the working directory by [@kristof-mattei](https://github.com/kristof-mattei) ([`6abd319`](https://github.com/actions-rs-plus/clippy-check/commit/6abd319c6e1c100a95dab8127904a1622f7b5fab))
+
+### ⚙️ Miscellaneous Tasks
+
+- Code coverage via GitHub by [@kristof-mattei](https://github.com/kristof-mattei) ([`7c7a1dd`](https://github.com/actions-rs-plus/clippy-check/commit/7c7a1dd12880081645833560dc3d07fefa3a792a))
+- Commiting changes in dist/. See #2680 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`62e4925`](https://github.com/actions-rs-plus/clippy-check/commit/62e492557970e2e1531237b763f213d9e5e8b94c))
+- Commiting changes in dist/. See #2682 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`fbdb31f`](https://github.com/actions-rs-plus/clippy-check/commit/fbdb31f21e305cb19f77a413092d342e3b16de4a))
 ## [2.7.0](https://github.com/actions-rs-plus/clippy-check/compare/v2.6.0..v2.7.0) - 2026-07-29
 
 ### 🚀 Features
