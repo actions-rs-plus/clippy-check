@@ -1,4 +1,24 @@
 <!-- header goes here -->
+## [2.7.0](https://github.com/actions-rs-plus/clippy-check/compare/v2.6.0..v2.7.0) - 2026-07-29
+
+### 🚀 Features
+
+- Lint yaml and ts code blocks embedded in markdown by [@kristof-mattei](https://github.com/kristof-mattei) ([`e411b79`](https://github.com/actions-rs-plus/clippy-check/commit/e411b793f863938d907ec0fdcd31daf572b99cba))
+- Publish link to latest version as part of github environments by [@kristof-mattei](https://github.com/kristof-mattei) ([`4413f98`](https://github.com/actions-rs-plus/clippy-check/commit/4413f985447924134848e37dbbe59469c7ed58f7))
+
+### 🐛 Bug Fixes
+
+- *(deps)* Update @actions-rs-plus/core (npm) to v0.8.0 by [@renovate[bot]](https://github.com/renovate[bot]) ([`29ece38`](https://github.com/actions-rs-plus/clippy-check/commit/29ece385114f83a829b07e4b563fee2ce3eaa110))
+- *(deps)* Update @actions-rs-plus/core (npm) to v0.9.0 by [@renovate[bot]](https://github.com/renovate[bot]) ([`c318c6a`](https://github.com/actions-rs-plus/clippy-check/commit/c318c6a5e9a5e8e3146f25d3dc9ffd8ba6379006))
+- For markdown, decrease tabWidth by [@kristof-mattei](https://github.com/kristof-mattei) ([`4217034`](https://github.com/actions-rs-plus/clippy-check/commit/42170344dbb13dd4fb22b2fba655c2b2e43ef094))
+- Correct actions example by [@kristof-mattei](https://github.com/kristof-mattei) ([`e470fd0`](https://github.com/actions-rs-plus/clippy-check/commit/e470fd06f6f781cd1da9cc9f37a9d3d668e99582))
+
+### ⚙️ Miscellaneous Tasks
+
+- Commiting changes in dist/. See #2667 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`344b5f7`](https://github.com/actions-rs-plus/clippy-check/commit/344b5f7e65ed317086fd2c83b7c5b27b36774f2d))
+- Remove linebreaks by [@kristof-mattei](https://github.com/kristof-mattei) ([`45f7a67`](https://github.com/actions-rs-plus/clippy-check/commit/45f7a67caf5601f33c820d3959f564ef0344bc8c))
+- Commiting changes in dist/. See #2670 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`72551c5`](https://github.com/actions-rs-plus/clippy-check/commit/72551c54a1f30b4de57bb63dc9177a46ca967a99))
+- Commiting changes in dist/. See #2673 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`bd13ced`](https://github.com/actions-rs-plus/clippy-check/commit/bd13ced6e8e3065b736592e69b7864b9702c4a2b))
 ## [2.6.0](https://github.com/actions-rs-plus/clippy-check/compare/v2.5.0..v2.6.0) - 2026-07-28
 
 ### 🚀 Features
