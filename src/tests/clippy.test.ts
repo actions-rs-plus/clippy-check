@@ -1,3 +1,5 @@
+import path from "node:path";
+
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
 import * as io from "@actions/io";
@@ -90,6 +92,46 @@ describe("clippy", () => {
         await expect(run(actionInput)).rejects.toThrow(/Clippy had exited with the (?<exit_code>\d)+ exit code/v);
 
         expect(whichSpy).toHaveBeenCalledWith("cargo", true);
+    });
+
+    it("reports when clippy fails with a non-default working directory", async () => {
+        using execSpy = vi.spyOn(exec, "exec").mockImplementation((_commandline: string, arguments_?: string[]) => {
+            const expected = ["clippy", "--message-format=json"];
+
+            if (
+                (arguments_ ?? []).length > 0 &&
+                expected.every((c) => {
+                    return arguments_?.includes(c) ?? false;
+                })
+            ) {
+                return Promise.resolve(101);
+            }
+
+            return Promise.resolve(0);
+        });
+
+        using whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
+            return Promise.resolve(tool);
+        });
+
+        const actionInput: ParsedInput = {
+            toolchain: "stable",
+            args: [],
+            useCross: false,
+            workingDirectory: "./my/sources/are/here",
+        };
+
+        await expect(run(actionInput)).rejects.toThrow(/Clippy had exited with the (?<exit_code>\d)+ exit code/v);
+
+        expect(whichSpy).toHaveBeenCalledWith("cargo", true);
+
+        const expectedCwd = path.join(process.cwd(), "./my/sources/are/here");
+
+        expect(execSpy).toHaveBeenCalledWith(
+            "cargo",
+            ["+stable", "clippy", "--message-format=json"],
+            expect.objectContaining({ cwd: expectedCwd }),
+        );
     });
 
     it("records versions with toolchain", async () => {
