@@ -189,6 +189,7 @@ jobs:
     permissions:
       checks: write
       contents: read
+      code-quality: write
       id-token: write
       pull-requests: write
     steps:
@@ -204,7 +205,7 @@ jobs:
         shell: bash
         id: tests
         run: |
-          pnpm run test --reporter=default --reporter=github-actions --reporter=junit --coverage.reporter=text --coverage.reporter=lcovonly
+          pnpm run test --reporter=default --reporter=github-actions --reporter=junit --coverage.reporter=text --coverage.reporter=lcovonly --coverage.reporter=cobertura
         continue-on-error: true
 
       - name: Upload test results
@@ -214,6 +215,15 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           files: |
             reports/results.xml
+
+      - name: Upload coverage results (to GitHub)
+        uses: actions/upload-code-coverage@f8bb4848421d758cb893e8e371d261678618a754 # v1.4.1
+        if: |
+          github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        with:
+          file: reports/cobertura-coverage.xml
+          language: typescript
+          label: code-coverage
 
       - name: Upload coverage results (to Codecov.io)
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
