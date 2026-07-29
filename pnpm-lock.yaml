@@ -23,8 +23,8 @@ importers:
   .:
     dependencies:
       '@actions-rs-plus/core':
-        specifier: 0.9.0
-        version: 0.9.0(supports-color@7.2.0)
+        specifier: 0.9.1
+        version: 0.9.1(supports-color@7.2.0)
       '@actions/core':
         specifier: 3.0.1
         version: 3.0.1
@@ -161,8 +161,8 @@ importers:
 
 packages:
 
-  '@actions-rs-plus/core@0.9.0':
-    resolution: {integrity: sha512-7TK3d5kmlqxZGmZaY3nmuUR87sU6JjfKYmLmItXhisNq4y9PG5vNioBRKEXA7yx4AbHtPDiHJnNDt44FHmmaKQ==}
+  '@actions-rs-plus/core@0.9.1':
+    resolution: {integrity: sha512-e4CuieVskmYuoylq7I1JcRjQ+WItX14OobrMpTmvqxlXOQustl8CR2VKCxfGyUfmlKB8Q0jJzv6A66Iu2w0SnQ==}
     engines: {node: 24.18.0, pnpm: 11.17.0}
 
   '@actions/cache@6.2.0':
@@ -2740,7 +2740,7 @@ packages:
 
 snapshots:
 
-  '@actions-rs-plus/core@0.9.0(supports-color@7.2.0)':
+  '@actions-rs-plus/core@0.9.1(supports-color@7.2.0)':
     dependencies:
       '@actions/cache': 6.2.0(supports-color@7.2.0)
       '@actions/core': 3.0.1
