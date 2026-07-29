@@ -68,7 +68,7 @@ jobs:
                 // `v${process.env.MAJOR}.${process.env.MINOR}.${process.env.PATCH}`,
                 `v${process.env.MAJOR}.${process.env.MINOR}`,
                 // only do major if we're off v0, as v0 is the semver exception
-                ...(0 !== process.env.MAJOR ? [`v${process.env.MAJOR}`] : [])
+                ...("0" !== process.env.MAJOR ? [`v${process.env.MAJOR}`] : [])
             ];
 
             core.info(`Trying to move the following tags: ${tagsToMove.join(", ")} by deleting and re-creating.`);
