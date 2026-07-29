@@ -65495,7 +65495,7 @@ async function main() {
 	try {
 		await run(get());
 	} catch (error) {
-		if (error instanceof Error) setFailed(error.message);
+		if (Error.isError(error)) setFailed(error.message);
 		else setFailed(String(error));
 	}
 }
