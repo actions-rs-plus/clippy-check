@@ -19980,7 +19980,7 @@ function endGroup() {
 	issue("endgroup");
 }
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.7_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/_virtual/_rolldown/runtime.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.8.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/_virtual/_rolldown/runtime.js
 var __defProp = Object.defineProperty;
 var __exportAll = (all, no_symbols) => {
 	let target = {};
@@ -23400,7 +23400,7 @@ var defaults = {
 Octokit.plugin(restEndpointMethods, paginateRest).defaults(defaults);
 new Context();
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.7_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/base-program.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.8.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/base-program.js
 var BaseProgram = class {
 	path;
 	constructor(path) {
@@ -23411,7 +23411,7 @@ var BaseProgram = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.7_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/crates.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.8.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/crates.js
 async function resolveVersion(crate) {
 	const url = `https://crates.io/api/v1/crates/${crate}`;
 	const response = await new HttpClient("@actions-rs-plus (https://github.com/actions-rs-plus/)").getJson(url);
@@ -65044,7 +65044,7 @@ function saveCacheV2(paths_1, key_1, options_1) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.7_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cargo.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.8.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cargo.js
 var Cargo = class Cargo extends BaseProgram {
 	constructor(pathToCargo) {
 		super(pathToCargo);
@@ -65060,25 +65060,25 @@ var Cargo = class Cargo extends BaseProgram {
 		}
 	}
 	/**
-	* Executes `cargo install ${program}`.
-	*
-	* TODO: Caching ability implementation is blocked,
-	* see https://github.com/actions-rs/core/issues/31
-	* As for now it acts just like an stub and simply installs the program
-	* on each call.
-	*
-	* `version` argument could be either actual program version or `"latest"` string,
-	* which can be provided by user input.
-	*
-	* If `version` is `undefined` or `"latest"`, this method could call the Crates.io API,
-	* fetch the latest version and search for it in cache.
-	* TODO: Actually implement this.
-	*
-	* ## Returns
-	*
-	* Path to the installed program.
-	* As the $PATH should be already tuned properly at this point,
-	* returned value at the moment is simply equal to the `program` argument.
+	Executes `cargo install ${program}`.
+	
+	TODO: Caching ability implementation is blocked,
+	see https://github.com/actions-rs/core/issues/31
+	As for now it acts just like an stub and simply installs the program
+	on each call.
+	
+	`version` argument could be either actual program version or `"latest"` string,
+	which can be provided by user input.
+	
+	If `version` is `undefined` or `"latest"`, this method could call the Crates.io API,
+	fetch the latest version and search for it in cache.
+	TODO: Actually implement this.
+	
+	## Returns
+	
+	Path to the installed program.
+	As the $PATH should be already tuned properly at this point,
+	returned value at the moment is simply equal to the `program` argument.
 	*/
 	async installCached(program, version, primaryKey, restoreKeys = []) {
 		if (version === "latest") version = await resolveVersion(program);
@@ -65098,7 +65098,7 @@ var Cargo = class Cargo extends BaseProgram {
 			info(`Caching \`${program}\` with key ${programKey}`);
 			await saveCache(paths, programKey);
 		} catch (error) {
-			if (error instanceof Error) {
+			if (Error.isError(error)) {
 				if (error.name === ValidationError.name) throw error;
 				if (error.name === ReserveCacheError.name) warning(error.message);
 			} else if (typeof error === "string") warning(error);
@@ -65110,8 +65110,8 @@ var Cargo = class Cargo extends BaseProgram {
 		const arguments_ = ["install"];
 		if (version !== void 0 && version !== "latest") arguments_.push("--version", version);
 		arguments_.push(program);
+		startGroup(`Installing "${program} = ${version ?? "latest"}"`);
 		try {
-			startGroup(`Installing "${program} = ${version ?? "latest"}"`);
 			await this.call(arguments_);
 		} finally {
 			endGroup();
@@ -65119,7 +65119,7 @@ var Cargo = class Cargo extends BaseProgram {
 		return program;
 	}
 	/**
-	* Find the cargo sub-command or install it
+	Find the cargo sub-command or install it
 	*/
 	async findOrInstall(program, version) {
 		try {
@@ -65132,7 +65132,7 @@ var Cargo = class Cargo extends BaseProgram {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.7_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cross.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.8.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cross.js
 var Cross = class Cross extends BaseProgram {
 	constructor(path) {
 		super(path);
@@ -65164,7 +65164,7 @@ var Cross = class Cross extends BaseProgram {
 process.platform;
 process.platform;
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.7.7_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/input.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.8.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/input.js
 var input_exports = /* @__PURE__ */ __exportAll({
 	getInput: () => getInput,
 	getInputAsArray: () => getInputAsArray,
@@ -65172,13 +65172,13 @@ var input_exports = /* @__PURE__ */ __exportAll({
 	getInputList: () => getInputList
 });
 /**
-* Workaround for a GitHub weird input naming.
-*
-* For input `all-features: true` it will generate the `INPUT_ALL-FEATURES: true`
-* env variable, which looks too weird.
-* Here we are trying to get proper name `INPUT_NO_DEFAULT_FEATURES` first,
-* and if it does not exist, trying the `INPUT_NO-DEFAULT-FEATURES`.
-**/
+Workaround for a GitHub weird input naming.
+
+For input `all-features: true` it will generate the `INPUT_ALL-FEATURES: true`
+env variable, which looks too weird.
+Here we are trying to get proper name `INPUT_NO_DEFAULT_FEATURES` first,
+and if it does not exist, trying the `INPUT_NO-DEFAULT-FEATURES`.
+*/
 function getInput(name, options) {
 	const value = getInput$1(name.replaceAll("-", "_"), options);
 	if (value.length > 0) return value;
