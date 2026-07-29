@@ -155,7 +155,7 @@ describe("outputParser", () => {
         ]);
     });
 
-    it("parses annotations into AnnotationWithMessageAndLevel different `line_start` and `line_end`", () => {
+    it("parses annotations into AnnotationWithMessageAndLevel with different `line_start` and `line_end`", () => {
         const outputParser = new OutputParser("./my/sources/are/here");
 
         outputParser.tryParseClippyLine(
@@ -364,7 +364,7 @@ describe("outputParser", () => {
         expect(outputParser.annotations[0]?.properties.file).toEqual("a/windows/path/src/main.rs");
     });
 
-    it("don't normalize Windows paths on Linux", () => {
+    it("doesn't normalize Windows paths on Linux", () => {
         vi.spyOn(os, "platform").mockImplementationOnce(() => {
             return "linux";
         });
