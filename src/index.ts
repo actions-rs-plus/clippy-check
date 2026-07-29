@@ -11,7 +11,7 @@ async function main(): Promise<void> {
 
         await run(actionInput);
     } catch (error) {
-        if (error instanceof Error) {
+        if (Error.isError(error)) {
             core.setFailed(error.message);
         } else {
             // use the magic of string templates
