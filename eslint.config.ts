@@ -224,12 +224,10 @@ const config: ReturnType<typeof defineConfig> = defineConfig(
             "unicorn/prefer-type-literal-last": ["off"],
         },
     },
-
     {
         extends: [tseslintConfigs.disableTypeChecked],
         files: ["**/*.mjs"],
     },
-
     markdown.configs.processor,
     {
         files: ["**/*.md/*.yaml", "**/*.md/*.yml"],
