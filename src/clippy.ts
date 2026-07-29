@@ -76,7 +76,7 @@ function _processLineBuffer(data: Buffer, stringBuffer: string, onLine: (line: s
 
 async function runClippy(actionInput: input.ParsedInput, program: BaseProgram): Promise<ClippyResult> {
     const arguments_ = buildClippyArguments(actionInput);
-    const outputParser = new OutputParser();
+    const outputParser = new OutputParser(actionInput.workingDirectory);
 
     let stdbuffer = "";
     const options: exec.ExecOptions = {

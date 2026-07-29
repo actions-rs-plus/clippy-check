@@ -275,7 +275,7 @@ describe("clippy", () => {
                     properties: {
                         endColumn: 45,
                         endLine: 12,
-                        file: "main.rs",
+                        file: "my/sources/are/here/main.rs",
                         startColumn: 30,
                         startLine: 12,
                         title: "message",
