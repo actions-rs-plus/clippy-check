@@ -65404,7 +65404,7 @@ function _processLineBuffer(data, stringBuffer, onLine) {
 }
 async function runClippy(actionInput, program) {
 	const arguments_ = buildClippyArguments(actionInput);
-	const outputParser = new OutputParser();
+	const outputParser = new OutputParser(actionInput.workingDirectory);
 	let stdbuffer = "";
 	const options = {
 		failOnStdErr: false,
