@@ -1,4 +1,6 @@
-/** @type {import("dependency-cruiser").IConfiguration} */
+/**
+@type {import("dependency-cruiser").IConfiguration}
+*/
 export default {
     forbidden: [
         {
@@ -117,7 +119,9 @@ export default {
             },
         },
 
-        /* rules you might want to tweak for your specific situation: */
+        /*
+        rules you might want to tweak for your specific situation:
+        */
 
         {
             name: "not-to-spec",
@@ -180,13 +184,19 @@ export default {
         },
     ],
     options: {
-        /* Which modules not to follow further when encountered */
+        /*
+        Which modules not to follow further when encountered
+        */
         doNotFollow: {
-            /* path: an array of regular expressions in strings to match against */
+            /*
+            path: an array of regular expressions in strings to match against
+            */
             path: ["node_modules"],
         },
 
-        /* Which modules to exclude */
+        /*
+        Which modules to exclude
+        */
         // exclude : {
         //   /* path: an array of regular expressions in strings to match against */
         //   path: '',
@@ -244,7 +254,9 @@ export default {
      */
         // combinedDependencies: false,
 
-        /* if true leave symlinks untouched, otherwise use the realpath */
+        /*
+        if true leave symlinks untouched, otherwise use the realpath
+        */
         // preserveSymlinks: false,
 
         /* TypeScript project file ('tsconfig.json') to use for
@@ -297,7 +309,9 @@ export default {
        there will override the ones specified here.
      */
         enhancedResolveOptions: {
-            /* What to consider as an 'exports' field in package.jsons */
+            /*
+            What to consider as an 'exports' field in package.jsons
+            */
             exportsFields: ["exports"],
             /* List of conditions to check for in the exports field.
          Only works when the 'exportsFields' array is non-empty.
@@ -310,7 +324,9 @@ export default {
          up module resolution, which is the most expensive step.
        */
             // extensions: [".js", ".jsx", ".ts", ".tsx", ".d.ts"],
-            /* What to consider a 'main' field in package.json */
+            /*
+            What to consider a 'main' field in package.json
+            */
             mainFields: ["module", "main", "types", "typings"],
             /* A list of alias fields in package.jsons
 
