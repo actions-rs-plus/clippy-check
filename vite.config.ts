@@ -79,6 +79,7 @@ const configFunction: ViteUserConfigFn = defineConfig(({ mode }) => {
                     inline: ["@actions-rs-plus/core", "@actions/core", "@actions/exec", "@actions/io"],
                 },
             },
+            unstubEnvs: true,
         },
     };
 
