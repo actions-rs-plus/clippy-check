@@ -80,6 +80,7 @@ const configFunction: ViteUserConfigFn = defineConfig(({ mode }) => {
                 },
             },
             unstubEnvs: true,
+            unstubGlobals: true,
         },
     };
 
