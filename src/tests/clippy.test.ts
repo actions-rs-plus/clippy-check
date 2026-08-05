@@ -1,9 +1,8 @@
 import path from "node:path";
 
-import * as core from "@actions/core";
 import * as exec from "@actions/exec";
 import * as io from "@actions/io";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { run } from "../clippy";
 import type { ParsedInput } from "../input";
@@ -13,13 +12,6 @@ import type { CompilerMessage } from "../schema";
 vi.mock("@actions/core");
 
 describe("clippy", () => {
-    beforeEach(() => {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function -- mock
-        vi.spyOn(core, "startGroup").mockImplementation(() => {});
-        // eslint-disable-next-line @typescript-eslint/no-empty-function -- mock
-        vi.spyOn(core, "endGroup").mockImplementation(() => {});
-    });
-
     it("runs with cargo", async () => {
         using execSpy = vi.spyOn(exec, "exec").mockResolvedValue(0);
 
