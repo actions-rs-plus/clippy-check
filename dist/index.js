@@ -33,8 +33,8 @@ import { Buffer as Buffer$1 } from "buffer";
 import fs from "node:fs";
 //#region \0rolldown/runtime.js
 var __create = Object.create;
-var __defProp$1 = Object.defineProperty;
-var __name = (target, value) => __defProp$1(target, "name", {
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", {
 	value,
 	configurable: true
 });
@@ -51,30 +51,30 @@ var __esmMin = (fn, res, err) => () => {
 	}
 };
 var __commonJSMin = (cb, mod) => () => (mod || (cb((mod = { exports: {} }).exports, mod), cb = null), mod.exports);
-var __exportAll$1 = (all, no_symbols) => {
+var __exportAll = (all, no_symbols) => {
 	let target = {};
-	for (var name in all) __defProp$1(target, name, {
+	for (var name in all) __defProp(target, name, {
 		get: all[name],
 		enumerable: true
 	});
-	if (!no_symbols) __defProp$1(target, Symbol.toStringTag, { value: "Module" });
+	if (!no_symbols) __defProp(target, Symbol.toStringTag, { value: "Module" });
 	return target;
 };
 var __copyProps = (to, from, except, desc) => {
 	if (from && typeof from === "object" || typeof from === "function") for (var keys = __getOwnPropNames(from), i = 0, n = keys.length, key; i < n; i++) {
 		key = keys[i];
-		if (!__hasOwnProp.call(to, key) && key !== except) __defProp$1(to, key, {
+		if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
 			get: ((k) => from[k]).bind(null, key),
 			enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
 		});
 	}
 	return to;
 };
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule || !__hasOwnProp.call(mod, "default") ? __defProp$1(target, "default", {
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule || !__hasOwnProp.call(mod, "default") ? __defProp(target, "default", {
 	value: mod,
 	enumerable: true
 }) : target, mod));
-var __toCommonJS = (mod) => __hasOwnProp.call(mod, "module.exports") ? mod["module.exports"] : __copyProps(__defProp$1({}, "__esModule", { value: true }), mod);
+var __toCommonJS = (mod) => __hasOwnProp.call(mod, "module.exports") ? mod["module.exports"] : __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var __require = /* #__PURE__ */ (() => createRequire(import.meta.url))();
 //#endregion
 //#region node_modules/.pnpm/source-map@0.6.1/node_modules/source-map/lib/base64.js
@@ -19970,18 +19970,6 @@ function endGroup() {
 	issue("endgroup");
 }
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.9.2_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/_virtual/_rolldown/runtime.js
-var __defProp = Object.defineProperty;
-var __exportAll = (all, no_symbols) => {
-	let target = {};
-	for (var name in all) __defProp(target, name, {
-		get: all[name],
-		enumerable: true
-	});
-	if (!no_symbols) __defProp(target, Symbol.toStringTag, { value: "Module" });
-	return target;
-};
-//#endregion
 //#region node_modules/.pnpm/@actions+github@9.1.1/node_modules/@actions/github/lib/context.js
 var Context = class {
 	/**
@@ -23394,7 +23382,7 @@ var defaults = {
 Octokit.plugin(restEndpointMethods, paginateRest).defaults(defaults);
 new Context();
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.9.2_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/base-program.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.10.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/base-program.js
 var BaseProgram = class {
 	path;
 	constructor(path) {
@@ -23405,7 +23393,7 @@ var BaseProgram = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.9.2_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/crates.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.10.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/crates.js
 async function resolveVersion(crate) {
 	const url = `https://crates.io/api/v1/crates/${crate}`;
 	const response = await new HttpClient("@actions-rs-plus (https://github.com/actions-rs-plus/)").getJson(url);
@@ -41773,7 +41761,7 @@ function isCoreHttpPolicyFactory(factory) {
 }
 //#endregion
 //#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/generated/src/models/mappers.js
-var mappers_exports = /* @__PURE__ */ __exportAll$1({
+var mappers_exports = /* @__PURE__ */ __exportAll({
 	AccessPolicy: () => AccessPolicy,
 	AppendBlobAppendBlockExceptionHeaders: () => AppendBlobAppendBlockExceptionHeaders,
 	AppendBlobAppendBlockFromUrlExceptionHeaders: () => AppendBlobAppendBlockFromUrlExceptionHeaders,
@@ -60829,7 +60817,7 @@ function getCacheServiceURL() {
 }
 //#endregion
 //#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/package.json
-var package_exports = /* @__PURE__ */ __exportAll$1({
+var package_exports = /* @__PURE__ */ __exportAll({
 	bugs: () => bugs,
 	default: () => package_default,
 	dependencies: () => dependencies,
@@ -65045,7 +65033,7 @@ function saveCacheV2(paths_1, key_1, options_1) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.9.2_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cargo.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.10.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cargo.js
 var Cargo = class Cargo extends BaseProgram {
 	constructor(pathToCargo) {
 		super(pathToCargo);
@@ -65133,7 +65121,7 @@ var Cargo = class Cargo extends BaseProgram {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.9.2_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cross.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.10.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cross.js
 var Cross = class Cross extends BaseProgram {
 	constructor(path) {
 		super(path);
@@ -65165,13 +65153,7 @@ var Cross = class Cross extends BaseProgram {
 process.platform;
 process.platform;
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.9.2_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/input.js
-var input_exports = /* @__PURE__ */ __exportAll({
-	getInput: () => getInput,
-	getInputAsArray: () => getInputAsArray,
-	getInputBool: () => getInputBool,
-	getInputList: () => getInputList
-});
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.10.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/input.js
 /**
 Workaround for a GitHub weird input naming.
 
@@ -65188,20 +65170,6 @@ function getInput(name, options) {
 function getInputBool(name, options) {
 	const normalized = getInput(name, options).trim().toLowerCase();
 	return normalized === "true" || normalized === "1";
-}
-function getInputList(name, options) {
-	return getInput(name, options).split(",").map((item) => {
-		return item.trim();
-	}).filter((item) => {
-		return item.length > 0;
-	});
-}
-function getInputAsArray(name, options) {
-	return getInput(name, options).split("\n").map((s) => {
-		return s.trim();
-	}).filter((x) => {
-		return x !== "";
-	});
 }
 //#endregion
 //#region src/schema.ts
@@ -65475,12 +65443,12 @@ function firstString() {
 //#endregion
 //#region src/input.ts
 function get() {
-	let toolchain = input_exports.getInput("toolchain");
+	let toolchain = getInput("toolchain");
 	if (toolchain.startsWith("+")) toolchain = toolchain.slice(1);
-	const workingDirectory = input_exports.getInput("working-directory");
+	const workingDirectory = getInput("working-directory");
 	return {
-		args: parseArgsStringToArgv(input_exports.getInput("args")),
-		useCross: input_exports.getInputBool("use-cross"),
+		args: parseArgsStringToArgv(getInput("args")),
+		useCross: getInputBool("use-cross"),
 		workingDirectory: workingDirectory === "" ? void 0 : workingDirectory,
 		toolchain: toolchain === "" ? void 0 : toolchain
 	};
