@@ -73,6 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ !startsWith(github.head_ref, 'release/') }}
     permissions:
+      contents: read
       id-token: write
     needs:
       - warm-up-cache
