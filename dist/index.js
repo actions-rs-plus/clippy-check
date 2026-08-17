@@ -21088,7 +21088,7 @@ var endpoint = withDefaults$2(null, DEFAULTS);
 * MIT Licensed
 */
 //#endregion
-//#region node_modules/.pnpm/json-with-bigint@3.5.10/node_modules/json-with-bigint/json-with-bigint.js
+//#region node_modules/.pnpm/json-with-bigint@3.5.11/node_modules/json-with-bigint/json-with-bigint.js
 var import_dist$2 = (/* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.parse = parse;
@@ -21104,15 +21104,19 @@ var import_dist$2 = (/* @__PURE__ */ __commonJSMin(((exports) => {
 	* Parse a `Content-Type` header.
 	*/
 	function parse(header, options) {
+		const stopChar = options?.comma === true ? COMMA : 65536;
 		const len = header.length;
-		let index = skipOWS(header, 0, len);
+		let index = skipOWS(header, options?.start ?? 0, len);
 		const valueStart = index;
-		index = skipValue(header, index, len);
+		index = skipValue(header, index, len, stopChar);
 		const valueEnd = trailingOWS(header, valueStart, index);
-		return {
-			type: header.slice(valueStart, valueEnd).toLowerCase(),
-			parameters: options?.parameters === false ? new NullObject() : parseParameters(header, index, len)
+		const type = header.slice(valueStart, valueEnd).toLowerCase();
+		if (options?.parameters === false) return {
+			type,
+			index,
+			parameters: new NullObject()
 		};
+		return parseParameters(header, type, index, len, stopChar);
 	}
 	var SP = 32;
 	var HTAB = 9;
@@ -21120,16 +21124,19 @@ var import_dist$2 = (/* @__PURE__ */ __commonJSMin(((exports) => {
 	var EQ = 61;
 	var DQUOTE = 34;
 	var BSLASH = 92;
+	var COMMA = 44;
 	/**
 	* Parses the parameters of a `Content-Type` header starting at the given index.
 	*/
-	function parseParameters(header, index, len) {
+	function parseParameters(header, type, index, len, stopChar) {
 		const parameters = new NullObject();
 		parameter: while (index < len) {
+			if (header.charCodeAt(index) === stopChar) break;
 			index = skipOWS(header, index + 1, len);
 			const keyStart = index;
 			while (index < len) {
 				const code = header.charCodeAt(index);
+				if (code === stopChar) break parameter;
 				if (code === SEMI) continue parameter;
 				if (code === EQ) {
 					const keyEnd = trailingOWS(header, keyStart, index);
@@ -21141,7 +21148,7 @@ var import_dist$2 = (/* @__PURE__ */ __commonJSMin(((exports) => {
 						while (index < len) {
 							const code = header.charCodeAt(index++);
 							if (code === DQUOTE) {
-								index = skipValue(header, index, len);
+								index = skipValue(header, index, len, stopChar);
 								if (parameters[key] === void 0) parameters[key] = value;
 								break;
 							}
@@ -21154,7 +21161,7 @@ var import_dist$2 = (/* @__PURE__ */ __commonJSMin(((exports) => {
 						continue parameter;
 					}
 					const valueStart = index;
-					index = skipValue(header, index, len);
+					index = skipValue(header, index, len, stopChar);
 					if (parameters[key] === void 0) {
 						const valueEnd = trailingOWS(header, valueStart, index);
 						parameters[key] = header.slice(valueStart, valueEnd);
@@ -21164,14 +21171,19 @@ var import_dist$2 = (/* @__PURE__ */ __commonJSMin(((exports) => {
 				index++;
 			}
 		}
-		return parameters;
+		return {
+			type,
+			index,
+			parameters
+		};
 	}
 	/**
-	* Skip over characters until a semicolon.
+	* Skip over characters until a semicolon or other exit character.
 	*/
-	function skipValue(str, index, len) {
+	function skipValue(str, index, len, stopChar) {
 		while (index < len) {
-			if (str.charCodeAt(index) === SEMI) break;
+			const code = str.charCodeAt(index);
+			if (code === SEMI || code === stopChar) break;
 			index++;
 		}
 		return index;
@@ -34146,7 +34158,7 @@ function anynum(str) {
 	return chars.join("");
 }
 //#endregion
-//#region node_modules/.pnpm/strnum@2.4.1/node_modules/strnum/strnum.js
+//#region node_modules/.pnpm/strnum@2.4.2/node_modules/strnum/strnum.js
 var hexRegex = /^[-+]?0x[a-fA-F0-9]+$/;
 var binRegex = /^0b[01]+$/;
 var octRegex = /^0o[0-7]+$/;
@@ -34231,7 +34243,9 @@ function resolveEnotation(str, trimmedStr, options) {
 */
 function trimZeros(numStr) {
 	if (numStr && numStr.indexOf(".") !== -1) {
-		numStr = numStr.replace(/0+$/, "");
+		let end = numStr.length;
+		while (end > 0 && numStr.charCodeAt(end - 1) === 48) end--;
+		numStr = numStr.slice(0, end);
 		if (numStr === ".") numStr = "0";
 		else if (numStr[0] === ".") numStr = "0" + numStr;
 		else if (numStr[numStr.length - 1] === ".") numStr = numStr.substring(0, numStr.length - 1);
@@ -36624,18 +36638,21 @@ var XMLParser = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.3.0/node_modules/fast-xml-builder/src/util.js
+//#region node_modules/.pnpm/fast-xml-builder@1.3.1/node_modules/fast-xml-builder/src/util.js
+function valToStr(val) {
+	return typeof val === "number" && Object.is(val, -0) ? "-0" : String(val);
+}
 function safeComment(val) {
-	return String(val).replace(/--/g, "- -").replace(/--/g, "- -").replace(/-$/, "- ");
+	return valToStr(val).replace(/--/g, "- -").replace(/--/g, "- -").replace(/-$/, "- ");
 }
 function safeCdata(val) {
-	return String(val).replace(/\]\]>/g, "]]]]><![CDATA[>");
+	return valToStr(val).replace(/\]\]>/g, "]]]]><![CDATA[>");
 }
 function escapeAttribute(val) {
-	return String(val).replace(/"/g, "&quot;").replace(/'/g, "&apos;");
+	return valToStr(val).replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.3.0/node_modules/fast-xml-builder/src/orderedJs2Xml.js
+//#region node_modules/.pnpm/fast-xml-builder@1.3.1/node_modules/fast-xml-builder/src/orderedJs2Xml.js
 var EOL$2 = "\n";
 /**
 * Detect XML version from the first element of the ordered array input.
@@ -36702,7 +36719,7 @@ function arrToStr(arr, options, indentation, matcher, stopNodeExpressions, qName
 	if (options.maxNestedTags && matcher.getDepth() > options.maxNestedTags) throw new Error("Maximum nested tags exceeded");
 	if (!Array.isArray(arr)) {
 		if (arr !== void 0 && arr !== null) {
-			let text = arr.toString();
+			let text = valToStr(arr);
 			text = replaceEntitiesValue(text, options);
 			return text;
 		}
@@ -36722,6 +36739,7 @@ function arrToStr(arr, options, indentation, matcher, stopNodeExpressions, qName
 				tagText = options.tagValueProcessor(tagName, tagText);
 				tagText = replaceEntitiesValue(tagText, options);
 			}
+			tagText = valToStr(tagText);
 			if (isPreviousElementTag) xmlStr += indentation;
 			xmlStr += tagText;
 			isPreviousElementTag = false;
@@ -36793,14 +36811,14 @@ function extractAttributeValues(attrMap, options) {
 */
 function getRawContent(arr, options) {
 	if (!Array.isArray(arr)) {
-		if (arr !== void 0 && arr !== null) return arr.toString();
+		if (arr !== void 0 && arr !== null) return valToStr(arr);
 		return "";
 	}
 	let content = "";
 	for (let i = 0; i < arr.length; i++) {
 		const item = arr[i];
 		const tagName = propName(item);
-		if (tagName === options.textNodeName) content += item[tagName];
+		if (tagName === options.textNodeName) content += valToStr(item[tagName]);
 		else if (tagName === options.cdataPropName) content += item[tagName][0][options.textNodeName];
 		else if (tagName === options.commentPropName) content += item[tagName][0][options.textNodeName];
 		else if (tagName && tagName[0] === "?") continue;
@@ -36868,7 +36886,7 @@ function replaceEntitiesValue(textValue, options) {
 	return textValue;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.3.0/node_modules/fast-xml-builder/src/ignoreAttributes.js
+//#region node_modules/.pnpm/fast-xml-builder@1.3.1/node_modules/fast-xml-builder/src/ignoreAttributes.js
 function getIgnoreAttributesFn(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -36880,7 +36898,7 @@ function getIgnoreAttributesFn(ignoreAttributes) {
 	return () => false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-builder@1.3.0/node_modules/fast-xml-builder/src/fxb.js
+//#region node_modules/.pnpm/fast-xml-builder@1.3.1/node_modules/fast-xml-builder/src/fxb.js
 var defaultOptions = {
 	attributeNamePrefix: "@_",
 	attributesGroupName: false,
@@ -37030,17 +37048,17 @@ Builder.prototype.j2x = function(jObj, level, matcher, qNameValidator) {
 			const attr = this.isAttribute(key);
 			if (attr && !this.ignoreAttributesFn(attr, jPath)) {
 				const resolvedAttr = resolveTagName(attr, true, this.options, matcher, qNameValidator);
-				attrStr += this.buildAttrPairStr(resolvedAttr, "" + jObj[key], isCurrentStopNode);
+				attrStr += this.buildAttrPairStr(resolvedAttr, valToStr(jObj[key]), isCurrentStopNode);
 			} else if (!attr) {
 				if (key === this.options.textNodeName) {
-					let newval = this.options.tagValueProcessor(key, "" + jObj[key]);
+					let newval = this.options.tagValueProcessor(key, valToStr(jObj[key]));
 					val += this.replaceEntitiesValue(newval);
 				} else {
 					matcher.push(resolvedKey);
 					const isStopNode = this.checkStopNode(matcher);
 					matcher.pop();
 					if (isStopNode) {
-						const textValue = "" + jObj[key];
+						const textValue = valToStr(jObj[key]);
 						if (textValue === "") val += this.indentate(level) + "<" + resolvedKey + this.closeTag(resolvedKey) + this.tagEndChar;
 						else val += this.indentate(level) + "<" + resolvedKey + ">" + textValue + "</" + resolvedKey + this.tagEndChar;
 					} else val += this.buildTextValNode(jObj[key], resolvedKey, "", level, matcher);
@@ -37066,13 +37084,14 @@ Builder.prototype.j2x = function(jObj, level, matcher, qNameValidator) {
 				} else if (this.options.oneListGroup) {
 					let textValue = this.options.tagValueProcessor(resolvedKey, item);
 					textValue = this.replaceEntitiesValue(textValue);
+					textValue = valToStr(textValue);
 					listTagVal += textValue;
 				} else {
 					matcher.push(resolvedKey);
 					const isStopNode = this.checkStopNode(matcher);
 					matcher.pop();
 					if (isStopNode) {
-						const textValue = "" + item;
+						const textValue = valToStr(item);
 						if (textValue === "") listTagVal += this.indentate(level) + "<" + resolvedKey + this.closeTag(resolvedKey) + this.tagEndChar;
 						else listTagVal += this.indentate(level) + "<" + resolvedKey + ">" + textValue + "</" + resolvedKey + this.tagEndChar;
 					} else listTagVal += this.buildTextValNode(item, resolvedKey, "", level, matcher);
@@ -37085,7 +37104,7 @@ Builder.prototype.j2x = function(jObj, level, matcher, qNameValidator) {
 			const L = Ks.length;
 			for (let j = 0; j < L; j++) {
 				const resolvedAttr = resolveTagName(Ks[j], true, this.options, matcher, qNameValidator);
-				attrStr += this.buildAttrPairStr(resolvedAttr, "" + jObj[key][Ks[j]], isCurrentStopNode);
+				attrStr += this.buildAttrPairStr(resolvedAttr, valToStr(jObj[key][Ks[j]]), isCurrentStopNode);
 			}
 		} else val += this.processTextOrObjNode(jObj[key], resolvedKey, level, matcher, qNameValidator);
 	}
@@ -37096,7 +37115,7 @@ Builder.prototype.j2x = function(jObj, level, matcher, qNameValidator) {
 };
 Builder.prototype.buildAttrPairStr = function(attrName, val, isStopNode) {
 	if (!isStopNode) {
-		val = this.options.attributeValueProcessor(attrName, "" + val);
+		val = this.options.attributeValueProcessor(attrName, valToStr(val));
 		val = this.replaceEntitiesValue(val);
 	}
 	if (this.options.suppressBooleanAttributes && val === "true") return " " + attrName;
@@ -37231,6 +37250,7 @@ Builder.prototype.buildTextValNode = function(val, key, attrStr, level, matcher)
 	else {
 		let textValue = this.options.tagValueProcessor(key, val);
 		textValue = this.replaceEntitiesValue(textValue);
+		textValue = valToStr(textValue);
 		if (textValue === "") return this.indentate(level) + "<" + key + attrStr + this.closeTag(key) + this.tagEndChar;
 		else return this.indentate(level) + "<" + key + attrStr + ">" + textValue + "</" + key + this.tagEndChar;
 	}
