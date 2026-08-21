@@ -1,7 +1,7 @@
 catalogs:
   default:
     eslint: "10.8.1"
-    vite: "8.2.1"
+    vite: "8.2.2"
 allowBuilds:
   unrs-resolver: false
 overrides:
