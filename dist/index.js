@@ -21082,139 +21082,138 @@ function withDefaults$2(oldDefaults, newDefaults) {
 }
 __name(withDefaults$2, "withDefaults");
 var endpoint = withDefaults$2(null, DEFAULTS);
+//#endregion
+//#region node_modules/.pnpm/content-type@3.0.0/node_modules/content-type/dist/index.js
 /*!
 * content-type
 * Copyright(c) 2015 Douglas Christopher Wilson
 * MIT Licensed
 */
-//#endregion
-//#region node_modules/.pnpm/json-with-bigint@3.5.11/node_modules/json-with-bigint/json-with-bigint.js
-var import_dist$2 = (/* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.parse = parse;
-	/**
-	* Null object perf optimization. Faster than `Object.create(null)` and `{ __proto__: null }`.
-	*/
-	var NullObject = /* @__PURE__ */ (() => {
-		const C = function() {};
-		C.prototype = Object.create(null);
-		return C;
-	})();
-	/**
-	* Parse a `Content-Type` header.
-	*/
-	function parse(header, options) {
-		const stopChar = options?.comma === true ? COMMA : 65536;
-		const len = header.length;
-		let index = skipOWS(header, options?.start ?? 0, len);
-		const valueStart = index;
-		index = skipValue(header, index, len, stopChar);
-		const valueEnd = trailingOWS(header, valueStart, index);
-		const type = header.slice(valueStart, valueEnd).toLowerCase();
-		if (options?.parameters === false) return {
-			type,
-			index,
-			parameters: new NullObject()
-		};
-		return parseParameters(header, type, index, len, stopChar);
-	}
-	var SP = 32;
-	var HTAB = 9;
-	var SEMI = 59;
-	var EQ = 61;
-	var DQUOTE = 34;
-	var BSLASH = 92;
-	var COMMA = 44;
-	/**
-	* Parses the parameters of a `Content-Type` header starting at the given index.
-	*/
-	function parseParameters(header, type, index, len, stopChar) {
-		const parameters = new NullObject();
-		parameter: while (index < len) {
-			if (header.charCodeAt(index) === stopChar) break;
-			index = skipOWS(header, index + 1, len);
-			const keyStart = index;
-			while (index < len) {
-				const code = header.charCodeAt(index);
-				if (code === stopChar) break parameter;
-				if (code === SEMI) continue parameter;
-				if (code === EQ) {
-					const keyEnd = trailingOWS(header, keyStart, index);
-					const key = header.slice(keyStart, keyEnd).toLowerCase();
-					index = skipOWS(header, index + 1, len);
-					if (index < len && header.charCodeAt(index) === DQUOTE) {
-						index++;
-						let value = "";
-						while (index < len) {
-							const code = header.charCodeAt(index++);
-							if (code === DQUOTE) {
-								index = skipValue(header, index, len, stopChar);
-								if (parameters[key] === void 0) parameters[key] = value;
-								break;
-							}
-							if (code === BSLASH && index < len) {
-								value += header[index++];
-								continue;
-							}
-							value += String.fromCharCode(code);
+/**
+* Null object perf optimization. Faster than `Object.create(null)` and `{ __proto__: null }`.
+*/
+var NullObject = /* @__PURE__ */ (() => {
+	const C = function() {};
+	C.prototype = Object.create(null);
+	return C;
+})();
+/**
+* Parse a `Content-Type` header.
+*/
+function parse$1(header, options) {
+	const stopChar = options?.comma === true ? COMMA : 65536;
+	const len = header.length;
+	let index = skipOWS(header, options?.start ?? 0, len);
+	const valueStart = index;
+	index = skipValue(header, index, len, stopChar);
+	const valueEnd = trailingOWS(header, valueStart, index);
+	const type = header.slice(valueStart, valueEnd).toLowerCase();
+	if (options?.parameters === false) return {
+		type,
+		index,
+		parameters: new NullObject()
+	};
+	return parseParameters(header, type, index, len, stopChar);
+}
+__name(parse$1, "parse");
+var SP = 32;
+var HTAB = 9;
+var SEMI = 59;
+var EQ = 61;
+var DQUOTE = 34;
+var BSLASH = 92;
+var COMMA = 44;
+/**
+* Parses the parameters of a `Content-Type` header starting at the given index.
+*/
+function parseParameters(header, type, index, len, stopChar) {
+	const parameters = new NullObject();
+	parameter: while (index < len) {
+		if (header.charCodeAt(index) === stopChar) break;
+		index = skipOWS(header, index + 1, len);
+		const keyStart = index;
+		while (index < len) {
+			const code = header.charCodeAt(index);
+			if (code === stopChar) break parameter;
+			if (code === SEMI) continue parameter;
+			if (code === EQ) {
+				const keyEnd = trailingOWS(header, keyStart, index);
+				const key = header.slice(keyStart, keyEnd).toLowerCase();
+				index = skipOWS(header, index + 1, len);
+				if (index < len && header.charCodeAt(index) === DQUOTE) {
+					index++;
+					let value = "";
+					while (index < len) {
+						const code = header.charCodeAt(index++);
+						if (code === DQUOTE) {
+							index = skipValue(header, index, len, stopChar);
+							if (parameters[key] === void 0) parameters[key] = value;
+							break;
 						}
-						continue parameter;
-					}
-					const valueStart = index;
-					index = skipValue(header, index, len, stopChar);
-					if (parameters[key] === void 0) {
-						const valueEnd = trailingOWS(header, valueStart, index);
-						parameters[key] = header.slice(valueStart, valueEnd);
+						if (code === BSLASH && index < len) {
+							value += header[index++];
+							continue;
+						}
+						value += String.fromCharCode(code);
 					}
 					continue parameter;
 				}
-				index++;
+				const valueStart = index;
+				index = skipValue(header, index, len, stopChar);
+				if (parameters[key] === void 0) {
+					const valueEnd = trailingOWS(header, valueStart, index);
+					parameters[key] = header.slice(valueStart, valueEnd);
+				}
+				continue parameter;
 			}
-		}
-		return {
-			type,
-			index,
-			parameters
-		};
-	}
-	/**
-	* Skip over characters until a semicolon or other exit character.
-	*/
-	function skipValue(str, index, len, stopChar) {
-		while (index < len) {
-			const code = str.charCodeAt(index);
-			if (code === SEMI || code === stopChar) break;
 			index++;
 		}
-		return index;
 	}
-	/**
-	* Skip optional whitespace (OWS) in an HTTP header value.
-	*
-	* OWS is defined in RFC 9110 sec 5.6.3 as SP (" ") or HTAB ("\t").
-	*/
-	function skipOWS(header, index, len) {
-		while (index < len) {
-			const char = header.charCodeAt(index);
-			if (char !== SP && char !== HTAB) break;
-			index++;
-		}
-		return index;
+	return {
+		type,
+		index,
+		parameters
+	};
+}
+/**
+* Skip over characters until a semicolon or other exit character.
+*/
+function skipValue(str, index, len, stopChar) {
+	while (index < len) {
+		const code = str.charCodeAt(index);
+		if (code === SEMI || code === stopChar) break;
+		index++;
 	}
-	/**
-	* Trim optional whitespace (OWS) from the end of a substring.
-	*
-	* OWS is defined in RFC 9110 sec 5.6.3 as SP (" ") or HTAB ("\t").
-	*/
-	function trailingOWS(header, start, end) {
-		while (end > start) {
-			const char = header.charCodeAt(end - 1);
-			if (char !== SP && char !== HTAB) break;
-			end--;
-		}
-		return end;
+	return index;
+}
+/**
+* Skip optional whitespace (OWS) in an HTTP header value.
+*
+* OWS is defined in RFC 9110 sec 5.6.3 as SP (" ") or HTAB ("\t").
+*/
+function skipOWS(header, index, len) {
+	while (index < len) {
+		const char = header.charCodeAt(index);
+		if (char !== SP && char !== HTAB) break;
+		index++;
 	}
-})))();
+	return index;
+}
+/**
+* Trim optional whitespace (OWS) from the end of a substring.
+*
+* OWS is defined in RFC 9110 sec 5.6.3 as SP (" ") or HTAB ("\t").
+*/
+function trailingOWS(header, start, end) {
+	while (end > start) {
+		const char = header.charCodeAt(end - 1);
+		if (char !== SP && char !== HTAB) break;
+		end--;
+	}
+	return end;
+}
+//#endregion
+//#region node_modules/.pnpm/json-with-bigint@3.5.12/node_modules/json-with-bigint/json-with-bigint.js
 var intRegex = /^-?\d+$/;
 var noiseValue = /^-?\d+n+$/;
 var originalStringify = JSON.stringify;
@@ -21483,7 +21482,7 @@ var JSONParseV2 = (text, reviver) => {
 };
 var MAX_INT = Number.MAX_SAFE_INTEGER.toString();
 var MAX_DIGITS = MAX_INT.length;
-var stringsOrLargeNumbers = /"(?:\\.|[^"])*"|-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?/g;
+var stringsOrLargeNumbers = /"(?:[^"\\]|\\.)*"|-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?/g;
 var noiseValueWithQuotes = /^"-?\d+n+"$/;
 /**
 * Iteratively traverses the parsed object bottom-up (post-order),
@@ -21602,8 +21601,8 @@ var RequestError = class extends Error {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@octokit+request@10.0.13/node_modules/@octokit/request/dist-bundle/index.js
-var defaults_default = { headers: { "user-agent": `octokit-request.js/10.0.13 ${getUserAgent()}` } };
+//#region node_modules/.pnpm/@octokit+request@10.0.15/node_modules/@octokit/request/dist-bundle/index.js
+var defaults_default = { headers: { "user-agent": `octokit-request.js/10.0.15 ${getUserAgent()}` } };
 function isPlainObject(value) {
 	if (typeof value !== "object" || value === null) return false;
 	if (Object.prototype.toString.call(value) !== "[object Object]") return false;
@@ -21690,7 +21689,7 @@ async function fetchWrapper(requestOptions) {
 async function getResponseData(response) {
 	const contentType = response.headers.get("content-type");
 	if (!contentType) return response.text().catch(noop$1);
-	const mimetype = (0, import_dist$2.parse)(contentType);
+	const mimetype = parse$1(contentType);
 	if (isJSONResponse(mimetype)) {
 		let text = "";
 		try {
@@ -32721,7 +32720,10 @@ function convertHttpClient(requestPolicyClient) {
 	} };
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/util.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/util.js
+var nameStartChar = ":A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD";
+var nameChar = nameStartChar + "\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040";
+"" + nameStartChar + nameChar;
 var regexName = /* @__PURE__ */ new RegExp("^[:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD][:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040]*$");
 function getAllMatches(string, regex) {
 	const matches = [];
@@ -32761,7 +32763,7 @@ var criticalProperties = [
 	"prototype"
 ];
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/validator.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/validator.js
 var defaultOptions$2 = {
 	allowBooleanAttributes: false,
 	unpairedTags: []
@@ -33520,7 +33522,7 @@ var EntityDecoder = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
 var defaultOnDangerousProperty = (name) => {
 	if (DANGEROUS_PROPERTY_NAMES.includes(name)) return "__" + name;
 	return name;
@@ -33647,7 +33649,7 @@ var buildOptions = function(options) {
 	return built;
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
 var METADATA_SYMBOL$1;
 if (typeof Symbol !== "function") METADATA_SYMBOL$1 = "@@xmlMetadata";
 else METADATA_SYMBOL$1 = Symbol("XML Node Metadata");
@@ -33668,7 +33670,14 @@ var XmlNode = class {
 			[":@"]: node[":@"]
 		});
 		else this.child.push({ [node.tagname]: node.child });
+		this.addStartIndex(startIndex);
+	}
+	addStartIndex(startIndex) {
 		if (startIndex !== void 0) this.child[this.child.length - 1][METADATA_SYMBOL$1] = { startIndex };
+	}
+	addEndIndex(endIndex) {
+		const lastChild = this.child[this.child.length - 1];
+		if (lastChild !== void 0 && lastChild[METADATA_SYMBOL$1] !== void 0 && lastChild[METADATA_SYMBOL$1].endIndex === void 0) lastChild[METADATA_SYMBOL$1].endIndex = endIndex;
 	}
 	/** symbol used for metadata */
 	static getMetaDataSymbol() {
@@ -33687,9 +33696,9 @@ var XmlNode = class {
 * XML NS spec:  https://www.w3.org/TR/xml-names/#NT-NCName
 */
 var nameStartChar10 = ":A-Za-z_À-ÖØ-öø-˿Ͱ-ͽͿ-҆҈-῿‌-‍⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�";
-var nameChar10 = ":A-Za-z_À-ÖØ-öø-˿Ͱ-ͽͿ-҆҈-῿‌-‍⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�\\-\\.\\d·̀-ͯ‿-⁀";
+var nameChar10 = nameStartChar10 + "\\-\\.\\d·̀-ͯ‿-⁀";
 var nameStartChar11 = ":A-Za-z_À-˿Ͱ-ͽͿ-҆҈-῿‌-‍⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�𐀀-󯿿";
-var nameChar11 = ":A-Za-z_À-˿Ͱ-ͽͿ-҆҈-῿‌-‍⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�𐀀-󯿿\\-\\.\\d·̀-ͯ҇‿-⁀";
+var nameChar11 = nameStartChar11 + "\\-\\.\\d·̀-ͯ҇‿-⁀";
 var buildRegexes = (startChar, char, flags = "") => {
 	const ncNamePat = `[${startChar.replace(":", "")}][${char.replace(":", "")}]*`;
 	return {
@@ -33751,7 +33760,7 @@ var createValidator = (production, { xmlVersion = "1.0", asciiOnly = false, maxC
 	return validator;
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
 var DocTypeReader = class {
 	constructor(options, xmlVersion) {
 		this.suppressValidationErr = !options;
@@ -33769,42 +33778,55 @@ var DocTypeReader = class {
 			let angleBracketsCount = 1;
 			let hasBody = false;
 			let comment = false;
+			let quoteChar = null;
 			let exp = "";
-			for (; i < xmlData.length; i++) if (xmlData[i] === "<" && !comment) {
-				if (hasBody && hasSeq(xmlData, "!ENTITY", i)) {
-					i += 7;
-					let entityName;
-					let val;
-					[entityName, val, i] = this.readEntityExp(xmlData, i + 1, this.suppressValidationErr);
-					if (val.indexOf("&") === -1) {
-						if (this.options.enabled !== false && this.options.maxEntityCount != null && entityCount >= this.options.maxEntityCount) throw new Error(`Entity count (${entityCount + 1}) exceeds maximum allowed (${this.options.maxEntityCount})`);
-						entities[entityName] = val;
-						entityCount++;
-					}
-				} else if (hasBody && hasSeq(xmlData, "!ELEMENT", i)) {
-					i += 8;
-					const { index } = this.readElementExp(xmlData, i + 1);
-					i = index;
-				} else if (hasBody && hasSeq(xmlData, "!ATTLIST", i)) i += 8;
-				else if (hasBody && hasSeq(xmlData, "!NOTATION", i)) {
-					i += 9;
-					const { index } = this.readNotationExp(xmlData, i + 1, this.suppressValidationErr);
-					i = index;
-				} else if (hasSeq(xmlData, "!--", i)) comment = true;
-				else throw new Error(`Invalid DOCTYPE`);
-				angleBracketsCount++;
-				exp = "";
-			} else if (xmlData[i] === ">") {
-				if (comment) {
-					if (xmlData[i - 1] === "-" && xmlData[i - 2] === "-") {
-						comment = false;
-						angleBracketsCount--;
-					}
-				} else angleBracketsCount--;
-				if (angleBracketsCount === 0) break;
-			} else if (xmlData[i] === "[") hasBody = true;
-			else exp += xmlData[i];
-			if (angleBracketsCount !== 0) throw new Error(`Unclosed DOCTYPE`);
+			for (; i < xmlData.length; i++) {
+				if (quoteChar !== null) {
+					if (xmlData[i] === quoteChar) quoteChar = null;
+					exp += xmlData[i];
+					continue;
+				}
+				if (!hasBody && !comment && (xmlData[i] === "\"" || xmlData[i] === "'")) {
+					quoteChar = xmlData[i];
+					exp += xmlData[i];
+					continue;
+				}
+				if (xmlData[i] === "<" && !comment) {
+					if (hasBody && hasSeq(xmlData, "!ENTITY", i)) {
+						i += 7;
+						let entityName;
+						let val;
+						[entityName, val, i] = this.readEntityExp(xmlData, i + 1, this.suppressValidationErr);
+						if (val.indexOf("&") === -1) {
+							if (this.options.enabled !== false && this.options.maxEntityCount != null && entityCount >= this.options.maxEntityCount) throw new Error(`Entity count (${entityCount + 1}) exceeds maximum allowed (${this.options.maxEntityCount})`);
+							entities[entityName] = val;
+							entityCount++;
+						}
+					} else if (hasBody && hasSeq(xmlData, "!ELEMENT", i)) {
+						i += 8;
+						const { index } = this.readElementExp(xmlData, i + 1);
+						i = index;
+					} else if (hasBody && hasSeq(xmlData, "!ATTLIST", i)) i += 8;
+					else if (hasBody && hasSeq(xmlData, "!NOTATION", i)) {
+						i += 9;
+						const { index } = this.readNotationExp(xmlData, i + 1, this.suppressValidationErr);
+						i = index;
+					} else if (hasSeq(xmlData, "!--", i)) comment = true;
+					else throw new Error(`Invalid DOCTYPE`);
+					angleBracketsCount++;
+					exp = "";
+				} else if (xmlData[i] === ">") {
+					if (comment) {
+						if (xmlData[i - 1] === "-" && xmlData[i - 2] === "-") {
+							comment = false;
+							angleBracketsCount--;
+						}
+					} else angleBracketsCount--;
+					if (angleBracketsCount === 0) break;
+				} else if (xmlData[i] === "[") hasBody = true;
+				else exp += xmlData[i];
+			}
+			if (quoteChar !== null || angleBracketsCount !== 0) throw new Error(`Unclosed DOCTYPE`);
 		} else throw new Error(`Invalid Tag instead of DOCTYPE`);
 		return {
 			entities,
@@ -34278,7 +34300,7 @@ function handleInfinity(str, num, options) {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/ignoreAttributes.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/ignoreAttributes.js
 function getIgnoreAttributesFn$1(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -35136,7 +35158,7 @@ var Matcher = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/contexts/html.js
+//#region node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/contexts/html.js
 /**
 * HTML context patterns.
 *
@@ -35234,7 +35256,7 @@ var HTML_PATTERNS = [
 	}
 ];
 //#endregion
-//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/contexts/xml.js
+//#region node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/contexts/xml.js
 /**
 * XML context patterns.
 *
@@ -35290,7 +35312,7 @@ var XML_PATTERNS = [
 	{
 		id: "xml-namespace-confusion",
 		description: "xmlns: attribute injection — can redefine namespaces to confuse parsers",
-		pattern: /\bxmlns\s*(?::\w{1,40})?\s*=/i
+		pattern: /\bxmlns(?::\w{1,40})?\s*=/i
 	},
 	{
 		id: "xml-comment-injection",
@@ -35309,7 +35331,7 @@ var XML_PATTERNS = [
 	}
 ];
 //#endregion
-//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/contexts/svg.js
+//#region node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/contexts/svg.js
 /**
 * SVG context patterns.
 *
@@ -35387,7 +35409,7 @@ var SVG_PATTERNS = [
 	}
 ];
 //#endregion
-//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/contexts/sql.js
+//#region node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/contexts/sql.js
 /**
 * SQL context patterns — high-precision rules only.
 *
@@ -35479,7 +35501,7 @@ var SQL_PATTERNS = [
 	}
 ];
 //#endregion
-//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/contexts/shell.js
+//#region node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/contexts/shell.js
 /**
 * SHELL context patterns.
 *
@@ -35580,7 +35602,7 @@ var SHELL_PATTERNS = [
 	}
 ];
 //#endregion
-//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/contexts/redos.js
+//#region node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/contexts/redos.js
 /**
 * REDOS context patterns.
 *
@@ -35635,7 +35657,7 @@ var REDOS_PATTERNS = [
 	}
 ];
 //#endregion
-//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/contexts/nosql.js
+//#region node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/contexts/nosql.js
 var sep = "[\"'\\s]*:";
 var NOSQL_PATTERNS = [
 	{
@@ -35720,7 +35742,7 @@ var NOSQL_PATTERNS = [
 	}
 ];
 //#endregion
-//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/contexts/log.js
+//#region node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/contexts/log.js
 /**
 * LOG context patterns.
 *
@@ -35804,7 +35826,7 @@ var LOG_PATTERNS = [
 	}
 ];
 //#endregion
-//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/contexts/sql-strict.js
+//#region node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/contexts/sql-strict.js
 /**
 * SQL-STRICT context patterns.
 *
@@ -35846,7 +35868,7 @@ var SQL_STRICT_EXTRA = [
 ];
 var SQL_STRICT_PATTERNS = [...SQL_PATTERNS, ...SQL_STRICT_EXTRA];
 //#endregion
-//#region node_modules/.pnpm/is-unsafe@2.0.0/node_modules/is-unsafe/src/index.js
+//#region node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/index.js
 HTML_PATTERNS.label = "HTML";
 XML_PATTERNS.label = "XML";
 SVG_PATTERNS.label = "SVG";
@@ -35964,7 +35986,7 @@ function isUnsafe(value, context) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
 /**
 * Extract raw attributes (without prefix) from prefixed attribute map
 * @param {object} prefixedAttrs - Attributes with prefix from buildAttributesMap
@@ -36170,7 +36192,8 @@ var parseXml = function(xmlData) {
 			}
 			this.matcher.pop();
 			this.isCurrentNodeStopNode = false;
-			currentNode = this.tagsNodeStack.pop();
+			currentNode = this.tagsNodeStack.pop() || xmlObj;
+			if (options.captureMetaData && currentNode) currentNode.addEndIndex(closeIndex + 1);
 			textData = "";
 			i = closeIndex;
 		} else if (c1 === 63) {
@@ -36188,6 +36211,7 @@ var parseXml = function(xmlData) {
 				childNode.add(options.textNodeName, "");
 				if (tagData.tagName !== tagData.tagExp && tagData.attrExpPresent && options.ignoreAttributes !== true) childNode[":@"] = attsMap;
 				this.addChild(currentNode, childNode, this.readonlyMatcher, i);
+				if (options.captureMetaData) currentNode.addEndIndex(tagData.closeIndex + 2);
 			}
 			i = tagData.closeIndex + 1;
 		} else if (c1 === 33 && xmlData.charCodeAt(i + 2) === 45 && xmlData.charCodeAt(i + 3) === 45) {
@@ -36269,18 +36293,21 @@ var parseXml = function(xmlData) {
 				this.matcher.pop();
 				this.isCurrentNodeStopNode = false;
 				this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
+				if (options.captureMetaData) currentNode.addEndIndex(i + 1);
 			} else {
 				if (isSelfClosing) {
 					({tagName, tagExp} = transformTagName(options.transformTagName, tagName, tagExp, options));
 					const childNode = new XmlNode(tagName);
 					if (prefixedAttrs) childNode[":@"] = prefixedAttrs;
 					this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
+					if (options.captureMetaData) currentNode.addEndIndex(closeIndex + 1);
 					this.matcher.pop();
 					this.isCurrentNodeStopNode = false;
 				} else if (options.unpairedTagsSet.has(tagName)) {
 					const childNode = new XmlNode(tagName);
 					if (prefixedAttrs) childNode[":@"] = prefixedAttrs;
 					this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
+					if (options.captureMetaData) currentNode.addEndIndex(result.closeIndex + 1);
 					this.matcher.pop();
 					this.isCurrentNodeStopNode = false;
 					i = result.closeIndex;
@@ -36484,7 +36511,7 @@ function sanitizeName(name, options) {
 	return name;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/xmlparser/node2json.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/xmlparser/node2json.js
 var METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
 /**
 * Helper function to strip attribute prefix from attribute map
@@ -36588,7 +36615,7 @@ function isLeafTag(obj, options) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
 var XMLParser = class {
 	constructor(options) {
 		this.externalEntities = {};
@@ -37270,10 +37297,10 @@ function isAttribute(name) {
 	else return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
 var json2xml_default = Builder;
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.10.1/node_modules/fast-xml-parser/src/fxp.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/fxp.js
 var XMLValidator = { validate };
 //#endregion
 //#region node_modules/.pnpm/@azure+core-xml@1.6.0/node_modules/@azure/core-xml/dist/esm/xml.js
