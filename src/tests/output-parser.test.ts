@@ -1,10 +1,12 @@
 import os from "node:os";
 
+// oxlint-disable-next-line import/no-namespace -- `vi.spyOn` patches a property on the module object
 import * as core from "@actions/core";
 import { describe, expect, it, vi } from "vitest";
 
 import { OutputParser } from "../output-parser";
 import type { CargoMessage, CompilerMessage, Stats } from "../schema";
+import { AnnotationLevel } from "../schema";
 
 describe("outputParser", () => {
     const emptyStats: Stats = {
@@ -36,7 +38,7 @@ describe("outputParser", () => {
     };
 
     it("ignores invalid json", () => {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function -- mock
+        // oxlint-disable-next-line no-empty-function -- mock
         vi.spyOn(core, "debug").mockImplementation(() => {});
 
         const outputParser = new OutputParser();
@@ -47,7 +49,7 @@ describe("outputParser", () => {
     });
 
     it("ignores non-compiler-messages", () => {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function -- mock
+        // oxlint-disable-next-line no-empty-function -- mock
         vi.spyOn(core, "debug").mockImplementation(() => {});
 
         const outputParser = new OutputParser();
@@ -62,7 +64,7 @@ describe("outputParser", () => {
     });
 
     it("ignores when compiler-message doesn't have a code", () => {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function -- mock
+        // oxlint-disable-next-line no-empty-function -- mock
         vi.spyOn(core, "debug").mockImplementation(() => {});
 
         const outputParser = new OutputParser();
@@ -146,7 +148,7 @@ describe("outputParser", () => {
         expect(outputParser.stats).toEqual({ ...emptyStats, warning: 1 });
         expect(outputParser.annotations).toEqual([
             {
-                level: 1,
+                level: AnnotationLevel.Warning,
                 message: "rendered",
                 properties: {
                     title: "message",
@@ -179,7 +181,7 @@ describe("outputParser", () => {
 
         expect(outputParser.annotations).toEqual([
             {
-                level: 1,
+                level: AnnotationLevel.Warning,
                 message: "rendered",
                 properties: {
                     endLine: 30,
@@ -206,7 +208,7 @@ describe("outputParser", () => {
 
         expect(outputParser.annotations).toEqual([
             {
-                level: 0,
+                level: AnnotationLevel.Error,
                 message: "rendered",
                 properties: {
                     endColumn: 15,
@@ -261,7 +263,7 @@ describe("outputParser", () => {
         expect(outputParser.stats).toEqual({ ...emptyStats, warning: 1 });
         expect(outputParser.annotations).toEqual([
             {
-                level: 1,
+                level: AnnotationLevel.Warning,
                 message: "rendered",
                 properties: {
                     endColumn: 15,
@@ -273,7 +275,7 @@ describe("outputParser", () => {
                 },
             },
             {
-                level: 1,
+                level: AnnotationLevel.Warning,
                 message: "rendered",
                 properties: {
                     endColumn: 7,
@@ -312,7 +314,7 @@ describe("outputParser", () => {
 
         expect(outputParser.annotations).toEqual([
             {
-                level: 0,
+                level: AnnotationLevel.Error,
                 message: "rendered",
                 properties: {
                     endColumn: 15,
@@ -324,7 +326,7 @@ describe("outputParser", () => {
                 },
             },
             {
-                level: 1,
+                level: AnnotationLevel.Warning,
                 message: "rendered",
                 properties: {
                     endColumn: 15,

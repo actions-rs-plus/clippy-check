@@ -3,7 +3,6 @@ code:
   - Dockerfile
   - "src/**"
   - "**/*.ts"
-  - "**/*.cjs"
-  - "**/*.mjs"
+  - ".oxlintrc.json"
   - "package.json"
   - "pnpm-lock.yaml"

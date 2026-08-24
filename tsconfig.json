@@ -5,6 +5,7 @@
         "alwaysStrict": true,
         "declaration": true,
         "declarationMap": true,
+        "erasableSyntaxOnly": true,
         "esModuleInterop": true,
         "exactOptionalPropertyTypes": true,
         "forceConsistentCasingInFileNames": true,
@@ -47,12 +48,5 @@
         "verbatimModuleSyntax": true
     },
     "exclude": ["dist/"],
-    "include": [
-        "**/*.d.ts",
-        "**/*.ts",
-        "**/*.js",
-        "dependency-cruiser.config.mjs",
-        "eslint.config.ts",
-        "prettier.config.ts"
-    ]
+    "include": ["**/*.ts"]
 }

@@ -3,8 +3,8 @@ import stringArgv from "string-argv";
 
 // Parsed action input
 export interface ParsedInput {
-    toolchain: string | undefined;
     args: string[];
+    toolchain: string | undefined;
     useCross: boolean;
     workingDirectory: string | undefined;
 }

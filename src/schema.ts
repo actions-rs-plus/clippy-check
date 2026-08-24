@@ -1,10 +1,12 @@
 import type { AnnotationProperties } from "@actions/core";
 
-export enum AnnotationLevel {
-    Error,
-    Warning,
-    Notice,
-}
+export const AnnotationLevel = {
+    Error: "error",
+    Notice: "notice",
+    Warning: "warning",
+} as const;
+
+export type AnnotationLevel = (typeof AnnotationLevel)[keyof typeof AnnotationLevel];
 
 export interface AnnotationWithMessageAndLevel {
     level: AnnotationLevel;
@@ -13,7 +15,6 @@ export interface AnnotationWithMessageAndLevel {
 }
 
 export interface CargoMessage {
-    reason: string;
     message?: {
         code?: null | string;
         level: string;
@@ -21,10 +22,10 @@ export interface CargoMessage {
         rendered: string;
         spans: DiagnosticSpan[];
     };
+    reason: string;
 }
 
 export interface CompilerMessage extends CargoMessage {
-    reason: "compiler-message";
     message: {
         code: string;
         level: string;
@@ -32,27 +33,28 @@ export interface CompilerMessage extends CargoMessage {
         rendered: string;
         spans: DiagnosticSpan[];
     };
+    reason: "compiler-message";
 }
 
 export interface DiagnosticSpan {
+    column_end: number;
+    column_start: number;
     file_name: string;
     is_primary: boolean;
-    line_start: number;
     line_end: number;
-    column_start: number;
-    column_end: number;
+    line_start: number;
 }
 
 export interface Context {
+    cargo: string;
     clippy: string;
     rustc: string;
-    cargo: string;
 }
 
 export interface Stats {
-    ice: number;
     error: number;
-    warning: number;
-    note: number;
     help: number;
+    ice: number;
+    note: number;
+    warning: number;
 }

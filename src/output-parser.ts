@@ -1,7 +1,7 @@
 import os from "node:os";
 import path from "node:path";
 
-import * as core from "@actions/core";
+import { debug } from "@actions/core";
 
 import type {
     AnnotationWithMessageAndLevel,
@@ -13,14 +13,19 @@ import type {
 import { AnnotationLevel } from "./schema";
 
 export class OutputParser {
-    private readonly _workingDirectory: null | string;
-    private readonly _uniqueAnnotations: Map<string, AnnotationWithMessageAndLevel[]>;
-    private readonly _stats: Stats;
+    public readonly stats: Stats;
+
+    public get annotations(): AnnotationWithMessageAndLevel[] {
+        return this.uniqueAnnotations.values().toArray().flat();
+    }
+
+    private readonly uniqueAnnotations: Map<string, AnnotationWithMessageAndLevel[]>;
+    private readonly workingDirectory: null | string;
 
     public constructor(workingDirectory?: string) {
-        this._workingDirectory = workingDirectory ?? null;
-        this._uniqueAnnotations = new Map();
-        this._stats = {
+        this.workingDirectory = workingDirectory ?? null;
+        this.uniqueAnnotations = new Map();
+        this.stats = {
             ice: 0,
             error: 0,
             warning: 0,
@@ -29,17 +34,9 @@ export class OutputParser {
         };
     }
 
-    public get stats(): Stats {
-        return this._stats;
-    }
-
-    public get annotations(): AnnotationWithMessageAndLevel[] {
-        return this._uniqueAnnotations.values().toArray().flat();
-    }
-
     public static parseCargoJson(line: string): Message | null {
         try {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion -- trusted input
+            // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- trusted input
             return JSON.parse(line) as Message;
         } catch {
             return null;
@@ -48,12 +45,12 @@ export class OutputParser {
 
     public static validateMessageIsCargoMessage(contents: CargoMessage): contents is CompilerMessage {
         if (contents.reason !== "compiler-message") {
-            core.debug(`Unexpected reason field, ignoring it: ${contents.reason}`);
+            debug(`Unexpected reason field, ignoring it: ${contents.reason}`);
             return false;
         }
 
         if (contents.message?.code === undefined || contents.message.code === null) {
-            core.debug("Message code is missing, ignoring it");
+            debug("Message code is missing, ignoring it");
             return false;
         }
 
@@ -79,7 +76,7 @@ export class OutputParser {
         const message = OutputParser.parseCargoJson(line);
 
         if (message === null) {
-            core.debug("Not valid JSON or null, ignoring it");
+            debug("Not valid JSON or null, ignoring it");
             return;
         }
 
@@ -91,29 +88,29 @@ export class OutputParser {
 
         const key = JSON.stringify(parsedAnnotations);
 
-        if (this._uniqueAnnotations.has(key)) {
+        if (this.uniqueAnnotations.has(key)) {
             return;
         }
 
         switch (message.message.level) {
             case "help": {
-                this._stats.help += 1;
+                this.stats.help += 1;
                 break;
             }
             case "note": {
-                this._stats.note += 1;
+                this.stats.note += 1;
                 break;
             }
             case "warning": {
-                this._stats.warning += 1;
+                this.stats.warning += 1;
                 break;
             }
             case "error": {
-                this._stats.error += 1;
+                this.stats.error += 1;
                 break;
             }
             case "error: internal compiler error": {
-                this._stats.ice += 1;
+                this.stats.ice += 1;
                 break;
             }
             default: {
@@ -121,12 +118,17 @@ export class OutputParser {
             }
         }
 
-        this._uniqueAnnotations.set(key, parsedAnnotations);
+        this.uniqueAnnotations.set(key, parsedAnnotations);
     }
 
-    /// Convert parsed JSON line into GH annotation objects, one per primary span
-    ///
-    /// https://docs.github.com/en/rest/checks/runs#create-a-check-run
+    /**
+     * Convert parsed JSON line into GH annotation objects, one per primary span
+     *
+     * https://docs.github.com/en/rest/checks/runs#create-a-check-run
+     *
+     * @param {CompilerMessage} contents A cargo `compiler-message`.
+     * @returns {AnnotationWithMessageAndLevel[]} One annotation per primary span, or a single span-less annotation.
+     */
     private makeAnnotations(contents: CompilerMessage): AnnotationWithMessageAndLevel[] {
         const level = OutputParser.parseLevel(contents.message.level);
 
@@ -152,8 +154,8 @@ export class OutputParser {
         return primarySpans.map((primarySpan) => {
             let pathToFile = primarySpan.file_name;
 
-            if (this._workingDirectory !== null) {
-                pathToFile = path.join(this._workingDirectory, pathToFile);
+            if (this.workingDirectory !== null) {
+                pathToFile = path.join(this.workingDirectory, pathToFile);
             }
 
             if (os.platform() === "win32") {

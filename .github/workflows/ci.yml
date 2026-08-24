@@ -151,7 +151,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ !startsWith(github.head_ref, 'release/') }}
     permissions:
-      checks: write
+      contents: read
     needs:
       - changes
       - warm-up-cache
@@ -167,19 +167,7 @@ jobs:
       - name: Run lint
         shell: bash
         run: |
-          pnpm run lint --format=json --output-file reports/lint-report.json || true
-
-          # hack to print results in the console
-          node --print "require('./node_modules/eslint/lib/cli-engine/formatters/stylish.js')(require('./reports/lint-report.json'))"
-
-      - name: Annotate Code Linting Results
-        uses: ataylorme/eslint-annotate-action@5a8d8ab89a57679e90c32750e0f382e9d8570750 # 4.0.0
-        with:
-          fail-on-error: true
-          fail-on-warning: true
-          markdown-report-on-step-summary: true
-          only-pr-files: false
-          report-json: reports/lint-report.json
+          pnpm run lint --format=github
 
   npm-test:
     name: Test the code
