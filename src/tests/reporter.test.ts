@@ -7,6 +7,8 @@ vi.mock("@actions/core");
 
 describe("reporter", () => {
     it("works", async () => {
+        expect.assertions(1);
+
         await expect(
             report(
                 {

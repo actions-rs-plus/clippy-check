@@ -6,6 +6,8 @@ describe("index", () => {
     });
 
     it("works", async () => {
+        expect.assertions(1);
+
         const clippy = await vi.importActual<typeof import("../clippy")>("../clippy");
 
         using runSpy = vi.spyOn(clippy, "run").mockResolvedValue();
@@ -16,12 +18,14 @@ describe("index", () => {
     });
 
     it("catches Error", async () => {
+        expect.assertions(1);
+
         const core = await vi.importActual<typeof import("@actions/core")>("@actions/core");
         const clippy = await vi.importActual<typeof import("../clippy")>("../clippy");
 
         vi.spyOn(clippy, "run").mockRejectedValue(new Error("It looks like you're running a test"));
 
-        // eslint-disable-next-line @typescript-eslint/no-empty-function -- mock
+        // oxlint-disable-next-line no-empty-function -- mock
         using setFailedSpy = vi.spyOn(core, "setFailed").mockImplementation((_s: Error | string) => {});
 
         await vi.importActual("../index");
@@ -30,6 +34,8 @@ describe("index", () => {
     });
 
     it("catches not-error", async () => {
+        expect.assertions(1);
+
         const core = await vi.importActual<typeof import("@actions/core")>("@actions/core");
         const clippy = await vi.importActual<typeof import("../clippy")>("../clippy");
 
@@ -37,7 +43,7 @@ describe("index", () => {
             "It looks like you're trying to write a test, would you like some assistance? [YES / NO]",
         );
 
-        // eslint-disable-next-line @typescript-eslint/no-empty-function -- mock
+        // oxlint-disable-next-line no-empty-function -- mock
         using setFailedSpy = vi.spyOn(core, "setFailed").mockImplementation((_s: Error | string) => {});
 
         await vi.importActual("../index");

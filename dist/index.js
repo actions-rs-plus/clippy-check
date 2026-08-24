@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { createRequire } from "node:module";
 import * as path$2 from "path";
 import * as fs$1 from "fs";
@@ -65367,34 +65368,30 @@ function getInputBool(name, options) {
 }
 //#endregion
 //#region src/schema.ts
-var AnnotationLevel = /* @__PURE__ */ function(AnnotationLevel) {
-	AnnotationLevel[AnnotationLevel["Error"] = 0] = "Error";
-	AnnotationLevel[AnnotationLevel["Warning"] = 1] = "Warning";
-	AnnotationLevel[AnnotationLevel["Notice"] = 2] = "Notice";
-	return AnnotationLevel;
-}({});
+var AnnotationLevel = {
+	Error: "error",
+	Notice: "notice",
+	Warning: "warning"
+};
 //#endregion
 //#region src/output-parser.ts
 var OutputParser = class OutputParser {
-	_workingDirectory;
-	_uniqueAnnotations;
-	_stats;
+	stats;
+	get annotations() {
+		return this.uniqueAnnotations.values().toArray().flat();
+	}
+	uniqueAnnotations;
+	workingDirectory;
 	constructor(workingDirectory) {
-		this._workingDirectory = workingDirectory ?? null;
-		this._uniqueAnnotations = /* @__PURE__ */ new Map();
-		this._stats = {
+		this.workingDirectory = workingDirectory ?? null;
+		this.uniqueAnnotations = /* @__PURE__ */ new Map();
+		this.stats = {
 			ice: 0,
 			error: 0,
 			warning: 0,
 			note: 0,
 			help: 0
 		};
-	}
-	get stats() {
-		return this._stats;
-	}
-	get annotations() {
-		return this._uniqueAnnotations.values().toArray().flat();
 	}
 	static parseCargoJson(line) {
 		try {
@@ -65431,24 +65428,32 @@ var OutputParser = class OutputParser {
 		if (!OutputParser.validateMessageIsCargoMessage(message)) return;
 		const parsedAnnotations = this.makeAnnotations(message);
 		const key = JSON.stringify(parsedAnnotations);
-		if (this._uniqueAnnotations.has(key)) return;
+		if (this.uniqueAnnotations.has(key)) return;
 		switch (message.message.level) {
 			case "help":
-				this._stats.help += 1;
+				this.stats.help += 1;
 				break;
 			case "note":
-				this._stats.note += 1;
+				this.stats.note += 1;
 				break;
 			case "warning":
-				this._stats.warning += 1;
+				this.stats.warning += 1;
 				break;
 			case "error":
-				this._stats.error += 1;
+				this.stats.error += 1;
 				break;
-			case "error: internal compiler error": this._stats.ice += 1;
+			case "error: internal compiler error": this.stats.ice += 1;
 		}
-		this._uniqueAnnotations.set(key, parsedAnnotations);
+		this.uniqueAnnotations.set(key, parsedAnnotations);
 	}
+	/**
+	* Convert parsed JSON line into GH annotation objects, one per primary span
+	*
+	* https://docs.github.com/en/rest/checks/runs#create-a-check-run
+	*
+	* @param {CompilerMessage} contents A cargo `compiler-message`.
+	* @returns {AnnotationWithMessageAndLevel[]} One annotation per primary span, or a single span-less annotation.
+	*/
 	makeAnnotations(contents) {
 		const level = OutputParser.parseLevel(contents.message.level);
 		const primarySpans = contents.message.spans.filter((span) => {
@@ -65461,7 +65466,7 @@ var OutputParser = class OutputParser {
 		}];
 		return primarySpans.map((primarySpan) => {
 			let pathToFile = primarySpan.file_name;
-			if (this._workingDirectory !== null) pathToFile = path.join(this._workingDirectory, pathToFile);
+			if (this.workingDirectory !== null) pathToFile = path.join(this.workingDirectory, pathToFile);
 			if (os$1.platform() === "win32") pathToFile = pathToFile.split(path.win32.sep).join(path.posix.sep);
 			const annotation = {
 				level,
@@ -65549,26 +65554,26 @@ async function buildContext(program, toolchain) {
 	]);
 	return context;
 }
-function _processLineBuffer(data, stringBuffer, onLine) {
+function processLineBuffer(data, stringBuffer, onLine) {
 	const POSIX_EOL = "\n";
-	let s = stringBuffer + data.toString();
-	let n = s.indexOf(POSIX_EOL);
-	while (n > -1) {
-		onLine(s.slice(0, Math.max(0, n)));
-		s = s.slice(Math.max(0, n + 1));
-		n = s.indexOf(POSIX_EOL);
+	let rest = stringBuffer + data.toString();
+	let eolIndex = rest.indexOf(POSIX_EOL);
+	while (eolIndex > -1) {
+		onLine(rest.slice(0, Math.max(0, eolIndex)));
+		rest = rest.slice(Math.max(0, eolIndex + 1));
+		eolIndex = rest.indexOf(POSIX_EOL);
 	}
-	return s;
+	return rest;
 }
 async function runClippy(actionInput, program) {
-	const arguments_ = buildClippyArguments(actionInput);
+	const args = buildClippyArguments(actionInput);
 	const outputParser = new OutputParser(actionInput.workingDirectory);
 	let stdbuffer = "";
 	const options = {
 		failOnStdErr: false,
 		ignoreReturnCode: true,
 		listeners: { stdout: (data) => {
-			stdbuffer = _processLineBuffer(data, stdbuffer, (line) => {
+			stdbuffer = processLineBuffer(data, stdbuffer, (line) => {
 				outputParser.tryParseClippyLine(line);
 			});
 		} }
@@ -65577,7 +65582,7 @@ async function runClippy(actionInput, program) {
 	let exitCode;
 	try {
 		startGroup("Executing cargo clippy (JSON output)");
-		exitCode = await program.call(arguments_, options);
+		exitCode = await program.call(args, options);
 	} finally {
 		endGroup();
 	}
@@ -65599,10 +65604,10 @@ async function run(actionInput) {
 	if (exitCode !== 0) throw new Error(`Clippy had exited with the ${exitCode} exit code`);
 }
 function buildToolchainArguments(toolchain, after) {
-	const arguments_ = [];
-	if (toolchain !== void 0 && toolchain !== "") arguments_.push(`+${toolchain}`);
-	arguments_.push(...after);
-	return arguments_;
+	const args = [];
+	if (toolchain !== void 0 && toolchain !== "") args.push(`+${toolchain}`);
+	args.push(...after);
+	return args;
 }
 function buildClippyArguments(actionInput) {
 	return buildToolchainArguments(actionInput.toolchain, [

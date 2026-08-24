@@ -1,18 +1,52 @@
 import path from "node:path";
 
+// oxlint-disable-next-line import/no-namespace -- `vi.spyOn` patches a property on the module object
 import * as exec from "@actions/exec";
+// oxlint-disable-next-line import/no-namespace -- `vi.spyOn` patches a property on the module object
 import * as io from "@actions/io";
 import { describe, expect, it, vi } from "vitest";
 
 import { run } from "../clippy";
 import type { ParsedInput } from "../input";
+// oxlint-disable-next-line import/no-namespace -- `vi.spyOn` patches a property on the module object
 import * as report from "../reporter";
 import type { CompilerMessage } from "../schema";
+import { AnnotationLevel } from "../schema";
 
 vi.mock("@actions/core");
 
+/**
+ * Builds an `exec` mock that answers the three `-V` probes `buildContext` makes.
+ *
+ * @param {string} toolchain The toolchain `run` is invoked with, or `undefined` for the default one.
+ * @returns {exec.ExecOptions} A mock implementation for `@actions/exec`'s `exec`.
+ */
+function mockVersionProbes(toolchain?: string): typeof exec.exec {
+    const prefix = toolchain === undefined ? [] : [`+${toolchain}`];
+
+    const versions = new Map([
+        [["cargo", ...prefix, "-V"].join(" "), "cargo version"],
+        [["cargo", ...prefix, "clippy", "-V"].join(" "), "clippy version"],
+        [["rustc", ...prefix, "-V"].join(" "), "rustc version"],
+    ]);
+
+    return (commandline: string, arguments_?: string[], options?: exec.ExecOptions): Promise<number> => {
+        // `Cargo.get()` resolves `cargo` to a path, `rustc` is invoked by name
+        const tool = commandline.endsWith("cargo") ? "cargo" : commandline;
+        const version = versions.get([tool, ...(arguments_ ?? [])].join(" "));
+
+        if (version !== undefined) {
+            options?.listeners?.stdout?.(Buffer.from(version));
+        }
+
+        return Promise.resolve(0);
+    };
+}
+
 describe("clippy", () => {
     it("runs with cargo", async () => {
+        expect.assertions(3);
+
         using execSpy = vi.spyOn(exec, "exec").mockResolvedValue(0);
 
         using whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
@@ -34,6 +68,8 @@ describe("clippy", () => {
     });
 
     it("runs with cross", async () => {
+        expect.assertions(3);
+
         using execSpy = vi.spyOn(exec, "exec").mockResolvedValue(0);
 
         using whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
@@ -55,13 +91,15 @@ describe("clippy", () => {
     });
 
     it("reports when clippy fails", async () => {
+        expect.assertions(2);
+
         vi.spyOn(exec, "exec").mockImplementation((_commandline: string, arguments_?: string[]) => {
             const expected = ["clippy", "--message-format=json"];
 
             if (
                 (arguments_ ?? []).length > 0 &&
-                expected.every((c) => {
-                    return arguments_?.includes(c) ?? false;
+                expected.every((argument) => {
+                    return arguments_?.includes(argument) ?? false;
                 })
             ) {
                 return Promise.resolve(101);
@@ -87,13 +125,15 @@ describe("clippy", () => {
     });
 
     it("reports when clippy fails with a non-default working directory", async () => {
+        expect.assertions(3);
+
         using execSpy = vi.spyOn(exec, "exec").mockImplementation((_commandline: string, arguments_?: string[]) => {
             const expected = ["clippy", "--message-format=json"];
 
             if (
                 (arguments_ ?? []).length > 0 &&
-                expected.every((c) => {
-                    return arguments_?.includes(c) ?? false;
+                expected.every((argument) => {
+                    return arguments_?.includes(argument) ?? false;
                 })
             ) {
                 return Promise.resolve(101);
@@ -127,20 +167,9 @@ describe("clippy", () => {
     });
 
     it("records versions with toolchain", async () => {
-        vi.spyOn(exec, "exec").mockImplementation(
-            (commandline: string, arguments_?: string[], options?: exec.ExecOptions) => {
-                if (commandline.endsWith("cargo")) {
-                    if (arguments_?.[0] === "+nightly" && arguments_[1] === "-V") {
-                        options?.listeners?.stdout?.(Buffer.from("cargo version"));
-                    } else if (arguments_?.[0] === "+nightly" && arguments_[1] === "clippy" && arguments_[2] === "-V") {
-                        options?.listeners?.stdout?.(Buffer.from("clippy version"));
-                    }
-                } else if (commandline === "rustc" && arguments_?.[0] === "+nightly" && arguments_[1] === "-V") {
-                    options?.listeners?.stdout?.(Buffer.from("rustc version"));
-                }
-                return Promise.resolve(0);
-            },
-        );
+        expect.assertions(3);
+
+        vi.spyOn(exec, "exec").mockImplementation(mockVersionProbes("nightly"));
 
         using reportSpy = vi.spyOn(report, "report");
 
@@ -167,20 +196,9 @@ describe("clippy", () => {
     });
 
     it("records versions", async () => {
-        vi.spyOn(exec, "exec").mockImplementation(
-            (commandline: string, arguments_?: string[], options?: exec.ExecOptions) => {
-                if (commandline.endsWith("cargo")) {
-                    if (arguments_?.[0] === "-V") {
-                        options?.listeners?.stdout?.(Buffer.from("cargo version"));
-                    } else if (arguments_?.[0] === "clippy" && arguments_[1] === "-V") {
-                        options?.listeners?.stdout?.(Buffer.from("clippy version"));
-                    }
-                } else if (commandline === "rustc" && arguments_?.[0] === "-V") {
-                    options?.listeners?.stdout?.(Buffer.from("rustc version"));
-                }
-                return Promise.resolve(0);
-            },
-        );
+        expect.assertions(3);
+
+        vi.spyOn(exec, "exec").mockImplementation(mockVersionProbes());
 
         using reportSpy = vi.spyOn(report, "report");
 
@@ -207,14 +225,16 @@ describe("clippy", () => {
     });
 
     it("clippy captures stdout", async () => {
+        expect.assertions(3);
+
         vi.spyOn(exec, "exec").mockImplementation(
             (_commandline: string, arguments_?: string[], options?: exec.ExecOptions) => {
                 const expected = ["clippy", "--message-format=json"];
 
                 if (
                     (arguments_ ?? []).length > 0 &&
-                    expected.every((c) => {
-                        return arguments_?.includes(c) ?? false;
+                    expected.every((argument) => {
+                        return arguments_?.includes(argument) ?? false;
                     })
                 ) {
                     const data: CompilerMessage = {
@@ -262,7 +282,7 @@ describe("clippy", () => {
             { error: 0, help: 0, ice: 0, note: 0, warning: 1 },
             [
                 {
-                    level: 1,
+                    level: AnnotationLevel.Warning,
                     message: "rendered",
                     properties: {
                         endColumn: 45,

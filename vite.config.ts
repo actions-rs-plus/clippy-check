@@ -7,12 +7,12 @@ import { checker } from "vite-plugin-checker";
 import type { ViteUserConfigFn } from "vitest/config";
 import { coverageConfigDefaults, defineConfig } from "vitest/config";
 
-function buildSsr(): SSROptions {
+function buildSsr(environment: Record<string, string>): SSROptions {
     const ssr: SSROptions = {
         target: "node",
     };
 
-    if (process.env["VITEST"] !== "true") {
+    if (environment["VITEST"] !== "true") {
         ssr.noExternal = true;
     }
 
@@ -41,7 +41,7 @@ const configFunction: ViteUserConfigFn = defineConfig(({ mode }) => {
                 },
             },
         },
-        ssr: buildSsr(),
+        ssr: buildSsr(environment),
         resolve: {
             tsconfigPaths: true,
         },
@@ -58,7 +58,7 @@ const configFunction: ViteUserConfigFn = defineConfig(({ mode }) => {
         ],
         test: {
             coverage: {
-                exclude: [...coverageConfigDefaults.exclude, "./dependency-cruiser.config.mjs"],
+                exclude: [...coverageConfigDefaults.exclude, "./dependency-cruiser.config.ts"],
                 reporter: ["json", "html", "text", "lcov"],
                 provider: "v8",
                 reportsDirectory: "reports",

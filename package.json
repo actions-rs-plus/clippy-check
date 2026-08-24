@@ -1,57 +1,43 @@
 {
-    "private": false,
     "name": "@actions-rs-plus/clippy-check",
     "version": "0.0.0",
-    "author": "actions-rs-plus",
-    "license": "MIT",
+    "private": false,
     "description": "Run clippy and annotate the diff with errors and warnings",
-    "type": "module",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "keywords": [
+        "actions",
+        "cargo",
+        "rust"
+    ],
+    "bugs": {
+        "url": "https://github.com/actions-rs-plus/clippy-check/issues"
+    },
+    "license": "MIT",
+    "author": "actions-rs-plus",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/actions-rs-plus/clippy-check.git"
+    },
     "files": [
         "dist/**/*.js",
         "dist/**/*.js.map",
         "dist/**/*.d.ts"
     ],
-    "packageManager": "pnpm@11.22.0+sha512.1ff870c4c6133dfd88fb2afc46dd13d47f09c9794b438c6fdb47ca98caf3bc16381ee0be93a091b8e3824cf01f889f46d7d9e20910fb0be1ab0fb5baa80dd621",
-    "engines": {
-        "node": "24.19.0",
-        "pnpm": "11.22.0"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/actions-rs-plus/clippy-check.git"
-    },
-    "keywords": [
-        "actions",
-        "rust",
-        "cargo"
-    ],
-    "bugs": {
-        "url": "https://github.com/actions-rs-plus/clippy-check/issues"
-    },
+    "type": "module",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "scripts": {
         "build": "vite build && mkdir -p dist/.matchers && cp matchers/rust.json dist/.matchers/rust.json",
         "watch": "vite build --watch",
-        "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
+        "lint": "oxlint",
         "lint:fix": "pnpm run lint --fix",
-        "format": "prettier --write .",
+        "format": "oxfmt",
         "clean": "rm -rf ./dist/* && rm tsconfig.tsbuildinfo && pnpm run build",
         "test": "vitest --coverage.enabled=true",
-        "deps:ci": "depcruise --config dependency-cruiser.config.mjs --output-type err src",
-        "deps:graph": "depcruise --config dependency-cruiser.config.mjs --output-type dot src | dot -T svg > dependency-graph.svg",
-        "deps:report": "depcruise --config dependency-cruiser.config.mjs --output-type err-html --output-to dependency-report.html src",
+        "deps:ci": "depcruise --config dependency-cruiser.config.ts --output-type err src",
+        "deps:graph": "depcruise --config dependency-cruiser.config.ts --output-type dot src | dot -T svg > dependency-graph.svg",
+        "deps:report": "depcruise --config dependency-cruiser.config.ts --output-type err-html --output-to dependency-report.html src",
         "postversion": "cp package.json pnpm-lock.yaml ..",
         "prepare": "husky"
-    },
-    "lint-staged": {
-        "*.{ts,tsx}": [
-            "depcruise --config dependency-cruiser.config.mjs --validate -- "
-        ],
-        "*": [
-            "eslint -- ",
-            "prettier --ignore-unknown --"
-        ]
     },
     "dependencies": {
         "@actions-rs-plus/core": "0.10.0",
@@ -63,43 +49,37 @@
     "devDependencies": {
         "@actions/io": "3.0.2",
         "@codecov/vite-plugin": "2.0.1",
-        "@eslint-community/eslint-plugin-eslint-comments": "4.7.2",
-        "@eslint/config-helpers": "0.7.0",
-        "@eslint/core": "1.2.1",
-        "@eslint/js": "10.0.1",
-        "@eslint/markdown": "8.0.3",
-        "@stylistic/eslint-plugin": "5.10.0",
-        "@types/eslint": "9.6.1",
         "@types/node": "24.13.3",
         "@types/semver": "7.8.0",
         "@types/source-map-support": "0.5.10",
-        "@typescript-eslint/parser": "8.67.0",
         "@vitest/coverage-v8": "4.1.11",
         "@vitest/ui": "4.1.11",
         "dependency-cruiser": "18.2.0",
-        "eslint": "catalog:default",
-        "eslint-config-love": "155.0.0",
-        "eslint-config-prettier": "10.1.8",
-        "eslint-import-resolver-node": "0.4.0",
-        "eslint-import-resolver-typescript": "4.4.5",
-        "eslint-plugin-import-x": "4.17.1",
         "eslint-plugin-n": "18.3.0",
         "eslint-plugin-perfectionist": "5.10.1",
-        "eslint-plugin-prettier": "5.5.6",
-        "eslint-plugin-promise": "7.3.0",
-        "eslint-plugin-unicorn": "73.0.0",
-        "eslint-plugin-yml": "3.8.1",
         "husky": "9.1.7",
-        "jiti": "2.7.0",
         "lint-staged": "17.3.0",
-        "prettier": "3.9.6",
-        "prettier-plugin-sh": "0.19.0",
-        "prettier-plugin-toml": "2.0.6",
+        "oxfmt": "0.64.0",
+        "oxlint": "1.79.0",
+        "oxlint-tsgolint": "7.0.2001",
         "semver": "7.8.5",
         "typescript": "6.0.3",
-        "typescript-eslint": "8.67.0",
         "vite": "catalog:default",
         "vite-plugin-checker": "0.14.5",
         "vitest": "4.1.11"
-    }
+    },
+    "lint-staged": {
+        "*.{ts,tsx}": [
+            "oxlint --",
+            "depcruise --config dependency-cruiser.config.ts --include-only ^src/ --validate --"
+        ],
+        "*": [
+            "oxfmt --check --no-error-on-unmatched-pattern --"
+        ]
+    },
+    "engines": {
+        "node": "24.19.0",
+        "pnpm": "11.22.0"
+    },
+    "packageManager": "pnpm@11.22.0+sha512.1ff870c4c6133dfd88fb2afc46dd13d47f09c9794b438c6fdb47ca98caf3bc16381ee0be93a091b8e3824cf01f889f46d7d9e20910fb0be1ab0fb5baa80dd621"
 }

@@ -1,20 +1,20 @@
 import path from "node:path";
 
-import * as core from "@actions/core";
-import * as exec from "@actions/exec";
 import { Cargo, Cross } from "@actions-rs-plus/core";
-
 import type { BaseProgram } from "@actions-rs-plus/core";
+import { endGroup, startGroup } from "@actions/core";
+import type { ExecOptions } from "@actions/exec";
+import { exec } from "@actions/exec";
 
-import type * as input from "./input";
+import type { ParsedInput } from "./input";
 import { OutputParser } from "./output-parser";
 import { report } from "./reporter";
 import type { AnnotationWithMessageAndLevel, Context, Stats } from "./schema";
 
 interface ClippyResult {
-    stats: Stats;
     annotations: AnnotationWithMessageAndLevel[];
     exitCode: number;
+    stats: Stats;
 }
 
 async function buildContext(program: BaseProgram, toolchain: string | undefined): Promise<Context> {
@@ -25,7 +25,7 @@ async function buildContext(program: BaseProgram, toolchain: string | undefined)
     };
 
     await Promise.all([
-        exec.exec("rustc", buildToolchainArguments(toolchain, ["-V"]), {
+        exec("rustc", buildToolchainArguments(toolchain, ["-V"]), {
             listeners: {
                 stdout: (buffer: Buffer) => {
                     context.rustc = buffer.toString().trim();
@@ -56,35 +56,35 @@ async function buildContext(program: BaseProgram, toolchain: string | undefined)
 
 /// Copied from https://github.com/actions/toolkit/blob/683703c1149439530dcee7b8c5dbbfeec4104368/packages/exec/src/toolrunner.ts#L83
 /// & Replaced `os.EOL` by the POSIX EOL
-function _processLineBuffer(data: Buffer, stringBuffer: string, onLine: (line: string) => void): string {
+function processLineBuffer(data: Buffer, stringBuffer: string, onLine: (line: string) => void): string {
     const POSIX_EOL = "\n";
 
-    let s = stringBuffer + data.toString();
-    let n = s.indexOf(POSIX_EOL);
+    let rest = stringBuffer + data.toString();
+    let eolIndex = rest.indexOf(POSIX_EOL);
 
-    while (n > -1) {
-        const line = s.slice(0, Math.max(0, n));
+    while (eolIndex > -1) {
+        const line = rest.slice(0, Math.max(0, eolIndex));
         onLine(line);
 
         // the rest of the string ...
-        s = s.slice(Math.max(0, n + POSIX_EOL.length));
-        n = s.indexOf(POSIX_EOL);
+        rest = rest.slice(Math.max(0, eolIndex + POSIX_EOL.length));
+        eolIndex = rest.indexOf(POSIX_EOL);
     }
 
-    return s;
+    return rest;
 }
 
-async function runClippy(actionInput: input.ParsedInput, program: BaseProgram): Promise<ClippyResult> {
-    const arguments_ = buildClippyArguments(actionInput);
+async function runClippy(actionInput: ParsedInput, program: BaseProgram): Promise<ClippyResult> {
+    const args = buildClippyArguments(actionInput);
     const outputParser = new OutputParser(actionInput.workingDirectory);
 
     let stdbuffer = "";
-    const options: exec.ExecOptions = {
+    const options: ExecOptions = {
         failOnStdErr: false,
         ignoreReturnCode: true,
         listeners: {
             stdout: (data: Buffer) => {
-                stdbuffer = _processLineBuffer(data, stdbuffer, (line: string) => {
+                stdbuffer = processLineBuffer(data, stdbuffer, (line: string) => {
                     outputParser.tryParseClippyLine(line);
                 });
             },
@@ -95,14 +95,14 @@ async function runClippy(actionInput: input.ParsedInput, program: BaseProgram): 
         options.cwd = path.join(process.cwd(), actionInput.workingDirectory);
     }
 
-    // eslint-disable-next-line @typescript-eslint/init-declarations -- initialized below, no other way to do this except for an IIFE
+    // oxlint-disable-next-line typescript/init-declarations -- initialized below, no other way to do this except for an IIFE
     let exitCode: number;
 
     try {
-        core.startGroup("Executing cargo clippy (JSON output)");
-        exitCode = await program.call(arguments_, options);
+        startGroup("Executing cargo clippy (JSON output)");
+        exitCode = await program.call(args, options);
     } finally {
-        core.endGroup();
+        endGroup();
     }
 
     return {
@@ -112,7 +112,6 @@ async function runClippy(actionInput: input.ParsedInput, program: BaseProgram): 
     };
 }
 
-// eslint-disable-next-line unicorn/consistent-boolean-name -- nonsensical here
 function getProgram(useCross: boolean): Promise<BaseProgram> {
     if (useCross) {
         return Cross.getOrInstall();
@@ -121,7 +120,7 @@ function getProgram(useCross: boolean): Promise<BaseProgram> {
     return Cargo.get();
 }
 
-export async function run(actionInput: input.ParsedInput): Promise<void> {
+export async function run(actionInput: ParsedInput): Promise<void> {
     const program: BaseProgram = await getProgram(actionInput.useCross);
 
     const context = await buildContext(program, actionInput.toolchain);
@@ -136,18 +135,18 @@ export async function run(actionInput: input.ParsedInput): Promise<void> {
 }
 
 function buildToolchainArguments(toolchain: string | undefined, after: string[]): string[] {
-    const arguments_ = [];
+    const args = [];
 
     if (toolchain !== undefined && toolchain !== "") {
-        arguments_.push(`+${toolchain}`);
+        args.push(`+${toolchain}`);
     }
 
-    arguments_.push(...after);
+    args.push(...after);
 
-    return arguments_;
+    return args;
 }
 
-function buildClippyArguments(actionInput: input.ParsedInput): string[] {
+function buildClippyArguments(actionInput: ParsedInput): string[] {
     // Toolchain selection MUST go first in any condition!
     return buildToolchainArguments(actionInput.toolchain, [
         "clippy",
