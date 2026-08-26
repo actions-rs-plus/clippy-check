@@ -70,7 +70,7 @@
     },
     "lint-staged": {
         "*.{ts,tsx}": [
-            "oxlint --",
+            "oxlint --no-error-on-unmatched-pattern --",
             "depcruise --config dependency-cruiser.config.ts --include-only ^src/ --validate --"
         ],
         "*": [
