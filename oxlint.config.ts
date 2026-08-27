@@ -114,6 +114,7 @@ const config: OxlintConfig = defineConfig({
 
         "n/no-callback-literal": "error",
         "n/no-deprecated-api": "error",
+        "n/no-unpublished-import": "error",
 
         "node/no-process-env": "error",
         "node/no-top-level-await": ["error", { ignoreBin: true }],
