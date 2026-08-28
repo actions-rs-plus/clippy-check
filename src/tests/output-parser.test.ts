@@ -8,6 +8,8 @@ import { OutputParser } from "../output-parser";
 import type { CargoMessage, CompilerMessage, Stats } from "../schema";
 import { AnnotationLevel } from "../schema";
 
+vi.setConfig({ testTimeout: 1000 });
+
 describe("outputParser", () => {
     const emptyStats: Stats = {
         error: 0,

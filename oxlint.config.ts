@@ -45,26 +45,28 @@ const config: OxlintConfig = defineConfig({
         "func-style": ["error", "declaration", { allowArrowFunctions: true }],
         "id-length": ["error", { exceptions: ["x", "y"] }],
         "max-lines": "off",
-        "max-lines-per-function": "off",
+        "max-lines-per-function": ["error", { max: 100 }],
         "max-params": ["error", { max: 4 }],
-        "max-statements": "off",
-        // typebox's builders are capitalised functions
-        "new-cap": ["error", { capIsNewExceptionPattern: "^Type\\." }],
+        "max-statements": ["error", { max: 25 }],
         "no-alert": "error",
-        "no-console": "off",
+        "no-console": ["error", { allow: ["error", "warn"] }],
         "no-duplicate-imports": ["error", { allowSeparateTypeImports: true }],
         "no-inline-comments": "off",
         // tsc reports redeclarations (ts2451); this rule also flags a type and a value sharing a name, which TypeScript allows
         "no-redeclare": "off",
         "no-ternary": "off",
         "no-undefined": "off",
-        "no-warning-comments": "off",
+        "no-unreachable-loop": "error",
+        // allow TODO
+        "no-warning-comments": ["error", { location: "anywhere", terms: ["fixme", "xxx"] }],
         "one-var": ["error", "never"],
         // destructuring a later array index needs a hole in the pattern (`const [, second] = ...`)
         "prefer-destructuring": ["error", { array: false, object: true }],
         "require-await": "off",
-        "sort-imports": ["error", { ignoreDeclarationSort: true }],
+        // perfectionist/sort-named-imports orders the members
+        "sort-imports": "off",
         "sort-keys": "off",
+        "no-restricted-globals": ["error"],
         "no-shadow": "error",
         "no-use-before-define": [
             "error",
@@ -76,6 +78,7 @@ const config: OxlintConfig = defineConfig({
                 variables: true,
             },
         ],
+        "no-useless-assignment": "error",
         "no-useless-constructor": "error",
         "no-void": ["error", { allowAsStatement: true }],
         "object-shorthand": ["error", "always"],
@@ -85,10 +88,12 @@ const config: OxlintConfig = defineConfig({
         "oxc/no-optional-chaining": "off",
         "oxc/no-rest-spread-properties": "off",
 
-        "unicorn/no-array-sort": "off",
+        "unicorn/no-array-sort": "error",
         "unicorn/no-null": "off",
+        "unicorn/no-useless-iterator-to-array": "error",
         "unicorn/prefer-ternary": "off",
 
+        "import/export": "error",
         "import/extensions": [
             "error",
             "ignorePackages",
@@ -98,11 +103,12 @@ const config: OxlintConfig = defineConfig({
                 tsx: "never",
             },
         ],
-        "import/exports-last": "off",
+        "import/exports-last": "error",
         "import/group-exports": "off",
+        "import/named": "error",
         "import/newline-after-import": "error",
-        "import/no-cycle": "off",
-        "import/no-default-export": "off",
+        "import/no-cycle": "error",
+        "import/no-default-export": "error",
         "import/no-named-export": "off",
         "import/no-nodejs-modules": "off",
         "import/no-relative-parent-imports": "off",
@@ -114,10 +120,12 @@ const config: OxlintConfig = defineConfig({
 
         "n/no-callback-literal": "error",
         "n/no-deprecated-api": "error",
-        "n/no-unpublished-import": "error",
+        "n/no-extraneous-import": "error",
 
         "node/no-process-env": "error",
         "node/no-top-level-await": ["error", { ignoreBin: true }],
+
+        "promise/no-return-in-finally": "error",
 
         // tsc's noImplicitReturns covers this and understands exhaustive switches
         "typescript/consistent-return": "off",
@@ -135,6 +143,7 @@ const config: OxlintConfig = defineConfig({
         "typescript/no-explicit-any": ["error", { fixToUnknown: true, ignoreRestArgs: false }],
         "typescript/no-extraneous-class": "error",
         "typescript/no-magic-numbers": "off",
+        "typescript/no-unnecessary-condition": "error",
         "typescript/no-unused-expressions": [
             "error",
             {
@@ -155,11 +164,21 @@ const config: OxlintConfig = defineConfig({
             },
         ],
         "typescript/parameter-properties": "error",
-        "typescript/promise-function-async": "off",
+        "typescript/prefer-optional-chain": "error",
         "typescript/prefer-readonly-parameter-types": "off",
-        "typescript/restrict-template-expressions": ["error", { allowNumber: true }],
+        "typescript/promise-function-async": "error",
+        "typescript/restrict-template-expressions": [
+            "error",
+            {
+                allowAny: false,
+                allowBoolean: false,
+                allowNullish: false,
+                allowNumber: true,
+                allowRegExp: false,
+            },
+        ],
         "typescript/return-await": ["error", "in-try-catch"],
-        "typescript/require-await": "error",
+        "typescript/require-await": "off",
         "typescript/switch-exhaustiveness-check": [
             "error",
             {
@@ -169,21 +188,47 @@ const config: OxlintConfig = defineConfig({
             },
         ],
 
+        "perfectionist/sort-array-includes": "error",
         "perfectionist/sort-classes": "error",
+        "perfectionist/sort-enums": "error",
+        "perfectionist/sort-exports": "error",
+        "perfectionist/sort-heritage-clauses": "error",
         "perfectionist/sort-interfaces": "error",
         "perfectionist/sort-intersection-types": "error",
+        "perfectionist/sort-jsx-props": "error",
+        "perfectionist/sort-maps": "error",
+        "perfectionist/sort-named-exports": "error",
+        "perfectionist/sort-named-imports": "error",
         "perfectionist/sort-object-types": "error",
+        "perfectionist/sort-sets": "error",
         "perfectionist/sort-union-types": "error",
+        "perfectionist/sort-variable-declarations": "error",
     },
     overrides: [
+        {
+            files: ["*.config.ts", "oxlint.plugin.ts"],
+            rules: {
+                "import/no-default-export": "off",
+            },
+        },
         {
             files: ["**/*.test.ts"],
             plugins: [...plugins, "vitest"],
             rules: {
+                // the describe callback grows with the number of tests
+                "max-lines-per-function": "off",
+                "max-statements": "off",
                 "vitest/no-hooks": "off",
                 "vitest/no-importing-vitest-globals": "off",
-                "vitest/prefer-expect-assertions": ["error", { onlyFunctionsWithAsyncKeyword: true }],
-                "vitest/require-test-timeout": "off",
+                "vitest/prefer-expect-assertions": [
+                    "error",
+                    {
+                        onlyFunctionsWithAsyncKeyword: true,
+                        onlyFunctionsWithExpectInCallback: true,
+                        onlyFunctionsWithExpectInLoop: true,
+                    },
+                ],
+                "vitest/require-test-timeout": "error",
                 "vitest/require-top-level-describe": "error",
             },
         },

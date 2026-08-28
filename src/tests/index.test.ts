@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+vi.setConfig({ testTimeout: 1000 });
+
 describe("index", () => {
     afterEach(() => {
         vi.resetModules();
