@@ -15,6 +15,8 @@ import { AnnotationLevel } from "../schema";
 
 vi.mock("@actions/core");
 
+vi.setConfig({ testTimeout: 1000 });
+
 /**
  * Builds an `exec` mock that answers the three `-V` probes `buildContext` makes.
  *
@@ -30,7 +32,7 @@ function mockVersionProbes(toolchain?: string): typeof exec.exec {
         [["rustc", ...prefix, "-V"].join(" "), "rustc version"],
     ]);
 
-    return (commandline: string, arguments_?: string[], options?: exec.ExecOptions): Promise<number> => {
+    return async (commandline: string, arguments_?: string[], options?: exec.ExecOptions): Promise<number> => {
         // `Cargo.get()` resolves `cargo` to a path, `rustc` is invoked by name
         const tool = commandline.endsWith("cargo") ? "cargo" : commandline;
         const version = versions.get([tool, ...(arguments_ ?? [])].join(" "));
@@ -39,7 +41,7 @@ function mockVersionProbes(toolchain?: string): typeof exec.exec {
             options?.listeners?.stdout?.(Buffer.from(version));
         }
 
-        return Promise.resolve(0);
+        return 0;
     };
 }
 
@@ -49,8 +51,8 @@ describe("clippy", () => {
 
         using execSpy = vi.spyOn(exec, "exec").mockResolvedValue(0);
 
-        using whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
-            return Promise.resolve(tool);
+        using whichSpy = vi.spyOn(io, "which").mockImplementation(async (tool, _check) => {
+            return tool;
         });
 
         const actionInput: ParsedInput = {
@@ -72,8 +74,8 @@ describe("clippy", () => {
 
         using execSpy = vi.spyOn(exec, "exec").mockResolvedValue(0);
 
-        using whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
-            return Promise.resolve(tool);
+        using whichSpy = vi.spyOn(io, "which").mockImplementation(async (tool, _check) => {
+            return tool;
         });
 
         const actionInput: ParsedInput = {
@@ -93,7 +95,7 @@ describe("clippy", () => {
     it("reports when clippy fails", async () => {
         expect.assertions(2);
 
-        vi.spyOn(exec, "exec").mockImplementation((_commandline: string, arguments_?: string[]) => {
+        vi.spyOn(exec, "exec").mockImplementation(async (_commandline: string, arguments_?: string[]) => {
             const expected = ["clippy", "--message-format=json"];
 
             if (
@@ -102,14 +104,14 @@ describe("clippy", () => {
                     return arguments_?.includes(argument) ?? false;
                 })
             ) {
-                return Promise.resolve(101);
+                return 101;
             }
 
-            return Promise.resolve(0);
+            return 0;
         });
 
-        using whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
-            return Promise.resolve(tool);
+        using whichSpy = vi.spyOn(io, "which").mockImplementation(async (tool, _check) => {
+            return tool;
         });
 
         const actionInput: ParsedInput = {
@@ -127,23 +129,25 @@ describe("clippy", () => {
     it("reports when clippy fails with a non-default working directory", async () => {
         expect.assertions(3);
 
-        using execSpy = vi.spyOn(exec, "exec").mockImplementation((_commandline: string, arguments_?: string[]) => {
-            const expected = ["clippy", "--message-format=json"];
+        using execSpy = vi
+            .spyOn(exec, "exec")
+            .mockImplementation(async (_commandline: string, arguments_?: string[]) => {
+                const expected = ["clippy", "--message-format=json"];
 
-            if (
-                (arguments_ ?? []).length > 0 &&
-                expected.every((argument) => {
-                    return arguments_?.includes(argument) ?? false;
-                })
-            ) {
-                return Promise.resolve(101);
-            }
+                if (
+                    (arguments_ ?? []).length > 0 &&
+                    expected.every((argument) => {
+                        return arguments_?.includes(argument) ?? false;
+                    })
+                ) {
+                    return 101;
+                }
 
-            return Promise.resolve(0);
-        });
+                return 0;
+            });
 
-        using whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
-            return Promise.resolve(tool);
+        using whichSpy = vi.spyOn(io, "which").mockImplementation(async (tool, _check) => {
+            return tool;
         });
 
         const actionInput: ParsedInput = {
@@ -173,8 +177,8 @@ describe("clippy", () => {
 
         using reportSpy = vi.spyOn(report, "report");
 
-        using whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
-            return Promise.resolve(tool);
+        using whichSpy = vi.spyOn(io, "which").mockImplementation(async (tool, _check) => {
+            return tool;
         });
 
         const actionInput: ParsedInput = {
@@ -202,8 +206,8 @@ describe("clippy", () => {
 
         using reportSpy = vi.spyOn(report, "report");
 
-        using whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
-            return Promise.resolve(tool);
+        using whichSpy = vi.spyOn(io, "which").mockImplementation(async (tool, _check) => {
+            return tool;
         });
 
         const actionInput: ParsedInput = {
@@ -228,7 +232,7 @@ describe("clippy", () => {
         expect.assertions(3);
 
         vi.spyOn(exec, "exec").mockImplementation(
-            (_commandline: string, arguments_?: string[], options?: exec.ExecOptions) => {
+            async (_commandline: string, arguments_?: string[], options?: exec.ExecOptions) => {
                 const expected = ["clippy", "--message-format=json"];
 
                 if (
@@ -259,14 +263,14 @@ describe("clippy", () => {
                     options?.listeners?.stdout?.(Buffer.from(`${JSON.stringify(data)}\n`));
                 }
 
-                return Promise.resolve(0);
+                return 0;
             },
         );
 
         using reportSpy = vi.spyOn(report, "report");
 
-        using whichSpy = vi.spyOn(io, "which").mockImplementation((tool, _check) => {
-            return Promise.resolve(tool);
+        using whichSpy = vi.spyOn(io, "which").mockImplementation(async (tool, _check) => {
+            return tool;
         });
 
         const actionInput: ParsedInput = {

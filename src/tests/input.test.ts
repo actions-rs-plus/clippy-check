@@ -2,6 +2,8 @@ import { describe, expect, it, vi } from "vitest";
 
 import { get } from "../input";
 
+vi.setConfig({ testTimeout: 1000 });
+
 describe("input", () => {
     it("parses defaults", () => {
         expect(get()).toStrictEqual({ args: [], toolchain: undefined, useCross: false, workingDirectory: undefined });

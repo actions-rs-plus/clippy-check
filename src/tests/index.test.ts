@@ -1,5 +1,8 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+// the cold import of `../clippy` and its dependencies exceeds 1000ms on Windows runners
+vi.setConfig({ testTimeout: 5000 });
+
 describe("index", () => {
     afterEach(() => {
         vi.resetModules();
