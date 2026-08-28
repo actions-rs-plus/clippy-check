@@ -65592,16 +65592,9 @@ async function runClippy(actionInput, program) {
 		exitCode
 	};
 }
-function getProgram(useCross) {
+async function getProgram(useCross) {
 	if (useCross) return Cross.getOrInstall();
 	return Cargo.get();
-}
-async function run(actionInput) {
-	const program = await getProgram(actionInput.useCross);
-	const context = await buildContext(program, actionInput.toolchain);
-	const { stats, annotations, exitCode } = await runClippy(actionInput, program);
-	await report(stats, annotations, context);
-	if (exitCode !== 0) throw new Error(`Clippy had exited with the ${exitCode} exit code`);
 }
 function buildToolchainArguments(toolchain, after) {
 	const args = [];
@@ -65615,6 +65608,13 @@ function buildClippyArguments(actionInput) {
 		"--message-format=json",
 		...actionInput.args
 	]);
+}
+async function run(actionInput) {
+	const program = await getProgram(actionInput.useCross);
+	const context = await buildContext(program, actionInput.toolchain);
+	const { stats, annotations, exitCode } = await runClippy(actionInput, program);
+	await report(stats, annotations, context);
+	if (exitCode !== 0) throw new Error(`Clippy had exited with the ${exitCode} exit code`);
 }
 //#endregion
 //#region node_modules/.pnpm/string-argv@0.3.2/node_modules/string-argv/index.js

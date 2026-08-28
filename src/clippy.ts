@@ -1,7 +1,7 @@
 import path from "node:path";
 
-import { Cargo, Cross } from "@actions-rs-plus/core";
 import type { BaseProgram } from "@actions-rs-plus/core";
+import { Cargo, Cross } from "@actions-rs-plus/core";
 import { endGroup, startGroup } from "@actions/core";
 import type { ExecOptions } from "@actions/exec";
 import { exec } from "@actions/exec";
@@ -112,26 +112,12 @@ async function runClippy(actionInput: ParsedInput, program: BaseProgram): Promis
     };
 }
 
-function getProgram(useCross: boolean): Promise<BaseProgram> {
+async function getProgram(useCross: boolean): Promise<BaseProgram> {
     if (useCross) {
         return Cross.getOrInstall();
     }
 
     return Cargo.get();
-}
-
-export async function run(actionInput: ParsedInput): Promise<void> {
-    const program: BaseProgram = await getProgram(actionInput.useCross);
-
-    const context = await buildContext(program, actionInput.toolchain);
-
-    const { stats, annotations, exitCode } = await runClippy(actionInput, program);
-
-    await report(stats, annotations, context);
-
-    if (exitCode !== 0) {
-        throw new Error(`Clippy had exited with the ${exitCode} exit code`);
-    }
 }
 
 function buildToolchainArguments(toolchain: string | undefined, after: string[]): string[] {
@@ -159,4 +145,18 @@ function buildClippyArguments(actionInput: ParsedInput): string[] {
         // and the rest
         ...actionInput.args,
     ]);
+}
+
+export async function run(actionInput: ParsedInput): Promise<void> {
+    const program: BaseProgram = await getProgram(actionInput.useCross);
+
+    const context = await buildContext(program, actionInput.toolchain);
+
+    const { stats, annotations, exitCode } = await runClippy(actionInput, program);
+
+    await report(stats, annotations, context);
+
+    if (exitCode !== 0) {
+        throw new Error(`Clippy had exited with the ${exitCode} exit code`);
+    }
 }
