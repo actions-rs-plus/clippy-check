@@ -20857,7 +20857,7 @@ var before_after_hook_default = {
 	Collection
 };
 //#endregion
-//#region node_modules/.pnpm/@octokit+endpoint@11.0.4/node_modules/@octokit/endpoint/dist-bundle/index.js
+//#region node_modules/.pnpm/@octokit+endpoint@11.0.5/node_modules/@octokit/endpoint/dist-bundle/index.js
 var DEFAULTS = {
 	method: "GET",
 	baseUrl: "https://api.github.com",
@@ -32721,7 +32721,7 @@ function convertHttpClient(requestPolicyClient) {
 	} };
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/util.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.1/node_modules/fast-xml-parser/src/util.js
 var nameStartChar = ":A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD";
 var nameChar = nameStartChar + "\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040";
 "" + nameStartChar + nameChar;
@@ -32764,7 +32764,7 @@ var criticalProperties = [
 	"prototype"
 ];
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/validator.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.1/node_modules/fast-xml-parser/src/validator.js
 var defaultOptions$2 = {
 	allowBooleanAttributes: false,
 	unpairedTags: []
@@ -32936,11 +32936,86 @@ function readAttributeStr(xmlData, i) {
 	};
 }
 /**
-* Select all the attributes whether valid or invalid.
+* Walk `attrStr` once, left to right, splitting it into attribute tokens.
+*
+* This replaces a regex that used to do the same job
+* (`(\s*)([^\s=]+)(\s*=)?(\s*(['"])(([\s\S])*?)\5)?`). That regex led with an
+* optional whitespace group followed by a required "non-whitespace" group.
+* On a long run of whitespace that never resolves into an attribute name
+* (e.g. a tag with thousands of trailing spaces before `>`), the engine
+* backtracks the whitespace group one character at a time before giving up
+* and moving to the next starting position — one full backtrack per
+* position, which is quadratic in the length of the run.
+*
+* A single forward-only scan can never backtrack, so it can't be made slow
+* this way no matter how much whitespace the input contains — it's always
+* proportional to the length of the string, once.
+*
+* Each returned token mirrors the shape the old regex match array had, so
+* the validation logic below (which reads token[1]..token[6]) didn't need
+* to change:
+*   token.startIndex - where this token begins in attrStr
+*   token[1]          - leading whitespace before the name
+*   token[2]          - the attribute name
+*   token[3]          - whitespace + '=' if present, else undefined
+*   token[4]          - marker (any defined value) if a quoted value was found
+*   token[5]          - the quote character used ('"' or "'")
+*   token[6]          - the value's text, without the surrounding quotes
+*
+* A malformed leading character (e.g. a stray '=' with no name before it)
+* is simply skipped over, one character at a time — the same outcome the
+* old regex produced by failing to match at that position and retrying at
+* the next one.
 */
-var validAttrStrRegxp = /* @__PURE__ */ new RegExp("(\\s*)([^\\s=]+)(\\s*=)?(\\s*(['\"])(([\\s\\S])*?)\\5)?", "g");
+function scanAttributeTokens(attrStr) {
+	const tokens = [];
+	const len = attrStr.length;
+	let i = 0;
+	while (i < len) {
+		const tokenStart = i;
+		while (i < len && isWhiteSpace(attrStr[i])) i++;
+		if (i >= len) break;
+		if (attrStr[i] === "=") {
+			i = tokenStart + 1;
+			continue;
+		}
+		const leadingWs = attrStr.slice(tokenStart, i);
+		const nameStart = i;
+		while (i < len && !isWhiteSpace(attrStr[i]) && attrStr[i] !== "=") i++;
+		const name = attrStr.slice(nameStart, i);
+		let equalsGroup;
+		let j = i;
+		while (j < len && isWhiteSpace(attrStr[j])) j++;
+		if (j < len && attrStr[j] === "=") {
+			equalsGroup = attrStr.slice(i, j + 1);
+			i = j + 1;
+		}
+		let quoteChar;
+		let value;
+		let k = i;
+		while (k < len && isWhiteSpace(attrStr[k])) k++;
+		if (k < len && (attrStr[k] === "\"" || attrStr[k] === "'")) {
+			const valueStart = k + 1;
+			const closeIdx = attrStr.indexOf(attrStr[k], valueStart);
+			if (closeIdx !== -1) {
+				quoteChar = attrStr[k];
+				value = attrStr.slice(valueStart, closeIdx);
+				i = closeIdx + 1;
+			}
+		}
+		const token = { startIndex: tokenStart };
+		token[1] = leadingWs;
+		token[2] = name;
+		token[3] = equalsGroup;
+		token[4] = quoteChar !== void 0 ? true : void 0;
+		token[5] = quoteChar;
+		token[6] = value;
+		tokens.push(token);
+	}
+	return tokens;
+}
 function validateAttributeString(attrStr, options) {
-	const matches = getAllMatches(attrStr, validAttrStrRegxp);
+	const matches = scanAttributeTokens(attrStr);
 	const attrNames = {};
 	for (let i = 0; i < matches.length; i++) {
 		if (matches[i][1].length === 0) return getErrorObject("InvalidAttr", "Attribute '" + matches[i][2] + "' has no space in starting.", getPositionFromMatch(matches[i]));
@@ -33523,7 +33598,7 @@ var EntityDecoder = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.1/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
 var defaultOnDangerousProperty = (name) => {
 	if (DANGEROUS_PROPERTY_NAMES.includes(name)) return "__" + name;
 	return name;
@@ -33650,7 +33725,7 @@ var buildOptions = function(options) {
 	return built;
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.1/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
 var METADATA_SYMBOL$1;
 if (typeof Symbol !== "function") METADATA_SYMBOL$1 = "@@xmlMetadata";
 else METADATA_SYMBOL$1 = Symbol("XML Node Metadata");
@@ -33761,7 +33836,7 @@ var createValidator = (production, { xmlVersion = "1.0", asciiOnly = false, maxC
 	return validator;
 };
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.1/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
 var DocTypeReader = class {
 	constructor(options, xmlVersion) {
 		this.suppressValidationErr = !options;
@@ -34301,7 +34376,7 @@ function handleInfinity(str, num, options) {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/ignoreAttributes.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.1/node_modules/fast-xml-parser/src/ignoreAttributes.js
 function getIgnoreAttributesFn$1(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -35987,7 +36062,7 @@ function isUnsafe(value, context) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.1/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
 /**
 * Extract raw attributes (without prefix) from prefixed attribute map
 * @param {object} prefixedAttrs - Attributes with prefix from buildAttributesMap
@@ -36512,7 +36587,7 @@ function sanitizeName(name, options) {
 	return name;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/xmlparser/node2json.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.1/node_modules/fast-xml-parser/src/xmlparser/node2json.js
 var METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
 /**
 * Helper function to strip attribute prefix from attribute map
@@ -36616,7 +36691,7 @@ function isLeafTag(obj, options) {
 	return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.1/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
 var XMLParser = class {
 	constructor(options) {
 		this.externalEntities = {};
@@ -37298,10 +37373,10 @@ function isAttribute(name) {
 	else return false;
 }
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.1/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
 var json2xml_default = Builder;
 //#endregion
-//#region node_modules/.pnpm/fast-xml-parser@5.11.0/node_modules/fast-xml-parser/src/fxp.js
+//#region node_modules/.pnpm/fast-xml-parser@5.11.1/node_modules/fast-xml-parser/src/fxp.js
 var XMLValidator = { validate };
 //#endregion
 //#region node_modules/.pnpm/@azure+core-xml@1.6.0/node_modules/@azure/core-xml/dist/esm/xml.js
@@ -63228,9 +63303,7 @@ var ReflectionBinaryReader = class {
 			case "enum":
 				val = 0;
 				break;
-			case "message":
-				val = field.V.T().create();
-				break;
+			case "message": val = field.V.T().create();
 		}
 		return [key, val];
 	}
@@ -63484,9 +63557,7 @@ function reflectionCreate(type) {
 			case "enum":
 				msg[name] = 0;
 				break;
-			case "map":
-				msg[name] = {};
-				break;
+			case "map": msg[name] = {};
 		}
 	}
 	return msg;
