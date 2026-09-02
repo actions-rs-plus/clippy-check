@@ -1,5 +1,8 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": ["github>kristof-mattei/renovate-config"],
+    "extends": [
+        "github>kristof-mattei/renovate-config",
+        "github>kristof-mattei/renovate-config//node/groupOxcPackages"
+    ],
     "forkProcessing": "enabled"
 }
