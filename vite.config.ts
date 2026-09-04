@@ -5,7 +5,7 @@ import type { SSROptions, UserConfig } from "vite";
 import { loadEnv } from "vite";
 import { checker } from "vite-plugin-checker";
 import type { ViteUserConfigFn } from "vitest/config";
-import { coverageConfigDefaults, defineConfig } from "vitest/config";
+import { defineConfig } from "vitest/config";
 
 function buildSsr(environment: Record<string, string>): SSROptions {
     const ssr: SSROptions = {
@@ -58,7 +58,6 @@ const configFunction: ViteUserConfigFn = defineConfig(({ mode }) => {
         ],
         test: {
             coverage: {
-                exclude: [...coverageConfigDefaults.exclude, "./dependency-cruiser.config.ts"],
                 reporter: ["json", "html", "text", "lcov"],
                 provider: "v8",
                 reportsDirectory: "reports",
