@@ -45,6 +45,28 @@ jobs:
           show-progress: false
           token: ${{ secrets.TOKEN_TO_TRIGGER_SUBSEQUENT_WORKFLOWS }}
 
+      - name: Compute selection from the final ballot
+        id: ballot
+        uses: $/.github/actions/compute-changelog-selection
+        with:
+          pull-request: ${{ github.event.pull_request.number }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          head: ${{ github.event.pull_request.merge_commit_sha }}
+
+      - name: Compare the merged .cliffignore with the final ballot
+        shell: bash
+        env:
+          MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+          SELECTION_FILE: ${{ steps.ballot.outputs.selection-file }}
+        run: |
+          git show "${MERGE_SHA}:.cliffignore" > "${RUNNER_TEMP}/merged.cliffignore" 2> /dev/null || true
+
+          if ! cmp --silent "${SELECTION_FILE}" "${RUNNER_TEMP}/merged.cliffignore"; then
+            # The merged commit cannot change, so a toggle made after the last rebuild is either reverted in the body or applied in the next release
+            echo "::error::The final ballot does not match the merged .cliffignore. Revert the late toggles in the PR body and re-run this workflow, or apply them in the next release."
+            exit 1
+          fi
+
       - name: Create tag
         shell: bash
         env:

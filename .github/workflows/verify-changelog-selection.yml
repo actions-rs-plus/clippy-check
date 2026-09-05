@@ -1,0 +1,115 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Verify changelog selection
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - edited
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.event.pull_request.number }}"
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify changelog selection
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+      pull-requests: read # to read the live PR body
+    # The check is required on every PR, and a skipped job satisfies it on the PRs without a ballot
+    if: startsWith(github.event.pull_request.head.ref, 'release/v')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+          show-progress: false
+
+      - name: Check the release commit is built on main
+        shell: bash
+        run: |
+          # Release builds the release commit directly on a main commit. After "Update branch" the first parent is the old release commit, and a rebuild on top of it keeps it there.
+          if ! git merge-base --is-ancestor HEAD~1 origin/main; then
+            echo "::error::The release commit is not built on main. Re-run the Release workflow instead of using Update branch."
+            exit 1
+          fi
+
+      - name: Install git-cliff
+        uses: taiki-e/install-action@5bf6ce016fd2e72eefc647cbca1e4213f65955b8 # v2.87.5
+        with:
+          tool: git-cliff
+
+      - name: Check every commit in range is on the ballot
+        shell: bash
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          # release/v0.4.8 -> v0.4.8
+          tag="${BRANCH#release/}"
+
+          # git-cliff applies .cliffignore to --context as well, which would leave the hidden commits off the ballot. Later steps read the file from git.
+          rm --force .cliffignore
+          git-cliff --context --unreleased --offline --tag "${tag}" > "${RUNNER_TEMP}/ballot-context.json"
+
+          jq --raw-output '.[0].commits[].id' "${RUNNER_TEMP}/ballot-context.json" | sort --unique > "${RUNNER_TEMP}/expected.txt"
+
+          # A commit is on the ballot when the release commit lists it in CHANGELOG.md or excludes it in .cliffignore
+          {
+            grep --perl-regexp --only-matching '/commit/\K[0-9a-f]{40}(?=\)\)$)' CHANGELOG.md || true
+            git show "HEAD:.cliffignore" 2> /dev/null || true
+          } | sort --unique > "${RUNNER_TEMP}/accounted.txt"
+
+          missing=$(grep --fixed-strings --line-regexp --invert-match --file "${RUNNER_TEMP}/accounted.txt" "${RUNNER_TEMP}/expected.txt" | tr '\n' ' ' || true)
+
+          if [ -n "${missing}" ]; then
+            echo "::error::Commits missing from the ballot: ${missing}. Re-run the Release workflow."
+            exit 1
+          fi
+
+      - name: Check the changelog section is not empty
+        shell: bash
+        run: |
+          # A promotion release re-tags the previous content and has an empty ballot
+          if [ ! -s "${RUNNER_TEMP}/expected.txt" ]; then
+            echo "::notice::The ballot is empty, nothing to check"
+            exit 0
+          fi
+
+          checked=$(grep --perl-regexp --only-matching '/commit/\K[0-9a-f]{40}(?=\)\)$)' CHANGELOG.md | grep --fixed-strings --line-regexp --count --file "${RUNNER_TEMP}/expected.txt" || true)
+
+          if [ "${checked}" -lt 1 ]; then
+            echo "::error::No ballot entry is checked, so the release would have an empty changelog section. Check at least one entry."
+            exit 1
+          fi
+
+          echo "::notice::${checked} changelog entries"
+
+      - name: Compute selection from the live PR body
+        id: ballot
+        uses: $/.github/actions/compute-changelog-selection
+        with:
+          pull-request: ${{ github.event.pull_request.number }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compare with the committed .cliffignore
+        shell: bash
+        env:
+          SELECTION_FILE: ${{ steps.ballot.outputs.selection-file }}
+        run: |
+          git show "HEAD:.cliffignore" > "${RUNNER_TEMP}/committed.cliffignore" 2> /dev/null || true
+
+          if ! cmp --silent "${SELECTION_FILE}" "${RUNNER_TEMP}/committed.cliffignore"; then
+            echo "::error::The release commit does not match the ballot yet. The apply workflow rebuilds it and this check runs again."
+            exit 1
+          fi

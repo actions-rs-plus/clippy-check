@@ -1,0 +1,108 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Apply changelog selection
+
+on:
+  pull_request:
+    types:
+      - edited
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  apply:
+    name: Apply changelog selection
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: write # to rebuild the release commit via createCommitOnBranch
+      pull-requests: read # to read the live PR body
+    # Same group as the Release workflow for this pre-release type, because both force-push the release branch.
+    # The group is on the job so that an edit to a non-release PR is skipped without entering it.
+    concurrency:
+      group: "release-${{ (contains(github.event.pull_request.head.ref, '-alpha.') && 'alpha') || (contains(github.event.pull_request.head.ref, '-beta.') && 'beta') || (contains(github.event.pull_request.head.ref, '-rc.') && 'rc') || 'none' }}"
+      cancel-in-progress: false # a newer run would also cancel a Release run in the same group
+    if: |
+      github.event.pull_request.state == 'open' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      startsWith(github.event.pull_request.head.ref, 'release/v') &&
+      github.event.changes.body != null
+    steps:
+      # zizmor: ignore[artipacked] the release branch is pushed with this credential, see the rebuild step
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # The job can start after Release has rebuilt the branch, so the event SHA would rebuild on a stale base
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+          persist-credentials: true
+          show-progress: false
+          token: ${{ secrets.TOKEN_TO_TRIGGER_SUBSEQUENT_WORKFLOWS }}
+
+      - name: Install git-cliff
+        uses: taiki-e/install-action@5bf6ce016fd2e72eefc647cbca1e4213f65955b8 # v2.87.5
+        with:
+          tool: git-cliff
+
+      - name: Compute selection from the live PR body
+        id: ballot
+        uses: $/.github/actions/compute-changelog-selection
+        with:
+          pull-request: ${{ github.event.pull_request.number }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compare with the committed .cliffignore
+        shell: bash
+        id: selection
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+          SELECTION_FILE: ${{ steps.ballot.outputs.selection-file }}
+        run: |
+          # release/v0.4.8 -> v0.4.8
+          tag="${BRANCH#release/}"
+          echo "tag=${tag}" >> "${GITHUB_OUTPUT}"
+
+          git show "HEAD:.cliffignore" > "${RUNNER_TEMP}/current.cliffignore" 2> /dev/null || true
+
+          if cmp --silent "${SELECTION_FILE}" "${RUNNER_TEMP}/current.cliffignore"; then
+            echo "::notice::Selection unchanged, nothing to do"
+            echo "changed=false" >> "${GITHUB_OUTPUT}"
+          else
+            echo "changed=true" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Regenerate changelog
+        if: steps.selection.outputs.changed == 'true'
+        shell: bash
+        env:
+          # git-cliff reads GITHUB_TOKEN from the environment
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.selection.outputs.tag }}
+          SELECTION_FILE: ${{ steps.ballot.outputs.selection-file }}
+        run: |
+          # The release commit has to overwrite the .cliffignore inherited from main, so the file is copied even when empty
+          cp "${SELECTION_FILE}" .cliffignore
+
+          git-cliff --output CHANGELOG.md --tag "${TAG}"
+
+      - name: Rebuild release commit
+        id: commit
+        if: steps.selection.outputs.changed == 'true'
+        uses: $/.github/actions/create-release-commit
+        with:
+          branch: ${{ github.event.pull_request.head.ref }}
+          base-sha: ${{ steps.ballot.outputs.base-sha }}
+          headline: "chore(release): prepare for ${{ steps.selection.outputs.tag }}"
+          files: CHANGELOG.md .cliffignore
+          staging-suffix: -selection-staging
+          # GITHUB_TOKEN attributes the commit to github-actions[bot]
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Clean up stranded staging branch
+        if: failure() || cancelled()
+        shell: bash
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          git push origin --delete "${BRANCH}-selection-staging" || true
