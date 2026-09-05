@@ -25,7 +25,7 @@ env:
 jobs:
   changes:
     name: Detect changes
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     if: ${{ !startsWith(github.head_ref, 'release/') }}
     permissions:
       pull-requests: read
@@ -46,7 +46,7 @@ jobs:
 
   warm-up-cache:
     name: Warm up the cache
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     if: ${{ !startsWith(github.head_ref, 'release/') }}
     steps:
       - *checkout
@@ -70,7 +70,7 @@ jobs:
 
   npm-build:
     name: Build the code
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     if: ${{ !startsWith(github.head_ref, 'release/') }}
     permissions:
       contents: read
@@ -148,7 +148,7 @@ jobs:
 
   npm-lint:
     name: Lint the code
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     if: ${{ !startsWith(github.head_ref, 'release/') }}
     permissions:
       contents: read
@@ -171,7 +171,7 @@ jobs:
 
   npm-test:
     name: Test the code
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     if: ${{ !startsWith(github.head_ref, 'release/') }}
     needs:
       - warm-up-cache
@@ -250,7 +250,7 @@ jobs:
 
   npm-test-windows:
     name: Test the code on Windows
-    runs-on: windows-latest
+    runs-on: windows-2025
     if: ${{ !startsWith(github.head_ref, 'release/') }}
     steps:
       - *checkout
@@ -271,7 +271,7 @@ jobs:
 
   npm-dependencies:
     name: Validate dependencies
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     if: ${{ !startsWith(github.head_ref, 'release/') }}
     needs:
       - warm-up-cache
@@ -296,7 +296,7 @@ jobs:
     # when all upstream skips: pass
     # when all upstream success: success
     # combination of upstream skip and success: success
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs:
       - warm-up-cache
       - npm-build

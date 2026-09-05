@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   move-git-tags:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     environment:
       name: release
       url: https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}
