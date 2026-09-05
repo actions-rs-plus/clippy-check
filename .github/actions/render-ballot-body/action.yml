@@ -1,0 +1,100 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-action.json
+name: Render ballot body
+description: Render a git-cliff context as the release PR body with a checkbox per changelog entry
+
+inputs:
+  context-file:
+    description: git-cliff context JSON listing every entry, including the excluded ones
+    required: true
+  compare-to:
+    description: Ref the changelog's compare link points at
+    required: true
+  excluded-file:
+    description: File of commit SHAs to render unchecked. When empty or missing, every entry stays checked.
+    required: false
+    default: ""
+
+outputs:
+  body-file:
+    description: Path to the rendered pull request body
+    value: ${{ steps.render.outputs.body-file }}
+
+runs:
+  using: composite
+  steps:
+    - name: Render ballot
+      id: render
+      shell: bash
+      env:
+        CONTEXT_FILE: ${{ inputs.context-file }}
+        COMPARE_TO: ${{ inputs.compare-to }}
+        EXCLUDED_FILE: ${{ inputs.excluded-file }}
+      run: |
+        body_file="${RUNNER_TEMP}/ballot-body.md"
+
+        # The release tag does not exist until the PR is merged, so the compare link points at the release branch instead
+        jq --arg sha "${COMPARE_TO}" '.[0].extra = {compare_to: $sha}' "${CONTEXT_FILE}" > "${RUNNER_TEMP}/diff-context.json"
+
+        # The context was built without .cliffignore, so the ballot lists every commit, including the ones CHANGELOG.md excludes
+        git-cliff --from-context "${RUNNER_TEMP}/diff-context.json" --output "${body_file}"
+
+        # Render every entry as a checkbox, excluded entries as unchecked
+        sed --in-place 's/^- /- [x] /' "${body_file}"
+
+        if [ -n "${EXCLUDED_FILE}" ] && [ -s "${EXCLUDED_FILE}" ]; then
+          while IFS= read -r sha; do
+            [ -n "${sha}" ] || continue
+            # Match on the trailing commit link so that a /commit/ URL inside the subject does not match
+            sed --in-place "\|/commit/${sha}))\$|s/^- \[x\]/- [ ]/" "${body_file}"
+          done < "${EXCLUDED_FILE}"
+        fi
+
+        {
+          cat <<'INSTRUCTIONS'
+        > [!NOTE]
+        > A checked entry appears in `CHANGELOG.md` and in the release notes. The release commit is rebuilt after every change to the ballot.
+        > An unchecked commit is still part of the release and counts toward the version.
+        > Merge the PR once the selection is final. The Verify changelog selection check stays red until the rebuild has caught up with the ballot.
+
+        INSTRUCTIONS
+          cat "${body_file}"
+        } > "${body_file}.with-instructions"
+        mv "${body_file}.with-instructions" "${body_file}"
+
+        # The body is cut at a line boundary when it exceeds GitHub's PR body limit. A cut entry has no checkbox and stays excluded.
+        max_length=65536
+        marker_template=$'\n\n---\n\n> **Note:** COUNT more entries did not fit within GitHub\'s 65,536 character body limit. They are not shown and stay excluded from the changelog.'
+        body=$(< "${body_file}")
+
+        if [ "${#body}" -gt "${max_length}" ]; then
+          # The dropped count has at most as many digits as the total count, so a budget computed with the total fits the final marker
+          total_entries=$(grep --count '^- \[' "${body_file}" || true)
+          bound_marker="${marker_template/COUNT/${total_entries}}"
+          budget=$(( max_length - ${#bound_marker} ))
+
+          kept_lines=0
+          kept_length=0
+          dropped_entries=0
+          cutting=0
+
+          while IFS= read -r line; do
+            if [ "${cutting}" -eq 0 ] && [ $(( kept_length + ${#line} + 1 )) -le "${budget}" ]; then
+              kept_length=$(( kept_length + ${#line} + 1 ))
+              kept_lines=$(( kept_lines + 1 ))
+            else
+              cutting=1
+
+              case "${line}" in
+                "- ["*) dropped_entries=$(( dropped_entries + 1 )) ;;
+              esac
+            fi
+          done < "${body_file}"
+
+          {
+            head --lines="${kept_lines}" "${body_file}"
+            printf '%s' "${marker_template/COUNT/${dropped_entries}}"
+          } > "${body_file}.truncated"
+          mv "${body_file}.truncated" "${body_file}"
+        fi
+
+        echo "body-file=${body_file}" >> "${GITHUB_OUTPUT}"

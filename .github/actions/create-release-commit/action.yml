@@ -1,0 +1,106 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-action.json
+name: Create release commit
+description: Rebuild a release branch as a single signed commit on top of a base commit
+
+inputs:
+  branch:
+    description: Release branch to create or reset
+    required: true
+  base-sha:
+    description: Commit the release commit is built on
+    required: true
+  headline:
+    description: Commit message headline
+    required: true
+  files:
+    description: Whitespace-separated paths to commit. Missing paths are skipped.
+    required: true
+  staging-suffix:
+    description: Suffix for the temporary staging branch
+    required: false
+    default: -staging
+  token:
+    description: Token for the createCommitOnBranch API call. The branch itself is pushed with the checkout credential.
+    required: true
+
+outputs:
+  commit-sha:
+    description: SHA of the created release commit
+    value: ${{ steps.commit.outputs.commit-sha }}
+
+runs:
+  using: composite
+  steps:
+    - name: Create signed commit
+      id: commit
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        BRANCH: ${{ inputs.branch }}
+        BASE_SHA: ${{ inputs.base-sha }}
+        HEADLINE: ${{ inputs.headline }}
+        FILES: ${{ inputs.files }}
+        STAGING_SUFFIX: ${{ inputs.staging-suffix }}
+      run: |
+        staging_branch="${BRANCH}${STAGING_SUFFIX}"
+
+        # Stage the commit on a scratch branch so the release branch moves only once, straight to the finished commit
+        git push --force origin "${BASE_SHA}:refs/heads/${staging_branch}"
+
+        # Commit via createCommitOnBranch. Commits created via the API are signed by GitHub.
+        additions="[]"
+
+        read -r -a files <<< "${FILES}"
+
+        for file in "${files[@]}"; do
+          # An empty file is committed too, because it has to overwrite the copy inherited from the base
+          if [ -f "${file}" ]; then
+            base64 --wrap=0 "${file}" > "${RUNNER_TEMP}/contents.base64"
+
+            additions=$(jq --arg path "${file}" --rawfile contents "${RUNNER_TEMP}/contents.base64" '. + [{path: $path, contents: $contents}]' <<< "${additions}")
+          fi
+        done
+
+        printf '%s' "${additions}" > "${RUNNER_TEMP}/additions.json"
+
+        query=$(cat <<'GRAPHQL'
+          mutation ($repositoryNameWithOwner: String!, $branchName: String!, $expectedHeadOid: GitObjectID!, $headline: String!, $additions: [FileAddition!]!) {
+            createCommitOnBranch(
+              input: {
+                branch: { repositoryNameWithOwner: $repositoryNameWithOwner, branchName: $branchName }
+                expectedHeadOid: $expectedHeadOid
+                message: { headline: $headline }
+                fileChanges: { additions: $additions }
+              }
+            ) {
+              commit {
+                oid
+              }
+            }
+          }
+        GRAPHQL
+        )
+
+        jq --null-input \
+          --arg query "${query}" \
+          --arg repositoryNameWithOwner "${GITHUB_REPOSITORY}" \
+          --arg branchName "${staging_branch}" \
+          --arg expectedHeadOid "${BASE_SHA}" \
+          --arg headline "${HEADLINE}" \
+          --slurpfile additions "${RUNNER_TEMP}/additions.json" \
+          '{query: $query, variables: {repositoryNameWithOwner: $repositoryNameWithOwner, branchName: $branchName, expectedHeadOid: $expectedHeadOid, headline: $headline, additions: $additions[0]}}' \
+          > "${RUNNER_TEMP}/create-commit.json"
+
+        release_sha=$(gh api graphql --input "${RUNNER_TEMP}/create-commit.json" --jq '.data.createCommitOnBranch.commit.oid')
+
+        echo "::notice::Release commit: ${release_sha}"
+
+        # The commit only exists server-side, fetch it so we can push its SHA
+        git fetch origin "refs/heads/${staging_branch}"
+
+        # Create or reset the release branch to the signed commit
+        git push --force origin "${release_sha}:refs/heads/${BRANCH}"
+
+        git push origin --delete "${staging_branch}"
+
+        echo "commit-sha=${release_sha}" >> "${GITHUB_OUTPUT}"

@@ -1,0 +1,55 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-action.json
+name: Compute changelog selection
+description: Derive the .cliffignore contents from the ballot checkboxes in the live body of the release PR
+
+inputs:
+  pull-request:
+    description: Number of the release PR
+    required: true
+  token:
+    description: Token with read access to the pull request
+    required: true
+  head:
+    description: Commit whose selection is being computed
+    required: false
+    default: HEAD
+
+outputs:
+  selection-file:
+    description: Path to the computed .cliffignore contents
+    value: ${{ steps.compute.outputs.selection-file }}
+  base-sha:
+    description: Commit the release branch is built on
+    value: ${{ steps.compute.outputs.base-sha }}
+
+runs:
+  using: composite
+  steps:
+    - name: Compute selection
+      id: compute
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        PR_NUMBER: ${{ inputs.pull-request }}
+        HEAD_SHA: ${{ inputs.head }}
+      run: |
+        # The release commit and the merge commit of its PR both have the base main commit as their first parent
+        base_sha=$(git rev-parse "${HEAD_SHA}~1")
+        echo "base-sha=${base_sha}" >> "${GITHUB_OUTPUT}"
+
+        # A toggle made after the event is only in the live body, and a re-run has to judge the current ballot rather than the payload that triggered it.
+        gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.body // ""' > "${RUNNER_TEMP}/body.md"
+
+        # A ballot line ends with the entry's commit link, `- [x] ... ([abc1234](https://.../commit/<sha>))`
+        # The SHA is taken from that trailing link, so a /commit/ URL inside a commit subject is ignored. A hand-edited [X] counts as checked.
+        grep --perl-regexp --only-matching '^- \[[xX ]\] .*/commit/\K[0-9a-f]{40}(?=\)\)\r?$)' "${RUNNER_TEMP}/body.md" | sort --unique > "${RUNNER_TEMP}/ballot.txt" || true
+        grep --perl-regexp --only-matching '^- \[ \] .*/commit/\K[0-9a-f]{40}(?=\)\)\r?$)' "${RUNNER_TEMP}/body.md" | sort --unique > "${RUNNER_TEMP}/unchecked.txt" || true
+
+        # An exclusion without a ballot line, from an earlier release or cut off by the body limit, has no checkbox to toggle and stays as committed
+        git show "${HEAD_SHA}:.cliffignore" > "${RUNNER_TEMP}/carried.txt" 2> /dev/null || true
+
+        # Keep the exclusions without a ballot line and replace the rest with the unchecked set
+        grep --fixed-strings --line-regexp --invert-match --file "${RUNNER_TEMP}/ballot.txt" "${RUNNER_TEMP}/carried.txt" > "${RUNNER_TEMP}/kept.txt" || true
+        cat "${RUNNER_TEMP}/kept.txt" "${RUNNER_TEMP}/unchecked.txt" | sort --unique > "${RUNNER_TEMP}/computed.cliffignore"
+
+        echo "selection-file=${RUNNER_TEMP}/computed.cliffignore" >> "${GITHUB_OUTPUT}"
