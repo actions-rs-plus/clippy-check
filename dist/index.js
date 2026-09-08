@@ -2,12 +2,12 @@
 import { createRequire } from "node:module";
 import * as path$2 from "path";
 import * as fs$1 from "fs";
-import { constants, existsSync, promises, readFileSync, writeFileSync } from "fs";
-import * as os$4 from "os";
+import { constants, existsSync, promises, writeFileSync } from "fs";
+import * as os$3 from "os";
 import os, { EOL } from "os";
 import * as crypto from "crypto";
-import * as http$4 from "http";
-import * as https$3 from "https";
+import * as http$3 from "http";
+import * as https$2 from "https";
 import * as events from "events";
 import { EventEmitter } from "events";
 import assert, { ok } from "assert";
@@ -24,8 +24,7 @@ import path from "node:path";
 import * as stream from "stream";
 import { Readable as Readable$1 } from "stream";
 import { URL as URL$1 } from "url";
-import * as os$2 from "node:os";
-import os$1, { EOL as EOL$1 } from "node:os";
+import os$1, { EOL as EOL$1, tmpdir } from "node:os";
 import process$1 from "node:process";
 import https from "node:https";
 import * as buffer$1 from "buffer";
@@ -33,8 +32,8 @@ import { Buffer as Buffer$1 } from "buffer";
 import fs from "node:fs";
 //#region \0rolldown/runtime.js
 var __create = Object.create;
-var __defProp = Object.defineProperty;
-var __name = (target, value) => __defProp(target, "name", {
+var __defProp$1 = Object.defineProperty;
+var __name$1 = (target, value) => __defProp$1(target, "name", {
 	value,
 	configurable: true
 });
@@ -53,28 +52,28 @@ var __esmMin = (fn, res, err) => () => {
 var __commonJSMin = (cb, mod) => () => (mod || (cb((mod = { exports: {} }).exports, mod), cb = null), mod.exports);
 var __exportAll = (all, no_symbols) => {
 	let target = {};
-	for (var name in all) __defProp(target, name, {
+	for (var name in all) __defProp$1(target, name, {
 		get: all[name],
 		enumerable: true
 	});
-	if (!no_symbols) __defProp(target, Symbol.toStringTag, { value: "Module" });
+	if (!no_symbols) __defProp$1(target, Symbol.toStringTag, { value: "Module" });
 	return target;
 };
 var __copyProps = (to, from, except, desc) => {
 	if (from && typeof from === "object" || typeof from === "function") for (var keys = __getOwnPropNames(from), i = 0, n = keys.length, key; i < n; i++) {
 		key = keys[i];
-		if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+		if (!__hasOwnProp.call(to, key) && key !== except) __defProp$1(to, key, {
 			get: ((k) => from[k]).bind(null, key),
 			enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
 		});
 	}
 	return to;
 };
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule || !__hasOwnProp.call(mod, "default") ? __defProp(target, "default", {
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule || !__hasOwnProp.call(mod, "default") ? __defProp$1(target, "default", {
 	value: mod,
 	enumerable: true
 }) : target, mod));
-var __toCommonJS = (mod) => __hasOwnProp.call(mod, "module.exports") ? mod["module.exports"] : __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toCommonJS = (mod) => __hasOwnProp.call(mod, "module.exports") ? mod["module.exports"] : __copyProps(__defProp$1({}, "__esModule", { value: true }), mod);
 var __require = /* #__PURE__ */ (() => createRequire(import.meta.url))();
 //#endregion
 //#region node_modules/.pnpm/source-map@0.6.1/node_modules/source-map/lib/base64.js
@@ -2562,7 +2561,7 @@ function toCommandProperties(annotationProperties) {
 */
 function issueCommand(command, properties, message) {
 	const cmd = new Command(command, properties, message);
-	process.stdout.write(cmd.toString() + os$4.EOL);
+	process.stdout.write(cmd.toString() + os$3.EOL);
 }
 function issue(name, message = "") {
 	issueCommand(name, {}, message);
@@ -2652,8 +2651,8 @@ var DecodedURL = class extends URL {
 var require_tunnel$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	__require("net");
 	var tls$2 = __require("tls");
-	var http$6 = __require("http");
-	var https$4 = __require("https");
+	var http$5 = __require("http");
+	var https$3 = __require("https");
 	var events$1 = __require("events");
 	__require("assert");
 	var util$5 = __require("util");
@@ -2663,24 +2662,24 @@ var require_tunnel$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.httpsOverHttps = httpsOverHttps;
 	function httpOverHttp(options) {
 		var agent = new TunnelingAgent(options);
-		agent.request = http$6.request;
+		agent.request = http$5.request;
 		return agent;
 	}
 	function httpsOverHttp(options) {
 		var agent = new TunnelingAgent(options);
-		agent.request = http$6.request;
+		agent.request = http$5.request;
 		agent.createSocket = createSecureSocket;
 		agent.defaultPort = 443;
 		return agent;
 	}
 	function httpOverHttps(options) {
 		var agent = new TunnelingAgent(options);
-		agent.request = https$4.request;
+		agent.request = https$3.request;
 		return agent;
 	}
 	function httpsOverHttps(options) {
 		var agent = new TunnelingAgent(options);
-		agent.request = https$4.request;
+		agent.request = https$3.request;
 		agent.createSocket = createSecureSocket;
 		agent.defaultPort = 443;
 		return agent;
@@ -2689,7 +2688,7 @@ var require_tunnel$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 		var self = this;
 		self.options = options || {};
 		self.proxyOptions = self.options.proxy || {};
-		self.maxSockets = self.options.maxSockets || http$6.Agent.defaultMaxSockets;
+		self.maxSockets = self.options.maxSockets || http$5.Agent.defaultMaxSockets;
 		self.requests = [];
 		self.sockets = [];
 		self.on("free", function onFree(socket, host, port, localAddress) {
@@ -2846,7 +2845,6 @@ var require_tunnel$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 		console.error.apply(console, args);
 	};
 	else debug = function() {};
-	exports.debug = debug;
 }));
 //#endregion
 //#region node_modules/.pnpm/tunnel@0.0.6/node_modules/tunnel/index.js
@@ -9111,7 +9109,7 @@ var require_redirect_interceptor = /* @__PURE__ */ __commonJSMin(((exports, modu
 var require_client = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var assert$18 = __require("node:assert");
 	var net$3 = __require("node:net");
-	var http$5 = __require("node:http");
+	var http$4 = __require("node:http");
 	var util = require_util$7();
 	var { channels } = require_diagnostics();
 	var Request = require_request$1();
@@ -9181,7 +9179,7 @@ var require_client = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			this[kUrl] = util.parseOrigin(url);
 			this[kConnector] = connect;
 			this[kPipelining] = pipelining != null ? pipelining : 1;
-			this[kMaxHeadersSize] = maxHeaderSize || http$5.maxHeaderSize;
+			this[kMaxHeadersSize] = maxHeaderSize || http$4.maxHeaderSize;
 			this[kKeepAliveDefaultTimeout] = keepAliveTimeout == null ? 4e3 : keepAliveTimeout;
 			this[kKeepAliveMaxTimeout] = keepAliveMaxTimeout == null ? 6e5 : keepAliveMaxTimeout;
 			this[kKeepAliveTimeoutThreshold] = keepAliveTimeoutThreshold == null ? 2e3 : keepAliveTimeoutThreshold;
@@ -18533,7 +18531,7 @@ var require_undici = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 //#region node_modules/.pnpm/@actions+http-client@4.0.1/node_modules/@actions/http-client/lib/index.js
 var import_tunnel = /* @__PURE__ */ __toESM(require_tunnel(), 1);
 var import_undici = require_undici();
-var __awaiter$24 = function(thisArg, _arguments, P, generator) {
+var __awaiter$20 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -18632,8 +18630,8 @@ var HttpClientResponse = class {
 		this.message = message;
 	}
 	readBody() {
-		return __awaiter$24(this, void 0, void 0, function* () {
-			return new Promise((resolve) => __awaiter$24(this, void 0, void 0, function* () {
+		return __awaiter$20(this, void 0, void 0, function* () {
+			return new Promise((resolve) => __awaiter$20(this, void 0, void 0, function* () {
 				let output = Buffer.alloc(0);
 				this.message.on("data", (chunk) => {
 					output = Buffer.concat([output, chunk]);
@@ -18645,8 +18643,8 @@ var HttpClientResponse = class {
 		});
 	}
 	readBodyBuffer() {
-		return __awaiter$24(this, void 0, void 0, function* () {
-			return new Promise((resolve) => __awaiter$24(this, void 0, void 0, function* () {
+		return __awaiter$20(this, void 0, void 0, function* () {
+			return new Promise((resolve) => __awaiter$20(this, void 0, void 0, function* () {
 				const chunks = [];
 				this.message.on("data", (chunk) => {
 					chunks.push(chunk);
@@ -18683,42 +18681,42 @@ var HttpClient = class {
 		}
 	}
 	options(requestUrl, additionalHeaders) {
-		return __awaiter$24(this, void 0, void 0, function* () {
+		return __awaiter$20(this, void 0, void 0, function* () {
 			return this.request("OPTIONS", requestUrl, null, additionalHeaders || {});
 		});
 	}
 	get(requestUrl, additionalHeaders) {
-		return __awaiter$24(this, void 0, void 0, function* () {
+		return __awaiter$20(this, void 0, void 0, function* () {
 			return this.request("GET", requestUrl, null, additionalHeaders || {});
 		});
 	}
 	del(requestUrl, additionalHeaders) {
-		return __awaiter$24(this, void 0, void 0, function* () {
+		return __awaiter$20(this, void 0, void 0, function* () {
 			return this.request("DELETE", requestUrl, null, additionalHeaders || {});
 		});
 	}
 	post(requestUrl, data, additionalHeaders) {
-		return __awaiter$24(this, void 0, void 0, function* () {
+		return __awaiter$20(this, void 0, void 0, function* () {
 			return this.request("POST", requestUrl, data, additionalHeaders || {});
 		});
 	}
 	patch(requestUrl, data, additionalHeaders) {
-		return __awaiter$24(this, void 0, void 0, function* () {
+		return __awaiter$20(this, void 0, void 0, function* () {
 			return this.request("PATCH", requestUrl, data, additionalHeaders || {});
 		});
 	}
 	put(requestUrl, data, additionalHeaders) {
-		return __awaiter$24(this, void 0, void 0, function* () {
+		return __awaiter$20(this, void 0, void 0, function* () {
 			return this.request("PUT", requestUrl, data, additionalHeaders || {});
 		});
 	}
 	head(requestUrl, additionalHeaders) {
-		return __awaiter$24(this, void 0, void 0, function* () {
+		return __awaiter$20(this, void 0, void 0, function* () {
 			return this.request("HEAD", requestUrl, null, additionalHeaders || {});
 		});
 	}
 	sendStream(verb, requestUrl, stream, additionalHeaders) {
-		return __awaiter$24(this, void 0, void 0, function* () {
+		return __awaiter$20(this, void 0, void 0, function* () {
 			return this.request(verb, requestUrl, stream, additionalHeaders);
 		});
 	}
@@ -18727,14 +18725,14 @@ var HttpClient = class {
 	* Be aware that not found returns a null.  Other errors (4xx, 5xx) reject the promise
 	*/
 	getJson(requestUrl_1) {
-		return __awaiter$24(this, arguments, void 0, function* (requestUrl, additionalHeaders = {}) {
+		return __awaiter$20(this, arguments, void 0, function* (requestUrl, additionalHeaders = {}) {
 			additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
 			const res = yield this.get(requestUrl, additionalHeaders);
 			return this._processResponse(res, this.requestOptions);
 		});
 	}
 	postJson(requestUrl_1, obj_1) {
-		return __awaiter$24(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
+		return __awaiter$20(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
 			const data = JSON.stringify(obj, null, 2);
 			additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
 			additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
@@ -18743,7 +18741,7 @@ var HttpClient = class {
 		});
 	}
 	putJson(requestUrl_1, obj_1) {
-		return __awaiter$24(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
+		return __awaiter$20(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
 			const data = JSON.stringify(obj, null, 2);
 			additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
 			additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
@@ -18752,7 +18750,7 @@ var HttpClient = class {
 		});
 	}
 	patchJson(requestUrl_1, obj_1) {
-		return __awaiter$24(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
+		return __awaiter$20(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
 			const data = JSON.stringify(obj, null, 2);
 			additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
 			additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
@@ -18766,7 +18764,7 @@ var HttpClient = class {
 	* Prefer get, del, post and patch
 	*/
 	request(verb, requestUrl, data, headers) {
-		return __awaiter$24(this, void 0, void 0, function* () {
+		return __awaiter$20(this, void 0, void 0, function* () {
 			if (this._disposed) throw new Error("Client has already been disposed.");
 			const parsedUrl = new URL(requestUrl);
 			let info = this._prepareRequest(verb, parsedUrl, headers);
@@ -18821,7 +18819,7 @@ var HttpClient = class {
 	* @param data
 	*/
 	requestRaw(info, data) {
-		return __awaiter$24(this, void 0, void 0, function* () {
+		return __awaiter$20(this, void 0, void 0, function* () {
 			return new Promise((resolve, reject) => {
 				function callbackForResult(err, res) {
 					if (err) reject(err);
@@ -18891,7 +18889,7 @@ var HttpClient = class {
 		const info = {};
 		info.parsedUrl = requestUrl;
 		const usingSsl = info.parsedUrl.protocol === "https:";
-		info.httpModule = usingSsl ? https$3 : http$4;
+		info.httpModule = usingSsl ? https$2 : http$3;
 		const defaultPort = usingSsl ? 443 : 80;
 		info.options = {};
 		info.options.host = info.parsedUrl.hostname;
@@ -18905,8 +18903,8 @@ var HttpClient = class {
 		return info;
 	}
 	_mergeHeaders(headers) {
-		if (this.requestOptions && this.requestOptions.headers) return Object.assign({}, lowercaseKeys$1(this.requestOptions.headers), lowercaseKeys$1(headers || {}));
-		return lowercaseKeys$1(headers || {});
+		if (this.requestOptions && this.requestOptions.headers) return Object.assign({}, lowercaseKeys(this.requestOptions.headers), lowercaseKeys(headers || {}));
+		return lowercaseKeys(headers || {});
 	}
 	/**
 	* Gets an existing header value or returns a default.
@@ -18918,7 +18916,7 @@ var HttpClient = class {
 	_getExistingOrDefaultHeader(additionalHeaders, header, _default) {
 		let clientHeader;
 		if (this.requestOptions && this.requestOptions.headers) {
-			const headerValue = lowercaseKeys$1(this.requestOptions.headers)[header];
+			const headerValue = lowercaseKeys(this.requestOptions.headers)[header];
 			if (headerValue) clientHeader = typeof headerValue === "number" ? headerValue.toString() : headerValue;
 		}
 		const additionalValue = additionalHeaders[header];
@@ -18936,7 +18934,7 @@ var HttpClient = class {
 	_getExistingOrDefaultContentTypeHeader(additionalHeaders, _default) {
 		let clientHeader;
 		if (this.requestOptions && this.requestOptions.headers) {
-			const headerValue = lowercaseKeys$1(this.requestOptions.headers)[Headers.ContentType];
+			const headerValue = lowercaseKeys(this.requestOptions.headers)[Headers.ContentType];
 			if (headerValue) {
 				if (typeof headerValue === "number") clientHeader = String(headerValue);
 				else if (Array.isArray(headerValue)) clientHeader = headerValue.join(", ");
@@ -18961,7 +18959,7 @@ var HttpClient = class {
 		if (agent) return agent;
 		const usingSsl = parsedUrl.protocol === "https:";
 		let maxSockets = 100;
-		if (this.requestOptions) maxSockets = this.requestOptions.maxSockets || http$4.globalAgent.maxSockets;
+		if (this.requestOptions) maxSockets = this.requestOptions.maxSockets || http$3.globalAgent.maxSockets;
 		if (proxyUrl && proxyUrl.hostname) {
 			const agentOptions = {
 				maxSockets,
@@ -18983,7 +18981,7 @@ var HttpClient = class {
 				keepAlive: this._keepAlive,
 				maxSockets
 			};
-			agent = usingSsl ? new https$3.Agent(options) : new http$4.Agent(options);
+			agent = usingSsl ? new https$2.Agent(options) : new http$3.Agent(options);
 			this._agent = agent;
 		}
 		if (usingSsl && this._ignoreSslError) agent.options = Object.assign(agent.options || {}, { rejectUnauthorized: false });
@@ -19009,15 +19007,15 @@ var HttpClient = class {
 		return baseUserAgent;
 	}
 	_performExponentialBackoff(retryNumber) {
-		return __awaiter$24(this, void 0, void 0, function* () {
+		return __awaiter$20(this, void 0, void 0, function* () {
 			retryNumber = Math.min(ExponentialBackoffCeiling, retryNumber);
 			const ms = ExponentialBackoffTimeSlice * Math.pow(2, retryNumber);
 			return new Promise((resolve) => setTimeout(() => resolve(), ms));
 		});
 	}
 	_processResponse(res, options) {
-		return __awaiter$24(this, void 0, void 0, function* () {
-			return new Promise((resolve, reject) => __awaiter$24(this, void 0, void 0, function* () {
+		return __awaiter$20(this, void 0, void 0, function* () {
+			return new Promise((resolve, reject) => __awaiter$20(this, void 0, void 0, function* () {
 				const statusCode = res.message.statusCode || 0;
 				const response = {
 					statusCode,
@@ -19056,10 +19054,10 @@ var HttpClient = class {
 		});
 	}
 };
-var lowercaseKeys$1 = /* @__PURE__ */ __name((obj) => Object.keys(obj).reduce((c, k) => (c[k.toLowerCase()] = obj[k], c), {}), "lowercaseKeys");
+var lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => (c[k.toLowerCase()] = obj[k], c), {});
 //#endregion
 //#region node_modules/.pnpm/@actions+http-client@4.0.1/node_modules/@actions/http-client/lib/auth.js
-var __awaiter$23 = function(thisArg, _arguments, P, generator) {
+var __awaiter$19 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -19098,14 +19096,14 @@ var BearerCredentialHandler = class {
 		return false;
 	}
 	handleAuthentication() {
-		return __awaiter$23(this, void 0, void 0, function* () {
+		return __awaiter$19(this, void 0, void 0, function* () {
 			throw new Error("not implemented");
 		});
 	}
 };
 //#endregion
 //#region node_modules/.pnpm/@actions+core@3.0.1/node_modules/@actions/core/lib/summary.js
-var __awaiter$21 = function(thisArg, _arguments, P, generator) {
+var __awaiter$17 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -19145,7 +19143,7 @@ var Summary = class {
 	* @returns step summary file path
 	*/
 	filePath() {
-		return __awaiter$21(this, void 0, void 0, function* () {
+		return __awaiter$17(this, void 0, void 0, function* () {
 			if (this._filePath) return this._filePath;
 			const pathFromEnv = process.env[SUMMARY_ENV_VAR];
 			if (!pathFromEnv) throw new Error(`Unable to find environment variable for $${SUMMARY_ENV_VAR}. Check if your runtime environment supports job summaries.`);
@@ -19180,7 +19178,7 @@ var Summary = class {
 	* @returns {Promise<Summary>} summary instance
 	*/
 	write(options) {
-		return __awaiter$21(this, void 0, void 0, function* () {
+		return __awaiter$17(this, void 0, void 0, function* () {
 			const overwrite = !!(options === null || options === void 0 ? void 0 : options.overwrite);
 			const filePath = yield this.filePath();
 			yield (overwrite ? writeFile : appendFile)(filePath, this._buffer, { encoding: "utf8" });
@@ -19193,7 +19191,7 @@ var Summary = class {
 	* @returns {Summary} summary instance
 	*/
 	clear() {
-		return __awaiter$21(this, void 0, void 0, function* () {
+		return __awaiter$17(this, void 0, void 0, function* () {
 			return this.emptyBuffer().write({ overwrite: true });
 		});
 	}
@@ -19388,7 +19386,7 @@ var Summary = class {
 var summary = new Summary();
 //#endregion
 //#region node_modules/.pnpm/@actions+io@3.0.2/node_modules/@actions/io/lib/io-util.js
-var __awaiter$20 = function(thisArg, _arguments, P, generator) {
+var __awaiter$16 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -19416,10 +19414,10 @@ var __awaiter$20 = function(thisArg, _arguments, P, generator) {
 	});
 };
 var { chmod, copyFile, lstat, mkdir, open, readdir, rename, rm, rmdir, stat, symlink, unlink } = fs$1.promises;
-var IS_WINDOWS$8 = process.platform === "win32";
+var IS_WINDOWS$7 = process.platform === "win32";
 fs$1.constants.O_RDONLY;
 function exists(fsPath) {
-	return __awaiter$20(this, void 0, void 0, function* () {
+	return __awaiter$16(this, void 0, void 0, function* () {
 		try {
 			yield stat(fsPath);
 		} catch (err) {
@@ -19436,7 +19434,7 @@ function exists(fsPath) {
 function isRooted(p) {
 	p = normalizeSeparators$1(p);
 	if (!p) throw new Error("isRooted() parameter \"p\" cannot be empty");
-	if (IS_WINDOWS$8) return p.startsWith("\\") || /^[A-Z]:/i.test(p);
+	if (IS_WINDOWS$7) return p.startsWith("\\") || /^[A-Z]:/i.test(p);
 	return p.startsWith("/");
 }
 /**
@@ -19446,7 +19444,7 @@ function isRooted(p) {
 * @return if file exists and is executable, returns the file path. otherwise empty string.
 */
 function tryGetExecutablePath(filePath, extensions) {
-	return __awaiter$20(this, void 0, void 0, function* () {
+	return __awaiter$16(this, void 0, void 0, function* () {
 		let stats = void 0;
 		try {
 			stats = yield stat(filePath);
@@ -19454,7 +19452,7 @@ function tryGetExecutablePath(filePath, extensions) {
 			if (err.code !== "ENOENT") console.log(`Unexpected error attempting to determine if executable file exists '${filePath}': ${err}`);
 		}
 		if (stats && stats.isFile()) {
-			if (IS_WINDOWS$8) {
+			if (IS_WINDOWS$7) {
 				const upperExt = path$2.extname(filePath).toUpperCase();
 				if (extensions.some((validExt) => validExt.toUpperCase() === upperExt)) return filePath;
 			} else if (isUnixExecutable(stats)) return filePath;
@@ -19469,7 +19467,7 @@ function tryGetExecutablePath(filePath, extensions) {
 				if (err.code !== "ENOENT") console.log(`Unexpected error attempting to determine if executable file exists '${filePath}': ${err}`);
 			}
 			if (stats && stats.isFile()) {
-				if (IS_WINDOWS$8) {
+				if (IS_WINDOWS$7) {
 					try {
 						const directory = path$2.dirname(filePath);
 						const upperName = path$2.basename(filePath).toUpperCase();
@@ -19489,19 +19487,19 @@ function tryGetExecutablePath(filePath, extensions) {
 }
 function normalizeSeparators$1(p) {
 	p = p || "";
-	if (IS_WINDOWS$8) {
+	if (IS_WINDOWS$7) {
 		p = p.replace(/\//g, "\\");
 		return p.replace(/\\\\+/g, "\\");
 	}
 	return p.replace(/\/\/+/g, "/");
 }
-__name(normalizeSeparators$1, "normalizeSeparators");
+__name$1(normalizeSeparators$1, "normalizeSeparators");
 function isUnixExecutable(stats) {
 	return (stats.mode & 1) > 0 || (stats.mode & 8) > 0 && process.getgid !== void 0 && stats.gid === process.getgid() || (stats.mode & 64) > 0 && process.getuid !== void 0 && stats.uid === process.getuid();
 }
 //#endregion
 //#region node_modules/.pnpm/@actions+io@3.0.2/node_modules/@actions/io/lib/io.js
-var __awaiter$19 = function(thisArg, _arguments, P, generator) {
+var __awaiter$15 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -19536,7 +19534,7 @@ var __awaiter$19 = function(thisArg, _arguments, P, generator) {
 * @returns Promise<void>
 */
 function mkdirP(fsPath) {
-	return __awaiter$19(this, void 0, void 0, function* () {
+	return __awaiter$15(this, void 0, void 0, function* () {
 		ok(fsPath, "a path argument must be provided");
 		yield mkdir(fsPath, { recursive: true });
 	});
@@ -19550,12 +19548,12 @@ function mkdirP(fsPath) {
 * @returns   Promise<string>   path to tool
 */
 function which(tool, check) {
-	return __awaiter$19(this, void 0, void 0, function* () {
+	return __awaiter$15(this, void 0, void 0, function* () {
 		if (!tool) throw new Error("parameter 'tool' is required");
 		if (check) {
 			const result = yield which(tool, false);
 			if (!result) {
-				if (IS_WINDOWS$8) throw new Error(`Unable to locate executable file: ${tool}. Please verify either the file path exists or the file can be found within a directory specified by the PATH environment variable. Also verify the file has a valid extension for an executable file.`);
+				if (IS_WINDOWS$7) throw new Error(`Unable to locate executable file: ${tool}. Please verify either the file path exists or the file can be found within a directory specified by the PATH environment variable. Also verify the file has a valid extension for an executable file.`);
 				else throw new Error(`Unable to locate executable file: ${tool}. Please verify either the file path exists or the file can be found within a directory specified by the PATH environment variable. Also check the file mode to verify the file is executable.`);
 			}
 			return result;
@@ -19571,10 +19569,10 @@ function which(tool, check) {
 * @returns   Promise<string[]>  the paths of the tool
 */
 function findInPath(tool) {
-	return __awaiter$19(this, void 0, void 0, function* () {
+	return __awaiter$15(this, void 0, void 0, function* () {
 		if (!tool) throw new Error("parameter 'tool' is required");
 		const extensions = [];
-		if (IS_WINDOWS$8 && process.env["PATHEXT"]) {
+		if (IS_WINDOWS$7 && process.env["PATHEXT"]) {
 			for (const extension of process.env["PATHEXT"].split(path$2.delimiter)) if (extension) extensions.push(extension);
 		}
 		if (isRooted(tool)) {
@@ -19597,7 +19595,7 @@ function findInPath(tool) {
 }
 //#endregion
 //#region node_modules/.pnpm/@actions+exec@3.0.0/node_modules/@actions/exec/lib/toolrunner.js
-var __awaiter$18 = function(thisArg, _arguments, P, generator) {
+var __awaiter$14 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -19624,7 +19622,7 @@ var __awaiter$18 = function(thisArg, _arguments, P, generator) {
 		step((generator = generator.apply(thisArg, _arguments || [])).next());
 	});
 };
-var IS_WINDOWS$7 = process.platform === "win32";
+var IS_WINDOWS$6 = process.platform === "win32";
 var ToolRunner = class extends events.EventEmitter {
 	constructor(toolPath, args, options) {
 		super();
@@ -19640,7 +19638,7 @@ var ToolRunner = class extends events.EventEmitter {
 		const toolPath = this._getSpawnFileName();
 		const args = this._getSpawnArgs(options);
 		let cmd = noPrefix ? "" : "[command]";
-		if (IS_WINDOWS$7) {
+		if (IS_WINDOWS$6) {
 			if (this._isCmdFile()) {
 				cmd += toolPath;
 				for (const a of args) cmd += ` ${a}`;
@@ -19660,11 +19658,11 @@ var ToolRunner = class extends events.EventEmitter {
 	_processLineBuffer(data, strBuffer, onLine) {
 		try {
 			let s = strBuffer + data.toString();
-			let n = s.indexOf(os$4.EOL);
+			let n = s.indexOf(os$3.EOL);
 			while (n > -1) {
 				onLine(s.substring(0, n));
-				s = s.substring(n + os$4.EOL.length);
-				n = s.indexOf(os$4.EOL);
+				s = s.substring(n + os$3.EOL.length);
+				n = s.indexOf(os$3.EOL);
 			}
 			return s;
 		} catch (err) {
@@ -19673,13 +19671,13 @@ var ToolRunner = class extends events.EventEmitter {
 		}
 	}
 	_getSpawnFileName() {
-		if (IS_WINDOWS$7) {
+		if (IS_WINDOWS$6) {
 			if (this._isCmdFile()) return process.env["COMSPEC"] || "cmd.exe";
 		}
 		return this.toolPath;
 	}
 	_getSpawnArgs(options) {
-		if (IS_WINDOWS$7) {
+		if (IS_WINDOWS$6) {
 			if (this._isCmdFile()) {
 				let argline = `/D /S /C "${this._windowsQuoteCmdArg(this.toolPath)}`;
 				for (const a of this.args) {
@@ -19796,15 +19794,15 @@ var ToolRunner = class extends events.EventEmitter {
 	* @returns   number
 	*/
 	exec() {
-		return __awaiter$18(this, void 0, void 0, function* () {
-			if (!isRooted(this.toolPath) && (this.toolPath.includes("/") || IS_WINDOWS$7 && this.toolPath.includes("\\"))) this.toolPath = path$2.resolve(process.cwd(), this.options.cwd || process.cwd(), this.toolPath);
+		return __awaiter$14(this, void 0, void 0, function* () {
+			if (!isRooted(this.toolPath) && (this.toolPath.includes("/") || IS_WINDOWS$6 && this.toolPath.includes("\\"))) this.toolPath = path$2.resolve(process.cwd(), this.options.cwd || process.cwd(), this.toolPath);
 			this.toolPath = yield which(this.toolPath, true);
-			return new Promise((resolve, reject) => __awaiter$18(this, void 0, void 0, function* () {
+			return new Promise((resolve, reject) => __awaiter$14(this, void 0, void 0, function* () {
 				this._debug(`exec tool: ${this.toolPath}`);
 				this._debug("arguments:");
 				for (const arg of this.args) this._debug(`   ${arg}`);
 				const optionsNonNull = this._cloneExecOptions(this.options);
-				if (!optionsNonNull.silent && optionsNonNull.outStream) optionsNonNull.outStream.write(this._getCommandString(optionsNonNull) + os$4.EOL);
+				if (!optionsNonNull.silent && optionsNonNull.outStream) optionsNonNull.outStream.write(this._getCommandString(optionsNonNull) + os$3.EOL);
 				const state = new ExecState(optionsNonNull, this.toolPath);
 				state.on("debug", (message) => {
 					this._debug(message);
@@ -19955,7 +19953,7 @@ var ExecState = class ExecState extends events.EventEmitter {
 };
 //#endregion
 //#region node_modules/.pnpm/@actions+exec@3.0.0/node_modules/@actions/exec/lib/exec.js
-var __awaiter$17 = function(thisArg, _arguments, P, generator) {
+var __awaiter$13 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -19993,7 +19991,7 @@ var __awaiter$17 = function(thisArg, _arguments, P, generator) {
 * @returns   Promise<number>    exit code
 */
 function exec(commandLine, args, options) {
-	return __awaiter$17(this, void 0, void 0, function* () {
+	return __awaiter$13(this, void 0, void 0, function* () {
 		const commandArgs = argStringToArray(commandLine);
 		if (commandArgs.length === 0) throw new Error(`Parameter 'commandLine' cannot be null or empty.`);
 		const toolPath = commandArgs[0];
@@ -20058,13 +20056,12 @@ function setSecret(secret) {
 * @param     options  optional. See InputOptions.
 * @returns   string
 */
-function getInput$1(name, options) {
+function getInput(name, options) {
 	const val = process.env[`INPUT_${name.replace(/ /g, "_").toUpperCase()}`] || "";
 	if (options && options.required && !val) throw new Error(`Input required and not supplied: ${name}`);
 	if (options && options.trimWhitespace === false) return val;
 	return val.trim();
 }
-__name(getInput$1, "getInput");
 /**
 * Sets the action status to failed.
 * When the action exits it will be with an exit code of 1
@@ -20116,7 +20113,7 @@ function notice(message, properties = {}) {
 * @param message info message
 */
 function info(message) {
-	process.stdout.write(message + os$4.EOL);
+	process.stdout.write(message + os$3.EOL);
 }
 /**
 * Begin an output group.
@@ -20135,3452 +20132,25 @@ function endGroup() {
 	issue("endgroup");
 }
 //#endregion
-//#region node_modules/.pnpm/@actions+github@9.1.1/node_modules/@actions/github/lib/context.js
-var Context = class {
-	/**
-	* Hydrate the context from the environment
-	*/
-	constructor() {
-		var _a;
-		var _b;
-		var _c;
-		this.payload = {};
-		if (process.env.GITHUB_EVENT_PATH) {
-			if (existsSync(process.env.GITHUB_EVENT_PATH)) this.payload = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, { encoding: "utf8" }));
-			else {
-				const path = process.env.GITHUB_EVENT_PATH;
-				process.stdout.write(`GITHUB_EVENT_PATH ${path} does not exist${EOL}`);
-			}
-		}
-		this.eventName = process.env.GITHUB_EVENT_NAME;
-		this.sha = process.env.GITHUB_SHA;
-		this.ref = process.env.GITHUB_REF;
-		this.workflow = process.env.GITHUB_WORKFLOW;
-		this.action = process.env.GITHUB_ACTION;
-		this.actor = process.env.GITHUB_ACTOR;
-		this.job = process.env.GITHUB_JOB;
-		this.runAttempt = parseInt(process.env.GITHUB_RUN_ATTEMPT, 10);
-		this.runNumber = parseInt(process.env.GITHUB_RUN_NUMBER, 10);
-		this.runId = parseInt(process.env.GITHUB_RUN_ID, 10);
-		this.apiUrl = (_a = process.env.GITHUB_API_URL) !== null && _a !== void 0 ? _a : `https://api.github.com`;
-		this.serverUrl = (_b = process.env.GITHUB_SERVER_URL) !== null && _b !== void 0 ? _b : `https://github.com`;
-		this.graphqlUrl = (_c = process.env.GITHUB_GRAPHQL_URL) !== null && _c !== void 0 ? _c : `https://api.github.com/graphql`;
-	}
-	get issue() {
-		const payload = this.payload;
-		return Object.assign(Object.assign({}, this.repo), { number: (payload.issue || payload.pull_request || payload).number });
-	}
-	get repo() {
-		if (process.env.GITHUB_REPOSITORY) {
-			const [owner, repo] = process.env.GITHUB_REPOSITORY.split("/");
-			return {
-				owner,
-				repo
-			};
-		}
-		if (this.payload.repository) return {
-			owner: this.payload.repository.owner.login,
-			repo: this.payload.repository.name
-		};
-		throw new Error("context.repo requires a GITHUB_REPOSITORY environment variable like 'owner/repo'");
-	}
-};
-//#endregion
-//#region node_modules/.pnpm/@actions+http-client@3.0.2/node_modules/@actions/http-client/lib/proxy.js
-var require_proxy = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.getProxyUrl = getProxyUrl;
-	exports.checkBypass = checkBypass;
-	function getProxyUrl(reqUrl) {
-		const usingSsl = reqUrl.protocol === "https:";
-		if (checkBypass(reqUrl)) return;
-		const proxyVar = (() => {
-			if (usingSsl) return process.env["https_proxy"] || process.env["HTTPS_PROXY"];
-			else return process.env["http_proxy"] || process.env["HTTP_PROXY"];
-		})();
-		if (proxyVar) try {
-			return new DecodedURL(proxyVar);
-		} catch (_a) {
-			if (!proxyVar.startsWith("http://") && !proxyVar.startsWith("https://")) return new DecodedURL(`http://${proxyVar}`);
-		}
-		else return;
-	}
-	function checkBypass(reqUrl) {
-		if (!reqUrl.hostname) return false;
-		const reqHost = reqUrl.hostname;
-		if (isLoopbackAddress(reqHost)) return true;
-		const noProxy = process.env["no_proxy"] || process.env["NO_PROXY"] || "";
-		if (!noProxy) return false;
-		let reqPort;
-		if (reqUrl.port) reqPort = Number(reqUrl.port);
-		else if (reqUrl.protocol === "http:") reqPort = 80;
-		else if (reqUrl.protocol === "https:") reqPort = 443;
-		const upperReqHosts = [reqUrl.hostname.toUpperCase()];
-		if (typeof reqPort === "number") upperReqHosts.push(`${upperReqHosts[0]}:${reqPort}`);
-		for (const upperNoProxyItem of noProxy.split(",").map((x) => x.trim().toUpperCase()).filter((x) => x)) if (upperNoProxyItem === "*" || upperReqHosts.some((x) => x === upperNoProxyItem || x.endsWith(`.${upperNoProxyItem}`) || upperNoProxyItem.startsWith(".") && x.endsWith(`${upperNoProxyItem}`))) return true;
-		return false;
-	}
-	function isLoopbackAddress(host) {
-		const hostLower = host.toLowerCase();
-		return hostLower === "localhost" || hostLower.startsWith("127.") || hostLower.startsWith("[::1]") || hostLower.startsWith("[0:0:0:0:0:0:0:1]");
-	}
-	var DecodedURL = class extends URL {
-		constructor(url, base) {
-			super(url, base);
-			this._decodedUsername = decodeURIComponent(super.username);
-			this._decodedPassword = decodeURIComponent(super.password);
-		}
-		get username() {
-			return this._decodedUsername;
-		}
-		get password() {
-			return this._decodedPassword;
-		}
-	};
-}));
-//#endregion
-//#region node_modules/.pnpm/@actions+github@9.1.1/node_modules/@actions/github/lib/internal/utils.js
-var import_lib = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exports) => {
-	var __createBinding = exports && exports.__createBinding || (Object.create ? (function(o, m, k, k2) {
-		if (k2 === void 0) k2 = k;
-		var desc = Object.getOwnPropertyDescriptor(m, k);
-		if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) desc = {
-			enumerable: true,
-			get: function() {
-				return m[k];
-			}
-		};
-		Object.defineProperty(o, k2, desc);
-	}) : (function(o, m, k, k2) {
-		if (k2 === void 0) k2 = k;
-		o[k2] = m[k];
-	}));
-	var __setModuleDefault = exports && exports.__setModuleDefault || (Object.create ? (function(o, v) {
-		Object.defineProperty(o, "default", {
-			enumerable: true,
-			value: v
-		});
-	}) : function(o, v) {
-		o["default"] = v;
-	});
-	var __importStar = exports && exports.__importStar || (function() {
-		var ownKeys = function(o) {
-			ownKeys = Object.getOwnPropertyNames || function(o) {
-				var ar = [];
-				for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-				return ar;
-			};
-			return ownKeys(o);
-		};
-		return function(mod) {
-			if (mod && mod.__esModule) return mod;
-			var result = {};
-			if (mod != null) {
-				for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-			}
-			__setModuleDefault(result, mod);
-			return result;
-		};
-	})();
-	var __awaiter = exports && exports.__awaiter || function(thisArg, _arguments, P, generator) {
-		function adopt(value) {
-			return value instanceof P ? value : new P(function(resolve) {
-				resolve(value);
-			});
-		}
-		return new (P || (P = Promise))(function(resolve, reject) {
-			function fulfilled(value) {
-				try {
-					step(generator.next(value));
-				} catch (e) {
-					reject(e);
-				}
-			}
-			function rejected(value) {
-				try {
-					step(generator["throw"](value));
-				} catch (e) {
-					reject(e);
-				}
-			}
-			function step(result) {
-				result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-			}
-			step((generator = generator.apply(thisArg, _arguments || [])).next());
-		});
-	};
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.HttpClient = exports.HttpClientResponse = exports.HttpClientError = exports.MediaTypes = exports.Headers = exports.HttpCodes = void 0;
-	exports.getProxyUrl = getProxyUrl;
-	exports.isHttps = isHttps;
-	var http$3 = __importStar(__require("http"));
-	var https$2 = __importStar(__require("https"));
-	var pm = __importStar(require_proxy());
-	var tunnel = __importStar(require_tunnel());
-	var undici_1 = require_undici();
-	var HttpCodes;
-	(function(HttpCodes) {
-		HttpCodes[HttpCodes["OK"] = 200] = "OK";
-		HttpCodes[HttpCodes["MultipleChoices"] = 300] = "MultipleChoices";
-		HttpCodes[HttpCodes["MovedPermanently"] = 301] = "MovedPermanently";
-		HttpCodes[HttpCodes["ResourceMoved"] = 302] = "ResourceMoved";
-		HttpCodes[HttpCodes["SeeOther"] = 303] = "SeeOther";
-		HttpCodes[HttpCodes["NotModified"] = 304] = "NotModified";
-		HttpCodes[HttpCodes["UseProxy"] = 305] = "UseProxy";
-		HttpCodes[HttpCodes["SwitchProxy"] = 306] = "SwitchProxy";
-		HttpCodes[HttpCodes["TemporaryRedirect"] = 307] = "TemporaryRedirect";
-		HttpCodes[HttpCodes["PermanentRedirect"] = 308] = "PermanentRedirect";
-		HttpCodes[HttpCodes["BadRequest"] = 400] = "BadRequest";
-		HttpCodes[HttpCodes["Unauthorized"] = 401] = "Unauthorized";
-		HttpCodes[HttpCodes["PaymentRequired"] = 402] = "PaymentRequired";
-		HttpCodes[HttpCodes["Forbidden"] = 403] = "Forbidden";
-		HttpCodes[HttpCodes["NotFound"] = 404] = "NotFound";
-		HttpCodes[HttpCodes["MethodNotAllowed"] = 405] = "MethodNotAllowed";
-		HttpCodes[HttpCodes["NotAcceptable"] = 406] = "NotAcceptable";
-		HttpCodes[HttpCodes["ProxyAuthenticationRequired"] = 407] = "ProxyAuthenticationRequired";
-		HttpCodes[HttpCodes["RequestTimeout"] = 408] = "RequestTimeout";
-		HttpCodes[HttpCodes["Conflict"] = 409] = "Conflict";
-		HttpCodes[HttpCodes["Gone"] = 410] = "Gone";
-		HttpCodes[HttpCodes["TooManyRequests"] = 429] = "TooManyRequests";
-		HttpCodes[HttpCodes["InternalServerError"] = 500] = "InternalServerError";
-		HttpCodes[HttpCodes["NotImplemented"] = 501] = "NotImplemented";
-		HttpCodes[HttpCodes["BadGateway"] = 502] = "BadGateway";
-		HttpCodes[HttpCodes["ServiceUnavailable"] = 503] = "ServiceUnavailable";
-		HttpCodes[HttpCodes["GatewayTimeout"] = 504] = "GatewayTimeout";
-	})(HttpCodes || (exports.HttpCodes = HttpCodes = {}));
-	var Headers;
-	(function(Headers) {
-		Headers["Accept"] = "accept";
-		Headers["ContentType"] = "content-type";
-	})(Headers || (exports.Headers = Headers = {}));
-	var MediaTypes;
-	(function(MediaTypes) {
-		MediaTypes["ApplicationJson"] = "application/json";
-	})(MediaTypes || (exports.MediaTypes = MediaTypes = {}));
-	/**
-	* Returns the proxy URL, depending upon the supplied url and proxy environment variables.
-	* @param serverUrl  The server URL where the request will be sent. For example, https://api.github.com
-	*/
-	function getProxyUrl(serverUrl) {
-		const proxyUrl = pm.getProxyUrl(new URL(serverUrl));
-		return proxyUrl ? proxyUrl.href : "";
-	}
-	var HttpRedirectCodes = [
-		HttpCodes.MovedPermanently,
-		HttpCodes.ResourceMoved,
-		HttpCodes.SeeOther,
-		HttpCodes.TemporaryRedirect,
-		HttpCodes.PermanentRedirect
-	];
-	var HttpResponseRetryCodes = [
-		HttpCodes.BadGateway,
-		HttpCodes.ServiceUnavailable,
-		HttpCodes.GatewayTimeout
-	];
-	var RetryableHttpVerbs = [
-		"OPTIONS",
-		"GET",
-		"DELETE",
-		"HEAD"
-	];
-	var ExponentialBackoffCeiling = 10;
-	var ExponentialBackoffTimeSlice = 5;
-	var HttpClientError = class HttpClientError extends Error {
-		constructor(message, statusCode) {
-			super(message);
-			this.name = "HttpClientError";
-			this.statusCode = statusCode;
-			Object.setPrototypeOf(this, HttpClientError.prototype);
-		}
-	};
-	exports.HttpClientError = HttpClientError;
-	var HttpClientResponse = class {
-		constructor(message) {
-			this.message = message;
-		}
-		readBody() {
-			return __awaiter(this, void 0, void 0, function* () {
-				return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
-					let output = Buffer.alloc(0);
-					this.message.on("data", (chunk) => {
-						output = Buffer.concat([output, chunk]);
-					});
-					this.message.on("end", () => {
-						resolve(output.toString());
-					});
-				}));
-			});
-		}
-		readBodyBuffer() {
-			return __awaiter(this, void 0, void 0, function* () {
-				return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
-					const chunks = [];
-					this.message.on("data", (chunk) => {
-						chunks.push(chunk);
-					});
-					this.message.on("end", () => {
-						resolve(Buffer.concat(chunks));
-					});
-				}));
-			});
-		}
-	};
-	exports.HttpClientResponse = HttpClientResponse;
-	function isHttps(requestUrl) {
-		return new URL(requestUrl).protocol === "https:";
-	}
-	var HttpClient = class {
-		constructor(userAgent, handlers, requestOptions) {
-			this._ignoreSslError = false;
-			this._allowRedirects = true;
-			this._allowRedirectDowngrade = false;
-			this._maxRedirects = 50;
-			this._allowRetries = false;
-			this._maxRetries = 1;
-			this._keepAlive = false;
-			this._disposed = false;
-			this.userAgent = this._getUserAgentWithOrchestrationId(userAgent);
-			this.handlers = handlers || [];
-			this.requestOptions = requestOptions;
-			if (requestOptions) {
-				if (requestOptions.ignoreSslError != null) this._ignoreSslError = requestOptions.ignoreSslError;
-				this._socketTimeout = requestOptions.socketTimeout;
-				if (requestOptions.allowRedirects != null) this._allowRedirects = requestOptions.allowRedirects;
-				if (requestOptions.allowRedirectDowngrade != null) this._allowRedirectDowngrade = requestOptions.allowRedirectDowngrade;
-				if (requestOptions.maxRedirects != null) this._maxRedirects = Math.max(requestOptions.maxRedirects, 0);
-				if (requestOptions.keepAlive != null) this._keepAlive = requestOptions.keepAlive;
-				if (requestOptions.allowRetries != null) this._allowRetries = requestOptions.allowRetries;
-				if (requestOptions.maxRetries != null) this._maxRetries = requestOptions.maxRetries;
-			}
-		}
-		options(requestUrl, additionalHeaders) {
-			return __awaiter(this, void 0, void 0, function* () {
-				return this.request("OPTIONS", requestUrl, null, additionalHeaders || {});
-			});
-		}
-		get(requestUrl, additionalHeaders) {
-			return __awaiter(this, void 0, void 0, function* () {
-				return this.request("GET", requestUrl, null, additionalHeaders || {});
-			});
-		}
-		del(requestUrl, additionalHeaders) {
-			return __awaiter(this, void 0, void 0, function* () {
-				return this.request("DELETE", requestUrl, null, additionalHeaders || {});
-			});
-		}
-		post(requestUrl, data, additionalHeaders) {
-			return __awaiter(this, void 0, void 0, function* () {
-				return this.request("POST", requestUrl, data, additionalHeaders || {});
-			});
-		}
-		patch(requestUrl, data, additionalHeaders) {
-			return __awaiter(this, void 0, void 0, function* () {
-				return this.request("PATCH", requestUrl, data, additionalHeaders || {});
-			});
-		}
-		put(requestUrl, data, additionalHeaders) {
-			return __awaiter(this, void 0, void 0, function* () {
-				return this.request("PUT", requestUrl, data, additionalHeaders || {});
-			});
-		}
-		head(requestUrl, additionalHeaders) {
-			return __awaiter(this, void 0, void 0, function* () {
-				return this.request("HEAD", requestUrl, null, additionalHeaders || {});
-			});
-		}
-		sendStream(verb, requestUrl, stream, additionalHeaders) {
-			return __awaiter(this, void 0, void 0, function* () {
-				return this.request(verb, requestUrl, stream, additionalHeaders);
-			});
-		}
-		/**
-		* Gets a typed object from an endpoint
-		* Be aware that not found returns a null.  Other errors (4xx, 5xx) reject the promise
-		*/
-		getJson(requestUrl_1) {
-			return __awaiter(this, arguments, void 0, function* (requestUrl, additionalHeaders = {}) {
-				additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
-				const res = yield this.get(requestUrl, additionalHeaders);
-				return this._processResponse(res, this.requestOptions);
-			});
-		}
-		postJson(requestUrl_1, obj_1) {
-			return __awaiter(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
-				const data = JSON.stringify(obj, null, 2);
-				additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
-				additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
-				const res = yield this.post(requestUrl, data, additionalHeaders);
-				return this._processResponse(res, this.requestOptions);
-			});
-		}
-		putJson(requestUrl_1, obj_1) {
-			return __awaiter(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
-				const data = JSON.stringify(obj, null, 2);
-				additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
-				additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
-				const res = yield this.put(requestUrl, data, additionalHeaders);
-				return this._processResponse(res, this.requestOptions);
-			});
-		}
-		patchJson(requestUrl_1, obj_1) {
-			return __awaiter(this, arguments, void 0, function* (requestUrl, obj, additionalHeaders = {}) {
-				const data = JSON.stringify(obj, null, 2);
-				additionalHeaders[Headers.Accept] = this._getExistingOrDefaultHeader(additionalHeaders, Headers.Accept, MediaTypes.ApplicationJson);
-				additionalHeaders[Headers.ContentType] = this._getExistingOrDefaultContentTypeHeader(additionalHeaders, MediaTypes.ApplicationJson);
-				const res = yield this.patch(requestUrl, data, additionalHeaders);
-				return this._processResponse(res, this.requestOptions);
-			});
-		}
-		/**
-		* Makes a raw http request.
-		* All other methods such as get, post, patch, and request ultimately call this.
-		* Prefer get, del, post and patch
-		*/
-		request(verb, requestUrl, data, headers) {
-			return __awaiter(this, void 0, void 0, function* () {
-				if (this._disposed) throw new Error("Client has already been disposed.");
-				const parsedUrl = new URL(requestUrl);
-				let info = this._prepareRequest(verb, parsedUrl, headers);
-				const maxTries = this._allowRetries && RetryableHttpVerbs.includes(verb) ? this._maxRetries + 1 : 1;
-				let numTries = 0;
-				let response;
-				do {
-					response = yield this.requestRaw(info, data);
-					if (response && response.message && response.message.statusCode === HttpCodes.Unauthorized) {
-						let authenticationHandler;
-						for (const handler of this.handlers) if (handler.canHandleAuthentication(response)) {
-							authenticationHandler = handler;
-							break;
-						}
-						if (authenticationHandler) return authenticationHandler.handleAuthentication(this, info, data);
-						else return response;
-					}
-					let redirectsRemaining = this._maxRedirects;
-					while (response.message.statusCode && HttpRedirectCodes.includes(response.message.statusCode) && this._allowRedirects && redirectsRemaining > 0) {
-						const redirectUrl = response.message.headers["location"];
-						if (!redirectUrl) break;
-						const parsedRedirectUrl = new URL(redirectUrl);
-						if (parsedUrl.protocol === "https:" && parsedUrl.protocol !== parsedRedirectUrl.protocol && !this._allowRedirectDowngrade) throw new Error("Redirect from HTTPS to HTTP protocol. This downgrade is not allowed for security reasons. If you want to allow this behavior, set the allowRedirectDowngrade option to true.");
-						yield response.readBody();
-						if (parsedRedirectUrl.hostname !== parsedUrl.hostname) {
-							for (const header in headers) if (header.toLowerCase() === "authorization") delete headers[header];
-						}
-						info = this._prepareRequest(verb, parsedRedirectUrl, headers);
-						response = yield this.requestRaw(info, data);
-						redirectsRemaining--;
-					}
-					if (!response.message.statusCode || !HttpResponseRetryCodes.includes(response.message.statusCode)) return response;
-					numTries += 1;
-					if (numTries < maxTries) {
-						yield response.readBody();
-						yield this._performExponentialBackoff(numTries);
-					}
-				} while (numTries < maxTries);
-				return response;
-			});
-		}
-		/**
-		* Needs to be called if keepAlive is set to true in request options.
-		*/
-		dispose() {
-			if (this._agent) this._agent.destroy();
-			this._disposed = true;
-		}
-		/**
-		* Raw request.
-		* @param info
-		* @param data
-		*/
-		requestRaw(info, data) {
-			return __awaiter(this, void 0, void 0, function* () {
-				return new Promise((resolve, reject) => {
-					function callbackForResult(err, res) {
-						if (err) reject(err);
-						else if (!res) reject(/* @__PURE__ */ new Error("Unknown error"));
-						else resolve(res);
-					}
-					this.requestRawWithCallback(info, data, callbackForResult);
-				});
-			});
-		}
-		/**
-		* Raw request with callback.
-		* @param info
-		* @param data
-		* @param onResult
-		*/
-		requestRawWithCallback(info, data, onResult) {
-			if (typeof data === "string") {
-				if (!info.options.headers) info.options.headers = {};
-				info.options.headers["Content-Length"] = Buffer.byteLength(data, "utf8");
-			}
-			let callbackCalled = false;
-			function handleResult(err, res) {
-				if (!callbackCalled) {
-					callbackCalled = true;
-					onResult(err, res);
-				}
-			}
-			const req = info.httpModule.request(info.options, (msg) => {
-				handleResult(void 0, new HttpClientResponse(msg));
-			});
-			let socket;
-			req.on("socket", (sock) => {
-				socket = sock;
-			});
-			req.setTimeout(this._socketTimeout || 18e4, () => {
-				if (socket) socket.end();
-				handleResult(/* @__PURE__ */ new Error(`Request timeout: ${info.options.path}`));
-			});
-			req.on("error", function(err) {
-				handleResult(err);
-			});
-			if (data && typeof data === "string") req.write(data, "utf8");
-			if (data && typeof data !== "string") {
-				data.on("close", function() {
-					req.end();
-				});
-				data.pipe(req);
-			} else req.end();
-		}
-		/**
-		* Gets an http agent. This function is useful when you need an http agent that handles
-		* routing through a proxy server - depending upon the url and proxy environment variables.
-		* @param serverUrl  The server URL where the request will be sent. For example, https://api.github.com
-		*/
-		getAgent(serverUrl) {
-			const parsedUrl = new URL(serverUrl);
-			return this._getAgent(parsedUrl);
-		}
-		getAgentDispatcher(serverUrl) {
-			const parsedUrl = new URL(serverUrl);
-			const proxyUrl = pm.getProxyUrl(parsedUrl);
-			if (!(proxyUrl && proxyUrl.hostname)) return;
-			return this._getProxyAgentDispatcher(parsedUrl, proxyUrl);
-		}
-		_prepareRequest(method, requestUrl, headers) {
-			const info = {};
-			info.parsedUrl = requestUrl;
-			const usingSsl = info.parsedUrl.protocol === "https:";
-			info.httpModule = usingSsl ? https$2 : http$3;
-			const defaultPort = usingSsl ? 443 : 80;
-			info.options = {};
-			info.options.host = info.parsedUrl.hostname;
-			info.options.port = info.parsedUrl.port ? parseInt(info.parsedUrl.port) : defaultPort;
-			info.options.path = (info.parsedUrl.pathname || "") + (info.parsedUrl.search || "");
-			info.options.method = method;
-			info.options.headers = this._mergeHeaders(headers);
-			if (this.userAgent != null) info.options.headers["user-agent"] = this.userAgent;
-			info.options.agent = this._getAgent(info.parsedUrl);
-			if (this.handlers) for (const handler of this.handlers) handler.prepareRequest(info.options);
-			return info;
-		}
-		_mergeHeaders(headers) {
-			if (this.requestOptions && this.requestOptions.headers) return Object.assign({}, lowercaseKeys(this.requestOptions.headers), lowercaseKeys(headers || {}));
-			return lowercaseKeys(headers || {});
-		}
-		/**
-		* Gets an existing header value or returns a default.
-		* Handles converting number header values to strings since HTTP headers must be strings.
-		* Note: This returns string | string[] since some headers can have multiple values.
-		* For headers that must always be a single string (like Content-Type), use the
-		* specialized _getExistingOrDefaultContentTypeHeader method instead.
-		*/
-		_getExistingOrDefaultHeader(additionalHeaders, header, _default) {
-			let clientHeader;
-			if (this.requestOptions && this.requestOptions.headers) {
-				const headerValue = lowercaseKeys(this.requestOptions.headers)[header];
-				if (headerValue) clientHeader = typeof headerValue === "number" ? headerValue.toString() : headerValue;
-			}
-			const additionalValue = additionalHeaders[header];
-			if (additionalValue !== void 0) return typeof additionalValue === "number" ? additionalValue.toString() : additionalValue;
-			if (clientHeader !== void 0) return clientHeader;
-			return _default;
-		}
-		/**
-		* Specialized version of _getExistingOrDefaultHeader for Content-Type header.
-		* Always returns a single string (not an array) since Content-Type should be a single value.
-		* Converts arrays to comma-separated strings and numbers to strings to ensure type safety.
-		* This was split from _getExistingOrDefaultHeader to provide stricter typing for callers
-		* that assign the result to places expecting a string (e.g., additionalHeaders[Headers.ContentType]).
-		*/
-		_getExistingOrDefaultContentTypeHeader(additionalHeaders, _default) {
-			let clientHeader;
-			if (this.requestOptions && this.requestOptions.headers) {
-				const headerValue = lowercaseKeys(this.requestOptions.headers)[Headers.ContentType];
-				if (headerValue) {
-					if (typeof headerValue === "number") clientHeader = String(headerValue);
-					else if (Array.isArray(headerValue)) clientHeader = headerValue.join(", ");
-					else clientHeader = headerValue;
-				}
-			}
-			const additionalValue = additionalHeaders[Headers.ContentType];
-			if (additionalValue !== void 0) {
-				if (typeof additionalValue === "number") return String(additionalValue);
-				else if (Array.isArray(additionalValue)) return additionalValue.join(", ");
-				else return additionalValue;
-			}
-			if (clientHeader !== void 0) return clientHeader;
-			return _default;
-		}
-		_getAgent(parsedUrl) {
-			let agent;
-			const proxyUrl = pm.getProxyUrl(parsedUrl);
-			const useProxy = proxyUrl && proxyUrl.hostname;
-			if (this._keepAlive && useProxy) agent = this._proxyAgent;
-			if (!useProxy) agent = this._agent;
-			if (agent) return agent;
-			const usingSsl = parsedUrl.protocol === "https:";
-			let maxSockets = 100;
-			if (this.requestOptions) maxSockets = this.requestOptions.maxSockets || http$3.globalAgent.maxSockets;
-			if (proxyUrl && proxyUrl.hostname) {
-				const agentOptions = {
-					maxSockets,
-					keepAlive: this._keepAlive,
-					proxy: Object.assign(Object.assign({}, (proxyUrl.username || proxyUrl.password) && { proxyAuth: `${proxyUrl.username}:${proxyUrl.password}` }), {
-						host: proxyUrl.hostname,
-						port: proxyUrl.port
-					})
-				};
-				let tunnelAgent;
-				const overHttps = proxyUrl.protocol === "https:";
-				if (usingSsl) tunnelAgent = overHttps ? tunnel.httpsOverHttps : tunnel.httpsOverHttp;
-				else tunnelAgent = overHttps ? tunnel.httpOverHttps : tunnel.httpOverHttp;
-				agent = tunnelAgent(agentOptions);
-				this._proxyAgent = agent;
-			}
-			if (!agent) {
-				const options = {
-					keepAlive: this._keepAlive,
-					maxSockets
-				};
-				agent = usingSsl ? new https$2.Agent(options) : new http$3.Agent(options);
-				this._agent = agent;
-			}
-			if (usingSsl && this._ignoreSslError) agent.options = Object.assign(agent.options || {}, { rejectUnauthorized: false });
-			return agent;
-		}
-		_getProxyAgentDispatcher(parsedUrl, proxyUrl) {
-			let proxyAgent;
-			if (this._keepAlive) proxyAgent = this._proxyAgentDispatcher;
-			if (proxyAgent) return proxyAgent;
-			const usingSsl = parsedUrl.protocol === "https:";
-			proxyAgent = new undici_1.ProxyAgent(Object.assign({
-				uri: proxyUrl.href,
-				pipelining: !this._keepAlive ? 0 : 1
-			}, (proxyUrl.username || proxyUrl.password) && { token: `Basic ${Buffer.from(`${proxyUrl.username}:${proxyUrl.password}`).toString("base64")}` }));
-			this._proxyAgentDispatcher = proxyAgent;
-			if (usingSsl && this._ignoreSslError) proxyAgent.options = Object.assign(proxyAgent.options.requestTls || {}, { rejectUnauthorized: false });
-			return proxyAgent;
-		}
-		_getUserAgentWithOrchestrationId(userAgent) {
-			const baseUserAgent = userAgent || "actions/http-client";
-			const orchId = process.env["ACTIONS_ORCHESTRATION_ID"];
-			if (orchId) return `${baseUserAgent} actions_orchestration_id/${orchId.replace(/[^a-z0-9_.-]/gi, "_")}`;
-			return baseUserAgent;
-		}
-		_performExponentialBackoff(retryNumber) {
-			return __awaiter(this, void 0, void 0, function* () {
-				retryNumber = Math.min(ExponentialBackoffCeiling, retryNumber);
-				const ms = ExponentialBackoffTimeSlice * Math.pow(2, retryNumber);
-				return new Promise((resolve) => setTimeout(() => resolve(), ms));
-			});
-		}
-		_processResponse(res, options) {
-			return __awaiter(this, void 0, void 0, function* () {
-				return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
-					const statusCode = res.message.statusCode || 0;
-					const response = {
-						statusCode,
-						result: null,
-						headers: {}
-					};
-					if (statusCode === HttpCodes.NotFound) resolve(response);
-					function dateTimeDeserializer(key, value) {
-						if (typeof value === "string") {
-							const a = new Date(value);
-							if (!isNaN(a.valueOf())) return a;
-						}
-						return value;
-					}
-					let obj;
-					let contents;
-					try {
-						contents = yield res.readBody();
-						if (contents && contents.length > 0) {
-							if (options && options.deserializeDates) obj = JSON.parse(contents, dateTimeDeserializer);
-							else obj = JSON.parse(contents);
-							response.result = obj;
-						}
-						response.headers = res.message.headers;
-					} catch (err) {}
-					if (statusCode > 299) {
-						let msg;
-						if (obj && obj.message) msg = obj.message;
-						else if (contents && contents.length > 0) msg = contents;
-						else msg = `Failed request: (${statusCode})`;
-						const err = new HttpClientError(msg, statusCode);
-						err.result = response.result;
-						reject(err);
-					} else resolve(response);
-				}));
-			});
-		}
-	};
-	exports.HttpClient = HttpClient;
-	var lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => (c[k.toLowerCase()] = obj[k], c), {});
-})))(), 1);
-var __awaiter$14 = function(thisArg, _arguments, P, generator) {
-	function adopt(value) {
-		return value instanceof P ? value : new P(function(resolve) {
-			resolve(value);
-		});
-	}
-	return new (P || (P = Promise))(function(resolve, reject) {
-		function fulfilled(value) {
-			try {
-				step(generator.next(value));
-			} catch (e) {
-				reject(e);
-			}
-		}
-		function rejected(value) {
-			try {
-				step(generator["throw"](value));
-			} catch (e) {
-				reject(e);
-			}
-		}
-		function step(result) {
-			result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-		}
-		step((generator = generator.apply(thisArg, _arguments || [])).next());
-	});
-};
-function getProxyAgent(destinationUrl) {
-	return new import_lib.HttpClient().getAgent(destinationUrl);
-}
-function getProxyAgentDispatcher(destinationUrl) {
-	return new import_lib.HttpClient().getAgentDispatcher(destinationUrl);
-}
-function getProxyFetch(destinationUrl) {
-	const httpDispatcher = getProxyAgentDispatcher(destinationUrl);
-	const proxyFetch = (url, opts) => __awaiter$14(this, void 0, void 0, function* () {
-		return (0, import_undici.fetch)(url, Object.assign(Object.assign({}, opts), { dispatcher: httpDispatcher }));
-	});
-	return proxyFetch;
-}
-function getApiBaseUrl() {
-	return process.env["GITHUB_API_URL"] || "https://api.github.com";
-}
-//#endregion
-//#region node_modules/.pnpm/universal-user-agent@7.0.3/node_modules/universal-user-agent/index.js
-function getUserAgent() {
-	if (typeof navigator === "object" && "userAgent" in navigator) return navigator.userAgent;
-	if (typeof process === "object" && process.version !== void 0) return `Node.js/${process.version.substr(1)} (${process.platform}; ${process.arch})`;
-	return "<environment undetectable>";
-}
-//#endregion
-//#region node_modules/.pnpm/before-after-hook@4.0.0/node_modules/before-after-hook/lib/register.js
-function register(state, name, method, options) {
-	if (typeof method !== "function") throw new Error("method for before hook must be a function");
-	if (!options) options = {};
-	if (Array.isArray(name)) return name.reverse().reduce((callback, name) => {
-		return register.bind(null, state, name, callback, options);
-	}, method)();
-	return Promise.resolve().then(() => {
-		if (!state.registry[name]) return method(options);
-		return state.registry[name].reduce((method, registered) => {
-			return registered.hook.bind(null, method, options);
-		}, method)();
-	});
-}
-//#endregion
-//#region node_modules/.pnpm/before-after-hook@4.0.0/node_modules/before-after-hook/lib/add.js
-function addHook(state, kind, name, hook) {
-	const orig = hook;
-	if (!state.registry[name]) state.registry[name] = [];
-	if (kind === "before") hook = (method, options) => {
-		return Promise.resolve().then(orig.bind(null, options)).then(method.bind(null, options));
-	};
-	if (kind === "after") hook = (method, options) => {
-		let result;
-		return Promise.resolve().then(method.bind(null, options)).then((result_) => {
-			result = result_;
-			return orig(result, options);
-		}).then(() => {
-			return result;
-		});
-	};
-	if (kind === "error") hook = (method, options) => {
-		return Promise.resolve().then(method.bind(null, options)).catch((error) => {
-			return orig(error, options);
-		});
-	};
-	state.registry[name].push({
-		hook,
-		orig
-	});
-}
-//#endregion
-//#region node_modules/.pnpm/before-after-hook@4.0.0/node_modules/before-after-hook/lib/remove.js
-function removeHook(state, name, method) {
-	if (!state.registry[name]) return;
-	const index = state.registry[name].map((registered) => {
-		return registered.orig;
-	}).indexOf(method);
-	if (index === -1) return;
-	state.registry[name].splice(index, 1);
-}
-//#endregion
-//#region node_modules/.pnpm/before-after-hook@4.0.0/node_modules/before-after-hook/index.js
-var bind = Function.bind;
-var bindable = bind.bind(bind);
-function bindApi(hook, state, name) {
-	const removeHookRef = bindable(removeHook, null).apply(null, name ? [state, name] : [state]);
-	hook.api = { remove: removeHookRef };
-	hook.remove = removeHookRef;
-	[
-		"before",
-		"error",
-		"after",
-		"wrap"
-	].forEach((kind) => {
-		const args = name ? [
-			state,
-			kind,
-			name
-		] : [state, kind];
-		hook[kind] = hook.api[kind] = bindable(addHook, null).apply(null, args);
-	});
-}
-function Singular() {
-	const singularHookName = Symbol("Singular");
-	const singularHookState = { registry: {} };
-	const singularHook = register.bind(null, singularHookState, singularHookName);
-	bindApi(singularHook, singularHookState, singularHookName);
-	return singularHook;
-}
-function Collection() {
-	const state = { registry: {} };
-	const hook = register.bind(null, state);
-	bindApi(hook, state);
-	return hook;
-}
-var before_after_hook_default = {
-	Singular,
-	Collection
-};
-//#endregion
-//#region node_modules/.pnpm/@octokit+endpoint@11.0.5/node_modules/@octokit/endpoint/dist-bundle/index.js
-var DEFAULTS = {
-	method: "GET",
-	baseUrl: "https://api.github.com",
-	headers: {
-		accept: "application/vnd.github.v3+json",
-		"user-agent": `octokit-endpoint.js/0.0.0-development ${getUserAgent()}`
-	},
-	mediaType: { format: "" }
-};
-function lowercaseKeys(object) {
-	if (!object) return {};
-	return Object.keys(object).reduce((newObj, key) => {
-		newObj[key.toLowerCase()] = object[key];
-		return newObj;
-	}, {});
-}
-function isPlainObject$1(value) {
-	if (typeof value !== "object" || value === null) return false;
-	if (Object.prototype.toString.call(value) !== "[object Object]") return false;
-	const proto = Object.getPrototypeOf(value);
-	if (proto === null) return true;
-	const Ctor = Object.prototype.hasOwnProperty.call(proto, "constructor") && proto.constructor;
-	return typeof Ctor === "function" && Ctor instanceof Ctor && Function.prototype.call(Ctor) === Function.prototype.call(value);
-}
-__name(isPlainObject$1, "isPlainObject");
-function mergeDeep(defaults, options) {
-	const result = Object.assign({}, defaults);
-	Object.keys(options).forEach((key) => {
-		if (isPlainObject$1(options[key])) {
-			if (!(key in defaults)) Object.assign(result, { [key]: options[key] });
-			else result[key] = mergeDeep(defaults[key], options[key]);
-		} else Object.assign(result, { [key]: options[key] });
-	});
-	return result;
-}
-function removeUndefinedProperties(obj) {
-	for (const key in obj) if (obj[key] === void 0) delete obj[key];
-	return obj;
-}
-function merge(defaults, route, options) {
-	if (typeof route === "string") {
-		let [method, url] = route.split(" ");
-		options = Object.assign(url ? {
-			method,
-			url
-		} : { url: method }, options);
-	} else options = Object.assign({}, route);
-	options.headers = lowercaseKeys(options.headers);
-	removeUndefinedProperties(options);
-	removeUndefinedProperties(options.headers);
-	const mergedOptions = mergeDeep(defaults || {}, options);
-	if (options.url === "/graphql") {
-		if (defaults && defaults.mediaType.previews?.length) mergedOptions.mediaType.previews = defaults.mediaType.previews.filter((preview) => !mergedOptions.mediaType.previews.includes(preview)).concat(mergedOptions.mediaType.previews);
-		mergedOptions.mediaType.previews = (mergedOptions.mediaType.previews || []).map((preview) => preview.replace(/-preview/, ""));
-	}
-	return mergedOptions;
-}
-function addQueryParameters(url, parameters) {
-	const separator = /\?/.test(url) ? "&" : "?";
-	const names = Object.keys(parameters);
-	if (names.length === 0) return url;
-	return url + separator + names.map((name) => {
-		if (name === "q") return "q=" + parameters.q.split("+").map(encodeURIComponent).join("+");
-		return `${name}=${encodeURIComponent(parameters[name])}`;
-	}).join("&");
-}
-var urlVariableRegex = /\{[^{}}]+\}/g;
-function removeNonChars(variableName) {
-	return variableName.replace(/(?:^\W+)|(?:(?<!\W)\W+$)/g, "").split(/,/);
-}
-function extractUrlVariableNames(url) {
-	const matches = url.match(urlVariableRegex);
-	if (!matches) return [];
-	return matches.map(removeNonChars).reduce((a, b) => a.concat(b), []);
-}
-function omit(object, keysToOmit) {
-	const result = { __proto__: null };
-	for (const key of Object.keys(object)) if (keysToOmit.indexOf(key) === -1) result[key] = object[key];
-	return result;
-}
-function encodeReserved(str) {
-	return str.split(/(%[0-9A-Fa-f]{2})/g).map(function(part) {
-		if (!/%[0-9A-Fa-f]/.test(part)) part = encodeURI(part).replace(/%5B/g, "[").replace(/%5D/g, "]");
-		return part;
-	}).join("");
-}
-function encodeUnreserved(str) {
-	return encodeURIComponent(str).replace(/[!'()*]/g, function(c) {
-		return "%" + c.charCodeAt(0).toString(16).toUpperCase();
-	});
-}
-function encodeValue(operator, value, key) {
-	value = operator === "+" || operator === "#" ? encodeReserved(value) : encodeUnreserved(value);
-	if (key) return encodeUnreserved(key) + "=" + value;
-	else return value;
-}
-function isDefined(value) {
-	return value !== void 0 && value !== null;
-}
-function isKeyOperator(operator) {
-	return operator === ";" || operator === "&" || operator === "?";
-}
-function getValues(context, operator, key, modifier) {
-	var value = context[key];
-	var result = [];
-	if (isDefined(value) && value !== "") {
-		if (typeof value === "string" || typeof value === "number" || typeof value === "bigint" || typeof value === "boolean") {
-			value = value.toString();
-			if (modifier && modifier !== "*") value = value.substring(0, parseInt(modifier, 10));
-			result.push(encodeValue(operator, value, isKeyOperator(operator) ? key : ""));
-		} else if (modifier === "*") {
-			if (Array.isArray(value)) value.filter(isDefined).forEach(function(value2) {
-				result.push(encodeValue(operator, value2, isKeyOperator(operator) ? key : ""));
-			});
-			else Object.keys(value).forEach(function(k) {
-				if (isDefined(value[k])) result.push(encodeValue(operator, value[k], k));
-			});
-		} else {
-			const tmp = [];
-			if (Array.isArray(value)) value.filter(isDefined).forEach(function(value2) {
-				tmp.push(encodeValue(operator, value2));
-			});
-			else Object.keys(value).forEach(function(k) {
-				if (isDefined(value[k])) {
-					tmp.push(encodeUnreserved(k));
-					tmp.push(encodeValue(operator, value[k].toString()));
-				}
-			});
-			if (isKeyOperator(operator)) result.push(encodeUnreserved(key) + "=" + tmp.join(","));
-			else if (tmp.length !== 0) result.push(tmp.join(","));
-		}
-	} else if (operator === ";") {
-		if (isDefined(value)) result.push(encodeUnreserved(key));
-	} else if (value === "" && (operator === "&" || operator === "?")) result.push(encodeUnreserved(key) + "=");
-	else if (value === "") result.push("");
-	return result;
-}
-function parseUrl(template) {
-	return { expand: expand.bind(null, template) };
-}
-function expand(template, context) {
-	var operators = [
-		"+",
-		"#",
-		".",
-		"/",
-		";",
-		"?",
-		"&"
-	];
-	template = template.replace(/\{([^\{\}]+)\}|([^\{\}]+)/g, function(_, expression, literal) {
-		if (expression) {
-			let operator = "";
-			const values = [];
-			if (operators.indexOf(expression.charAt(0)) !== -1) {
-				operator = expression.charAt(0);
-				expression = expression.substr(1);
-			}
-			expression.split(/,/g).forEach(function(variable) {
-				var tmp = /([^:\*]*)(?::(\d+)|(\*))?/.exec(variable);
-				values.push(getValues(context, operator, tmp[1], tmp[2] || tmp[3]));
-			});
-			if (operator && operator !== "+") {
-				var separator = ",";
-				if (operator === "?") separator = "&";
-				else if (operator !== "#") separator = operator;
-				return (values.length !== 0 ? operator : "") + values.join(separator);
-			} else return values.join(",");
-		} else return encodeReserved(literal);
-	});
-	if (template === "/") return template;
-	else return template.replace(/\/$/, "");
-}
-function parse$2(options) {
-	let method = options.method.toUpperCase();
-	let url = (options.url || "/").replace(/:([a-z]\w+)/g, "{$1}");
-	let headers = Object.assign({}, options.headers);
-	let body;
-	let parameters = omit(options, [
-		"method",
-		"baseUrl",
-		"url",
-		"headers",
-		"request",
-		"mediaType"
-	]);
-	const urlVariableNames = extractUrlVariableNames(url);
-	url = parseUrl(url).expand(parameters);
-	if (!/^http/.test(url)) url = options.baseUrl + url;
-	const remainingParameters = omit(parameters, Object.keys(options).filter((option) => urlVariableNames.includes(option)).concat("baseUrl"));
-	if (!/application\/octet-stream/i.test(headers.accept)) {
-		if (options.mediaType.format) headers.accept = headers.accept.split(/,/).map((format) => format.replace(/application\/vnd(\.\w+)(\.v3)?(\.\w+)?(\+json)?$/, `application/vnd$1$2.${options.mediaType.format}`)).join(",");
-		if (url.endsWith("/graphql")) {
-			if (options.mediaType.previews?.length) headers.accept = (headers.accept.match(/(?<![\w-])[\w-]+(?=-preview)/g) || []).concat(options.mediaType.previews).map((preview) => {
-				return `application/vnd.github.${preview}-preview${options.mediaType.format ? `.${options.mediaType.format}` : "+json"}`;
-			}).join(",");
-		}
-	}
-	if (["GET", "HEAD"].includes(method)) url = addQueryParameters(url, remainingParameters);
-	else if ("data" in remainingParameters) body = remainingParameters.data;
-	else if (Object.keys(remainingParameters).length) body = remainingParameters;
-	if (!headers["content-type"] && typeof body !== "undefined") headers["content-type"] = "application/json; charset=utf-8";
-	if (["PATCH", "PUT"].includes(method) && typeof body === "undefined") body = "";
-	return Object.assign({
-		method,
-		url,
-		headers
-	}, typeof body !== "undefined" ? { body } : null, options.request ? { request: options.request } : null);
-}
-__name(parse$2, "parse");
-function endpointWithDefaults(defaults, route, options) {
-	return parse$2(merge(defaults, route, options));
-}
-function withDefaults$2(oldDefaults, newDefaults) {
-	const DEFAULTS2 = merge(oldDefaults, newDefaults);
-	const endpoint2 = endpointWithDefaults.bind(null, DEFAULTS2);
-	return Object.assign(endpoint2, {
-		DEFAULTS: DEFAULTS2,
-		defaults: withDefaults$2.bind(null, DEFAULTS2),
-		merge: merge.bind(null, DEFAULTS2),
-		parse: parse$2
-	});
-}
-__name(withDefaults$2, "withDefaults");
-var endpoint = withDefaults$2(null, DEFAULTS);
-//#endregion
-//#region node_modules/.pnpm/content-type@3.0.0/node_modules/content-type/dist/index.js
-/*!
-* content-type
-* Copyright(c) 2015 Douglas Christopher Wilson
-* MIT Licensed
-*/
-/**
-* Null object perf optimization. Faster than `Object.create(null)` and `{ __proto__: null }`.
-*/
-var NullObject = /* @__PURE__ */ (() => {
-	const C = function() {};
-	C.prototype = Object.create(null);
-	return C;
-})();
-/**
-* Parse a `Content-Type` header.
-*/
-function parse$1(header, options) {
-	const stopChar = options?.comma === true ? COMMA : 65536;
-	const len = header.length;
-	let index = skipOWS(header, options?.start ?? 0, len);
-	const valueStart = index;
-	index = skipValue(header, index, len, stopChar);
-	const valueEnd = trailingOWS(header, valueStart, index);
-	const type = header.slice(valueStart, valueEnd).toLowerCase();
-	if (options?.parameters === false) return {
-		type,
-		index,
-		parameters: new NullObject()
-	};
-	return parseParameters(header, type, index, len, stopChar);
-}
-__name(parse$1, "parse");
-var SP = 32;
-var HTAB = 9;
-var SEMI = 59;
-var EQ = 61;
-var DQUOTE = 34;
-var BSLASH = 92;
-var COMMA = 44;
-/**
-* Parses the parameters of a `Content-Type` header starting at the given index.
-*/
-function parseParameters(header, type, index, len, stopChar) {
-	const parameters = new NullObject();
-	parameter: while (index < len) {
-		if (header.charCodeAt(index) === stopChar) break;
-		index = skipOWS(header, index + 1, len);
-		const keyStart = index;
-		while (index < len) {
-			const code = header.charCodeAt(index);
-			if (code === stopChar) break parameter;
-			if (code === SEMI) continue parameter;
-			if (code === EQ) {
-				const keyEnd = trailingOWS(header, keyStart, index);
-				const key = header.slice(keyStart, keyEnd).toLowerCase();
-				index = skipOWS(header, index + 1, len);
-				if (index < len && header.charCodeAt(index) === DQUOTE) {
-					index++;
-					let value = "";
-					while (index < len) {
-						const code = header.charCodeAt(index++);
-						if (code === DQUOTE) {
-							index = skipValue(header, index, len, stopChar);
-							if (parameters[key] === void 0) parameters[key] = value;
-							break;
-						}
-						if (code === BSLASH && index < len) {
-							value += header[index++];
-							continue;
-						}
-						value += String.fromCharCode(code);
-					}
-					continue parameter;
-				}
-				const valueStart = index;
-				index = skipValue(header, index, len, stopChar);
-				if (parameters[key] === void 0) {
-					const valueEnd = trailingOWS(header, valueStart, index);
-					parameters[key] = header.slice(valueStart, valueEnd);
-				}
-				continue parameter;
-			}
-			index++;
-		}
-	}
-	return {
-		type,
-		index,
-		parameters
-	};
-}
-/**
-* Skip over characters until a semicolon or other exit character.
-*/
-function skipValue(str, index, len, stopChar) {
-	while (index < len) {
-		const code = str.charCodeAt(index);
-		if (code === SEMI || code === stopChar) break;
-		index++;
-	}
-	return index;
-}
-/**
-* Skip optional whitespace (OWS) in an HTTP header value.
-*
-* OWS is defined in RFC 9110 sec 5.6.3 as SP (" ") or HTAB ("\t").
-*/
-function skipOWS(header, index, len) {
-	while (index < len) {
-		const char = header.charCodeAt(index);
-		if (char !== SP && char !== HTAB) break;
-		index++;
-	}
-	return index;
-}
-/**
-* Trim optional whitespace (OWS) from the end of a substring.
-*
-* OWS is defined in RFC 9110 sec 5.6.3 as SP (" ") or HTAB ("\t").
-*/
-function trailingOWS(header, start, end) {
-	while (end > start) {
-		const char = header.charCodeAt(end - 1);
-		if (char !== SP && char !== HTAB) break;
-		end--;
-	}
-	return end;
-}
-//#endregion
-//#region node_modules/.pnpm/json-with-bigint@3.5.12/node_modules/json-with-bigint/json-with-bigint.js
-var intRegex = /^-?\d+$/;
-var noiseValue = /^-?\d+n+$/;
-var originalStringify = JSON.stringify;
-var originalParse = JSON.parse;
-var customFormat = /^-?\d+n$/;
-var bigIntsStringify = /([\[:])?"(-?\d+)n"($|\s*[,\}\]])/g;
-var noiseStringify = /([\[:])?("-?\d+n+)n("$|"\s*[,\}\]])/g;
-/**
-* @typedef {(this: any, key: string | number | undefined, value: any) => any} Replacer
-* @typedef {(key: string | number | undefined, value: any, context?: { source: string }) => any} Reviver
-*/
-/**
-* Checks if a value is unstringifiable according to native JSON.stringify rules.
-*
-* @param {any} val The value to check.
-* @returns {boolean} True if the value is undefined, a function, or a symbol.
-*/
-var isUnstringifiable = (val) => val === void 0 || typeof val === "function" || typeof val === "symbol";
-/**
-* Checks if a value is a native JSON.rawJSON object (Node.js 22+).
-*
-* @param {any} val The value to check.
-* @returns {boolean} True if the value is a RawJSON instance.
-*/
-var isRawJSON = (val) => val !== null && typeof val === "object" && val.constructor && val.constructor.name === "RawJSON";
-/**
-* Iteratively converts a JS value to a JSON string.
-* Used as a fallback when the native JSON.stringify hits the Maximum Call Stack size.
-* Fully compliant with JSON formatting (space), replacers, and toJSON behaviors.
-*
-* @param {any} rootValue The value to stringify.
-* @param {Replacer | Array<string | number> | null} [replacer] User's custom replacer function.
-* @param {string | number} [spaceParam] Indentation for pretty-printing.
-* @returns {string | undefined} The generated JSON string.
-*/
-var stringifyIteratively = (rootValue, replacer, spaceParam) => {
-	let space = "";
-	if (typeof spaceParam === "number") space = " ".repeat(Math.min(10, Math.max(0, Math.floor(spaceParam))));
-	else if (typeof spaceParam === "string") space = spaceParam.slice(0, 10);
-	const isFunctionReplacer = typeof replacer === "function";
-	const propertyList = Array.isArray(replacer) ? new Set(replacer.map(String)) : null;
-	/**
-	* Prepares a value for stringification by resolving toJSON, handling BigInts,
-	* applying custom replacers, and unwrapping primitive objects.
-	*
-	* @param {object|Array} parent The parent object or array holding the value.
-	* @param {string} key The key associated with the value.
-	* @param {any} val The raw value to process.
-	* @returns {any} The processed value ready for stringification.
-	*/
-	const prepareVal = (parent, key, val) => {
-		if (val !== null && typeof val === "object" && typeof val.toJSON === "function") val = val.toJSON(key);
-		if (typeof val === "string" && noiseValue.test(val)) return val + "n";
-		if (typeof val === "bigint") {
-			if ("rawJSON" in JSON) return JSON.rawJSON(val.toString());
-			return val.toString() + "n";
-		}
-		if (isFunctionReplacer) val = replacer.call(parent, key, val);
-		if (val !== null && typeof val === "object") {
-			if (val instanceof Number || val instanceof String || val instanceof Boolean) val = val.valueOf();
-		}
-		return val;
-	};
-	const rootProcessed = prepareVal({ "": rootValue }, "", rootValue);
-	if (isUnstringifiable(rootProcessed)) return;
-	const isRootPrimitive = rootProcessed === null || typeof rootProcessed !== "object";
-	const isRootNativeRawJSON = isRawJSON(rootProcessed);
-	if (isRootPrimitive || isRootNativeRawJSON) return originalStringify(rootProcessed);
-	const chunks = [];
-	let level = 0;
-	const stack = [{
-		parent: { "": rootProcessed },
-		key: "",
-		val: rootProcessed,
-		isArray: Array.isArray(rootProcessed),
-		keys: Array.isArray(rootProcessed) ? null : Object.keys(rootProcessed),
-		index: 0,
-		first: true
-	}];
-	const visited = new WeakSet([rootProcessed]);
-	while (stack.length > 0) {
-		const node = stack[stack.length - 1];
-		if (node.index === 0) {
-			chunks.push(node.isArray ? "[" : "{");
-			level++;
-		}
-		let isDone = false;
-		if (node.isArray) {
-			if (node.index < node.val.length) {
-				if (!node.first) chunks.push(",");
-				if (space) chunks.push("\n" + space.repeat(level));
-				const childRaw = node.val[node.index];
-				const childVal = prepareVal(node.val, String(node.index), childRaw);
-				if (isUnstringifiable(childVal)) {
-					chunks.push("null");
-					node.first = false;
-					node.index++;
-				} else {
-					const isComplexObject = childVal !== null && typeof childVal === "object";
-					const isNativeRaw = isRawJSON(childVal);
-					if (isComplexObject && !isNativeRaw) {
-						if (visited.has(childVal)) throw new TypeError("Converting circular structure to JSON");
-						visited.add(childVal);
-						stack.push({
-							parent: node.val,
-							key: String(node.index),
-							val: childVal,
-							isArray: Array.isArray(childVal),
-							keys: Array.isArray(childVal) ? null : Object.keys(childVal),
-							index: 0,
-							first: true
-						});
-						node.first = false;
-						node.index++;
-					} else {
-						chunks.push(originalStringify(childVal));
-						node.first = false;
-						node.index++;
-					}
-				}
-			} else isDone = true;
-		} else {
-			while (node.index < node.keys.length) {
-				const k = node.keys[node.index++];
-				if (propertyList && !propertyList.has(k)) continue;
-				const childRaw = node.val[k];
-				const childVal = prepareVal(node.val, k, childRaw);
-				if (isUnstringifiable(childVal)) continue;
-				if (!node.first) chunks.push(",");
-				if (space) chunks.push("\n" + space.repeat(level) + originalStringify(k) + ": ");
-				else chunks.push(originalStringify(k) + ":");
-				const isComplexObject = childVal !== null && typeof childVal === "object";
-				const isNativeRaw = isRawJSON(childVal);
-				if (isComplexObject && !isNativeRaw) {
-					if (visited.has(childVal)) throw new TypeError("Converting circular structure to JSON");
-					visited.add(childVal);
-					stack.push({
-						parent: node.val,
-						key: k,
-						val: childVal,
-						isArray: Array.isArray(childVal),
-						keys: Array.isArray(childVal) ? null : Object.keys(childVal),
-						index: 0,
-						first: true
-					});
-					node.first = false;
-					break;
-				} else {
-					chunks.push(originalStringify(childVal));
-					node.first = false;
-				}
-			}
-			if (node.index >= node.keys.length && stack[stack.length - 1] === node) isDone = true;
-		}
-		if (isDone) {
-			level--;
-			if (!node.first && space) chunks.push("\n" + space.repeat(level));
-			chunks.push(node.isArray ? "]" : "}");
-			visited.delete(node.val);
-			stack.pop();
-		}
-	}
-	return chunks.join("");
-};
-/**
-* Converts a JavaScript value to a JSON string.
-*
-* Supports serialization of BigInt values using two strategies:
-* 1. Custom format "123n" → "123" (universal fallback)
-* 2. Native JSON.rawJSON() (Node.js 22+, fastest) when available
-*
-* All other values are serialized exactly like native JSON.stringify().
-*
-* @param {*} value The value to convert to a JSON string.
-* @param {Replacer | Array<string | number> | null} [replacer]
-* A function that alters the behavior of the stringification process,
-* or an array of strings/numbers to indicate properties to exclude.
-* @param {string | number} [space]
-* A string or number to specify indentation or pretty-printing.
-* @returns {string} The JSON string representation.
-*/
-var JSONStringify = (value, replacer, space) => {
-	try {
-		if ("rawJSON" in JSON) return originalStringify(value, (key, val) => {
-			if (typeof val === "bigint") return JSON.rawJSON(val.toString());
-			if (typeof replacer === "function") return replacer(key, val);
-			if (Array.isArray(replacer) && replacer.includes(key)) return val;
-			return val;
-		}, space);
-		if (!value) return originalStringify(value, replacer, space);
-		return originalStringify(value, (key, val) => {
-			if (typeof val === "string" && noiseValue.test(val)) return val.toString() + "n";
-			if (typeof val === "bigint") return val.toString() + "n";
-			if (typeof replacer === "function") return replacer(key, val);
-			if (Array.isArray(replacer) && replacer.includes(key)) return val;
-			return val;
-		}, space).replace(bigIntsStringify, "$1$2$3").replace(noiseStringify, "$1$2$3");
-	} catch (error) {
-		if (error instanceof RangeError) {
-			const convertedJSON = stringifyIteratively(value, replacer, space);
-			if (convertedJSON === void 0) return void 0;
-			if ("rawJSON" in JSON) return convertedJSON;
-			return convertedJSON.replace(bigIntsStringify, "$1$2$3").replace(noiseStringify, "$1$2$3");
-		}
-		throw error;
-	}
-};
-var featureCache = /* @__PURE__ */ new Map();
-/**
-* Detects if the current JSON.parse implementation supports the context.source feature.
-*
-* Uses toString() fingerprinting to cache results and automatically detect runtime
-* replacements of JSON.parse (polyfills, mocks, etc.).
-*
-* @returns {boolean} true if context.source is supported, false otherwise.
-*/
-var isContextSourceSupported = () => {
-	const parseFingerprint = JSON.parse.toString();
-	if (featureCache.has(parseFingerprint)) return featureCache.get(parseFingerprint);
-	try {
-		const result = JSON.parse("1", (_, __, context) => !!context?.source && context.source === "1");
-		featureCache.set(parseFingerprint, result);
-		return result;
-	} catch {
-		featureCache.set(parseFingerprint, false);
-		return false;
-	}
-};
-/**
-* Reviver function that converts custom-format BigInt strings back to BigInt values.
-* Also handles "noise" strings that accidentally match the BigInt format.
-*
-* @param {string | number | undefined} key The object key.
-* @param {*} value The value being parsed.
-* @param {object} [context] Parse context (if supported by JSON.parse).
-* @param {Reviver} [userReviver] User's custom reviver function.
-* @returns {any} The transformed value.
-*/
-var convertMarkedBigIntsReviver = (key, value, context, userReviver) => {
-	if (typeof value === "string" && customFormat.test(value)) return BigInt(value.slice(0, -1));
-	if (typeof value === "string" && noiseValue.test(value)) return value.slice(0, -1);
-	if (!(typeof userReviver === "function")) return value;
-	return userReviver(key, value, context);
-};
-/**
-* Fast JSON.parse implementation (~2x faster than classic fallback).
-* Uses JSON.parse's context.source feature to detect integers and convert
-* large numbers directly to BigInt without string manipulation.
-*
-* Does not support legacy custom format from v1 of this library.
-*
-* @param {string} text JSON string to parse.
-* @param {Reviver} [reviver] Transform function to apply to each value.
-* @returns {any} Parsed JavaScript value.
-*/
-var JSONParseV2 = (text, reviver) => {
-	return JSON.parse(text, (key, value, context) => {
-		const isNumber = typeof value === "number";
-		const isOutOfBounds = value > Number.MAX_SAFE_INTEGER || value < Number.MIN_SAFE_INTEGER;
-		const isBigNumber = isNumber && isOutOfBounds;
-		const isInt = context && intRegex.test(context.source);
-		if (isBigNumber && isInt) return BigInt(context.source);
-		if (!(typeof reviver === "function")) return value;
-		return reviver(key, value, context);
-	});
-};
-var MAX_INT = Number.MAX_SAFE_INTEGER.toString();
-var MAX_DIGITS = MAX_INT.length;
-var stringsOrLargeNumbers = /"(?:[^"\\]|\\.)*"|-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?/g;
-var noiseValueWithQuotes = /^"-?\d+n+"$/;
-/**
-* Iteratively traverses the parsed object bottom-up (post-order),
-* emulating the native JSON.parse reviver behavior.
-* This avoids Call Stack overflows (RangeError) on deeply nested structures.
-*
-* @param {any} parsed The natively parsed JSON object.
-* @param {Reviver} [userReviver] User's custom reviver function.
-* @returns {any} The fully processed object.
-*/
-var applyReviverIteratively = (parsed, userReviver) => {
-	const rootHolder = { "": parsed };
-	const stack = [{
-		parent: rootHolder,
-		key: "",
-		visited: false
-	}];
-	while (stack.length > 0) {
-		const node = stack[stack.length - 1];
-		if (!node.visited) {
-			node.visited = true;
-			const value = node.parent[node.key];
-			if (value !== null && typeof value === "object") {
-				const keys = Object.keys(value);
-				for (let i = keys.length - 1; i >= 0; i--) stack.push({
-					parent: value,
-					key: keys[i],
-					visited: false
-				});
-			}
-		} else {
-			const { parent, key } = node;
-			let value = parent[key];
-			if (typeof value === "string") {
-				if (customFormat.test(value)) value = BigInt(value.slice(0, -1));
-				else if (noiseValue.test(value)) value = value.slice(0, -1);
-			}
-			if (typeof userReviver === "function") value = userReviver.call(parent, key, value);
-			if (value === void 0) delete parent[key];
-			else parent[key] = value;
-			stack.pop();
-		}
-	}
-	return rootHolder[""];
-};
-/**
-* Pre-processes the JSON string to mark large numbers with an 'n' suffix.
-*
-* @param {string} text The raw JSON string.
-* @returns {string} The serialized string with marked BigInts.
-*/
-var serializeBigInts = (text) => {
-	return text.replace(stringsOrLargeNumbers, (match, digits, fractional, exponential) => {
-		const isString = match[0] === "\"";
-		if (isString && noiseValueWithQuotes.test(match)) return match.substring(0, match.length - 1) + "n\"";
-		const hasFractionalOrExponential = fractional || exponential;
-		const isLessThanMaxSafeInt = digits && (digits.length < MAX_DIGITS || digits.length === MAX_DIGITS && digits <= MAX_INT);
-		if (isString || hasFractionalOrExponential || isLessThanMaxSafeInt) return match;
-		return "\"" + match + "n\"";
-	});
-};
-/**
-* Converts a JSON string into a JavaScript value.
-*
-* Supports parsing of large integers using two strategies:
-* 1. Classic fallback: Marks large numbers with "123n" format, then converts to BigInt
-* 2. Fast path (JSONParseV2): Uses context.source feature (~2x faster) when available
-*
-* All other JSON values are parsed exactly like native JSON.parse().
-*
-* @param {string} text A valid JSON string.
-* @param {Reviver} [reviver]
-* A function that transforms the results. This function is called for each member
-* of the object. If a member contains nested objects, the nested objects are
-* transformed before the parent object is.
-* @returns {any} The parsed JavaScript value.
-* @throws {SyntaxError} If text is not valid JSON.
-*/
-var JSONParse = (text, reviver) => {
-	if (!text) return originalParse(text, reviver);
-	try {
-		if (isContextSourceSupported()) return JSONParseV2(text, reviver);
-		return originalParse(serializeBigInts(text), (key, value, context) => convertMarkedBigIntsReviver(key, value, context, reviver));
-	} catch (error) {
-		if (error instanceof RangeError) return applyReviverIteratively(originalParse(serializeBigInts(text)), reviver);
-		throw error;
-	}
-};
-//#endregion
-//#region node_modules/.pnpm/@octokit+request-error@7.1.2/node_modules/@octokit/request-error/dist-src/index.js
-var RequestError = class extends Error {
-	name;
-	/**
-	* http status code
-	*/
-	status;
-	/**
-	* Request options that lead to the error.
-	*/
-	request;
-	/**
-	* Response object if a response was received
-	*/
-	response;
-	constructor(message, statusCode, options) {
-		super(message, { cause: options.cause });
-		this.name = "HttpError";
-		this.status = Number.parseInt(statusCode);
-		if (Number.isNaN(this.status)) this.status = 0;
-		/* v8 ignore else -- @preserve -- Bug with vitest coverage where it sees an else branch that doesn't exist */
-		if ("response" in options) this.response = options.response;
-		const requestCopy = Object.assign({}, options.request);
-		if (options.request.headers.authorization) requestCopy.headers = Object.assign({}, options.request.headers, { authorization: options.request.headers.authorization.replace(/(?<! ) .*$/, " [REDACTED]") });
-		requestCopy.url = requestCopy.url.replace(/\bclient_secret=\w+/g, "client_secret=[REDACTED]").replace(/\baccess_token=\w+/g, "access_token=[REDACTED]");
-		this.request = requestCopy;
-	}
-};
-//#endregion
-//#region node_modules/.pnpm/@octokit+request@10.0.16/node_modules/@octokit/request/dist-bundle/index.js
-var defaults_default = { headers: { "user-agent": `octokit-request.js/10.0.16 ${getUserAgent()}` } };
-function isPlainObject(value) {
-	if (typeof value !== "object" || value === null) return false;
-	if (Object.prototype.toString.call(value) !== "[object Object]") return false;
-	const proto = Object.getPrototypeOf(value);
-	if (proto === null) return true;
-	const Ctor = Object.prototype.hasOwnProperty.call(proto, "constructor") && proto.constructor;
-	return typeof Ctor === "function" && Ctor instanceof Ctor && Function.prototype.call(Ctor) === Function.prototype.call(value);
-}
-var noop$1 = /* @__PURE__ */ __name(() => "", "noop");
-async function fetchWrapper(requestOptions) {
-	const fetch = requestOptions.request?.fetch || globalThis.fetch;
-	if (!fetch) throw new Error("fetch is not set. Please pass a fetch implementation as new Octokit({ request: { fetch }}). Learn more at https://github.com/octokit/octokit.js/#fetch-missing");
-	const log = requestOptions.request?.log || console;
-	const parseSuccessResponseBody = requestOptions.request?.parseSuccessResponseBody !== false;
-	const body = isPlainObject(requestOptions.body) || Array.isArray(requestOptions.body) ? JSONStringify(requestOptions.body) : requestOptions.body;
-	const requestHeaders = Object.fromEntries(Object.entries(requestOptions.headers).map(([name, value]) => [name, String(value)]));
-	let fetchResponse;
-	try {
-		fetchResponse = await fetch(requestOptions.url, {
-			method: requestOptions.method,
-			body,
-			redirect: requestOptions.request?.redirect,
-			headers: requestHeaders,
-			signal: requestOptions.request?.signal,
-			...requestOptions.body && { duplex: "half" }
-		});
-	} catch (error) {
-		let message = "Unknown Error";
-		if (error instanceof Error) {
-			if (error.name === "AbortError") {
-				error.status = 500;
-				throw error;
-			}
-			message = error.message;
-			if (error.name === "TypeError" && "cause" in error) {
-				if (error.cause instanceof Error) message = error.cause.message;
-				else if (typeof error.cause === "string") message = error.cause;
-			}
-		}
-		const requestError = new RequestError(message, 500, { request: requestOptions });
-		requestError.cause = error;
-		throw requestError;
-	}
-	const status = fetchResponse.status;
-	const url = fetchResponse.url;
-	const responseHeaders = {};
-	for (const [key, value] of fetchResponse.headers) responseHeaders[key] = value;
-	const octokitResponse = {
-		url,
-		status,
-		headers: responseHeaders,
-		data: ""
-	};
-	if ("deprecation" in responseHeaders) {
-		const matches = responseHeaders.link && responseHeaders.link.match(/<([^<>]+)>; rel="deprecation"/);
-		const deprecationLink = matches && matches.pop();
-		log.warn(`[@octokit/request] "${requestOptions.method} ${requestOptions.url}" is deprecated. It is scheduled to be removed on ${responseHeaders.sunset}${deprecationLink ? `. See ${deprecationLink}` : ""}`);
-	}
-	if (status === 204 || status === 205) return octokitResponse;
-	if (requestOptions.method === "HEAD") {
-		if (status < 400) return octokitResponse;
-		throw new RequestError(fetchResponse.statusText, status, {
-			response: octokitResponse,
-			request: requestOptions
-		});
-	}
-	if (status === 304) {
-		octokitResponse.data = await getResponseData(fetchResponse);
-		throw new RequestError("Not modified", status, {
-			response: octokitResponse,
-			request: requestOptions
-		});
-	}
-	if (status >= 400) {
-		octokitResponse.data = await getResponseData(fetchResponse);
-		throw new RequestError(toErrorMessage(octokitResponse.data), status, {
-			response: octokitResponse,
-			request: requestOptions
-		});
-	}
-	octokitResponse.data = parseSuccessResponseBody ? await getResponseData(fetchResponse) : fetchResponse.body;
-	return octokitResponse;
-}
-async function getResponseData(response) {
-	const contentType = response.headers.get("content-type");
-	if (!contentType) return response.text().catch(noop$1);
-	const mimetype = parse$1(contentType);
-	if (isJSONResponse(mimetype)) {
-		let text = "";
-		try {
-			text = await response.text();
-			return JSONParse(text);
-		} catch (err) {
-			return text;
-		}
-	} else if (mimetype.type.startsWith("text/") || mimetype.parameters.charset?.toLowerCase() === "utf-8" && mimetype.type !== "application/octet-stream") return response.text().catch(noop$1);
-	else return response.arrayBuffer().catch(
-		/* v8 ignore next -- @preserve */
-		() => /* @__PURE__ */ new ArrayBuffer(0)
-	);
-}
-function isJSONResponse(mimetype) {
-	return mimetype.type === "application/json" || mimetype.type === "application/scim+json";
-}
-function toErrorMessage(data) {
-	if (typeof data === "string") return data;
-	if (data instanceof ArrayBuffer) return "Unknown error";
-	if (typeof data === "object" && data !== null && "message" in data) {
-		const objectData = data;
-		const suffix = "documentation_url" in objectData ? ` - ${objectData.documentation_url}` : "";
-		return Array.isArray(objectData.errors) ? `${objectData.message}: ${objectData.errors.map((v) => JSON.stringify(v)).join(", ")}${suffix}` : `${objectData.message}${suffix}`;
-	}
-	return `Unknown error: ${JSON.stringify(data)}`;
-}
-function withDefaults$1(oldEndpoint, newDefaults) {
-	const endpoint2 = oldEndpoint.defaults(newDefaults);
-	const newApi = function(route, parameters) {
-		const endpointOptions = endpoint2.merge(route, parameters);
-		if (!endpointOptions.request || !endpointOptions.request.hook) return fetchWrapper(endpoint2.parse(endpointOptions));
-		const request2 = (route2, parameters2) => {
-			return fetchWrapper(endpoint2.parse(endpoint2.merge(route2, parameters2)));
-		};
-		Object.assign(request2, {
-			endpoint: endpoint2,
-			defaults: withDefaults$1.bind(null, endpoint2)
-		});
-		return endpointOptions.request.hook(request2, endpointOptions);
-	};
-	return Object.assign(newApi, {
-		endpoint: endpoint2,
-		defaults: withDefaults$1.bind(null, endpoint2)
-	});
-}
-__name(withDefaults$1, "withDefaults");
-var request = withDefaults$1(endpoint, defaults_default);
-/* v8 ignore next -- @preserve */
-/* v8 ignore else -- @preserve */
-//#endregion
-//#region node_modules/.pnpm/@octokit+graphql@9.0.5/node_modules/@octokit/graphql/dist-bundle/index.js
-var VERSION$3 = "0.0.0-development";
-function _buildMessageForResponseErrors(data) {
-	return `Request failed due to following response errors:
-` + data.errors.map((e) => ` - ${e.message}`).join("\n");
-}
-var GraphqlResponseError = class extends Error {
-	constructor(request2, headers, response) {
-		super(_buildMessageForResponseErrors(response));
-		this.request = request2;
-		this.headers = headers;
-		this.response = response;
-		this.errors = response.errors;
-		this.data = response.data;
-		if (Error.captureStackTrace) Error.captureStackTrace(this, this.constructor);
-	}
-	request;
-	headers;
-	response;
-	name = "GraphqlResponseError";
-	errors;
-	data;
-};
-var NON_VARIABLE_OPTIONS = [
-	"method",
-	"baseUrl",
-	"url",
-	"headers",
-	"request",
-	"query",
-	"mediaType",
-	"operationName"
-];
-var FORBIDDEN_VARIABLE_OPTIONS = [
-	"query",
-	"method",
-	"url"
-];
-var GHES_V3_SUFFIX_REGEX = /\/api\/v3\/?$/;
-function graphql(request2, query, options) {
-	if (options) {
-		if (typeof query === "string" && "query" in options) return Promise.reject(/* @__PURE__ */ new Error(`[@octokit/graphql] "query" cannot be used as variable name`));
-		for (const key in options) {
-			if (!FORBIDDEN_VARIABLE_OPTIONS.includes(key)) continue;
-			return Promise.reject(/* @__PURE__ */ new Error(`[@octokit/graphql] "${key}" cannot be used as variable name`));
-		}
-	}
-	const parsedOptions = typeof query === "string" ? Object.assign({ query }, options) : query;
-	const requestOptions = Object.keys(parsedOptions).reduce((result, key) => {
-		if (NON_VARIABLE_OPTIONS.includes(key)) {
-			result[key] = parsedOptions[key];
-			return result;
-		}
-		if (!result.variables) result.variables = {};
-		result.variables[key] = parsedOptions[key];
-		return result;
-	}, {});
-	const baseUrl = parsedOptions.baseUrl || request2.endpoint.DEFAULTS.baseUrl;
-	if (GHES_V3_SUFFIX_REGEX.test(baseUrl)) requestOptions.url = baseUrl.replace(GHES_V3_SUFFIX_REGEX, "/api/graphql");
-	return request2(requestOptions).then((response) => {
-		if (response.data.errors) {
-			const headers = {};
-			for (const key of Object.keys(response.headers)) headers[key] = response.headers[key];
-			throw new GraphqlResponseError(requestOptions, headers, response.data);
-		}
-		return response.data.data;
-	});
-}
-function withDefaults(request2, newDefaults) {
-	const newRequest = request2.defaults(newDefaults);
-	const newApi = (query, options) => {
-		return graphql(newRequest, query, options);
-	};
-	return Object.assign(newApi, {
-		defaults: withDefaults.bind(null, newRequest),
-		endpoint: newRequest.endpoint
-	});
-}
-withDefaults(request, {
-	headers: { "user-agent": `octokit-graphql.js/${VERSION$3} ${getUserAgent()}` },
-	method: "POST",
-	url: "/graphql"
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.11.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/_virtual/_rolldown/runtime.js
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", {
+	value,
+	configurable: true
 });
-function withCustomRequest(customRequest) {
-	return withDefaults(customRequest, {
-		method: "POST",
-		url: "/graphql"
-	});
-}
-/* v8 ignore if -- @preserve */
 //#endregion
-//#region node_modules/.pnpm/@octokit+auth-token@6.0.0/node_modules/@octokit/auth-token/dist-bundle/index.js
-var b64url = "(?:[a-zA-Z0-9_-]+)";
-var sep$1 = "\\.";
-var jwtRE = new RegExp(`^${b64url}${sep$1}${b64url}${sep$1}${b64url}$`);
-var isJWT = jwtRE.test.bind(jwtRE);
-async function auth(token) {
-	const isApp = isJWT(token);
-	const isInstallation = token.startsWith("v1.") || token.startsWith("ghs_");
-	const isUserToServer = token.startsWith("ghu_");
-	return {
-		type: "token",
-		token,
-		tokenType: isApp ? "app" : isInstallation ? "installation" : isUserToServer ? "user-to-server" : "oauth"
-	};
-}
-function withAuthorizationPrefix(token) {
-	if (token.split(/\./).length === 3) return `bearer ${token}`;
-	return `token ${token}`;
-}
-async function hook(token, request, route, parameters) {
-	const endpoint = request.endpoint.merge(route, parameters);
-	endpoint.headers.authorization = withAuthorizationPrefix(token);
-	return request(endpoint);
-}
-var createTokenAuth = function createTokenAuth2(token) {
-	if (!token) throw new Error("[@octokit/auth-token] No token passed to createTokenAuth");
-	if (typeof token !== "string") throw new Error("[@octokit/auth-token] Token passed to createTokenAuth is not a string");
-	token = token.replace(/^(token|bearer) +/i, "");
-	return Object.assign(auth.bind(null, token), { hook: hook.bind(null, token) });
-};
-//#endregion
-//#region node_modules/.pnpm/@octokit+core@7.0.8/node_modules/@octokit/core/dist-src/version.js
-var VERSION$2 = "7.0.8";
-//#endregion
-//#region node_modules/.pnpm/@octokit+core@7.0.8/node_modules/@octokit/core/dist-src/index.js
-var noop = () => {};
-var consoleWarn = console.warn.bind(console);
-var consoleError = console.error.bind(console);
-function createLogger(logger = {}) {
-	if (typeof logger.debug !== "function") logger.debug = noop;
-	if (typeof logger.info !== "function") logger.info = noop;
-	if (typeof logger.warn !== "function") logger.warn = consoleWarn;
-	if (typeof logger.error !== "function") logger.error = consoleError;
-	return logger;
-}
-var userAgentTrail = `octokit-core.js/${VERSION$2} ${getUserAgent()}`;
-var Octokit = class {
-	static VERSION = VERSION$2;
-	static defaults(defaults) {
-		const OctokitWithDefaults = class extends this {
-			constructor(...args) {
-				const options = args[0] || {};
-				if (typeof defaults === "function") {
-					super(defaults(options));
-					return;
-				}
-				super(Object.assign({}, defaults, options, options.userAgent && defaults.userAgent ? { userAgent: `${options.userAgent} ${defaults.userAgent}` } : null));
-			}
-		};
-		return OctokitWithDefaults;
-	}
-	static plugins = [];
-	/**
-	* Attach a plugin (or many) to your Octokit instance.
-	*
-	* @example
-	* const API = Octokit.plugin(plugin1, plugin2, plugin3, ...)
-	*/
-	static plugin(...newPlugins) {
-		const currentPlugins = this.plugins;
-		const NewOctokit = class extends this {
-			static plugins = currentPlugins.concat(newPlugins.filter((plugin) => !currentPlugins.includes(plugin)));
-		};
-		return NewOctokit;
-	}
-	constructor(options = {}) {
-		const hook = new before_after_hook_default.Collection();
-		const requestDefaults = {
-			baseUrl: request.endpoint.DEFAULTS.baseUrl,
-			headers: {},
-			request: Object.assign({}, options.request, { hook: hook.bind(null, "request") }),
-			mediaType: {
-				previews: [],
-				format: ""
-			}
-		};
-		requestDefaults.headers["user-agent"] = options.userAgent ? `${options.userAgent} ${userAgentTrail}` : userAgentTrail;
-		if (options.baseUrl) requestDefaults.baseUrl = options.baseUrl;
-		if (options.previews) requestDefaults.mediaType.previews = options.previews;
-		if (options.timeZone) requestDefaults.headers["time-zone"] = options.timeZone;
-		this.request = request.defaults(requestDefaults);
-		this.graphql = withCustomRequest(this.request).defaults(requestDefaults);
-		this.log = createLogger(options.log);
-		this.hook = hook;
-		if (!options.authStrategy) {
-			if (!options.auth) this.auth = async () => ({ type: "unauthenticated" });
-			else {
-				const auth = createTokenAuth(options.auth);
-				hook.wrap("request", auth.hook);
-				this.auth = auth;
-			}
-		} else {
-			const { authStrategy, ...otherOptions } = options;
-			const auth = authStrategy(Object.assign({
-				request: this.request,
-				log: this.log,
-				octokit: this,
-				octokitOptions: otherOptions
-			}, options.auth));
-			hook.wrap("request", auth.hook);
-			this.auth = auth;
-		}
-		const classConstructor = this.constructor;
-		for (let i = 0; i < classConstructor.plugins.length; ++i) Object.assign(this, classConstructor.plugins[i](this, options));
-	}
-	request;
-	graphql;
-	log;
-	hook;
-	auth;
-};
-//#endregion
-//#region node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@17.0.0_@octokit+core@7.0.8/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/version.js
-var VERSION$1 = "17.0.0";
-//#endregion
-//#region node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@17.0.0_@octokit+core@7.0.8/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/generated/endpoints.js
-var endpoints_default = {
-	actions: {
-		addCustomLabelsToSelfHostedRunnerForOrg: ["POST /orgs/{org}/actions/runners/{runner_id}/labels"],
-		addCustomLabelsToSelfHostedRunnerForRepo: ["POST /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"],
-		addRepoAccessToSelfHostedRunnerGroupInOrg: ["PUT /orgs/{org}/actions/runner-groups/{runner_group_id}/repositories/{repository_id}"],
-		addSelectedRepoToOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}"],
-		addSelectedRepoToOrgVariable: ["PUT /orgs/{org}/actions/variables/{name}/repositories/{repository_id}"],
-		approveWorkflowRun: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/approve"],
-		cancelWorkflowRun: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/cancel"],
-		createEnvironmentVariable: ["POST /repos/{owner}/{repo}/environments/{environment_name}/variables"],
-		createHostedRunnerForOrg: ["POST /orgs/{org}/actions/hosted-runners"],
-		createOrUpdateEnvironmentSecret: ["PUT /repos/{owner}/{repo}/environments/{environment_name}/secrets/{secret_name}"],
-		createOrUpdateOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}"],
-		createOrUpdateRepoSecret: ["PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}"],
-		createOrgVariable: ["POST /orgs/{org}/actions/variables"],
-		createRegistrationTokenForOrg: ["POST /orgs/{org}/actions/runners/registration-token"],
-		createRegistrationTokenForRepo: ["POST /repos/{owner}/{repo}/actions/runners/registration-token"],
-		createRemoveTokenForOrg: ["POST /orgs/{org}/actions/runners/remove-token"],
-		createRemoveTokenForRepo: ["POST /repos/{owner}/{repo}/actions/runners/remove-token"],
-		createRepoVariable: ["POST /repos/{owner}/{repo}/actions/variables"],
-		createWorkflowDispatch: ["POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches"],
-		deleteActionsCacheById: ["DELETE /repos/{owner}/{repo}/actions/caches/{cache_id}"],
-		deleteActionsCacheByKey: ["DELETE /repos/{owner}/{repo}/actions/caches{?key,ref}"],
-		deleteArtifact: ["DELETE /repos/{owner}/{repo}/actions/artifacts/{artifact_id}"],
-		deleteCustomImageFromOrg: ["DELETE /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}"],
-		deleteCustomImageVersionFromOrg: ["DELETE /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}/versions/{version}"],
-		deleteEnvironmentSecret: ["DELETE /repos/{owner}/{repo}/environments/{environment_name}/secrets/{secret_name}"],
-		deleteEnvironmentVariable: ["DELETE /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}"],
-		deleteHostedRunnerForOrg: ["DELETE /orgs/{org}/actions/hosted-runners/{hosted_runner_id}"],
-		deleteOrgSecret: ["DELETE /orgs/{org}/actions/secrets/{secret_name}"],
-		deleteOrgVariable: ["DELETE /orgs/{org}/actions/variables/{name}"],
-		deleteRepoSecret: ["DELETE /repos/{owner}/{repo}/actions/secrets/{secret_name}"],
-		deleteRepoVariable: ["DELETE /repos/{owner}/{repo}/actions/variables/{name}"],
-		deleteSelfHostedRunnerFromOrg: ["DELETE /orgs/{org}/actions/runners/{runner_id}"],
-		deleteSelfHostedRunnerFromRepo: ["DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}"],
-		deleteWorkflowRun: ["DELETE /repos/{owner}/{repo}/actions/runs/{run_id}"],
-		deleteWorkflowRunLogs: ["DELETE /repos/{owner}/{repo}/actions/runs/{run_id}/logs"],
-		disableSelectedRepositoryGithubActionsOrganization: ["DELETE /orgs/{org}/actions/permissions/repositories/{repository_id}"],
-		disableWorkflow: ["PUT /repos/{owner}/{repo}/actions/workflows/{workflow_id}/disable"],
-		downloadArtifact: ["GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}/{archive_format}"],
-		downloadJobLogsForWorkflowRun: ["GET /repos/{owner}/{repo}/actions/jobs/{job_id}/logs"],
-		downloadWorkflowRunAttemptLogs: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/logs"],
-		downloadWorkflowRunLogs: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/logs"],
-		enableSelectedRepositoryGithubActionsOrganization: ["PUT /orgs/{org}/actions/permissions/repositories/{repository_id}"],
-		enableWorkflow: ["PUT /repos/{owner}/{repo}/actions/workflows/{workflow_id}/enable"],
-		forceCancelWorkflowRun: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/force-cancel"],
-		generateRunnerJitconfigForOrg: ["POST /orgs/{org}/actions/runners/generate-jitconfig"],
-		generateRunnerJitconfigForRepo: ["POST /repos/{owner}/{repo}/actions/runners/generate-jitconfig"],
-		getActionsCacheList: ["GET /repos/{owner}/{repo}/actions/caches"],
-		getActionsCacheUsage: ["GET /repos/{owner}/{repo}/actions/cache/usage"],
-		getActionsCacheUsageByRepoForOrg: ["GET /orgs/{org}/actions/cache/usage-by-repository"],
-		getActionsCacheUsageForOrg: ["GET /orgs/{org}/actions/cache/usage"],
-		getAllowedActionsOrganization: ["GET /orgs/{org}/actions/permissions/selected-actions"],
-		getAllowedActionsRepository: ["GET /repos/{owner}/{repo}/actions/permissions/selected-actions"],
-		getArtifact: ["GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}"],
-		getCustomImageForOrg: ["GET /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}"],
-		getCustomImageVersionForOrg: ["GET /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}/versions/{version}"],
-		getCustomOidcSubClaimForRepo: ["GET /repos/{owner}/{repo}/actions/oidc/customization/sub"],
-		getEnvironmentPublicKey: ["GET /repos/{owner}/{repo}/environments/{environment_name}/secrets/public-key"],
-		getEnvironmentSecret: ["GET /repos/{owner}/{repo}/environments/{environment_name}/secrets/{secret_name}"],
-		getEnvironmentVariable: ["GET /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}"],
-		getGithubActionsDefaultWorkflowPermissionsOrganization: ["GET /orgs/{org}/actions/permissions/workflow"],
-		getGithubActionsDefaultWorkflowPermissionsRepository: ["GET /repos/{owner}/{repo}/actions/permissions/workflow"],
-		getGithubActionsPermissionsOrganization: ["GET /orgs/{org}/actions/permissions"],
-		getGithubActionsPermissionsRepository: ["GET /repos/{owner}/{repo}/actions/permissions"],
-		getHostedRunnerForOrg: ["GET /orgs/{org}/actions/hosted-runners/{hosted_runner_id}"],
-		getHostedRunnersGithubOwnedImagesForOrg: ["GET /orgs/{org}/actions/hosted-runners/images/github-owned"],
-		getHostedRunnersLimitsForOrg: ["GET /orgs/{org}/actions/hosted-runners/limits"],
-		getHostedRunnersMachineSpecsForOrg: ["GET /orgs/{org}/actions/hosted-runners/machine-sizes"],
-		getHostedRunnersPartnerImagesForOrg: ["GET /orgs/{org}/actions/hosted-runners/images/partner"],
-		getHostedRunnersPlatformsForOrg: ["GET /orgs/{org}/actions/hosted-runners/platforms"],
-		getJobForWorkflowRun: ["GET /repos/{owner}/{repo}/actions/jobs/{job_id}"],
-		getOrgPublicKey: ["GET /orgs/{org}/actions/secrets/public-key"],
-		getOrgSecret: ["GET /orgs/{org}/actions/secrets/{secret_name}"],
-		getOrgVariable: ["GET /orgs/{org}/actions/variables/{name}"],
-		getPendingDeploymentsForRun: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments"],
-		getRepoPermissions: [
-			"GET /repos/{owner}/{repo}/actions/permissions",
-			{},
-			{ renamed: ["actions", "getGithubActionsPermissionsRepository"] }
-		],
-		getRepoPublicKey: ["GET /repos/{owner}/{repo}/actions/secrets/public-key"],
-		getRepoSecret: ["GET /repos/{owner}/{repo}/actions/secrets/{secret_name}"],
-		getRepoVariable: ["GET /repos/{owner}/{repo}/actions/variables/{name}"],
-		getReviewsForRun: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/approvals"],
-		getSelfHostedRunnerForOrg: ["GET /orgs/{org}/actions/runners/{runner_id}"],
-		getSelfHostedRunnerForRepo: ["GET /repos/{owner}/{repo}/actions/runners/{runner_id}"],
-		getWorkflow: ["GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}"],
-		getWorkflowAccessToRepository: ["GET /repos/{owner}/{repo}/actions/permissions/access"],
-		getWorkflowRun: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}"],
-		getWorkflowRunAttempt: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}"],
-		getWorkflowRunUsage: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/timing"],
-		getWorkflowUsage: ["GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/timing"],
-		listArtifactsForRepo: ["GET /repos/{owner}/{repo}/actions/artifacts"],
-		listCustomImageVersionsForOrg: ["GET /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}/versions"],
-		listCustomImagesForOrg: ["GET /orgs/{org}/actions/hosted-runners/images/custom"],
-		listEnvironmentSecrets: ["GET /repos/{owner}/{repo}/environments/{environment_name}/secrets"],
-		listEnvironmentVariables: ["GET /repos/{owner}/{repo}/environments/{environment_name}/variables"],
-		listGithubHostedRunnersInGroupForOrg: ["GET /orgs/{org}/actions/runner-groups/{runner_group_id}/hosted-runners"],
-		listHostedRunnersForOrg: ["GET /orgs/{org}/actions/hosted-runners"],
-		listJobsForWorkflowRun: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/jobs"],
-		listJobsForWorkflowRunAttempt: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/jobs"],
-		listLabelsForSelfHostedRunnerForOrg: ["GET /orgs/{org}/actions/runners/{runner_id}/labels"],
-		listLabelsForSelfHostedRunnerForRepo: ["GET /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"],
-		listOrgSecrets: ["GET /orgs/{org}/actions/secrets"],
-		listOrgVariables: ["GET /orgs/{org}/actions/variables"],
-		listRepoOrganizationSecrets: ["GET /repos/{owner}/{repo}/actions/organization-secrets"],
-		listRepoOrganizationVariables: ["GET /repos/{owner}/{repo}/actions/organization-variables"],
-		listRepoSecrets: ["GET /repos/{owner}/{repo}/actions/secrets"],
-		listRepoVariables: ["GET /repos/{owner}/{repo}/actions/variables"],
-		listRepoWorkflows: ["GET /repos/{owner}/{repo}/actions/workflows"],
-		listRunnerApplicationsForOrg: ["GET /orgs/{org}/actions/runners/downloads"],
-		listRunnerApplicationsForRepo: ["GET /repos/{owner}/{repo}/actions/runners/downloads"],
-		listSelectedReposForOrgSecret: ["GET /orgs/{org}/actions/secrets/{secret_name}/repositories"],
-		listSelectedReposForOrgVariable: ["GET /orgs/{org}/actions/variables/{name}/repositories"],
-		listSelectedRepositoriesEnabledGithubActionsOrganization: ["GET /orgs/{org}/actions/permissions/repositories"],
-		listSelfHostedRunnersForOrg: ["GET /orgs/{org}/actions/runners"],
-		listSelfHostedRunnersForRepo: ["GET /repos/{owner}/{repo}/actions/runners"],
-		listWorkflowRunArtifacts: ["GET /repos/{owner}/{repo}/actions/runs/{run_id}/artifacts"],
-		listWorkflowRuns: ["GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs"],
-		listWorkflowRunsForRepo: ["GET /repos/{owner}/{repo}/actions/runs"],
-		reRunJobForWorkflowRun: ["POST /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun"],
-		reRunWorkflow: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/rerun"],
-		reRunWorkflowFailedJobs: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/rerun-failed-jobs"],
-		removeAllCustomLabelsFromSelfHostedRunnerForOrg: ["DELETE /orgs/{org}/actions/runners/{runner_id}/labels"],
-		removeAllCustomLabelsFromSelfHostedRunnerForRepo: ["DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"],
-		removeCustomLabelFromSelfHostedRunnerForOrg: ["DELETE /orgs/{org}/actions/runners/{runner_id}/labels/{name}"],
-		removeCustomLabelFromSelfHostedRunnerForRepo: ["DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}/labels/{name}"],
-		removeSelectedRepoFromOrgSecret: ["DELETE /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}"],
-		removeSelectedRepoFromOrgVariable: ["DELETE /orgs/{org}/actions/variables/{name}/repositories/{repository_id}"],
-		reviewCustomGatesForRun: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/deployment_protection_rule"],
-		reviewPendingDeploymentsForRun: ["POST /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments"],
-		setAllowedActionsOrganization: ["PUT /orgs/{org}/actions/permissions/selected-actions"],
-		setAllowedActionsRepository: ["PUT /repos/{owner}/{repo}/actions/permissions/selected-actions"],
-		setCustomLabelsForSelfHostedRunnerForOrg: ["PUT /orgs/{org}/actions/runners/{runner_id}/labels"],
-		setCustomLabelsForSelfHostedRunnerForRepo: ["PUT /repos/{owner}/{repo}/actions/runners/{runner_id}/labels"],
-		setCustomOidcSubClaimForRepo: ["PUT /repos/{owner}/{repo}/actions/oidc/customization/sub"],
-		setGithubActionsDefaultWorkflowPermissionsOrganization: ["PUT /orgs/{org}/actions/permissions/workflow"],
-		setGithubActionsDefaultWorkflowPermissionsRepository: ["PUT /repos/{owner}/{repo}/actions/permissions/workflow"],
-		setGithubActionsPermissionsOrganization: ["PUT /orgs/{org}/actions/permissions"],
-		setGithubActionsPermissionsRepository: ["PUT /repos/{owner}/{repo}/actions/permissions"],
-		setSelectedReposForOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}/repositories"],
-		setSelectedReposForOrgVariable: ["PUT /orgs/{org}/actions/variables/{name}/repositories"],
-		setSelectedRepositoriesEnabledGithubActionsOrganization: ["PUT /orgs/{org}/actions/permissions/repositories"],
-		setWorkflowAccessToRepository: ["PUT /repos/{owner}/{repo}/actions/permissions/access"],
-		updateEnvironmentVariable: ["PATCH /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}"],
-		updateHostedRunnerForOrg: ["PATCH /orgs/{org}/actions/hosted-runners/{hosted_runner_id}"],
-		updateOrgVariable: ["PATCH /orgs/{org}/actions/variables/{name}"],
-		updateRepoVariable: ["PATCH /repos/{owner}/{repo}/actions/variables/{name}"]
-	},
-	activity: {
-		checkRepoIsStarredByAuthenticatedUser: ["GET /user/starred/{owner}/{repo}"],
-		deleteRepoSubscription: ["DELETE /repos/{owner}/{repo}/subscription"],
-		deleteThreadSubscription: ["DELETE /notifications/threads/{thread_id}/subscription"],
-		getFeeds: ["GET /feeds"],
-		getRepoSubscription: ["GET /repos/{owner}/{repo}/subscription"],
-		getThread: ["GET /notifications/threads/{thread_id}"],
-		getThreadSubscriptionForAuthenticatedUser: ["GET /notifications/threads/{thread_id}/subscription"],
-		listEventsForAuthenticatedUser: ["GET /users/{username}/events"],
-		listNotificationsForAuthenticatedUser: ["GET /notifications"],
-		listOrgEventsForAuthenticatedUser: ["GET /users/{username}/events/orgs/{org}"],
-		listPublicEvents: ["GET /events"],
-		listPublicEventsForRepoNetwork: ["GET /networks/{owner}/{repo}/events"],
-		listPublicEventsForUser: ["GET /users/{username}/events/public"],
-		listPublicOrgEvents: ["GET /orgs/{org}/events"],
-		listReceivedEventsForUser: ["GET /users/{username}/received_events"],
-		listReceivedPublicEventsForUser: ["GET /users/{username}/received_events/public"],
-		listRepoEvents: ["GET /repos/{owner}/{repo}/events"],
-		listRepoNotificationsForAuthenticatedUser: ["GET /repos/{owner}/{repo}/notifications"],
-		listReposStarredByAuthenticatedUser: ["GET /user/starred"],
-		listReposStarredByUser: ["GET /users/{username}/starred"],
-		listReposWatchedByUser: ["GET /users/{username}/subscriptions"],
-		listStargazersForRepo: ["GET /repos/{owner}/{repo}/stargazers"],
-		listWatchedReposForAuthenticatedUser: ["GET /user/subscriptions"],
-		listWatchersForRepo: ["GET /repos/{owner}/{repo}/subscribers"],
-		markNotificationsAsRead: ["PUT /notifications"],
-		markRepoNotificationsAsRead: ["PUT /repos/{owner}/{repo}/notifications"],
-		markThreadAsDone: ["DELETE /notifications/threads/{thread_id}"],
-		markThreadAsRead: ["PATCH /notifications/threads/{thread_id}"],
-		setRepoSubscription: ["PUT /repos/{owner}/{repo}/subscription"],
-		setThreadSubscription: ["PUT /notifications/threads/{thread_id}/subscription"],
-		starRepoForAuthenticatedUser: ["PUT /user/starred/{owner}/{repo}"],
-		unstarRepoForAuthenticatedUser: ["DELETE /user/starred/{owner}/{repo}"]
-	},
-	apps: {
-		addRepoToInstallation: [
-			"PUT /user/installations/{installation_id}/repositories/{repository_id}",
-			{},
-			{ renamed: ["apps", "addRepoToInstallationForAuthenticatedUser"] }
-		],
-		addRepoToInstallationForAuthenticatedUser: ["PUT /user/installations/{installation_id}/repositories/{repository_id}"],
-		checkToken: ["POST /applications/{client_id}/token"],
-		createFromManifest: ["POST /app-manifests/{code}/conversions"],
-		createInstallationAccessToken: ["POST /app/installations/{installation_id}/access_tokens"],
-		deleteAuthorization: ["DELETE /applications/{client_id}/grant"],
-		deleteInstallation: ["DELETE /app/installations/{installation_id}"],
-		deleteToken: ["DELETE /applications/{client_id}/token"],
-		getAuthenticated: ["GET /app"],
-		getBySlug: ["GET /apps/{app_slug}"],
-		getInstallation: ["GET /app/installations/{installation_id}"],
-		getOrgInstallation: ["GET /orgs/{org}/installation"],
-		getRepoInstallation: ["GET /repos/{owner}/{repo}/installation"],
-		getSubscriptionPlanForAccount: ["GET /marketplace_listing/accounts/{account_id}"],
-		getSubscriptionPlanForAccountStubbed: ["GET /marketplace_listing/stubbed/accounts/{account_id}"],
-		getUserInstallation: ["GET /users/{username}/installation"],
-		getWebhookConfigForApp: ["GET /app/hook/config"],
-		getWebhookDelivery: ["GET /app/hook/deliveries/{delivery_id}"],
-		listAccountsForPlan: ["GET /marketplace_listing/plans/{plan_id}/accounts"],
-		listAccountsForPlanStubbed: ["GET /marketplace_listing/stubbed/plans/{plan_id}/accounts"],
-		listInstallationReposForAuthenticatedUser: ["GET /user/installations/{installation_id}/repositories"],
-		listInstallationRequestsForAuthenticatedApp: ["GET /app/installation-requests"],
-		listInstallations: ["GET /app/installations"],
-		listInstallationsForAuthenticatedUser: ["GET /user/installations"],
-		listPlans: ["GET /marketplace_listing/plans"],
-		listPlansStubbed: ["GET /marketplace_listing/stubbed/plans"],
-		listReposAccessibleToInstallation: ["GET /installation/repositories"],
-		listSubscriptionsForAuthenticatedUser: ["GET /user/marketplace_purchases"],
-		listSubscriptionsForAuthenticatedUserStubbed: ["GET /user/marketplace_purchases/stubbed"],
-		listWebhookDeliveries: ["GET /app/hook/deliveries"],
-		redeliverWebhookDelivery: ["POST /app/hook/deliveries/{delivery_id}/attempts"],
-		removeRepoFromInstallation: [
-			"DELETE /user/installations/{installation_id}/repositories/{repository_id}",
-			{},
-			{ renamed: ["apps", "removeRepoFromInstallationForAuthenticatedUser"] }
-		],
-		removeRepoFromInstallationForAuthenticatedUser: ["DELETE /user/installations/{installation_id}/repositories/{repository_id}"],
-		resetToken: ["PATCH /applications/{client_id}/token"],
-		revokeInstallationAccessToken: ["DELETE /installation/token"],
-		scopeToken: ["POST /applications/{client_id}/token/scoped"],
-		suspendInstallation: ["PUT /app/installations/{installation_id}/suspended"],
-		unsuspendInstallation: ["DELETE /app/installations/{installation_id}/suspended"],
-		updateWebhookConfigForApp: ["PATCH /app/hook/config"]
-	},
-	billing: {
-		getGithubActionsBillingOrg: ["GET /orgs/{org}/settings/billing/actions"],
-		getGithubActionsBillingUser: ["GET /users/{username}/settings/billing/actions"],
-		getGithubBillingPremiumRequestUsageReportOrg: ["GET /organizations/{org}/settings/billing/premium_request/usage"],
-		getGithubBillingPremiumRequestUsageReportUser: ["GET /users/{username}/settings/billing/premium_request/usage"],
-		getGithubBillingUsageReportOrg: ["GET /organizations/{org}/settings/billing/usage"],
-		getGithubBillingUsageReportUser: ["GET /users/{username}/settings/billing/usage"],
-		getGithubPackagesBillingOrg: ["GET /orgs/{org}/settings/billing/packages"],
-		getGithubPackagesBillingUser: ["GET /users/{username}/settings/billing/packages"],
-		getSharedStorageBillingOrg: ["GET /orgs/{org}/settings/billing/shared-storage"],
-		getSharedStorageBillingUser: ["GET /users/{username}/settings/billing/shared-storage"]
-	},
-	campaigns: {
-		createCampaign: ["POST /orgs/{org}/campaigns"],
-		deleteCampaign: ["DELETE /orgs/{org}/campaigns/{campaign_number}"],
-		getCampaignSummary: ["GET /orgs/{org}/campaigns/{campaign_number}"],
-		listOrgCampaigns: ["GET /orgs/{org}/campaigns"],
-		updateCampaign: ["PATCH /orgs/{org}/campaigns/{campaign_number}"]
-	},
-	checks: {
-		create: ["POST /repos/{owner}/{repo}/check-runs"],
-		createSuite: ["POST /repos/{owner}/{repo}/check-suites"],
-		get: ["GET /repos/{owner}/{repo}/check-runs/{check_run_id}"],
-		getSuite: ["GET /repos/{owner}/{repo}/check-suites/{check_suite_id}"],
-		listAnnotations: ["GET /repos/{owner}/{repo}/check-runs/{check_run_id}/annotations"],
-		listForRef: ["GET /repos/{owner}/{repo}/commits/{ref}/check-runs"],
-		listForSuite: ["GET /repos/{owner}/{repo}/check-suites/{check_suite_id}/check-runs"],
-		listSuitesForRef: ["GET /repos/{owner}/{repo}/commits/{ref}/check-suites"],
-		rerequestRun: ["POST /repos/{owner}/{repo}/check-runs/{check_run_id}/rerequest"],
-		rerequestSuite: ["POST /repos/{owner}/{repo}/check-suites/{check_suite_id}/rerequest"],
-		setSuitesPreferences: ["PATCH /repos/{owner}/{repo}/check-suites/preferences"],
-		update: ["PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}"]
-	},
-	codeScanning: {
-		commitAutofix: ["POST /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/autofix/commits"],
-		createAutofix: ["POST /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/autofix"],
-		createVariantAnalysis: ["POST /repos/{owner}/{repo}/code-scanning/codeql/variant-analyses"],
-		deleteAnalysis: ["DELETE /repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}{?confirm_delete}"],
-		deleteCodeqlDatabase: ["DELETE /repos/{owner}/{repo}/code-scanning/codeql/databases/{language}"],
-		getAlert: [
-			"GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}",
-			{},
-			{ renamedParameters: { alert_id: "alert_number" } }
-		],
-		getAnalysis: ["GET /repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}"],
-		getAutofix: ["GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/autofix"],
-		getCodeqlDatabase: ["GET /repos/{owner}/{repo}/code-scanning/codeql/databases/{language}"],
-		getDefaultSetup: ["GET /repos/{owner}/{repo}/code-scanning/default-setup"],
-		getSarif: ["GET /repos/{owner}/{repo}/code-scanning/sarifs/{sarif_id}"],
-		getVariantAnalysis: ["GET /repos/{owner}/{repo}/code-scanning/codeql/variant-analyses/{codeql_variant_analysis_id}"],
-		getVariantAnalysisRepoTask: ["GET /repos/{owner}/{repo}/code-scanning/codeql/variant-analyses/{codeql_variant_analysis_id}/repos/{repo_owner}/{repo_name}"],
-		listAlertInstances: ["GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances"],
-		listAlertsForOrg: ["GET /orgs/{org}/code-scanning/alerts"],
-		listAlertsForRepo: ["GET /repos/{owner}/{repo}/code-scanning/alerts"],
-		listAlertsInstances: [
-			"GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances",
-			{},
-			{ renamed: ["codeScanning", "listAlertInstances"] }
-		],
-		listCodeqlDatabases: ["GET /repos/{owner}/{repo}/code-scanning/codeql/databases"],
-		listRecentAnalyses: ["GET /repos/{owner}/{repo}/code-scanning/analyses"],
-		updateAlert: ["PATCH /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}"],
-		updateDefaultSetup: ["PATCH /repos/{owner}/{repo}/code-scanning/default-setup"],
-		uploadSarif: ["POST /repos/{owner}/{repo}/code-scanning/sarifs"]
-	},
-	codeSecurity: {
-		attachConfiguration: ["POST /orgs/{org}/code-security/configurations/{configuration_id}/attach"],
-		attachEnterpriseConfiguration: ["POST /enterprises/{enterprise}/code-security/configurations/{configuration_id}/attach"],
-		createConfiguration: ["POST /orgs/{org}/code-security/configurations"],
-		createConfigurationForEnterprise: ["POST /enterprises/{enterprise}/code-security/configurations"],
-		deleteConfiguration: ["DELETE /orgs/{org}/code-security/configurations/{configuration_id}"],
-		deleteConfigurationForEnterprise: ["DELETE /enterprises/{enterprise}/code-security/configurations/{configuration_id}"],
-		detachConfiguration: ["DELETE /orgs/{org}/code-security/configurations/detach"],
-		getConfiguration: ["GET /orgs/{org}/code-security/configurations/{configuration_id}"],
-		getConfigurationForRepository: ["GET /repos/{owner}/{repo}/code-security-configuration"],
-		getConfigurationsForEnterprise: ["GET /enterprises/{enterprise}/code-security/configurations"],
-		getConfigurationsForOrg: ["GET /orgs/{org}/code-security/configurations"],
-		getDefaultConfigurations: ["GET /orgs/{org}/code-security/configurations/defaults"],
-		getDefaultConfigurationsForEnterprise: ["GET /enterprises/{enterprise}/code-security/configurations/defaults"],
-		getRepositoriesForConfiguration: ["GET /orgs/{org}/code-security/configurations/{configuration_id}/repositories"],
-		getRepositoriesForEnterpriseConfiguration: ["GET /enterprises/{enterprise}/code-security/configurations/{configuration_id}/repositories"],
-		getSingleConfigurationForEnterprise: ["GET /enterprises/{enterprise}/code-security/configurations/{configuration_id}"],
-		setConfigurationAsDefault: ["PUT /orgs/{org}/code-security/configurations/{configuration_id}/defaults"],
-		setConfigurationAsDefaultForEnterprise: ["PUT /enterprises/{enterprise}/code-security/configurations/{configuration_id}/defaults"],
-		updateConfiguration: ["PATCH /orgs/{org}/code-security/configurations/{configuration_id}"],
-		updateEnterpriseConfiguration: ["PATCH /enterprises/{enterprise}/code-security/configurations/{configuration_id}"]
-	},
-	codesOfConduct: {
-		getAllCodesOfConduct: ["GET /codes_of_conduct"],
-		getConductCode: ["GET /codes_of_conduct/{key}"]
-	},
-	codespaces: {
-		addRepositoryForSecretForAuthenticatedUser: ["PUT /user/codespaces/secrets/{secret_name}/repositories/{repository_id}"],
-		addSelectedRepoToOrgSecret: ["PUT /orgs/{org}/codespaces/secrets/{secret_name}/repositories/{repository_id}"],
-		checkPermissionsForDevcontainer: ["GET /repos/{owner}/{repo}/codespaces/permissions_check"],
-		codespaceMachinesForAuthenticatedUser: ["GET /user/codespaces/{codespace_name}/machines"],
-		createForAuthenticatedUser: ["POST /user/codespaces"],
-		createOrUpdateOrgSecret: ["PUT /orgs/{org}/codespaces/secrets/{secret_name}"],
-		createOrUpdateRepoSecret: ["PUT /repos/{owner}/{repo}/codespaces/secrets/{secret_name}"],
-		createOrUpdateSecretForAuthenticatedUser: ["PUT /user/codespaces/secrets/{secret_name}"],
-		createWithPrForAuthenticatedUser: ["POST /repos/{owner}/{repo}/pulls/{pull_number}/codespaces"],
-		createWithRepoForAuthenticatedUser: ["POST /repos/{owner}/{repo}/codespaces"],
-		deleteForAuthenticatedUser: ["DELETE /user/codespaces/{codespace_name}"],
-		deleteFromOrganization: ["DELETE /orgs/{org}/members/{username}/codespaces/{codespace_name}"],
-		deleteOrgSecret: ["DELETE /orgs/{org}/codespaces/secrets/{secret_name}"],
-		deleteRepoSecret: ["DELETE /repos/{owner}/{repo}/codespaces/secrets/{secret_name}"],
-		deleteSecretForAuthenticatedUser: ["DELETE /user/codespaces/secrets/{secret_name}"],
-		exportForAuthenticatedUser: ["POST /user/codespaces/{codespace_name}/exports"],
-		getCodespacesForUserInOrg: ["GET /orgs/{org}/members/{username}/codespaces"],
-		getExportDetailsForAuthenticatedUser: ["GET /user/codespaces/{codespace_name}/exports/{export_id}"],
-		getForAuthenticatedUser: ["GET /user/codespaces/{codespace_name}"],
-		getOrgPublicKey: ["GET /orgs/{org}/codespaces/secrets/public-key"],
-		getOrgSecret: ["GET /orgs/{org}/codespaces/secrets/{secret_name}"],
-		getPublicKeyForAuthenticatedUser: ["GET /user/codespaces/secrets/public-key"],
-		getRepoPublicKey: ["GET /repos/{owner}/{repo}/codespaces/secrets/public-key"],
-		getRepoSecret: ["GET /repos/{owner}/{repo}/codespaces/secrets/{secret_name}"],
-		getSecretForAuthenticatedUser: ["GET /user/codespaces/secrets/{secret_name}"],
-		listDevcontainersInRepositoryForAuthenticatedUser: ["GET /repos/{owner}/{repo}/codespaces/devcontainers"],
-		listForAuthenticatedUser: ["GET /user/codespaces"],
-		listInOrganization: [
-			"GET /orgs/{org}/codespaces",
-			{},
-			{ renamedParameters: { org_id: "org" } }
-		],
-		listInRepositoryForAuthenticatedUser: ["GET /repos/{owner}/{repo}/codespaces"],
-		listOrgSecrets: ["GET /orgs/{org}/codespaces/secrets"],
-		listRepoSecrets: ["GET /repos/{owner}/{repo}/codespaces/secrets"],
-		listRepositoriesForSecretForAuthenticatedUser: ["GET /user/codespaces/secrets/{secret_name}/repositories"],
-		listSecretsForAuthenticatedUser: ["GET /user/codespaces/secrets"],
-		listSelectedReposForOrgSecret: ["GET /orgs/{org}/codespaces/secrets/{secret_name}/repositories"],
-		preFlightWithRepoForAuthenticatedUser: ["GET /repos/{owner}/{repo}/codespaces/new"],
-		publishForAuthenticatedUser: ["POST /user/codespaces/{codespace_name}/publish"],
-		removeRepositoryForSecretForAuthenticatedUser: ["DELETE /user/codespaces/secrets/{secret_name}/repositories/{repository_id}"],
-		removeSelectedRepoFromOrgSecret: ["DELETE /orgs/{org}/codespaces/secrets/{secret_name}/repositories/{repository_id}"],
-		repoMachinesForAuthenticatedUser: ["GET /repos/{owner}/{repo}/codespaces/machines"],
-		setRepositoriesForSecretForAuthenticatedUser: ["PUT /user/codespaces/secrets/{secret_name}/repositories"],
-		setSelectedReposForOrgSecret: ["PUT /orgs/{org}/codespaces/secrets/{secret_name}/repositories"],
-		startForAuthenticatedUser: ["POST /user/codespaces/{codespace_name}/start"],
-		stopForAuthenticatedUser: ["POST /user/codespaces/{codespace_name}/stop"],
-		stopInOrganization: ["POST /orgs/{org}/members/{username}/codespaces/{codespace_name}/stop"],
-		updateForAuthenticatedUser: ["PATCH /user/codespaces/{codespace_name}"]
-	},
-	copilot: {
-		addCopilotSeatsForTeams: ["POST /orgs/{org}/copilot/billing/selected_teams"],
-		addCopilotSeatsForUsers: ["POST /orgs/{org}/copilot/billing/selected_users"],
-		cancelCopilotSeatAssignmentForTeams: ["DELETE /orgs/{org}/copilot/billing/selected_teams"],
-		cancelCopilotSeatAssignmentForUsers: ["DELETE /orgs/{org}/copilot/billing/selected_users"],
-		copilotMetricsForOrganization: ["GET /orgs/{org}/copilot/metrics"],
-		copilotMetricsForTeam: ["GET /orgs/{org}/team/{team_slug}/copilot/metrics"],
-		getCopilotOrganizationDetails: ["GET /orgs/{org}/copilot/billing"],
-		getCopilotSeatDetailsForUser: ["GET /orgs/{org}/members/{username}/copilot"],
-		listCopilotSeats: ["GET /orgs/{org}/copilot/billing/seats"]
-	},
-	credentials: { revoke: ["POST /credentials/revoke"] },
-	dependabot: {
-		addSelectedRepoToOrgSecret: ["PUT /orgs/{org}/dependabot/secrets/{secret_name}/repositories/{repository_id}"],
-		createOrUpdateOrgSecret: ["PUT /orgs/{org}/dependabot/secrets/{secret_name}"],
-		createOrUpdateRepoSecret: ["PUT /repos/{owner}/{repo}/dependabot/secrets/{secret_name}"],
-		deleteOrgSecret: ["DELETE /orgs/{org}/dependabot/secrets/{secret_name}"],
-		deleteRepoSecret: ["DELETE /repos/{owner}/{repo}/dependabot/secrets/{secret_name}"],
-		getAlert: ["GET /repos/{owner}/{repo}/dependabot/alerts/{alert_number}"],
-		getOrgPublicKey: ["GET /orgs/{org}/dependabot/secrets/public-key"],
-		getOrgSecret: ["GET /orgs/{org}/dependabot/secrets/{secret_name}"],
-		getRepoPublicKey: ["GET /repos/{owner}/{repo}/dependabot/secrets/public-key"],
-		getRepoSecret: ["GET /repos/{owner}/{repo}/dependabot/secrets/{secret_name}"],
-		listAlertsForEnterprise: ["GET /enterprises/{enterprise}/dependabot/alerts"],
-		listAlertsForOrg: ["GET /orgs/{org}/dependabot/alerts"],
-		listAlertsForRepo: ["GET /repos/{owner}/{repo}/dependabot/alerts"],
-		listOrgSecrets: ["GET /orgs/{org}/dependabot/secrets"],
-		listRepoSecrets: ["GET /repos/{owner}/{repo}/dependabot/secrets"],
-		listSelectedReposForOrgSecret: ["GET /orgs/{org}/dependabot/secrets/{secret_name}/repositories"],
-		removeSelectedRepoFromOrgSecret: ["DELETE /orgs/{org}/dependabot/secrets/{secret_name}/repositories/{repository_id}"],
-		repositoryAccessForOrg: ["GET /organizations/{org}/dependabot/repository-access"],
-		setRepositoryAccessDefaultLevel: ["PUT /organizations/{org}/dependabot/repository-access/default-level"],
-		setSelectedReposForOrgSecret: ["PUT /orgs/{org}/dependabot/secrets/{secret_name}/repositories"],
-		updateAlert: ["PATCH /repos/{owner}/{repo}/dependabot/alerts/{alert_number}"],
-		updateRepositoryAccessForOrg: ["PATCH /organizations/{org}/dependabot/repository-access"]
-	},
-	dependencyGraph: {
-		createRepositorySnapshot: ["POST /repos/{owner}/{repo}/dependency-graph/snapshots"],
-		diffRange: ["GET /repos/{owner}/{repo}/dependency-graph/compare/{basehead}"],
-		exportSbom: ["GET /repos/{owner}/{repo}/dependency-graph/sbom"]
-	},
-	emojis: { get: ["GET /emojis"] },
-	enterpriseTeamMemberships: {
-		add: ["PUT /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}"],
-		bulkAdd: ["POST /enterprises/{enterprise}/teams/{enterprise-team}/memberships/add"],
-		bulkRemove: ["POST /enterprises/{enterprise}/teams/{enterprise-team}/memberships/remove"],
-		get: ["GET /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}"],
-		list: ["GET /enterprises/{enterprise}/teams/{enterprise-team}/memberships"],
-		remove: ["DELETE /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}"]
-	},
-	enterpriseTeamOrganizations: {
-		add: ["PUT /enterprises/{enterprise}/teams/{enterprise-team}/organizations/{org}"],
-		bulkAdd: ["POST /enterprises/{enterprise}/teams/{enterprise-team}/organizations/add"],
-		bulkRemove: ["POST /enterprises/{enterprise}/teams/{enterprise-team}/organizations/remove"],
-		delete: ["DELETE /enterprises/{enterprise}/teams/{enterprise-team}/organizations/{org}"],
-		getAssignment: ["GET /enterprises/{enterprise}/teams/{enterprise-team}/organizations/{org}"],
-		getAssignments: ["GET /enterprises/{enterprise}/teams/{enterprise-team}/organizations"]
-	},
-	enterpriseTeams: {
-		create: ["POST /enterprises/{enterprise}/teams"],
-		delete: ["DELETE /enterprises/{enterprise}/teams/{team_slug}"],
-		get: ["GET /enterprises/{enterprise}/teams/{team_slug}"],
-		list: ["GET /enterprises/{enterprise}/teams"],
-		update: ["PATCH /enterprises/{enterprise}/teams/{team_slug}"]
-	},
-	gists: {
-		checkIsStarred: ["GET /gists/{gist_id}/star"],
-		create: ["POST /gists"],
-		createComment: ["POST /gists/{gist_id}/comments"],
-		delete: ["DELETE /gists/{gist_id}"],
-		deleteComment: ["DELETE /gists/{gist_id}/comments/{comment_id}"],
-		fork: ["POST /gists/{gist_id}/forks"],
-		get: ["GET /gists/{gist_id}"],
-		getComment: ["GET /gists/{gist_id}/comments/{comment_id}"],
-		getRevision: ["GET /gists/{gist_id}/{sha}"],
-		list: ["GET /gists"],
-		listComments: ["GET /gists/{gist_id}/comments"],
-		listCommits: ["GET /gists/{gist_id}/commits"],
-		listForUser: ["GET /users/{username}/gists"],
-		listForks: ["GET /gists/{gist_id}/forks"],
-		listPublic: ["GET /gists/public"],
-		listStarred: ["GET /gists/starred"],
-		star: ["PUT /gists/{gist_id}/star"],
-		unstar: ["DELETE /gists/{gist_id}/star"],
-		update: ["PATCH /gists/{gist_id}"],
-		updateComment: ["PATCH /gists/{gist_id}/comments/{comment_id}"]
-	},
-	git: {
-		createBlob: ["POST /repos/{owner}/{repo}/git/blobs"],
-		createCommit: ["POST /repos/{owner}/{repo}/git/commits"],
-		createRef: ["POST /repos/{owner}/{repo}/git/refs"],
-		createTag: ["POST /repos/{owner}/{repo}/git/tags"],
-		createTree: ["POST /repos/{owner}/{repo}/git/trees"],
-		deleteRef: ["DELETE /repos/{owner}/{repo}/git/refs/{ref}"],
-		getBlob: ["GET /repos/{owner}/{repo}/git/blobs/{file_sha}"],
-		getCommit: ["GET /repos/{owner}/{repo}/git/commits/{commit_sha}"],
-		getRef: ["GET /repos/{owner}/{repo}/git/ref/{ref}"],
-		getTag: ["GET /repos/{owner}/{repo}/git/tags/{tag_sha}"],
-		getTree: ["GET /repos/{owner}/{repo}/git/trees/{tree_sha}"],
-		listMatchingRefs: ["GET /repos/{owner}/{repo}/git/matching-refs/{ref}"],
-		updateRef: ["PATCH /repos/{owner}/{repo}/git/refs/{ref}"]
-	},
-	gitignore: {
-		getAllTemplates: ["GET /gitignore/templates"],
-		getTemplate: ["GET /gitignore/templates/{name}"]
-	},
-	hostedCompute: {
-		createNetworkConfigurationForOrg: ["POST /orgs/{org}/settings/network-configurations"],
-		deleteNetworkConfigurationFromOrg: ["DELETE /orgs/{org}/settings/network-configurations/{network_configuration_id}"],
-		getNetworkConfigurationForOrg: ["GET /orgs/{org}/settings/network-configurations/{network_configuration_id}"],
-		getNetworkSettingsForOrg: ["GET /orgs/{org}/settings/network-settings/{network_settings_id}"],
-		listNetworkConfigurationsForOrg: ["GET /orgs/{org}/settings/network-configurations"],
-		updateNetworkConfigurationForOrg: ["PATCH /orgs/{org}/settings/network-configurations/{network_configuration_id}"]
-	},
-	interactions: {
-		getRestrictionsForAuthenticatedUser: ["GET /user/interaction-limits"],
-		getRestrictionsForOrg: ["GET /orgs/{org}/interaction-limits"],
-		getRestrictionsForRepo: ["GET /repos/{owner}/{repo}/interaction-limits"],
-		getRestrictionsForYourPublicRepos: [
-			"GET /user/interaction-limits",
-			{},
-			{ renamed: ["interactions", "getRestrictionsForAuthenticatedUser"] }
-		],
-		removeRestrictionsForAuthenticatedUser: ["DELETE /user/interaction-limits"],
-		removeRestrictionsForOrg: ["DELETE /orgs/{org}/interaction-limits"],
-		removeRestrictionsForRepo: ["DELETE /repos/{owner}/{repo}/interaction-limits"],
-		removeRestrictionsForYourPublicRepos: [
-			"DELETE /user/interaction-limits",
-			{},
-			{ renamed: ["interactions", "removeRestrictionsForAuthenticatedUser"] }
-		],
-		setRestrictionsForAuthenticatedUser: ["PUT /user/interaction-limits"],
-		setRestrictionsForOrg: ["PUT /orgs/{org}/interaction-limits"],
-		setRestrictionsForRepo: ["PUT /repos/{owner}/{repo}/interaction-limits"],
-		setRestrictionsForYourPublicRepos: [
-			"PUT /user/interaction-limits",
-			{},
-			{ renamed: ["interactions", "setRestrictionsForAuthenticatedUser"] }
-		]
-	},
-	issues: {
-		addAssignees: ["POST /repos/{owner}/{repo}/issues/{issue_number}/assignees"],
-		addBlockedByDependency: ["POST /repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocked_by"],
-		addLabels: ["POST /repos/{owner}/{repo}/issues/{issue_number}/labels"],
-		addSubIssue: ["POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues"],
-		checkUserCanBeAssigned: ["GET /repos/{owner}/{repo}/assignees/{assignee}"],
-		checkUserCanBeAssignedToIssue: ["GET /repos/{owner}/{repo}/issues/{issue_number}/assignees/{assignee}"],
-		create: ["POST /repos/{owner}/{repo}/issues"],
-		createComment: ["POST /repos/{owner}/{repo}/issues/{issue_number}/comments"],
-		createLabel: ["POST /repos/{owner}/{repo}/labels"],
-		createMilestone: ["POST /repos/{owner}/{repo}/milestones"],
-		deleteComment: ["DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}"],
-		deleteLabel: ["DELETE /repos/{owner}/{repo}/labels/{name}"],
-		deleteMilestone: ["DELETE /repos/{owner}/{repo}/milestones/{milestone_number}"],
-		get: ["GET /repos/{owner}/{repo}/issues/{issue_number}"],
-		getComment: ["GET /repos/{owner}/{repo}/issues/comments/{comment_id}"],
-		getEvent: ["GET /repos/{owner}/{repo}/issues/events/{event_id}"],
-		getLabel: ["GET /repos/{owner}/{repo}/labels/{name}"],
-		getMilestone: ["GET /repos/{owner}/{repo}/milestones/{milestone_number}"],
-		getParent: ["GET /repos/{owner}/{repo}/issues/{issue_number}/parent"],
-		list: ["GET /issues"],
-		listAssignees: ["GET /repos/{owner}/{repo}/assignees"],
-		listComments: ["GET /repos/{owner}/{repo}/issues/{issue_number}/comments"],
-		listCommentsForRepo: ["GET /repos/{owner}/{repo}/issues/comments"],
-		listDependenciesBlockedBy: ["GET /repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocked_by"],
-		listDependenciesBlocking: ["GET /repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocking"],
-		listEvents: ["GET /repos/{owner}/{repo}/issues/{issue_number}/events"],
-		listEventsForRepo: ["GET /repos/{owner}/{repo}/issues/events"],
-		listEventsForTimeline: ["GET /repos/{owner}/{repo}/issues/{issue_number}/timeline"],
-		listForAuthenticatedUser: ["GET /user/issues"],
-		listForOrg: ["GET /orgs/{org}/issues"],
-		listForRepo: ["GET /repos/{owner}/{repo}/issues"],
-		listLabelsForMilestone: ["GET /repos/{owner}/{repo}/milestones/{milestone_number}/labels"],
-		listLabelsForRepo: ["GET /repos/{owner}/{repo}/labels"],
-		listLabelsOnIssue: ["GET /repos/{owner}/{repo}/issues/{issue_number}/labels"],
-		listMilestones: ["GET /repos/{owner}/{repo}/milestones"],
-		listSubIssues: ["GET /repos/{owner}/{repo}/issues/{issue_number}/sub_issues"],
-		lock: ["PUT /repos/{owner}/{repo}/issues/{issue_number}/lock"],
-		removeAllLabels: ["DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels"],
-		removeAssignees: ["DELETE /repos/{owner}/{repo}/issues/{issue_number}/assignees"],
-		removeDependencyBlockedBy: ["DELETE /repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocked_by/{issue_id}"],
-		removeLabel: ["DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels/{name}"],
-		removeSubIssue: ["DELETE /repos/{owner}/{repo}/issues/{issue_number}/sub_issue"],
-		reprioritizeSubIssue: ["PATCH /repos/{owner}/{repo}/issues/{issue_number}/sub_issues/priority"],
-		setLabels: ["PUT /repos/{owner}/{repo}/issues/{issue_number}/labels"],
-		unlock: ["DELETE /repos/{owner}/{repo}/issues/{issue_number}/lock"],
-		update: ["PATCH /repos/{owner}/{repo}/issues/{issue_number}"],
-		updateComment: ["PATCH /repos/{owner}/{repo}/issues/comments/{comment_id}"],
-		updateLabel: ["PATCH /repos/{owner}/{repo}/labels/{name}"],
-		updateMilestone: ["PATCH /repos/{owner}/{repo}/milestones/{milestone_number}"]
-	},
-	licenses: {
-		get: ["GET /licenses/{license}"],
-		getAllCommonlyUsed: ["GET /licenses"],
-		getForRepo: ["GET /repos/{owner}/{repo}/license"]
-	},
-	markdown: {
-		render: ["POST /markdown"],
-		renderRaw: ["POST /markdown/raw", { headers: { "content-type": "text/plain; charset=utf-8" } }]
-	},
-	meta: {
-		get: ["GET /meta"],
-		getAllVersions: ["GET /versions"],
-		getOctocat: ["GET /octocat"],
-		getZen: ["GET /zen"],
-		root: ["GET /"]
-	},
-	migrations: {
-		deleteArchiveForAuthenticatedUser: ["DELETE /user/migrations/{migration_id}/archive"],
-		deleteArchiveForOrg: ["DELETE /orgs/{org}/migrations/{migration_id}/archive"],
-		downloadArchiveForOrg: ["GET /orgs/{org}/migrations/{migration_id}/archive"],
-		getArchiveForAuthenticatedUser: ["GET /user/migrations/{migration_id}/archive"],
-		getStatusForAuthenticatedUser: ["GET /user/migrations/{migration_id}"],
-		getStatusForOrg: ["GET /orgs/{org}/migrations/{migration_id}"],
-		listForAuthenticatedUser: ["GET /user/migrations"],
-		listForOrg: ["GET /orgs/{org}/migrations"],
-		listReposForAuthenticatedUser: ["GET /user/migrations/{migration_id}/repositories"],
-		listReposForOrg: ["GET /orgs/{org}/migrations/{migration_id}/repositories"],
-		listReposForUser: [
-			"GET /user/migrations/{migration_id}/repositories",
-			{},
-			{ renamed: ["migrations", "listReposForAuthenticatedUser"] }
-		],
-		startForAuthenticatedUser: ["POST /user/migrations"],
-		startForOrg: ["POST /orgs/{org}/migrations"],
-		unlockRepoForAuthenticatedUser: ["DELETE /user/migrations/{migration_id}/repos/{repo_name}/lock"],
-		unlockRepoForOrg: ["DELETE /orgs/{org}/migrations/{migration_id}/repos/{repo_name}/lock"]
-	},
-	oidc: {
-		getOidcCustomSubTemplateForOrg: ["GET /orgs/{org}/actions/oidc/customization/sub"],
-		updateOidcCustomSubTemplateForOrg: ["PUT /orgs/{org}/actions/oidc/customization/sub"]
-	},
-	orgs: {
-		addSecurityManagerTeam: [
-			"PUT /orgs/{org}/security-managers/teams/{team_slug}",
-			{},
-			{ deprecated: "octokit.rest.orgs.addSecurityManagerTeam() is deprecated, see https://docs.github.com/rest/orgs/security-managers#add-a-security-manager-team" }
-		],
-		assignTeamToOrgRole: ["PUT /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}"],
-		assignUserToOrgRole: ["PUT /orgs/{org}/organization-roles/users/{username}/{role_id}"],
-		blockUser: ["PUT /orgs/{org}/blocks/{username}"],
-		cancelInvitation: ["DELETE /orgs/{org}/invitations/{invitation_id}"],
-		checkBlockedUser: ["GET /orgs/{org}/blocks/{username}"],
-		checkMembershipForUser: ["GET /orgs/{org}/members/{username}"],
-		checkPublicMembershipForUser: ["GET /orgs/{org}/public_members/{username}"],
-		convertMemberToOutsideCollaborator: ["PUT /orgs/{org}/outside_collaborators/{username}"],
-		createArtifactStorageRecord: ["POST /orgs/{org}/artifacts/metadata/storage-record"],
-		createInvitation: ["POST /orgs/{org}/invitations"],
-		createIssueType: ["POST /orgs/{org}/issue-types"],
-		createWebhook: ["POST /orgs/{org}/hooks"],
-		customPropertiesForOrgsCreateOrUpdateOrganizationValues: ["PATCH /organizations/{org}/org-properties/values"],
-		customPropertiesForOrgsGetOrganizationValues: ["GET /organizations/{org}/org-properties/values"],
-		customPropertiesForReposCreateOrUpdateOrganizationDefinition: ["PUT /orgs/{org}/properties/schema/{custom_property_name}"],
-		customPropertiesForReposCreateOrUpdateOrganizationDefinitions: ["PATCH /orgs/{org}/properties/schema"],
-		customPropertiesForReposCreateOrUpdateOrganizationValues: ["PATCH /orgs/{org}/properties/values"],
-		customPropertiesForReposDeleteOrganizationDefinition: ["DELETE /orgs/{org}/properties/schema/{custom_property_name}"],
-		customPropertiesForReposGetOrganizationDefinition: ["GET /orgs/{org}/properties/schema/{custom_property_name}"],
-		customPropertiesForReposGetOrganizationDefinitions: ["GET /orgs/{org}/properties/schema"],
-		customPropertiesForReposGetOrganizationValues: ["GET /orgs/{org}/properties/values"],
-		delete: ["DELETE /orgs/{org}"],
-		deleteAttestationsBulk: ["POST /orgs/{org}/attestations/delete-request"],
-		deleteAttestationsById: ["DELETE /orgs/{org}/attestations/{attestation_id}"],
-		deleteAttestationsBySubjectDigest: ["DELETE /orgs/{org}/attestations/digest/{subject_digest}"],
-		deleteIssueType: ["DELETE /orgs/{org}/issue-types/{issue_type_id}"],
-		deleteWebhook: ["DELETE /orgs/{org}/hooks/{hook_id}"],
-		disableSelectedRepositoryImmutableReleasesOrganization: ["DELETE /orgs/{org}/settings/immutable-releases/repositories/{repository_id}"],
-		enableSelectedRepositoryImmutableReleasesOrganization: ["PUT /orgs/{org}/settings/immutable-releases/repositories/{repository_id}"],
-		get: ["GET /orgs/{org}"],
-		getImmutableReleasesSettings: ["GET /orgs/{org}/settings/immutable-releases"],
-		getImmutableReleasesSettingsRepositories: ["GET /orgs/{org}/settings/immutable-releases/repositories"],
-		getMembershipForAuthenticatedUser: ["GET /user/memberships/orgs/{org}"],
-		getMembershipForUser: ["GET /orgs/{org}/memberships/{username}"],
-		getOrgRole: ["GET /orgs/{org}/organization-roles/{role_id}"],
-		getOrgRulesetHistory: ["GET /orgs/{org}/rulesets/{ruleset_id}/history"],
-		getOrgRulesetVersion: ["GET /orgs/{org}/rulesets/{ruleset_id}/history/{version_id}"],
-		getWebhook: ["GET /orgs/{org}/hooks/{hook_id}"],
-		getWebhookConfigForOrg: ["GET /orgs/{org}/hooks/{hook_id}/config"],
-		getWebhookDelivery: ["GET /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}"],
-		list: ["GET /organizations"],
-		listAppInstallations: ["GET /orgs/{org}/installations"],
-		listArtifactStorageRecords: ["GET /orgs/{org}/artifacts/{subject_digest}/metadata/storage-records"],
-		listAttestationRepositories: ["GET /orgs/{org}/attestations/repositories"],
-		listAttestations: ["GET /orgs/{org}/attestations/{subject_digest}"],
-		listAttestationsBulk: ["POST /orgs/{org}/attestations/bulk-list{?per_page,before,after}"],
-		listBlockedUsers: ["GET /orgs/{org}/blocks"],
-		listFailedInvitations: ["GET /orgs/{org}/failed_invitations"],
-		listForAuthenticatedUser: ["GET /user/orgs"],
-		listForUser: ["GET /users/{username}/orgs"],
-		listInvitationTeams: ["GET /orgs/{org}/invitations/{invitation_id}/teams"],
-		listIssueTypes: ["GET /orgs/{org}/issue-types"],
-		listMembers: ["GET /orgs/{org}/members"],
-		listMembershipsForAuthenticatedUser: ["GET /user/memberships/orgs"],
-		listOrgRoleTeams: ["GET /orgs/{org}/organization-roles/{role_id}/teams"],
-		listOrgRoleUsers: ["GET /orgs/{org}/organization-roles/{role_id}/users"],
-		listOrgRoles: ["GET /orgs/{org}/organization-roles"],
-		listOrganizationFineGrainedPermissions: ["GET /orgs/{org}/organization-fine-grained-permissions"],
-		listOutsideCollaborators: ["GET /orgs/{org}/outside_collaborators"],
-		listPatGrantRepositories: ["GET /orgs/{org}/personal-access-tokens/{pat_id}/repositories"],
-		listPatGrantRequestRepositories: ["GET /orgs/{org}/personal-access-token-requests/{pat_request_id}/repositories"],
-		listPatGrantRequests: ["GET /orgs/{org}/personal-access-token-requests"],
-		listPatGrants: ["GET /orgs/{org}/personal-access-tokens"],
-		listPendingInvitations: ["GET /orgs/{org}/invitations"],
-		listPublicMembers: ["GET /orgs/{org}/public_members"],
-		listSecurityManagerTeams: [
-			"GET /orgs/{org}/security-managers",
-			{},
-			{ deprecated: "octokit.rest.orgs.listSecurityManagerTeams() is deprecated, see https://docs.github.com/rest/orgs/security-managers#list-security-manager-teams" }
-		],
-		listWebhookDeliveries: ["GET /orgs/{org}/hooks/{hook_id}/deliveries"],
-		listWebhooks: ["GET /orgs/{org}/hooks"],
-		pingWebhook: ["POST /orgs/{org}/hooks/{hook_id}/pings"],
-		redeliverWebhookDelivery: ["POST /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}/attempts"],
-		removeMember: ["DELETE /orgs/{org}/members/{username}"],
-		removeMembershipForUser: ["DELETE /orgs/{org}/memberships/{username}"],
-		removeOutsideCollaborator: ["DELETE /orgs/{org}/outside_collaborators/{username}"],
-		removePublicMembershipForAuthenticatedUser: ["DELETE /orgs/{org}/public_members/{username}"],
-		removeSecurityManagerTeam: [
-			"DELETE /orgs/{org}/security-managers/teams/{team_slug}",
-			{},
-			{ deprecated: "octokit.rest.orgs.removeSecurityManagerTeam() is deprecated, see https://docs.github.com/rest/orgs/security-managers#remove-a-security-manager-team" }
-		],
-		reviewPatGrantRequest: ["POST /orgs/{org}/personal-access-token-requests/{pat_request_id}"],
-		reviewPatGrantRequestsInBulk: ["POST /orgs/{org}/personal-access-token-requests"],
-		revokeAllOrgRolesTeam: ["DELETE /orgs/{org}/organization-roles/teams/{team_slug}"],
-		revokeAllOrgRolesUser: ["DELETE /orgs/{org}/organization-roles/users/{username}"],
-		revokeOrgRoleTeam: ["DELETE /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}"],
-		revokeOrgRoleUser: ["DELETE /orgs/{org}/organization-roles/users/{username}/{role_id}"],
-		setImmutableReleasesSettings: ["PUT /orgs/{org}/settings/immutable-releases"],
-		setImmutableReleasesSettingsRepositories: ["PUT /orgs/{org}/settings/immutable-releases/repositories"],
-		setMembershipForUser: ["PUT /orgs/{org}/memberships/{username}"],
-		setPublicMembershipForAuthenticatedUser: ["PUT /orgs/{org}/public_members/{username}"],
-		unblockUser: ["DELETE /orgs/{org}/blocks/{username}"],
-		update: ["PATCH /orgs/{org}"],
-		updateIssueType: ["PUT /orgs/{org}/issue-types/{issue_type_id}"],
-		updateMembershipForAuthenticatedUser: ["PATCH /user/memberships/orgs/{org}"],
-		updatePatAccess: ["POST /orgs/{org}/personal-access-tokens/{pat_id}"],
-		updatePatAccesses: ["POST /orgs/{org}/personal-access-tokens"],
-		updateWebhook: ["PATCH /orgs/{org}/hooks/{hook_id}"],
-		updateWebhookConfigForOrg: ["PATCH /orgs/{org}/hooks/{hook_id}/config"]
-	},
-	packages: {
-		deletePackageForAuthenticatedUser: ["DELETE /user/packages/{package_type}/{package_name}"],
-		deletePackageForOrg: ["DELETE /orgs/{org}/packages/{package_type}/{package_name}"],
-		deletePackageForUser: ["DELETE /users/{username}/packages/{package_type}/{package_name}"],
-		deletePackageVersionForAuthenticatedUser: ["DELETE /user/packages/{package_type}/{package_name}/versions/{package_version_id}"],
-		deletePackageVersionForOrg: ["DELETE /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}"],
-		deletePackageVersionForUser: ["DELETE /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}"],
-		getAllPackageVersionsForAPackageOwnedByAnOrg: [
-			"GET /orgs/{org}/packages/{package_type}/{package_name}/versions",
-			{},
-			{ renamed: ["packages", "getAllPackageVersionsForPackageOwnedByOrg"] }
-		],
-		getAllPackageVersionsForAPackageOwnedByTheAuthenticatedUser: [
-			"GET /user/packages/{package_type}/{package_name}/versions",
-			{},
-			{ renamed: ["packages", "getAllPackageVersionsForPackageOwnedByAuthenticatedUser"] }
-		],
-		getAllPackageVersionsForPackageOwnedByAuthenticatedUser: ["GET /user/packages/{package_type}/{package_name}/versions"],
-		getAllPackageVersionsForPackageOwnedByOrg: ["GET /orgs/{org}/packages/{package_type}/{package_name}/versions"],
-		getAllPackageVersionsForPackageOwnedByUser: ["GET /users/{username}/packages/{package_type}/{package_name}/versions"],
-		getPackageForAuthenticatedUser: ["GET /user/packages/{package_type}/{package_name}"],
-		getPackageForOrganization: ["GET /orgs/{org}/packages/{package_type}/{package_name}"],
-		getPackageForUser: ["GET /users/{username}/packages/{package_type}/{package_name}"],
-		getPackageVersionForAuthenticatedUser: ["GET /user/packages/{package_type}/{package_name}/versions/{package_version_id}"],
-		getPackageVersionForOrganization: ["GET /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}"],
-		getPackageVersionForUser: ["GET /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}"],
-		listDockerMigrationConflictingPackagesForAuthenticatedUser: ["GET /user/docker/conflicts"],
-		listDockerMigrationConflictingPackagesForOrganization: ["GET /orgs/{org}/docker/conflicts"],
-		listDockerMigrationConflictingPackagesForUser: ["GET /users/{username}/docker/conflicts"],
-		listPackagesForAuthenticatedUser: ["GET /user/packages"],
-		listPackagesForOrganization: ["GET /orgs/{org}/packages"],
-		listPackagesForUser: ["GET /users/{username}/packages"],
-		restorePackageForAuthenticatedUser: ["POST /user/packages/{package_type}/{package_name}/restore{?token}"],
-		restorePackageForOrg: ["POST /orgs/{org}/packages/{package_type}/{package_name}/restore{?token}"],
-		restorePackageForUser: ["POST /users/{username}/packages/{package_type}/{package_name}/restore{?token}"],
-		restorePackageVersionForAuthenticatedUser: ["POST /user/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"],
-		restorePackageVersionForOrg: ["POST /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"],
-		restorePackageVersionForUser: ["POST /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore"]
-	},
-	privateRegistries: {
-		createOrgPrivateRegistry: ["POST /orgs/{org}/private-registries"],
-		deleteOrgPrivateRegistry: ["DELETE /orgs/{org}/private-registries/{secret_name}"],
-		getOrgPrivateRegistry: ["GET /orgs/{org}/private-registries/{secret_name}"],
-		getOrgPublicKey: ["GET /orgs/{org}/private-registries/public-key"],
-		listOrgPrivateRegistries: ["GET /orgs/{org}/private-registries"],
-		updateOrgPrivateRegistry: ["PATCH /orgs/{org}/private-registries/{secret_name}"]
-	},
-	projects: {
-		addItemForOrg: ["POST /orgs/{org}/projectsV2/{project_number}/items"],
-		addItemForUser: ["POST /users/{username}/projectsV2/{project_number}/items"],
-		deleteItemForOrg: ["DELETE /orgs/{org}/projectsV2/{project_number}/items/{item_id}"],
-		deleteItemForUser: ["DELETE /users/{username}/projectsV2/{project_number}/items/{item_id}"],
-		getFieldForOrg: ["GET /orgs/{org}/projectsV2/{project_number}/fields/{field_id}"],
-		getFieldForUser: ["GET /users/{username}/projectsV2/{project_number}/fields/{field_id}"],
-		getForOrg: ["GET /orgs/{org}/projectsV2/{project_number}"],
-		getForUser: ["GET /users/{username}/projectsV2/{project_number}"],
-		getOrgItem: ["GET /orgs/{org}/projectsV2/{project_number}/items/{item_id}"],
-		getUserItem: ["GET /users/{username}/projectsV2/{project_number}/items/{item_id}"],
-		listFieldsForOrg: ["GET /orgs/{org}/projectsV2/{project_number}/fields"],
-		listFieldsForUser: ["GET /users/{username}/projectsV2/{project_number}/fields"],
-		listForOrg: ["GET /orgs/{org}/projectsV2"],
-		listForUser: ["GET /users/{username}/projectsV2"],
-		listItemsForOrg: ["GET /orgs/{org}/projectsV2/{project_number}/items"],
-		listItemsForUser: ["GET /users/{username}/projectsV2/{project_number}/items"],
-		updateItemForOrg: ["PATCH /orgs/{org}/projectsV2/{project_number}/items/{item_id}"],
-		updateItemForUser: ["PATCH /users/{username}/projectsV2/{project_number}/items/{item_id}"]
-	},
-	pulls: {
-		checkIfMerged: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/merge"],
-		create: ["POST /repos/{owner}/{repo}/pulls"],
-		createReplyForReviewComment: ["POST /repos/{owner}/{repo}/pulls/{pull_number}/comments/{comment_id}/replies"],
-		createReview: ["POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews"],
-		createReviewComment: ["POST /repos/{owner}/{repo}/pulls/{pull_number}/comments"],
-		deletePendingReview: ["DELETE /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"],
-		deleteReviewComment: ["DELETE /repos/{owner}/{repo}/pulls/comments/{comment_id}"],
-		dismissReview: ["PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/dismissals"],
-		get: ["GET /repos/{owner}/{repo}/pulls/{pull_number}"],
-		getReview: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"],
-		getReviewComment: ["GET /repos/{owner}/{repo}/pulls/comments/{comment_id}"],
-		list: ["GET /repos/{owner}/{repo}/pulls"],
-		listCommentsForReview: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments"],
-		listCommits: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/commits"],
-		listFiles: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/files"],
-		listRequestedReviewers: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers"],
-		listReviewComments: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/comments"],
-		listReviewCommentsForRepo: ["GET /repos/{owner}/{repo}/pulls/comments"],
-		listReviews: ["GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews"],
-		merge: ["PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge"],
-		removeRequestedReviewers: ["DELETE /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers"],
-		requestReviewers: ["POST /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers"],
-		submitReview: ["POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/events"],
-		update: ["PATCH /repos/{owner}/{repo}/pulls/{pull_number}"],
-		updateBranch: ["PUT /repos/{owner}/{repo}/pulls/{pull_number}/update-branch"],
-		updateReview: ["PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}"],
-		updateReviewComment: ["PATCH /repos/{owner}/{repo}/pulls/comments/{comment_id}"]
-	},
-	rateLimit: { get: ["GET /rate_limit"] },
-	reactions: {
-		createForCommitComment: ["POST /repos/{owner}/{repo}/comments/{comment_id}/reactions"],
-		createForIssue: ["POST /repos/{owner}/{repo}/issues/{issue_number}/reactions"],
-		createForIssueComment: ["POST /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions"],
-		createForPullRequestReviewComment: ["POST /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions"],
-		createForRelease: ["POST /repos/{owner}/{repo}/releases/{release_id}/reactions"],
-		createForTeamDiscussionCommentInOrg: ["POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions"],
-		createForTeamDiscussionInOrg: ["POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions"],
-		deleteForCommitComment: ["DELETE /repos/{owner}/{repo}/comments/{comment_id}/reactions/{reaction_id}"],
-		deleteForIssue: ["DELETE /repos/{owner}/{repo}/issues/{issue_number}/reactions/{reaction_id}"],
-		deleteForIssueComment: ["DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions/{reaction_id}"],
-		deleteForPullRequestComment: ["DELETE /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions/{reaction_id}"],
-		deleteForRelease: ["DELETE /repos/{owner}/{repo}/releases/{release_id}/reactions/{reaction_id}"],
-		deleteForTeamDiscussion: ["DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions/{reaction_id}"],
-		deleteForTeamDiscussionComment: ["DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions/{reaction_id}"],
-		listForCommitComment: ["GET /repos/{owner}/{repo}/comments/{comment_id}/reactions"],
-		listForIssue: ["GET /repos/{owner}/{repo}/issues/{issue_number}/reactions"],
-		listForIssueComment: ["GET /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions"],
-		listForPullRequestReviewComment: ["GET /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions"],
-		listForRelease: ["GET /repos/{owner}/{repo}/releases/{release_id}/reactions"],
-		listForTeamDiscussionCommentInOrg: ["GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions"],
-		listForTeamDiscussionInOrg: ["GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions"]
-	},
-	repos: {
-		acceptInvitation: [
-			"PATCH /user/repository_invitations/{invitation_id}",
-			{},
-			{ renamed: ["repos", "acceptInvitationForAuthenticatedUser"] }
-		],
-		acceptInvitationForAuthenticatedUser: ["PATCH /user/repository_invitations/{invitation_id}"],
-		addAppAccessRestrictions: [
-			"POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps",
-			{},
-			{ mapToData: "apps" }
-		],
-		addCollaborator: ["PUT /repos/{owner}/{repo}/collaborators/{username}"],
-		addStatusCheckContexts: [
-			"POST /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts",
-			{},
-			{ mapToData: "contexts" }
-		],
-		addTeamAccessRestrictions: [
-			"POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams",
-			{},
-			{ mapToData: "teams" }
-		],
-		addUserAccessRestrictions: [
-			"POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users",
-			{},
-			{ mapToData: "users" }
-		],
-		cancelPagesDeployment: ["POST /repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}/cancel"],
-		checkAutomatedSecurityFixes: ["GET /repos/{owner}/{repo}/automated-security-fixes"],
-		checkCollaborator: ["GET /repos/{owner}/{repo}/collaborators/{username}"],
-		checkImmutableReleases: ["GET /repos/{owner}/{repo}/immutable-releases"],
-		checkPrivateVulnerabilityReporting: ["GET /repos/{owner}/{repo}/private-vulnerability-reporting"],
-		checkVulnerabilityAlerts: ["GET /repos/{owner}/{repo}/vulnerability-alerts"],
-		codeownersErrors: ["GET /repos/{owner}/{repo}/codeowners/errors"],
-		compareCommits: ["GET /repos/{owner}/{repo}/compare/{base}...{head}"],
-		compareCommitsWithBasehead: ["GET /repos/{owner}/{repo}/compare/{basehead}"],
-		createAttestation: ["POST /repos/{owner}/{repo}/attestations"],
-		createAutolink: ["POST /repos/{owner}/{repo}/autolinks"],
-		createCommitComment: ["POST /repos/{owner}/{repo}/commits/{commit_sha}/comments"],
-		createCommitSignatureProtection: ["POST /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures"],
-		createCommitStatus: ["POST /repos/{owner}/{repo}/statuses/{sha}"],
-		createDeployKey: ["POST /repos/{owner}/{repo}/keys"],
-		createDeployment: ["POST /repos/{owner}/{repo}/deployments"],
-		createDeploymentBranchPolicy: ["POST /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies"],
-		createDeploymentProtectionRule: ["POST /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules"],
-		createDeploymentStatus: ["POST /repos/{owner}/{repo}/deployments/{deployment_id}/statuses"],
-		createDispatchEvent: ["POST /repos/{owner}/{repo}/dispatches"],
-		createForAuthenticatedUser: ["POST /user/repos"],
-		createFork: ["POST /repos/{owner}/{repo}/forks"],
-		createInOrg: ["POST /orgs/{org}/repos"],
-		createOrUpdateEnvironment: ["PUT /repos/{owner}/{repo}/environments/{environment_name}"],
-		createOrUpdateFileContents: ["PUT /repos/{owner}/{repo}/contents/{path}"],
-		createOrgRuleset: ["POST /orgs/{org}/rulesets"],
-		createPagesDeployment: ["POST /repos/{owner}/{repo}/pages/deployments"],
-		createPagesSite: ["POST /repos/{owner}/{repo}/pages"],
-		createRelease: ["POST /repos/{owner}/{repo}/releases"],
-		createRepoRuleset: ["POST /repos/{owner}/{repo}/rulesets"],
-		createUsingTemplate: ["POST /repos/{template_owner}/{template_repo}/generate"],
-		createWebhook: ["POST /repos/{owner}/{repo}/hooks"],
-		customPropertiesForReposCreateOrUpdateRepositoryValues: ["PATCH /repos/{owner}/{repo}/properties/values"],
-		customPropertiesForReposGetRepositoryValues: ["GET /repos/{owner}/{repo}/properties/values"],
-		declineInvitation: [
-			"DELETE /user/repository_invitations/{invitation_id}",
-			{},
-			{ renamed: ["repos", "declineInvitationForAuthenticatedUser"] }
-		],
-		declineInvitationForAuthenticatedUser: ["DELETE /user/repository_invitations/{invitation_id}"],
-		delete: ["DELETE /repos/{owner}/{repo}"],
-		deleteAccessRestrictions: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions"],
-		deleteAdminBranchProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins"],
-		deleteAnEnvironment: ["DELETE /repos/{owner}/{repo}/environments/{environment_name}"],
-		deleteAutolink: ["DELETE /repos/{owner}/{repo}/autolinks/{autolink_id}"],
-		deleteBranchProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection"],
-		deleteCommitComment: ["DELETE /repos/{owner}/{repo}/comments/{comment_id}"],
-		deleteCommitSignatureProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures"],
-		deleteDeployKey: ["DELETE /repos/{owner}/{repo}/keys/{key_id}"],
-		deleteDeployment: ["DELETE /repos/{owner}/{repo}/deployments/{deployment_id}"],
-		deleteDeploymentBranchPolicy: ["DELETE /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}"],
-		deleteFile: ["DELETE /repos/{owner}/{repo}/contents/{path}"],
-		deleteInvitation: ["DELETE /repos/{owner}/{repo}/invitations/{invitation_id}"],
-		deleteOrgRuleset: ["DELETE /orgs/{org}/rulesets/{ruleset_id}"],
-		deletePagesSite: ["DELETE /repos/{owner}/{repo}/pages"],
-		deletePullRequestReviewProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"],
-		deleteRelease: ["DELETE /repos/{owner}/{repo}/releases/{release_id}"],
-		deleteReleaseAsset: ["DELETE /repos/{owner}/{repo}/releases/assets/{asset_id}"],
-		deleteRepoRuleset: ["DELETE /repos/{owner}/{repo}/rulesets/{ruleset_id}"],
-		deleteWebhook: ["DELETE /repos/{owner}/{repo}/hooks/{hook_id}"],
-		disableAutomatedSecurityFixes: ["DELETE /repos/{owner}/{repo}/automated-security-fixes"],
-		disableDeploymentProtectionRule: ["DELETE /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/{protection_rule_id}"],
-		disableImmutableReleases: ["DELETE /repos/{owner}/{repo}/immutable-releases"],
-		disablePrivateVulnerabilityReporting: ["DELETE /repos/{owner}/{repo}/private-vulnerability-reporting"],
-		disableVulnerabilityAlerts: ["DELETE /repos/{owner}/{repo}/vulnerability-alerts"],
-		downloadArchive: [
-			"GET /repos/{owner}/{repo}/zipball/{ref}",
-			{},
-			{ renamed: ["repos", "downloadZipballArchive"] }
-		],
-		downloadTarballArchive: ["GET /repos/{owner}/{repo}/tarball/{ref}"],
-		downloadZipballArchive: ["GET /repos/{owner}/{repo}/zipball/{ref}"],
-		enableAutomatedSecurityFixes: ["PUT /repos/{owner}/{repo}/automated-security-fixes"],
-		enableImmutableReleases: ["PUT /repos/{owner}/{repo}/immutable-releases"],
-		enablePrivateVulnerabilityReporting: ["PUT /repos/{owner}/{repo}/private-vulnerability-reporting"],
-		enableVulnerabilityAlerts: ["PUT /repos/{owner}/{repo}/vulnerability-alerts"],
-		generateReleaseNotes: ["POST /repos/{owner}/{repo}/releases/generate-notes"],
-		get: ["GET /repos/{owner}/{repo}"],
-		getAccessRestrictions: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions"],
-		getAdminBranchProtection: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins"],
-		getAllDeploymentProtectionRules: ["GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules"],
-		getAllEnvironments: ["GET /repos/{owner}/{repo}/environments"],
-		getAllStatusCheckContexts: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts"],
-		getAllTopics: ["GET /repos/{owner}/{repo}/topics"],
-		getAppsWithAccessToProtectedBranch: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps"],
-		getAutolink: ["GET /repos/{owner}/{repo}/autolinks/{autolink_id}"],
-		getBranch: ["GET /repos/{owner}/{repo}/branches/{branch}"],
-		getBranchProtection: ["GET /repos/{owner}/{repo}/branches/{branch}/protection"],
-		getBranchRules: ["GET /repos/{owner}/{repo}/rules/branches/{branch}"],
-		getClones: ["GET /repos/{owner}/{repo}/traffic/clones"],
-		getCodeFrequencyStats: ["GET /repos/{owner}/{repo}/stats/code_frequency"],
-		getCollaboratorPermissionLevel: ["GET /repos/{owner}/{repo}/collaborators/{username}/permission"],
-		getCombinedStatusForRef: ["GET /repos/{owner}/{repo}/commits/{ref}/status"],
-		getCommit: ["GET /repos/{owner}/{repo}/commits/{ref}"],
-		getCommitActivityStats: ["GET /repos/{owner}/{repo}/stats/commit_activity"],
-		getCommitComment: ["GET /repos/{owner}/{repo}/comments/{comment_id}"],
-		getCommitSignatureProtection: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures"],
-		getCommunityProfileMetrics: ["GET /repos/{owner}/{repo}/community/profile"],
-		getContent: ["GET /repos/{owner}/{repo}/contents/{path}"],
-		getContributorsStats: ["GET /repos/{owner}/{repo}/stats/contributors"],
-		getCustomDeploymentProtectionRule: ["GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/{protection_rule_id}"],
-		getDeployKey: ["GET /repos/{owner}/{repo}/keys/{key_id}"],
-		getDeployment: ["GET /repos/{owner}/{repo}/deployments/{deployment_id}"],
-		getDeploymentBranchPolicy: ["GET /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}"],
-		getDeploymentStatus: ["GET /repos/{owner}/{repo}/deployments/{deployment_id}/statuses/{status_id}"],
-		getEnvironment: ["GET /repos/{owner}/{repo}/environments/{environment_name}"],
-		getLatestPagesBuild: ["GET /repos/{owner}/{repo}/pages/builds/latest"],
-		getLatestRelease: ["GET /repos/{owner}/{repo}/releases/latest"],
-		getOrgRuleSuite: ["GET /orgs/{org}/rulesets/rule-suites/{rule_suite_id}"],
-		getOrgRuleSuites: ["GET /orgs/{org}/rulesets/rule-suites"],
-		getOrgRuleset: ["GET /orgs/{org}/rulesets/{ruleset_id}"],
-		getOrgRulesets: ["GET /orgs/{org}/rulesets"],
-		getPages: ["GET /repos/{owner}/{repo}/pages"],
-		getPagesBuild: ["GET /repos/{owner}/{repo}/pages/builds/{build_id}"],
-		getPagesDeployment: ["GET /repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}"],
-		getPagesHealthCheck: ["GET /repos/{owner}/{repo}/pages/health"],
-		getParticipationStats: ["GET /repos/{owner}/{repo}/stats/participation"],
-		getPullRequestReviewProtection: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"],
-		getPunchCardStats: ["GET /repos/{owner}/{repo}/stats/punch_card"],
-		getReadme: ["GET /repos/{owner}/{repo}/readme"],
-		getReadmeInDirectory: ["GET /repos/{owner}/{repo}/readme/{dir}"],
-		getRelease: ["GET /repos/{owner}/{repo}/releases/{release_id}"],
-		getReleaseAsset: ["GET /repos/{owner}/{repo}/releases/assets/{asset_id}"],
-		getReleaseByTag: ["GET /repos/{owner}/{repo}/releases/tags/{tag}"],
-		getRepoRuleSuite: ["GET /repos/{owner}/{repo}/rulesets/rule-suites/{rule_suite_id}"],
-		getRepoRuleSuites: ["GET /repos/{owner}/{repo}/rulesets/rule-suites"],
-		getRepoRuleset: ["GET /repos/{owner}/{repo}/rulesets/{ruleset_id}"],
-		getRepoRulesetHistory: ["GET /repos/{owner}/{repo}/rulesets/{ruleset_id}/history"],
-		getRepoRulesetVersion: ["GET /repos/{owner}/{repo}/rulesets/{ruleset_id}/history/{version_id}"],
-		getRepoRulesets: ["GET /repos/{owner}/{repo}/rulesets"],
-		getStatusChecksProtection: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"],
-		getTeamsWithAccessToProtectedBranch: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams"],
-		getTopPaths: ["GET /repos/{owner}/{repo}/traffic/popular/paths"],
-		getTopReferrers: ["GET /repos/{owner}/{repo}/traffic/popular/referrers"],
-		getUsersWithAccessToProtectedBranch: ["GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users"],
-		getViews: ["GET /repos/{owner}/{repo}/traffic/views"],
-		getWebhook: ["GET /repos/{owner}/{repo}/hooks/{hook_id}"],
-		getWebhookConfigForRepo: ["GET /repos/{owner}/{repo}/hooks/{hook_id}/config"],
-		getWebhookDelivery: ["GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}"],
-		listActivities: ["GET /repos/{owner}/{repo}/activity"],
-		listAttestations: ["GET /repos/{owner}/{repo}/attestations/{subject_digest}"],
-		listAutolinks: ["GET /repos/{owner}/{repo}/autolinks"],
-		listBranches: ["GET /repos/{owner}/{repo}/branches"],
-		listBranchesForHeadCommit: ["GET /repos/{owner}/{repo}/commits/{commit_sha}/branches-where-head"],
-		listCollaborators: ["GET /repos/{owner}/{repo}/collaborators"],
-		listCommentsForCommit: ["GET /repos/{owner}/{repo}/commits/{commit_sha}/comments"],
-		listCommitCommentsForRepo: ["GET /repos/{owner}/{repo}/comments"],
-		listCommitStatusesForRef: ["GET /repos/{owner}/{repo}/commits/{ref}/statuses"],
-		listCommits: ["GET /repos/{owner}/{repo}/commits"],
-		listContributors: ["GET /repos/{owner}/{repo}/contributors"],
-		listCustomDeploymentRuleIntegrations: ["GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/apps"],
-		listDeployKeys: ["GET /repos/{owner}/{repo}/keys"],
-		listDeploymentBranchPolicies: ["GET /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies"],
-		listDeploymentStatuses: ["GET /repos/{owner}/{repo}/deployments/{deployment_id}/statuses"],
-		listDeployments: ["GET /repos/{owner}/{repo}/deployments"],
-		listForAuthenticatedUser: ["GET /user/repos"],
-		listForOrg: ["GET /orgs/{org}/repos"],
-		listForUser: ["GET /users/{username}/repos"],
-		listForks: ["GET /repos/{owner}/{repo}/forks"],
-		listInvitations: ["GET /repos/{owner}/{repo}/invitations"],
-		listInvitationsForAuthenticatedUser: ["GET /user/repository_invitations"],
-		listLanguages: ["GET /repos/{owner}/{repo}/languages"],
-		listPagesBuilds: ["GET /repos/{owner}/{repo}/pages/builds"],
-		listPublic: ["GET /repositories"],
-		listPullRequestsAssociatedWithCommit: ["GET /repos/{owner}/{repo}/commits/{commit_sha}/pulls"],
-		listReleaseAssets: ["GET /repos/{owner}/{repo}/releases/{release_id}/assets"],
-		listReleases: ["GET /repos/{owner}/{repo}/releases"],
-		listTags: ["GET /repos/{owner}/{repo}/tags"],
-		listTeams: ["GET /repos/{owner}/{repo}/teams"],
-		listWebhookDeliveries: ["GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries"],
-		listWebhooks: ["GET /repos/{owner}/{repo}/hooks"],
-		merge: ["POST /repos/{owner}/{repo}/merges"],
-		mergeUpstream: ["POST /repos/{owner}/{repo}/merge-upstream"],
-		pingWebhook: ["POST /repos/{owner}/{repo}/hooks/{hook_id}/pings"],
-		redeliverWebhookDelivery: ["POST /repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}/attempts"],
-		removeAppAccessRestrictions: [
-			"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps",
-			{},
-			{ mapToData: "apps" }
-		],
-		removeCollaborator: ["DELETE /repos/{owner}/{repo}/collaborators/{username}"],
-		removeStatusCheckContexts: [
-			"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts",
-			{},
-			{ mapToData: "contexts" }
-		],
-		removeStatusCheckProtection: ["DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"],
-		removeTeamAccessRestrictions: [
-			"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams",
-			{},
-			{ mapToData: "teams" }
-		],
-		removeUserAccessRestrictions: [
-			"DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users",
-			{},
-			{ mapToData: "users" }
-		],
-		renameBranch: ["POST /repos/{owner}/{repo}/branches/{branch}/rename"],
-		replaceAllTopics: ["PUT /repos/{owner}/{repo}/topics"],
-		requestPagesBuild: ["POST /repos/{owner}/{repo}/pages/builds"],
-		setAdminBranchProtection: ["POST /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins"],
-		setAppAccessRestrictions: [
-			"PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps",
-			{},
-			{ mapToData: "apps" }
-		],
-		setStatusCheckContexts: [
-			"PUT /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts",
-			{},
-			{ mapToData: "contexts" }
-		],
-		setTeamAccessRestrictions: [
-			"PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams",
-			{},
-			{ mapToData: "teams" }
-		],
-		setUserAccessRestrictions: [
-			"PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users",
-			{},
-			{ mapToData: "users" }
-		],
-		testPushWebhook: ["POST /repos/{owner}/{repo}/hooks/{hook_id}/tests"],
-		transfer: ["POST /repos/{owner}/{repo}/transfer"],
-		update: ["PATCH /repos/{owner}/{repo}"],
-		updateBranchProtection: ["PUT /repos/{owner}/{repo}/branches/{branch}/protection"],
-		updateCommitComment: ["PATCH /repos/{owner}/{repo}/comments/{comment_id}"],
-		updateDeploymentBranchPolicy: ["PUT /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}"],
-		updateInformationAboutPagesSite: ["PUT /repos/{owner}/{repo}/pages"],
-		updateInvitation: ["PATCH /repos/{owner}/{repo}/invitations/{invitation_id}"],
-		updateOrgRuleset: ["PUT /orgs/{org}/rulesets/{ruleset_id}"],
-		updatePullRequestReviewProtection: ["PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews"],
-		updateRelease: ["PATCH /repos/{owner}/{repo}/releases/{release_id}"],
-		updateReleaseAsset: ["PATCH /repos/{owner}/{repo}/releases/assets/{asset_id}"],
-		updateRepoRuleset: ["PUT /repos/{owner}/{repo}/rulesets/{ruleset_id}"],
-		updateStatusCheckPotection: [
-			"PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks",
-			{},
-			{ renamed: ["repos", "updateStatusCheckProtection"] }
-		],
-		updateStatusCheckProtection: ["PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks"],
-		updateWebhook: ["PATCH /repos/{owner}/{repo}/hooks/{hook_id}"],
-		updateWebhookConfigForRepo: ["PATCH /repos/{owner}/{repo}/hooks/{hook_id}/config"],
-		uploadReleaseAsset: ["POST /repos/{owner}/{repo}/releases/{release_id}/assets{?name,label}", { baseUrl: "https://uploads.github.com" }]
-	},
-	search: {
-		code: ["GET /search/code"],
-		commits: ["GET /search/commits"],
-		issuesAndPullRequests: ["GET /search/issues"],
-		labels: ["GET /search/labels"],
-		repos: ["GET /search/repositories"],
-		topics: ["GET /search/topics"],
-		users: ["GET /search/users"]
-	},
-	secretScanning: {
-		createPushProtectionBypass: ["POST /repos/{owner}/{repo}/secret-scanning/push-protection-bypasses"],
-		getAlert: ["GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}"],
-		getScanHistory: ["GET /repos/{owner}/{repo}/secret-scanning/scan-history"],
-		listAlertsForOrg: ["GET /orgs/{org}/secret-scanning/alerts"],
-		listAlertsForRepo: ["GET /repos/{owner}/{repo}/secret-scanning/alerts"],
-		listLocationsForAlert: ["GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}/locations"],
-		listOrgPatternConfigs: ["GET /orgs/{org}/secret-scanning/pattern-configurations"],
-		updateAlert: ["PATCH /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}"],
-		updateOrgPatternConfigs: ["PATCH /orgs/{org}/secret-scanning/pattern-configurations"]
-	},
-	securityAdvisories: {
-		createFork: ["POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/forks"],
-		createPrivateVulnerabilityReport: ["POST /repos/{owner}/{repo}/security-advisories/reports"],
-		createRepositoryAdvisory: ["POST /repos/{owner}/{repo}/security-advisories"],
-		createRepositoryAdvisoryCveRequest: ["POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/cve"],
-		getGlobalAdvisory: ["GET /advisories/{ghsa_id}"],
-		getRepositoryAdvisory: ["GET /repos/{owner}/{repo}/security-advisories/{ghsa_id}"],
-		listGlobalAdvisories: ["GET /advisories"],
-		listOrgRepositoryAdvisories: ["GET /orgs/{org}/security-advisories"],
-		listRepositoryAdvisories: ["GET /repos/{owner}/{repo}/security-advisories"],
-		updateRepositoryAdvisory: ["PATCH /repos/{owner}/{repo}/security-advisories/{ghsa_id}"]
-	},
-	teams: {
-		addOrUpdateMembershipForUserInOrg: ["PUT /orgs/{org}/teams/{team_slug}/memberships/{username}"],
-		addOrUpdateRepoPermissionsInOrg: ["PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}"],
-		checkPermissionsForRepoInOrg: ["GET /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}"],
-		create: ["POST /orgs/{org}/teams"],
-		createDiscussionCommentInOrg: ["POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments"],
-		createDiscussionInOrg: ["POST /orgs/{org}/teams/{team_slug}/discussions"],
-		deleteDiscussionCommentInOrg: ["DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"],
-		deleteDiscussionInOrg: ["DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"],
-		deleteInOrg: ["DELETE /orgs/{org}/teams/{team_slug}"],
-		getByName: ["GET /orgs/{org}/teams/{team_slug}"],
-		getDiscussionCommentInOrg: ["GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"],
-		getDiscussionInOrg: ["GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"],
-		getMembershipForUserInOrg: ["GET /orgs/{org}/teams/{team_slug}/memberships/{username}"],
-		list: ["GET /orgs/{org}/teams"],
-		listChildInOrg: ["GET /orgs/{org}/teams/{team_slug}/teams"],
-		listDiscussionCommentsInOrg: ["GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments"],
-		listDiscussionsInOrg: ["GET /orgs/{org}/teams/{team_slug}/discussions"],
-		listForAuthenticatedUser: ["GET /user/teams"],
-		listMembersInOrg: ["GET /orgs/{org}/teams/{team_slug}/members"],
-		listPendingInvitationsInOrg: ["GET /orgs/{org}/teams/{team_slug}/invitations"],
-		listReposInOrg: ["GET /orgs/{org}/teams/{team_slug}/repos"],
-		removeMembershipForUserInOrg: ["DELETE /orgs/{org}/teams/{team_slug}/memberships/{username}"],
-		removeRepoInOrg: ["DELETE /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}"],
-		updateDiscussionCommentInOrg: ["PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}"],
-		updateDiscussionInOrg: ["PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}"],
-		updateInOrg: ["PATCH /orgs/{org}/teams/{team_slug}"]
-	},
-	users: {
-		addEmailForAuthenticated: [
-			"POST /user/emails",
-			{},
-			{ renamed: ["users", "addEmailForAuthenticatedUser"] }
-		],
-		addEmailForAuthenticatedUser: ["POST /user/emails"],
-		addSocialAccountForAuthenticatedUser: ["POST /user/social_accounts"],
-		block: ["PUT /user/blocks/{username}"],
-		checkBlocked: ["GET /user/blocks/{username}"],
-		checkFollowingForUser: ["GET /users/{username}/following/{target_user}"],
-		checkPersonIsFollowedByAuthenticated: ["GET /user/following/{username}"],
-		createGpgKeyForAuthenticated: [
-			"POST /user/gpg_keys",
-			{},
-			{ renamed: ["users", "createGpgKeyForAuthenticatedUser"] }
-		],
-		createGpgKeyForAuthenticatedUser: ["POST /user/gpg_keys"],
-		createPublicSshKeyForAuthenticated: [
-			"POST /user/keys",
-			{},
-			{ renamed: ["users", "createPublicSshKeyForAuthenticatedUser"] }
-		],
-		createPublicSshKeyForAuthenticatedUser: ["POST /user/keys"],
-		createSshSigningKeyForAuthenticatedUser: ["POST /user/ssh_signing_keys"],
-		deleteAttestationsBulk: ["POST /users/{username}/attestations/delete-request"],
-		deleteAttestationsById: ["DELETE /users/{username}/attestations/{attestation_id}"],
-		deleteAttestationsBySubjectDigest: ["DELETE /users/{username}/attestations/digest/{subject_digest}"],
-		deleteEmailForAuthenticated: [
-			"DELETE /user/emails",
-			{},
-			{ renamed: ["users", "deleteEmailForAuthenticatedUser"] }
-		],
-		deleteEmailForAuthenticatedUser: ["DELETE /user/emails"],
-		deleteGpgKeyForAuthenticated: [
-			"DELETE /user/gpg_keys/{gpg_key_id}",
-			{},
-			{ renamed: ["users", "deleteGpgKeyForAuthenticatedUser"] }
-		],
-		deleteGpgKeyForAuthenticatedUser: ["DELETE /user/gpg_keys/{gpg_key_id}"],
-		deletePublicSshKeyForAuthenticated: [
-			"DELETE /user/keys/{key_id}",
-			{},
-			{ renamed: ["users", "deletePublicSshKeyForAuthenticatedUser"] }
-		],
-		deletePublicSshKeyForAuthenticatedUser: ["DELETE /user/keys/{key_id}"],
-		deleteSocialAccountForAuthenticatedUser: ["DELETE /user/social_accounts"],
-		deleteSshSigningKeyForAuthenticatedUser: ["DELETE /user/ssh_signing_keys/{ssh_signing_key_id}"],
-		follow: ["PUT /user/following/{username}"],
-		getAuthenticated: ["GET /user"],
-		getById: ["GET /user/{account_id}"],
-		getByUsername: ["GET /users/{username}"],
-		getContextForUser: ["GET /users/{username}/hovercard"],
-		getGpgKeyForAuthenticated: [
-			"GET /user/gpg_keys/{gpg_key_id}",
-			{},
-			{ renamed: ["users", "getGpgKeyForAuthenticatedUser"] }
-		],
-		getGpgKeyForAuthenticatedUser: ["GET /user/gpg_keys/{gpg_key_id}"],
-		getPublicSshKeyForAuthenticated: [
-			"GET /user/keys/{key_id}",
-			{},
-			{ renamed: ["users", "getPublicSshKeyForAuthenticatedUser"] }
-		],
-		getPublicSshKeyForAuthenticatedUser: ["GET /user/keys/{key_id}"],
-		getSshSigningKeyForAuthenticatedUser: ["GET /user/ssh_signing_keys/{ssh_signing_key_id}"],
-		list: ["GET /users"],
-		listAttestations: ["GET /users/{username}/attestations/{subject_digest}"],
-		listAttestationsBulk: ["POST /users/{username}/attestations/bulk-list{?per_page,before,after}"],
-		listBlockedByAuthenticated: [
-			"GET /user/blocks",
-			{},
-			{ renamed: ["users", "listBlockedByAuthenticatedUser"] }
-		],
-		listBlockedByAuthenticatedUser: ["GET /user/blocks"],
-		listEmailsForAuthenticated: [
-			"GET /user/emails",
-			{},
-			{ renamed: ["users", "listEmailsForAuthenticatedUser"] }
-		],
-		listEmailsForAuthenticatedUser: ["GET /user/emails"],
-		listFollowedByAuthenticated: [
-			"GET /user/following",
-			{},
-			{ renamed: ["users", "listFollowedByAuthenticatedUser"] }
-		],
-		listFollowedByAuthenticatedUser: ["GET /user/following"],
-		listFollowersForAuthenticatedUser: ["GET /user/followers"],
-		listFollowersForUser: ["GET /users/{username}/followers"],
-		listFollowingForUser: ["GET /users/{username}/following"],
-		listGpgKeysForAuthenticated: [
-			"GET /user/gpg_keys",
-			{},
-			{ renamed: ["users", "listGpgKeysForAuthenticatedUser"] }
-		],
-		listGpgKeysForAuthenticatedUser: ["GET /user/gpg_keys"],
-		listGpgKeysForUser: ["GET /users/{username}/gpg_keys"],
-		listPublicEmailsForAuthenticated: [
-			"GET /user/public_emails",
-			{},
-			{ renamed: ["users", "listPublicEmailsForAuthenticatedUser"] }
-		],
-		listPublicEmailsForAuthenticatedUser: ["GET /user/public_emails"],
-		listPublicKeysForUser: ["GET /users/{username}/keys"],
-		listPublicSshKeysForAuthenticated: [
-			"GET /user/keys",
-			{},
-			{ renamed: ["users", "listPublicSshKeysForAuthenticatedUser"] }
-		],
-		listPublicSshKeysForAuthenticatedUser: ["GET /user/keys"],
-		listSocialAccountsForAuthenticatedUser: ["GET /user/social_accounts"],
-		listSocialAccountsForUser: ["GET /users/{username}/social_accounts"],
-		listSshSigningKeysForAuthenticatedUser: ["GET /user/ssh_signing_keys"],
-		listSshSigningKeysForUser: ["GET /users/{username}/ssh_signing_keys"],
-		setPrimaryEmailVisibilityForAuthenticated: [
-			"PATCH /user/email/visibility",
-			{},
-			{ renamed: ["users", "setPrimaryEmailVisibilityForAuthenticatedUser"] }
-		],
-		setPrimaryEmailVisibilityForAuthenticatedUser: ["PATCH /user/email/visibility"],
-		unblock: ["DELETE /user/blocks/{username}"],
-		unfollow: ["DELETE /user/following/{username}"],
-		updateAuthenticated: ["PATCH /user"]
-	}
-};
-//#endregion
-//#region node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@17.0.0_@octokit+core@7.0.8/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/endpoints-to-methods.js
-var endpointMethodsMap = /* @__PURE__ */ new Map();
-for (const [scope, endpoints] of Object.entries(endpoints_default)) for (const [methodName, endpoint] of Object.entries(endpoints)) {
-	const [route, defaults, decorations] = endpoint;
-	const [method, url] = route.split(/ /);
-	const endpointDefaults = Object.assign({
-		method,
-		url
-	}, defaults);
-	if (!endpointMethodsMap.has(scope)) endpointMethodsMap.set(scope, /* @__PURE__ */ new Map());
-	endpointMethodsMap.get(scope).set(methodName, {
-		scope,
-		methodName,
-		endpointDefaults,
-		decorations
-	});
-}
-var handler = {
-	has({ scope }, methodName) {
-		return endpointMethodsMap.get(scope).has(methodName);
-	},
-	getOwnPropertyDescriptor(target, methodName) {
-		return {
-			value: this.get(target, methodName),
-			configurable: true,
-			writable: true,
-			enumerable: true
-		};
-	},
-	defineProperty(target, methodName, descriptor) {
-		Object.defineProperty(target.cache, methodName, descriptor);
-		return true;
-	},
-	deleteProperty(target, methodName) {
-		delete target.cache[methodName];
-		return true;
-	},
-	ownKeys({ scope }) {
-		return [...endpointMethodsMap.get(scope).keys()];
-	},
-	set(target, methodName, value) {
-		return target.cache[methodName] = value;
-	},
-	get({ octokit, scope, cache }, methodName) {
-		if (cache[methodName]) return cache[methodName];
-		const method = endpointMethodsMap.get(scope).get(methodName);
-		if (!method) return;
-		const { endpointDefaults, decorations } = method;
-		if (decorations) cache[methodName] = decorate(octokit, scope, methodName, endpointDefaults, decorations);
-		else cache[methodName] = octokit.request.defaults(endpointDefaults);
-		return cache[methodName];
-	}
-};
-function endpointsToMethods(octokit) {
-	const newMethods = {};
-	for (const scope of endpointMethodsMap.keys()) newMethods[scope] = new Proxy({
-		octokit,
-		scope,
-		cache: {}
-	}, handler);
-	return newMethods;
-}
-function decorate(octokit, scope, methodName, defaults, decorations) {
-	const requestWithDefaults = octokit.request.defaults(defaults);
-	function withDecorations(...args) {
-		let options = requestWithDefaults.endpoint.merge(...args);
-		if (decorations.mapToData) {
-			options = Object.assign({}, options, {
-				data: options[decorations.mapToData],
-				[decorations.mapToData]: void 0
-			});
-			return requestWithDefaults(options);
-		}
-		if (decorations.renamed) {
-			const [newScope, newMethodName] = decorations.renamed;
-			octokit.log.warn(`octokit.${scope}.${methodName}() has been renamed to octokit.${newScope}.${newMethodName}()`);
-		}
-		if (decorations.deprecated) octokit.log.warn(decorations.deprecated);
-		if (decorations.renamedParameters) {
-			const options2 = requestWithDefaults.endpoint.merge(...args);
-			for (const [name, alias] of Object.entries(decorations.renamedParameters)) if (name in options2) {
-				octokit.log.warn(`"${name}" parameter is deprecated for "octokit.${scope}.${methodName}()". Use "${alias}" instead`);
-				if (!(alias in options2)) options2[alias] = options2[name];
-				delete options2[name];
-			}
-			return requestWithDefaults(options2);
-		}
-		return requestWithDefaults(...args);
-	}
-	return Object.assign(withDecorations, requestWithDefaults);
-}
-//#endregion
-//#region node_modules/.pnpm/@octokit+plugin-rest-endpoint-methods@17.0.0_@octokit+core@7.0.8/node_modules/@octokit/plugin-rest-endpoint-methods/dist-src/index.js
-function restEndpointMethods(octokit) {
-	return { rest: endpointsToMethods(octokit) };
-}
-restEndpointMethods.VERSION = VERSION$1;
-function legacyRestEndpointMethods(octokit) {
-	const api = endpointsToMethods(octokit);
-	return {
-		...api,
-		rest: api
-	};
-}
-legacyRestEndpointMethods.VERSION = VERSION$1;
-//#endregion
-//#region node_modules/.pnpm/@octokit+plugin-paginate-rest@14.0.0_@octokit+core@7.0.8/node_modules/@octokit/plugin-paginate-rest/dist-bundle/index.js
-var VERSION = "0.0.0-development";
-function normalizePaginatedListResponse(response) {
-	if (!response.data) return {
-		...response,
-		data: []
-	};
-	if (!(("total_count" in response.data || "total_commits" in response.data) && !("url" in response.data))) return response;
-	const incompleteResults = response.data.incomplete_results;
-	const repositorySelection = response.data.repository_selection;
-	const totalCount = response.data.total_count;
-	const totalCommits = response.data.total_commits;
-	delete response.data.incomplete_results;
-	delete response.data.repository_selection;
-	delete response.data.total_count;
-	delete response.data.total_commits;
-	const namespaceKey = Object.keys(response.data)[0];
-	response.data = response.data[namespaceKey];
-	if (typeof incompleteResults !== "undefined") response.data.incomplete_results = incompleteResults;
-	if (typeof repositorySelection !== "undefined") response.data.repository_selection = repositorySelection;
-	response.data.total_count = totalCount;
-	response.data.total_commits = totalCommits;
-	return response;
-}
-function iterator(octokit, route, parameters) {
-	const options = typeof route === "function" ? route.endpoint(parameters) : octokit.request.endpoint(route, parameters);
-	const requestMethod = typeof route === "function" ? route : octokit.request;
-	const method = options.method;
-	const headers = options.headers;
-	let url = options.url;
-	return { [Symbol.asyncIterator]: () => ({ async next() {
-		if (!url) return { done: true };
-		try {
-			const normalizedResponse = normalizePaginatedListResponse(await requestMethod({
-				method,
-				url,
-				headers
-			}));
-			url = ((normalizedResponse.headers.link || "").match(/<([^<>]+)>;\s*rel="next"/) || [])[1];
-			if (!url && "total_commits" in normalizedResponse.data) {
-				const parsedUrl = new URL(normalizedResponse.url);
-				const params = parsedUrl.searchParams;
-				const page = parseInt(params.get("page") || "1", 10);
-				if (page * parseInt(params.get("per_page") || "250", 10) < normalizedResponse.data.total_commits) {
-					params.set("page", String(page + 1));
-					url = parsedUrl.toString();
-				}
-			}
-			return { value: normalizedResponse };
-		} catch (error) {
-			if (error.status !== 409) throw error;
-			url = "";
-			return { value: {
-				status: 200,
-				headers: {},
-				data: []
-			} };
-		}
-	} }) };
-}
-function paginate(octokit, route, parameters, mapFn) {
-	if (typeof parameters === "function") {
-		mapFn = parameters;
-		parameters = void 0;
-	}
-	return gather(octokit, [], iterator(octokit, route, parameters)[Symbol.asyncIterator](), mapFn);
-}
-function gather(octokit, results, iterator2, mapFn) {
-	return iterator2.next().then((result) => {
-		if (result.done) return results;
-		let earlyExit = false;
-		function done() {
-			earlyExit = true;
-		}
-		results = results.concat(mapFn ? mapFn(result.value, done) : result.value.data);
-		if (earlyExit) return results;
-		return gather(octokit, results, iterator2, mapFn);
-	});
-}
-Object.assign(paginate, { iterator });
-function paginateRest(octokit) {
-	return { paginate: Object.assign(paginate.bind(null, octokit), { iterator: iterator.bind(null, octokit) }) };
-}
-paginateRest.VERSION = VERSION;
-new Context();
-var baseUrl = getApiBaseUrl();
-var defaults = {
-	baseUrl,
-	request: {
-		agent: getProxyAgent(baseUrl),
-		fetch: getProxyFetch(baseUrl)
-	}
-};
-Octokit.plugin(restEndpointMethods, paginateRest).defaults(defaults);
-new Context();
-//#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.10.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/base-program.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.11.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/base-program.js
 var BaseProgram = class {
 	path;
 	constructor(path) {
 		this.path = path;
 	}
-	call(arguments_, options) {
+	async call(arguments_, options) {
 		return exec(this.path, arguments_, options);
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.10.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/crates.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.11.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/crates.js
 async function resolveVersion(crate) {
 	const url = `https://crates.io/api/v1/crates/${crate}`;
 	const response = await new HttpClient("@actions-rs-plus (https://github.com/actions-rs-plus/)").getJson(url);
@@ -23628,7 +20198,7 @@ function getOptions(copy) {
 }
 //#endregion
 //#region node_modules/.pnpm/@actions+glob@0.6.1/node_modules/@actions/glob/lib/internal-path-helper.js
-var IS_WINDOWS$6 = process.platform === "win32";
+var IS_WINDOWS$5 = process.platform === "win32";
 /**
 * Similar to path.dirname except normalizes the path separators and slightly better handling for Windows UNC paths.
 *
@@ -23648,9 +20218,9 @@ var IS_WINDOWS$6 = process.platform === "win32";
 */
 function dirname(p) {
 	p = safeTrimTrailingSeparator(p);
-	if (IS_WINDOWS$6 && /^\\\\[^\\]+(\\[^\\]+)?$/.test(p)) return p;
+	if (IS_WINDOWS$5 && /^\\\\[^\\]+(\\[^\\]+)?$/.test(p)) return p;
 	let result = path$2.dirname(p);
-	if (IS_WINDOWS$6 && /^\\\\[^\\]+\\[^\\]+\\$/.test(result)) result = safeTrimTrailingSeparator(result);
+	if (IS_WINDOWS$5 && /^\\\\[^\\]+\\[^\\]+\\$/.test(result)) result = safeTrimTrailingSeparator(result);
 	return result;
 }
 /**
@@ -23661,7 +20231,7 @@ function ensureAbsoluteRoot(root, itemPath) {
 	assert(root, `ensureAbsoluteRoot parameter 'root' must not be empty`);
 	assert(itemPath, `ensureAbsoluteRoot parameter 'itemPath' must not be empty`);
 	if (hasAbsoluteRoot(itemPath)) return itemPath;
-	if (IS_WINDOWS$6) {
+	if (IS_WINDOWS$5) {
 		if (itemPath.match(/^[A-Z]:[^\\/]|^[A-Z]:$/i)) {
 			let cwd = process.cwd();
 			assert(cwd.match(/^[A-Z]:\\/i), `Expected current directory to start with an absolute drive root. Actual '${cwd}'`);
@@ -23679,7 +20249,7 @@ function ensureAbsoluteRoot(root, itemPath) {
 		}
 	}
 	assert(hasAbsoluteRoot(root), `ensureAbsoluteRoot parameter 'root' must have an absolute root`);
-	if (root.endsWith("/") || IS_WINDOWS$6 && root.endsWith("\\")) {} else root += path$2.sep;
+	if (root.endsWith("/") || IS_WINDOWS$5 && root.endsWith("\\")) {} else root += path$2.sep;
 	return root + itemPath;
 }
 /**
@@ -23689,7 +20259,7 @@ function ensureAbsoluteRoot(root, itemPath) {
 function hasAbsoluteRoot(itemPath) {
 	assert(itemPath, `hasAbsoluteRoot parameter 'itemPath' must not be empty`);
 	itemPath = normalizeSeparators(itemPath);
-	if (IS_WINDOWS$6) return itemPath.startsWith("\\\\") || /^[A-Z]:\\/i.test(itemPath);
+	if (IS_WINDOWS$5) return itemPath.startsWith("\\\\") || /^[A-Z]:\\/i.test(itemPath);
 	return itemPath.startsWith("/");
 }
 /**
@@ -23699,7 +20269,7 @@ function hasAbsoluteRoot(itemPath) {
 function hasRoot(itemPath) {
 	assert(itemPath, `isRooted parameter 'itemPath' must not be empty`);
 	itemPath = normalizeSeparators(itemPath);
-	if (IS_WINDOWS$6) return itemPath.startsWith("\\") || /^[A-Z]:/i.test(itemPath);
+	if (IS_WINDOWS$5) return itemPath.startsWith("\\") || /^[A-Z]:/i.test(itemPath);
 	return itemPath.startsWith("/");
 }
 /**
@@ -23707,7 +20277,7 @@ function hasRoot(itemPath) {
 */
 function normalizeSeparators(p) {
 	p = p || "";
-	if (IS_WINDOWS$6) {
+	if (IS_WINDOWS$5) {
 		p = p.replace(/\//g, "\\");
 		return (/^\\\\+[^\\]/.test(p) ? "\\" : "") + p.replace(/\\\\+/g, "\\");
 	}
@@ -23722,7 +20292,7 @@ function safeTrimTrailingSeparator(p) {
 	p = normalizeSeparators(p);
 	if (!p.endsWith(path$2.sep)) return p;
 	if (p === path$2.sep) return p;
-	if (IS_WINDOWS$6 && /^[A-Z]:\\$/i.test(p)) return p;
+	if (IS_WINDOWS$5 && /^[A-Z]:\\$/i.test(p)) return p;
 	return p.substr(0, p.length - 1);
 }
 //#endregion
@@ -23743,7 +20313,7 @@ var MatchKind;
 })(MatchKind || (MatchKind = {}));
 //#endregion
 //#region node_modules/.pnpm/@actions+glob@0.6.1/node_modules/@actions/glob/lib/internal-pattern-helper.js
-var IS_WINDOWS$5 = process.platform === "win32";
+var IS_WINDOWS$4 = process.platform === "win32";
 /**
 * Given an array of patterns, returns an array of paths to search.
 * Duplicates and paths under other included paths are filtered out.
@@ -23752,12 +20322,12 @@ function getSearchPaths(patterns) {
 	patterns = patterns.filter((x) => !x.negate);
 	const searchPathMap = {};
 	for (const pattern of patterns) {
-		const key = IS_WINDOWS$5 ? pattern.searchPath.toUpperCase() : pattern.searchPath;
+		const key = IS_WINDOWS$4 ? pattern.searchPath.toUpperCase() : pattern.searchPath;
 		searchPathMap[key] = "candidate";
 	}
 	const result = [];
 	for (const pattern of patterns) {
-		const key = IS_WINDOWS$5 ? pattern.searchPath.toUpperCase() : pattern.searchPath;
+		const key = IS_WINDOWS$4 ? pattern.searchPath.toUpperCase() : pattern.searchPath;
 		if (searchPathMap[key] === "included") continue;
 		let foundAncestor = false;
 		let tempKey = key;
@@ -24047,8 +20617,8 @@ var require_brace_expansion = /* @__PURE__ */ __commonJSMin(((exports, module) =
 	}
 }));
 //#endregion
-//#region node_modules/.pnpm/@actions+glob@0.6.1/node_modules/@actions/glob/lib/internal-path.js
-var import_minimatch = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exports, module) => {
+//#region node_modules/.pnpm/minimatch@3.1.5/node_modules/minimatch/minimatch.js
+var require_minimatch = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = minimatch;
 	minimatch.Minimatch = Minimatch;
 	var path$1 = function() {
@@ -24625,8 +21195,10 @@ var import_minimatch = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((
 	function regExpEscape(s) {
 		return s.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 	}
-})))(), 1);
-var IS_WINDOWS$4 = process.platform === "win32";
+}));
+//#endregion
+//#region node_modules/.pnpm/@actions+glob@0.6.1/node_modules/@actions/glob/lib/internal-path.js
+var IS_WINDOWS$3 = process.platform === "win32";
 /**
 * Helper class for parsing paths into segments
 */
@@ -24674,7 +21246,7 @@ var Path = class {
 	*/
 	toString() {
 		let result = this.segments[0];
-		let skipSlash = result.endsWith(path$2.sep) || IS_WINDOWS$4 && /^[A-Z]:$/i.test(result);
+		let skipSlash = result.endsWith(path$2.sep) || IS_WINDOWS$3 && /^[A-Z]:$/i.test(result);
 		for (let i = 1; i < this.segments.length; i++) {
 			if (skipSlash) skipSlash = false;
 			else result += path$2.sep;
@@ -24683,10 +21255,8 @@ var Path = class {
 		return result;
 	}
 };
-//#endregion
-//#region node_modules/.pnpm/@actions+glob@0.6.1/node_modules/@actions/glob/lib/internal-pattern.js
-var { Minimatch } = import_minimatch.default;
-var IS_WINDOWS$3 = process.platform === "win32";
+var { Minimatch } = (/* @__PURE__ */ __toESM(require_minimatch(), 1)).default;
+var IS_WINDOWS$2 = process.platform === "win32";
 var Pattern = class Pattern {
 	constructor(patternOrNegate, isImplicitPattern = false, segments, homedir) {
 		/**
@@ -24714,17 +21284,17 @@ var Pattern = class Pattern {
 		let foundGlob = false;
 		const searchSegments = this.segments.map((x) => Pattern.getLiteral(x)).filter((x) => !foundGlob && !(foundGlob = x === ""));
 		this.searchPath = new Path(searchSegments).toString();
-		this.rootRegExp = new RegExp(Pattern.regExpEscape(searchSegments[0]), IS_WINDOWS$3 ? "i" : "");
+		this.rootRegExp = new RegExp(Pattern.regExpEscape(searchSegments[0]), IS_WINDOWS$2 ? "i" : "");
 		this.isImplicitPattern = isImplicitPattern;
 		const minimatchOptions = {
 			dot: true,
 			nobrace: true,
-			nocase: IS_WINDOWS$3,
+			nocase: IS_WINDOWS$2,
 			nocomment: true,
 			noext: true,
 			nonegate: true
 		};
-		pattern = IS_WINDOWS$3 ? pattern.replace(/\\/g, "/") : pattern;
+		pattern = IS_WINDOWS$2 ? pattern.replace(/\\/g, "/") : pattern;
 		this.minimatch = new Minimatch(pattern, minimatchOptions);
 	}
 	/**
@@ -24744,13 +21314,13 @@ var Pattern = class Pattern {
 	partialMatch(itemPath) {
 		itemPath = safeTrimTrailingSeparator(itemPath);
 		if (dirname(itemPath) === itemPath) return this.rootRegExp.test(itemPath);
-		return this.minimatch.matchOne(itemPath.split(IS_WINDOWS$3 ? /\\+/ : /\/+/), this.minimatch.set[0], true);
+		return this.minimatch.matchOne(itemPath.split(IS_WINDOWS$2 ? /\\+/ : /\/+/), this.minimatch.set[0], true);
 	}
 	/**
 	* Escapes glob patterns within a path
 	*/
 	static globEscape(s) {
-		return (IS_WINDOWS$3 ? s : s.replace(/\\/g, "\\\\")).replace(/(\[)(?=[^/]+\])/g, "[[]").replace(/\?/g, "[?]").replace(/\*/g, "[*]");
+		return (IS_WINDOWS$2 ? s : s.replace(/\\/g, "\\\\")).replace(/(\[)(?=[^/]+\])/g, "[[]").replace(/\?/g, "[?]").replace(/\*/g, "[*]");
 	}
 	/**
 	* Normalizes slashes and ensures absolute root
@@ -24763,15 +21333,15 @@ var Pattern = class Pattern {
 		pattern = normalizeSeparators(pattern);
 		if (pattern === "." || pattern.startsWith(`.${path$2.sep}`)) pattern = Pattern.globEscape(process.cwd()) + pattern.substr(1);
 		else if (pattern === "~" || pattern.startsWith(`~${path$2.sep}`)) {
-			homedir = homedir || os$4.homedir();
+			homedir = homedir || os$3.homedir();
 			assert(homedir, "Unable to determine HOME directory");
 			assert(hasAbsoluteRoot(homedir), `Expected HOME directory to be a rooted path. Actual '${homedir}'`);
 			pattern = Pattern.globEscape(homedir) + pattern.substr(1);
-		} else if (IS_WINDOWS$3 && (pattern.match(/^[A-Z]:$/i) || pattern.match(/^[A-Z]:[^\\]/i))) {
+		} else if (IS_WINDOWS$2 && (pattern.match(/^[A-Z]:$/i) || pattern.match(/^[A-Z]:[^\\]/i))) {
 			let root = ensureAbsoluteRoot("C:\\dummy-root", pattern.substr(0, 2));
 			if (pattern.length > 2 && !root.endsWith("\\")) root += "\\";
 			pattern = Pattern.globEscape(root) + pattern.substr(2);
-		} else if (IS_WINDOWS$3 && (pattern === "\\" || pattern.match(/^\\[^\\]/))) {
+		} else if (IS_WINDOWS$2 && (pattern === "\\" || pattern.match(/^\\[^\\]/))) {
 			let root = ensureAbsoluteRoot("C:\\dummy-root", "\\");
 			if (!root.endsWith("\\")) root += "\\";
 			pattern = Pattern.globEscape(root) + pattern.substr(1);
@@ -24786,7 +21356,7 @@ var Pattern = class Pattern {
 		let literal = "";
 		for (let i = 0; i < segment.length; i++) {
 			const c = segment[i];
-			if (c === "\\" && !IS_WINDOWS$3 && i + 1 < segment.length) {
+			if (c === "\\" && !IS_WINDOWS$2 && i + 1 < segment.length) {
 				literal += segment[++i];
 				continue;
 			} else if (c === "*" || c === "?") return "";
@@ -24795,7 +21365,7 @@ var Pattern = class Pattern {
 				let closed = -1;
 				for (let i2 = i + 1; i2 < segment.length; i2++) {
 					const c2 = segment[i2];
-					if (c2 === "\\" && !IS_WINDOWS$3 && i2 + 1 < segment.length) {
+					if (c2 === "\\" && !IS_WINDOWS$2 && i2 + 1 < segment.length) {
 						set += segment[++i2];
 						continue;
 					} else if (c2 === "]") {
@@ -24834,7 +21404,7 @@ var SearchState = class {
 };
 //#endregion
 //#region node_modules/.pnpm/@actions+glob@0.6.1/node_modules/@actions/glob/lib/internal-globber.js
-var __awaiter$13 = function(thisArg, _arguments, P, generator) {
+var __awaiter$10 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -24935,7 +21505,7 @@ var __asyncGenerator = function(thisArg, _arguments, generator) {
 		if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]);
 	}
 };
-var IS_WINDOWS$2 = process.platform === "win32";
+var IS_WINDOWS$1 = process.platform === "win32";
 var DefaultGlobber = class DefaultGlobber {
 	constructor(options) {
 		this.patterns = [];
@@ -24946,7 +21516,7 @@ var DefaultGlobber = class DefaultGlobber {
 		return this.searchPaths.slice();
 	}
 	glob() {
-		return __awaiter$13(this, void 0, void 0, function* () {
+		return __awaiter$10(this, void 0, void 0, function* () {
 			var _a;
 			var e_1;
 			var _b;
@@ -25013,9 +21583,9 @@ var DefaultGlobber = class DefaultGlobber {
 	* Constructs a DefaultGlobber
 	*/
 	static create(patterns, options) {
-		return __awaiter$13(this, void 0, void 0, function* () {
+		return __awaiter$10(this, void 0, void 0, function* () {
 			const result = new DefaultGlobber(options);
-			if (IS_WINDOWS$2) {
+			if (IS_WINDOWS$1) {
 				patterns = patterns.replace(/\r\n/g, "\n");
 				patterns = patterns.replace(/\r/g, "\n");
 			}
@@ -25027,7 +21597,7 @@ var DefaultGlobber = class DefaultGlobber {
 		});
 	}
 	static stat(item, options, traversalChain) {
-		return __awaiter$13(this, void 0, void 0, function* () {
+		return __awaiter$10(this, void 0, void 0, function* () {
 			let stats;
 			if (options.followSymbolicLinks) try {
 				stats = yield fs$1.promises.stat(item.path);
@@ -25057,7 +21627,7 @@ var DefaultGlobber = class DefaultGlobber {
 };
 //#endregion
 //#region node_modules/.pnpm/@actions+glob@0.6.1/node_modules/@actions/glob/lib/glob.js
-var __awaiter$11 = function(thisArg, _arguments, P, generator) {
+var __awaiter$8 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -25091,7 +21661,7 @@ var __awaiter$11 = function(thisArg, _arguments, P, generator) {
 * @param options   Glob options
 */
 function create(patterns, options) {
-	return __awaiter$11(this, void 0, void 0, function* () {
+	return __awaiter$8(this, void 0, void 0, function* () {
 		return yield DefaultGlobber.create(patterns, options);
 	});
 }
@@ -26440,8 +23010,8 @@ var require_subset = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = subset;
 }));
 //#endregion
-//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/constants.js
-var import_semver = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exports, module) => {
+//#region node_modules/.pnpm/semver@7.8.5/node_modules/semver/index.js
+var require_semver = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var internalRe = require_re();
 	var constants = require_constants();
 	var SemVer = require_semver$1();
@@ -26494,7 +23064,9 @@ var import_semver = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exp
 		compareIdentifiers: identifiers.compareIdentifiers,
 		rcompareIdentifiers: identifiers.rcompareIdentifiers
 	};
-})))(), 1);
+}));
+//#endregion
+//#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/constants.js
 var CacheFilename;
 (function(CacheFilename) {
 	CacheFilename["Gzip"] = "cache.tgz";
@@ -26521,7 +23093,8 @@ var ManifestFilename = "manifest.txt";
 var CacheReadDeniedMessagePrefix = "cache read denied:";
 //#endregion
 //#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/cacheUtils.js
-var __awaiter$10 = function(thisArg, _arguments, P, generator) {
+var import_semver = /* @__PURE__ */ __toESM(require_semver(), 1);
+var __awaiter$7 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -26573,7 +23146,7 @@ var __asyncValues = function(o) {
 };
 var versionSalt = "1.0";
 function createTempDirectory() {
-	return __awaiter$10(this, void 0, void 0, function* () {
+	return __awaiter$7(this, void 0, void 0, function* () {
 		const IS_WINDOWS = process.platform === "win32";
 		let tempDirectory = process.env["RUNNER_TEMP"] || "";
 		if (!tempDirectory) {
@@ -26592,7 +23165,7 @@ function getArchiveFileSizeInBytes(filePath) {
 	return fs$1.statSync(filePath).size;
 }
 function resolvePaths(patterns) {
-	return __awaiter$10(this, void 0, void 0, function* () {
+	return __awaiter$7(this, void 0, void 0, function* () {
 		var _a;
 		var e_1;
 		var _b;
@@ -26624,12 +23197,12 @@ function resolvePaths(patterns) {
 	});
 }
 function unlinkFile(filePath) {
-	return __awaiter$10(this, void 0, void 0, function* () {
+	return __awaiter$7(this, void 0, void 0, function* () {
 		return util$2.promisify(fs$1.unlink)(filePath);
 	});
 }
 function getVersion(app_1) {
-	return __awaiter$10(this, arguments, void 0, function* (app, additionalArgs = []) {
+	return __awaiter$7(this, arguments, void 0, function* (app, additionalArgs = []) {
 		let versionOutput = "";
 		additionalArgs.push("--version");
 		debug(`Checking ${app} ${additionalArgs.join(" ")}`);
@@ -26651,7 +23224,7 @@ function getVersion(app_1) {
 	});
 }
 function getCompressionMethod() {
-	return __awaiter$10(this, void 0, void 0, function* () {
+	return __awaiter$7(this, void 0, void 0, function* () {
 		const versionOutput = yield getVersion("zstd", ["--quiet"]);
 		debug(`zstd version: ${import_semver.clean(versionOutput)}`);
 		if (versionOutput === "") return CompressionMethod.Gzip;
@@ -26662,7 +23235,7 @@ function getCacheFileName(compressionMethod) {
 	return compressionMethod === CompressionMethod.Gzip ? CacheFilename.Gzip : CacheFilename.Zstd;
 }
 function getGnuTarPathOnWindows() {
-	return __awaiter$10(this, void 0, void 0, function* () {
+	return __awaiter$7(this, void 0, void 0, function* () {
 		if (fs$1.existsSync(GnuTarPathOnWindows)) return GnuTarPathOnWindows;
 		return (yield getVersion("tar")).toLowerCase().includes("gnu tar") ? which("tar") : "";
 	});
@@ -26716,7 +23289,7 @@ function getRuntimeToken() {
 */
 var AbortError$1 = class extends Error {
 	static {
-		__name(this, "AbortError");
+		__name$1(this, "AbortError");
 	}
 	constructor(message) {
 		super(message);
@@ -26954,7 +23527,7 @@ context$1.logger;
 function createClientLogger$1(namespace) {
 	return context$1.createClientLogger(namespace);
 }
-__name(createClientLogger$1, "createClientLogger");
+__name$1(createClientLogger$1, "createClientLogger");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/httpHeaders.js
 function normalizeName(name) {
@@ -27040,7 +23613,7 @@ var HttpHeadersImpl = class {
 function createHttpHeaders$1(rawHeaders) {
 	return new HttpHeadersImpl(rawHeaders);
 }
-__name(createHttpHeaders$1, "createHttpHeaders");
+__name$1(createHttpHeaders$1, "createHttpHeaders");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/uuidUtils.js
 /**
@@ -27051,7 +23624,7 @@ __name(createHttpHeaders$1, "createHttpHeaders");
 function randomUUID$1() {
 	return globalThis.crypto.randomUUID();
 }
-__name(randomUUID$1, "randomUUID");
+__name$1(randomUUID$1, "randomUUID");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/pipelineRequest.js
 var PipelineRequestImpl = class {
@@ -27104,7 +23677,7 @@ var PipelineRequestImpl = class {
 function createPipelineRequest$1(options) {
 	return new PipelineRequestImpl(options);
 }
-__name(createPipelineRequest$1, "createPipelineRequest");
+__name$1(createPipelineRequest$1, "createPipelineRequest");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/pipeline.js
 var ValidPhaseNames = /* @__PURE__ */ new Set([
@@ -27304,7 +23877,7 @@ var HttpPipeline = class HttpPipeline {
 function createEmptyPipeline$1() {
 	return HttpPipeline.create();
 }
-__name(createEmptyPipeline$1, "createEmptyPipeline");
+__name$1(createEmptyPipeline$1, "createEmptyPipeline");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/object.js
 /**
@@ -27328,7 +23901,7 @@ function isError$1(e) {
 	}
 	return false;
 }
-__name(isError$1, "isError");
+__name$1(isError$1, "isError");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/inspect.js
 var custom = inspect.custom;
@@ -27449,7 +24022,7 @@ var errorSanitizer = new Sanitizer();
 */
 var RestError$1 = class RestError$1 extends Error {
 	static {
-		__name(this, "RestError");
+		__name$1(this, "RestError");
 	}
 	/**
 	* Something went wrong when making the request.
@@ -27525,7 +24098,7 @@ function isRestError$1(e) {
 	if (e instanceof RestError$1) return true;
 	return isError$1(e) && e.name === "RestError";
 }
-__name(isRestError$1, "isRestError");
+__name$1(isRestError$1, "isRestError");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/bytesEncoding.js
 /**
@@ -27537,7 +24110,7 @@ __name(isRestError$1, "isRestError");
 function uint8ArrayToString$1(bytes, format) {
 	return Buffer.from(bytes).toString(format);
 }
-__name(uint8ArrayToString$1, "uint8ArrayToString");
+__name$1(uint8ArrayToString$1, "uint8ArrayToString");
 /**
 * The helper that transforms string to specific character encoded bytes array.
 * @param value - the string to be converted
@@ -27547,7 +24120,7 @@ __name(uint8ArrayToString$1, "uint8ArrayToString");
 function stringToUint8Array$1(value, format) {
 	return Buffer.from(value, format);
 }
-__name(stringToUint8Array$1, "stringToUint8Array");
+__name$1(stringToUint8Array$1, "stringToUint8Array");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/log.js
 var logger$4 = createClientLogger$1("ts-http-runtime");
@@ -27798,7 +24371,7 @@ function createNodeHttpClient() {
 function createDefaultHttpClient$1() {
 	return createNodeHttpClient();
 }
-__name(createDefaultHttpClient$1, "createDefaultHttpClient");
+__name$1(createDefaultHttpClient$1, "createDefaultHttpClient");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/logPolicy.js
 /**
@@ -27827,7 +24400,7 @@ function logPolicy$1(options = {}) {
 		}
 	};
 }
-__name(logPolicy$1, "logPolicy");
+__name$1(logPolicy$1, "logPolicy");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/random.js
 /**
@@ -27891,7 +24464,7 @@ function delay$2(delayInMs, value, options) {
 		if (options?.abortSignal) options.abortSignal.addEventListener("abort", onAborted);
 	});
 }
-__name(delay$2, "delay");
+__name$1(delay$2, "delay");
 /**
 * @internal
 * @returns the parsed value or undefined if the parsed value is invalid.
@@ -28106,7 +24679,7 @@ function defaultRetryPolicy$1(options = {}) {
 		sendRequest: retryPolicy([throttlingRetryStrategy(), exponentialRetryStrategy(options)], { maxRetries: options.maxRetries ?? 3 }).sendRequest
 	};
 }
-__name(defaultRetryPolicy$1, "defaultRetryPolicy");
+__name$1(defaultRetryPolicy$1, "defaultRetryPolicy");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/formData.js
 /**
@@ -28155,7 +24728,7 @@ function formDataPolicy$1() {
 		}
 	};
 }
-__name(formDataPolicy$1, "formDataPolicy");
+__name$1(formDataPolicy$1, "formDataPolicy");
 function wwwFormUrlEncode(formData) {
 	const urlSearchParams = new URLSearchParams();
 	for (const [key, value] of Object.entries(formData)) if (Array.isArray(value)) for (const subValue of value) urlSearchParams.append(key, subValue.toString());
@@ -28202,7 +24775,7 @@ function agentPolicy$1(agent) {
 		}
 	};
 }
-__name(agentPolicy$1, "agentPolicy");
+__name$1(agentPolicy$1, "agentPolicy");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/tlsPolicy.js
 /**
@@ -28221,7 +24794,7 @@ function tlsPolicy$1(tlsSettings) {
 		}
 	};
 }
-__name(tlsPolicy$1, "tlsPolicy");
+__name$1(tlsPolicy$1, "tlsPolicy");
 //#endregion
 //#region node_modules/.pnpm/ms@2.1.3/node_modules/ms/index.js
 var require_ms = /* @__PURE__ */ __commonJSMin(((exports, module) => {
@@ -28752,7 +25325,7 @@ var require_has_flag = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 //#endregion
 //#region node_modules/.pnpm/supports-color@7.2.0/node_modules/supports-color/index.js
 var require_supports_color = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	var os$3 = __require("os");
+	var os$2 = __require("os");
 	var tty$1 = __require("tty");
 	var hasFlag = require_has_flag();
 	var { env } = process;
@@ -28781,7 +25354,7 @@ var require_supports_color = /* @__PURE__ */ __commonJSMin(((exports, module) =>
 		const min = forceColor || 0;
 		if (env.TERM === "dumb") return min;
 		if (process.platform === "win32") {
-			const osRelease = os$3.release().split(".");
+			const osRelease = os$2.release().split(".");
 			if (Number(osRelease[0]) >= 10 && Number(osRelease[2]) >= 10586) return Number(osRelease[2]) >= 14931 ? 3 : 2;
 			return 1;
 		}
@@ -29657,7 +26230,7 @@ function getDefaultProxySettings$1(proxyUrl) {
 		password: parsedUrl.password
 	};
 }
-__name(getDefaultProxySettings$1, "getDefaultProxySettings");
+__name$1(getDefaultProxySettings$1, "getDefaultProxySettings");
 /**
 * This method attempts to parse a proxy URL from the environment
 * variables `HTTPS_PROXY` or `HTTP_PROXY`.
@@ -29710,7 +26283,7 @@ function proxyPolicy$1(proxySettings, options) {
 		}
 	};
 }
-__name(proxyPolicy$1, "proxyPolicy");
+__name$1(proxyPolicy$1, "proxyPolicy");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/decompressResponsePolicy.js
 /**
@@ -29730,7 +26303,7 @@ function decompressResponsePolicy$1() {
 		}
 	};
 }
-__name(decompressResponsePolicy$1, "decompressResponsePolicy");
+__name$1(decompressResponsePolicy$1, "decompressResponsePolicy");
 //#endregion
 //#region node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/redirectPolicy.js
 /**
@@ -29756,7 +26329,7 @@ function redirectPolicy$1(options = {}) {
 		}
 	};
 }
-__name(redirectPolicy$1, "redirectPolicy");
+__name$1(redirectPolicy$1, "redirectPolicy");
 async function handleRedirect(next, response, maxRetries, allowCrossOriginRedirects, currentRetries = 0) {
 	const { request, status, headers } = response;
 	const locationHeader = headers.get("location");
@@ -29906,7 +26479,7 @@ function multipartPolicy$1() {
 		}
 	};
 }
-__name(multipartPolicy$1, "multipartPolicy");
+__name$1(multipartPolicy$1, "multipartPolicy");
 //#endregion
 //#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/pipeline.js
 /**
@@ -29993,7 +26566,7 @@ function getUserAgentString$1(telemetryInfo) {
 	}
 	return parts.join(" ");
 }
-__name(getUserAgentString$1, "getUserAgentString");
+__name$1(getUserAgentString$1, "getUserAgentString");
 /**
 * @internal
 */
@@ -30066,7 +26639,7 @@ function getRawContent$1(blob) {
 	if (hasRawContent(blob)) return blob[rawContent]();
 	else return blob;
 }
-__name(getRawContent$1, "getRawContent");
+__name$1(getRawContent$1, "getRawContent");
 //#endregion
 //#region node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/multipartPolicy.js
 /**
@@ -30213,7 +26786,7 @@ function delay$1(timeInMs, options) {
 		abortErrorMsg: abortErrorMsg ?? StandardAbortMessage
 	});
 }
-__name(delay$1, "delay");
+__name$1(delay$1, "delay");
 //#endregion
 //#region node_modules/.pnpm/@azure+core-util@1.14.0_supports-color@7.2.0/node_modules/@azure/core-util/dist/esm/error.js
 /**
@@ -32131,7 +28704,7 @@ function getCachedDefaultHttpClient$1() {
 	if (!cachedHttpClient) cachedHttpClient = createDefaultHttpClient();
 	return cachedHttpClient;
 }
-__name(getCachedDefaultHttpClient$1, "getCachedDefaultHttpClient");
+__name$1(getCachedDefaultHttpClient$1, "getCachedDefaultHttpClient");
 //#endregion
 //#region node_modules/.pnpm/@azure+core-client@1.11.1_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/urlHelpers.js
 var CollectionFormatToDelimiterMap = {
@@ -33278,7 +29851,7 @@ function validateEntityName$1(name) {
 	for (const ch of name) if (SPECIAL_CHARS.has(ch)) throw new Error(`[EntityReplacer] Invalid character '${ch}' in entity name: "${name}"`);
 	return name;
 }
-__name(validateEntityName$1, "validateEntityName");
+__name$1(validateEntityName$1, "validateEntityName");
 /**
 * Merge one or more entity maps into a flat name→string map.
 * Accepts either:
@@ -34501,7 +31074,7 @@ function getIgnoreAttributesFn$1(ignoreAttributes) {
 	};
 	return () => false;
 }
-__name(getIgnoreAttributesFn$1, "getIgnoreAttributesFn");
+__name$1(getIgnoreAttributesFn$1, "getIgnoreAttributesFn");
 //#endregion
 //#region node_modules/.pnpm/path-expression-matcher@1.6.2/node_modules/path-expression-matcher/src/Expression.js
 /**
@@ -36544,7 +33117,7 @@ function replaceEntitiesValue$1(val, tagName, jPath) {
 	}
 	return this.entityDecoder.decode(val);
 }
-__name(replaceEntitiesValue$1, "replaceEntitiesValue");
+__name$1(replaceEntitiesValue$1, "replaceEntitiesValue");
 function saveTextToParentTag(textData, parentNode, matcher, isLeafNode) {
 	if (textData) {
 		if (isLeafNode === void 0) isLeafNode = parentNode.child.length === 0;
@@ -36783,7 +33356,7 @@ function propName$1(obj) {
 		if (key !== ":@") return key;
 	}
 }
-__name(propName$1, "propName");
+__name$1(propName$1, "propName");
 function assignAttributes(obj, attrMap, readonlyMatcher, options) {
 	if (attrMap) {
 		const keys = Object.keys(attrMap);
@@ -36911,7 +33484,7 @@ function resolveTagName$1(name, isAttribute, options, matcher, qNameValidator) {
 		matcher: matcher.readOnly()
 	});
 }
-__name(resolveTagName$1, "resolveTagName");
+__name$1(resolveTagName$1, "resolveTagName");
 /**
 * @param {array} jArray
 * @param {any} options
@@ -40540,7 +37113,7 @@ function setURLParameter$1(url, name, value) {
 	urlParsed.search = searchPieces.length ? `?${searchPieces.join("&")}` : "";
 	return urlParsed.toString();
 }
-__name(setURLParameter$1, "setURLParameter");
+__name$1(setURLParameter$1, "setURLParameter");
 /**
 * Set URL host.
 *
@@ -53622,7 +50195,7 @@ var getBlockListOperationSpec = {
 //#region node_modules/.pnpm/@azure+storage-blob@12.33.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/generated/src/storageClient.js
 var StorageClient$1 = class extends ExtendedServiceClient {
 	static {
-		__name(this, "StorageClient");
+		__name$1(this, "StorageClient");
 	}
 	url;
 	version;
@@ -53911,7 +50484,7 @@ function truncatedISO8061Date(date, withMilliseconds = true) {
 function base64encode$1(content) {
 	return !isNodeLike ? btoa(content) : Buffer.from(content).toString("base64");
 }
-__name(base64encode$1, "base64encode");
+__name$1(base64encode$1, "base64encode");
 /**
 * Generate a 64 bytes base64 block ID string.
 *
@@ -60557,7 +57130,7 @@ var RateLimitError = class extends Error {
 };
 //#endregion
 //#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/uploadUtils.js
-var __awaiter$9 = function(thisArg, _arguments, P, generator) {
+var __awaiter$6 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -60671,7 +57244,7 @@ var UploadProgress = class {
 * @returns
 */
 function uploadCacheArchiveSDK(signedUploadURL, archivePath, options) {
-	return __awaiter$9(this, void 0, void 0, function* () {
+	return __awaiter$6(this, void 0, void 0, function* () {
 		var _a;
 		const blobClient = new BlobClient(signedUploadURL);
 		const blockBlobClient = blobClient.getBlockBlobClient();
@@ -60698,7 +57271,7 @@ function uploadCacheArchiveSDK(signedUploadURL, archivePath, options) {
 }
 //#endregion
 //#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/requestUtils.js
-var __awaiter$8 = function(thisArg, _arguments, P, generator) {
+var __awaiter$5 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -60742,12 +57315,12 @@ function isRetryableStatusCode(statusCode) {
 	].includes(statusCode);
 }
 function sleep(milliseconds) {
-	return __awaiter$8(this, void 0, void 0, function* () {
+	return __awaiter$5(this, void 0, void 0, function* () {
 		return new Promise((resolve) => setTimeout(resolve, milliseconds));
 	});
 }
 function retry(name_1, method_1, getStatusCode_1) {
-	return __awaiter$8(this, arguments, void 0, function* (name, method, getStatusCode, maxAttempts = 2, delay = DefaultRetryDelay, onError = void 0) {
+	return __awaiter$5(this, arguments, void 0, function* (name, method, getStatusCode, maxAttempts = 2, delay = DefaultRetryDelay, onError = void 0) {
 		let errorMessage = "";
 		let attempt = 1;
 		while (attempt <= maxAttempts) {
@@ -60781,7 +57354,7 @@ function retry(name_1, method_1, getStatusCode_1) {
 	});
 }
 function retryTypedResponse(name_1, method_1) {
-	return __awaiter$8(this, arguments, void 0, function* (name, method, maxAttempts = 2, delay = DefaultRetryDelay) {
+	return __awaiter$5(this, arguments, void 0, function* (name, method, maxAttempts = 2, delay = DefaultRetryDelay) {
 		return yield retry(name, method, (response) => response.statusCode, maxAttempts, delay, (error) => {
 			if (error instanceof HttpClientError) return {
 				statusCode: error.statusCode,
@@ -60794,13 +57367,13 @@ function retryTypedResponse(name_1, method_1) {
 	});
 }
 function retryHttpClientResponse(name_1, method_1) {
-	return __awaiter$8(this, arguments, void 0, function* (name, method, maxAttempts = 2, delay = DefaultRetryDelay) {
+	return __awaiter$5(this, arguments, void 0, function* (name, method, maxAttempts = 2, delay = DefaultRetryDelay) {
 		return yield retry(name, method, (response) => response.message.statusCode, maxAttempts, delay);
 	});
 }
 //#endregion
 //#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/downloadUtils.js
-var __awaiter$7 = function(thisArg, _arguments, P, generator) {
+var __awaiter$4 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -60834,7 +57407,7 @@ var __awaiter$7 = function(thisArg, _arguments, P, generator) {
 * @param output the writable stream
 */
 function pipeResponseToStream(response, output) {
-	return __awaiter$7(this, void 0, void 0, function* () {
+	return __awaiter$4(this, void 0, void 0, function* () {
 		yield util$2.promisify(stream.pipeline)(response.message, output);
 	});
 }
@@ -60937,10 +57510,10 @@ var DownloadProgress = class {
 * @param archivePath the local path where the cache is saved
 */
 function downloadCacheHttpClient(archiveLocation, archivePath) {
-	return __awaiter$7(this, void 0, void 0, function* () {
+	return __awaiter$4(this, void 0, void 0, function* () {
 		const writeStream = fs$1.createWriteStream(archivePath);
 		const httpClient = new HttpClient("actions/cache");
-		const downloadResponse = yield retryHttpClientResponse("downloadCache", () => __awaiter$7(this, void 0, void 0, function* () {
+		const downloadResponse = yield retryHttpClientResponse("downloadCache", () => __awaiter$4(this, void 0, void 0, function* () {
 			return httpClient.get(archiveLocation);
 		}));
 		downloadResponse.message.socket.setTimeout(SocketTimeout, () => {
@@ -60963,7 +57536,7 @@ function downloadCacheHttpClient(archiveLocation, archivePath) {
 * @param archivePath the local path where the cache is saved
 */
 function downloadCacheHttpClientConcurrent(archiveLocation, archivePath, options) {
-	return __awaiter$7(this, void 0, void 0, function* () {
+	return __awaiter$4(this, void 0, void 0, function* () {
 		var _a;
 		const archiveDescriptor = yield fs$1.promises.open(archivePath, "w");
 		const httpClient = new HttpClient("actions/cache", void 0, {
@@ -60971,7 +57544,7 @@ function downloadCacheHttpClientConcurrent(archiveLocation, archivePath, options
 			keepAlive: true
 		});
 		try {
-			const lengthHeader = (yield retryHttpClientResponse("downloadCacheMetadata", () => __awaiter$7(this, void 0, void 0, function* () {
+			const lengthHeader = (yield retryHttpClientResponse("downloadCacheMetadata", () => __awaiter$4(this, void 0, void 0, function* () {
 				return yield httpClient.request("HEAD", archiveLocation, null, {});
 			}))).message.headers["content-length"];
 			if (lengthHeader === void 0 || lengthHeader === null) throw new Error("Content-Length not found on blob response");
@@ -60983,7 +57556,7 @@ function downloadCacheHttpClientConcurrent(archiveLocation, archivePath, options
 				const count = Math.min(blockSize, length - offset);
 				downloads.push({
 					offset,
-					promiseGetter: () => __awaiter$7(this, void 0, void 0, function* () {
+					promiseGetter: () => __awaiter$4(this, void 0, void 0, function* () {
 						return yield downloadSegmentRetry(httpClient, archiveLocation, offset, count);
 					})
 				});
@@ -60996,7 +57569,7 @@ function downloadCacheHttpClientConcurrent(archiveLocation, archivePath, options
 			const progressFn = progress.onProgress();
 			const activeDownloads = [];
 			let nextDownload;
-			const waitAndWrite = () => __awaiter$7(this, void 0, void 0, function* () {
+			const waitAndWrite = () => __awaiter$4(this, void 0, void 0, function* () {
 				const segment = yield Promise.race(Object.values(activeDownloads));
 				yield archiveDescriptor.write(segment.buffer, 0, segment.count, segment.offset);
 				actives--;
@@ -61017,7 +57590,7 @@ function downloadCacheHttpClientConcurrent(archiveLocation, archivePath, options
 	});
 }
 function downloadSegmentRetry(httpClient, archiveLocation, offset, count) {
-	return __awaiter$7(this, void 0, void 0, function* () {
+	return __awaiter$4(this, void 0, void 0, function* () {
 		const retries = 5;
 		let failures = 0;
 		while (true) try {
@@ -61031,8 +57604,8 @@ function downloadSegmentRetry(httpClient, archiveLocation, offset, count) {
 	});
 }
 function downloadSegment(httpClient, archiveLocation, offset, count) {
-	return __awaiter$7(this, void 0, void 0, function* () {
-		const partRes = yield retryHttpClientResponse("downloadCachePart", () => __awaiter$7(this, void 0, void 0, function* () {
+	return __awaiter$4(this, void 0, void 0, function* () {
+		const partRes = yield retryHttpClientResponse("downloadCachePart", () => __awaiter$4(this, void 0, void 0, function* () {
 			return yield httpClient.get(archiveLocation, { Range: `bytes=${offset}-${offset + count - 1}` });
 		}));
 		if (!partRes.readBodyBuffer) throw new Error("Expected HttpClientResponse to implement readBodyBuffer");
@@ -61052,7 +57625,7 @@ function downloadSegment(httpClient, archiveLocation, offset, count) {
 * @param options the download options with the defaults set
 */
 function downloadCacheStorageSDK(archiveLocation, archivePath, options) {
-	return __awaiter$7(this, void 0, void 0, function* () {
+	return __awaiter$4(this, void 0, void 0, function* () {
 		var _a;
 		const client = new BlockBlobClient(archiveLocation, void 0, { retryOptions: { tryTimeoutInMs: options.timeoutInMs } });
 		const contentLength = (_a = (yield client.getProperties()).contentLength) !== null && _a !== void 0 ? _a : -1;
@@ -61088,7 +57661,7 @@ function downloadCacheStorageSDK(archiveLocation, archivePath, options) {
 		}
 	});
 }
-var promiseWithTimeout = (timeoutMs, promise) => __awaiter$7(void 0, void 0, void 0, function* () {
+var promiseWithTimeout = (timeoutMs, promise) => __awaiter$4(void 0, void 0, void 0, function* () {
 	let timeoutHandle;
 	const timeoutPromise = new Promise((resolve) => {
 		timeoutHandle = setTimeout(() => resolve("timeout"), timeoutMs);
@@ -61310,7 +57883,7 @@ function getUserAgentString() {
 }
 //#endregion
 //#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/cacheHttpClient.js
-var __awaiter$6 = function(thisArg, _arguments, P, generator) {
+var __awaiter$3 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -61355,12 +57928,12 @@ function createHttpClient() {
 	return new HttpClient(getUserAgentString(), [bearerCredentialHandler], getRequestOptions());
 }
 function getCacheEntry(keys, paths, options) {
-	return __awaiter$6(this, void 0, void 0, function* () {
+	return __awaiter$3(this, void 0, void 0, function* () {
 		var _a;
 		const httpClient = createHttpClient();
 		const version = getCacheVersion(paths, options === null || options === void 0 ? void 0 : options.compressionMethod, options === null || options === void 0 ? void 0 : options.enableCrossOsArchive);
 		const resource = `cache?keys=${encodeURIComponent(keys.join(","))}&version=${version}`;
-		const response = yield retryTypedResponse("getCacheEntry", () => __awaiter$6(this, void 0, void 0, function* () {
+		const response = yield retryTypedResponse("getCacheEntry", () => __awaiter$3(this, void 0, void 0, function* () {
 			return httpClient.getJson(getCacheApiUrl(resource));
 		}));
 		if (response.statusCode === 204) {
@@ -61382,9 +57955,9 @@ function getCacheEntry(keys, paths, options) {
 	});
 }
 function printCachesListForDiagnostics(key, httpClient, version) {
-	return __awaiter$6(this, void 0, void 0, function* () {
+	return __awaiter$3(this, void 0, void 0, function* () {
 		const resource = `caches?key=${encodeURIComponent(key)}`;
-		const response = yield retryTypedResponse("listCache", () => __awaiter$6(this, void 0, void 0, function* () {
+		const response = yield retryTypedResponse("listCache", () => __awaiter$3(this, void 0, void 0, function* () {
 			return httpClient.getJson(getCacheApiUrl(resource));
 		}));
 		if (response.statusCode === 200) {
@@ -61398,7 +57971,7 @@ function printCachesListForDiagnostics(key, httpClient, version) {
 	});
 }
 function downloadCache(archiveLocation, archivePath, options) {
-	return __awaiter$6(this, void 0, void 0, function* () {
+	return __awaiter$3(this, void 0, void 0, function* () {
 		const archiveUrl = new URL$1(archiveLocation);
 		const downloadOptions = getDownloadOptions(options);
 		if (archiveUrl.hostname.endsWith(".blob.core.windows.net")) {
@@ -61409,14 +57982,14 @@ function downloadCache(archiveLocation, archivePath, options) {
 	});
 }
 function reserveCache(key, paths, options) {
-	return __awaiter$6(this, void 0, void 0, function* () {
+	return __awaiter$3(this, void 0, void 0, function* () {
 		const httpClient = createHttpClient();
 		const reserveCacheRequest = {
 			key,
 			version: getCacheVersion(paths, options === null || options === void 0 ? void 0 : options.compressionMethod, options === null || options === void 0 ? void 0 : options.enableCrossOsArchive),
 			cacheSize: options === null || options === void 0 ? void 0 : options.cacheSize
 		};
-		return yield retryTypedResponse("reserveCache", () => __awaiter$6(this, void 0, void 0, function* () {
+		return yield retryTypedResponse("reserveCache", () => __awaiter$3(this, void 0, void 0, function* () {
 			return httpClient.postJson(getCacheApiUrl("caches"), reserveCacheRequest);
 		}));
 	});
@@ -61425,20 +57998,20 @@ function getContentRange(start, end) {
 	return `bytes ${start}-${end}/*`;
 }
 function uploadChunk(httpClient, resourceUrl, openStream, start, end) {
-	return __awaiter$6(this, void 0, void 0, function* () {
+	return __awaiter$3(this, void 0, void 0, function* () {
 		debug(`Uploading chunk of size ${end - start + 1} bytes at offset ${start} with content range: ${getContentRange(start, end)}`);
 		const additionalHeaders = {
 			"Content-Type": "application/octet-stream",
 			"Content-Range": getContentRange(start, end)
 		};
-		const uploadChunkResponse = yield retryHttpClientResponse(`uploadChunk (start: ${start}, end: ${end})`, () => __awaiter$6(this, void 0, void 0, function* () {
+		const uploadChunkResponse = yield retryHttpClientResponse(`uploadChunk (start: ${start}, end: ${end})`, () => __awaiter$3(this, void 0, void 0, function* () {
 			return httpClient.sendStream("PATCH", resourceUrl, openStream(), additionalHeaders);
 		}));
 		if (!isSuccessStatusCode(uploadChunkResponse.message.statusCode)) throw new Error(`Cache service responded with ${uploadChunkResponse.message.statusCode} during upload chunk.`);
 	});
 }
 function uploadFile(httpClient, cacheId, archivePath, options) {
-	return __awaiter$6(this, void 0, void 0, function* () {
+	return __awaiter$3(this, void 0, void 0, function* () {
 		const fileSize = getArchiveFileSizeInBytes(archivePath);
 		const resourceUrl = getCacheApiUrl(`caches/${cacheId.toString()}`);
 		const fd = fs$1.openSync(archivePath, "r");
@@ -61449,7 +58022,7 @@ function uploadFile(httpClient, cacheId, archivePath, options) {
 		debug("Awaiting all uploads");
 		let offset = 0;
 		try {
-			yield Promise.all(parallelUploads.map(() => __awaiter$6(this, void 0, void 0, function* () {
+			yield Promise.all(parallelUploads.map(() => __awaiter$3(this, void 0, void 0, function* () {
 				while (offset < fileSize) {
 					const chunkSize = Math.min(fileSize - offset, maxChunkSize);
 					const start = offset;
@@ -61471,15 +58044,15 @@ function uploadFile(httpClient, cacheId, archivePath, options) {
 	});
 }
 function commitCache(httpClient, cacheId, filesize) {
-	return __awaiter$6(this, void 0, void 0, function* () {
+	return __awaiter$3(this, void 0, void 0, function* () {
 		const commitCacheRequest = { size: filesize };
-		return yield retryTypedResponse("commitCache", () => __awaiter$6(this, void 0, void 0, function* () {
+		return yield retryTypedResponse("commitCache", () => __awaiter$3(this, void 0, void 0, function* () {
 			return httpClient.postJson(getCacheApiUrl(`caches/${cacheId.toString()}`), commitCacheRequest);
 		}));
 	});
 }
 function saveCache$1(cacheId, archivePath, signedUploadURL, options) {
-	return __awaiter$6(this, void 0, void 0, function* () {
+	return __awaiter$3(this, void 0, void 0, function* () {
 		if (getUploadOptions(options).useAzureSdk) {
 			if (!signedUploadURL) throw new Error("Azure Storage SDK can only be used when a signed URL is provided.");
 			yield uploadCacheArchiveSDK(signedUploadURL, archivePath, options);
@@ -61496,7 +58069,7 @@ function saveCache$1(cacheId, archivePath, signedUploadURL, options) {
 		}
 	});
 }
-__name(saveCache$1, "saveCache");
+__name$1(saveCache$1, "saveCache");
 //#endregion
 //#region node_modules/.pnpm/@protobuf-ts+runtime@2.11.1/node_modules/@protobuf-ts/runtime/build/es2015/json-typings.js
 /**
@@ -62262,7 +58835,7 @@ var BinaryReader = class {
 function assert$1(condition, msg) {
 	if (!condition) throw new Error(msg);
 }
-__name(assert$1, "assert");
+__name$1(assert$1, "assert");
 var FLOAT32_MAX = 34028234663852886e22;
 var FLOAT32_MIN = -34028234663852886e22;
 var UINT32_MAX = 4294967295;
@@ -64679,7 +61252,7 @@ function maskSecretUrls(body) {
 }
 //#endregion
 //#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/shared/cacheTwirpClient.js
-var __awaiter$5 = function(thisArg, _arguments, P, generator) {
+var __awaiter$2 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -64726,12 +61299,12 @@ var CacheServiceClient = class {
 		this.httpClient = new HttpClient(userAgent, [new BearerCredentialHandler(token)]);
 	}
 	request(service, method, contentType, data) {
-		return __awaiter$5(this, void 0, void 0, function* () {
+		return __awaiter$2(this, void 0, void 0, function* () {
 			const url = new URL(`/twirp/${service}/${method}`, this.baseUrl).href;
 			debug(`[Request] ${method} ${url}`);
 			const headers = { "Content-Type": contentType };
 			try {
-				const { body } = yield this.retryableRequest(() => __awaiter$5(this, void 0, void 0, function* () {
+				const { body } = yield this.retryableRequest(() => __awaiter$2(this, void 0, void 0, function* () {
 					return this.httpClient.post(url, JSON.stringify(data), headers);
 				}));
 				return body;
@@ -64741,7 +61314,7 @@ var CacheServiceClient = class {
 		});
 	}
 	retryableRequest(operation) {
-		return __awaiter$5(this, void 0, void 0, function* () {
+		return __awaiter$2(this, void 0, void 0, function* () {
 			let attempt = 0;
 			let errorMessage = "";
 			let rawBody = "";
@@ -64806,7 +61379,7 @@ var CacheServiceClient = class {
 		].includes(statusCode);
 	}
 	sleep(milliseconds) {
-		return __awaiter$5(this, void 0, void 0, function* () {
+		return __awaiter$2(this, void 0, void 0, function* () {
 			return new Promise((resolve) => setTimeout(resolve, milliseconds));
 		});
 	}
@@ -64823,7 +61396,7 @@ function internalCacheTwirpClient(options) {
 }
 //#endregion
 //#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/internal/tar.js
-var __awaiter$4 = function(thisArg, _arguments, P, generator) {
+var __awaiter$1 = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -64850,9 +61423,9 @@ var __awaiter$4 = function(thisArg, _arguments, P, generator) {
 		step((generator = generator.apply(thisArg, _arguments || [])).next());
 	});
 };
-var IS_WINDOWS$1 = process.platform === "win32";
+var IS_WINDOWS = process.platform === "win32";
 function getTarPath() {
-	return __awaiter$4(this, void 0, void 0, function* () {
+	return __awaiter$1(this, void 0, void 0, function* () {
 		switch (process.platform) {
 			case "win32": {
 				const gnuTar = yield getGnuTarPathOnWindows();
@@ -64886,12 +61459,12 @@ function getTarPath() {
 	});
 }
 function getTarArgs(tarPath_1, compressionMethod_1, type_1) {
-	return __awaiter$4(this, arguments, void 0, function* (tarPath, compressionMethod, type, archivePath = "") {
+	return __awaiter$1(this, arguments, void 0, function* (tarPath, compressionMethod, type, archivePath = "") {
 		const args = [`"${tarPath.path}"`];
 		const cacheFileName = getCacheFileName(compressionMethod);
 		const tarFile = "cache.tar";
 		const workingDirectory = getWorkingDirectory();
-		const BSD_TAR_ZSTD = tarPath.type === ArchiveToolType.BSD && compressionMethod !== CompressionMethod.Gzip && IS_WINDOWS$1;
+		const BSD_TAR_ZSTD = tarPath.type === ArchiveToolType.BSD && compressionMethod !== CompressionMethod.Gzip && IS_WINDOWS;
 		switch (type) {
 			case "create":
 				args.push("--posix", "-cf", BSD_TAR_ZSTD ? tarFile : cacheFileName.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"), "--exclude", BSD_TAR_ZSTD ? tarFile : cacheFileName.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"), "-P", "-C", workingDirectory.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"), "--files-from", ManifestFilename);
@@ -64911,12 +61484,12 @@ function getTarArgs(tarPath_1, compressionMethod_1, type_1) {
 	});
 }
 function getCommands(compressionMethod_1, type_1) {
-	return __awaiter$4(this, arguments, void 0, function* (compressionMethod, type, archivePath = "") {
+	return __awaiter$1(this, arguments, void 0, function* (compressionMethod, type, archivePath = "") {
 		let args;
 		const tarPath = yield getTarPath();
 		const tarArgs = yield getTarArgs(tarPath, compressionMethod, type, archivePath);
 		const compressionArgs = type !== "create" ? yield getDecompressionProgram(tarPath, compressionMethod, archivePath) : yield getCompressionProgram(tarPath, compressionMethod);
-		const BSD_TAR_ZSTD = tarPath.type === ArchiveToolType.BSD && compressionMethod !== CompressionMethod.Gzip && IS_WINDOWS$1;
+		const BSD_TAR_ZSTD = tarPath.type === ArchiveToolType.BSD && compressionMethod !== CompressionMethod.Gzip && IS_WINDOWS;
 		if (BSD_TAR_ZSTD && type !== "create") args = [[...compressionArgs].join(" "), [...tarArgs].join(" ")];
 		else args = [[...tarArgs].join(" "), [...compressionArgs].join(" ")];
 		if (BSD_TAR_ZSTD) return args;
@@ -64928,44 +61501,44 @@ function getWorkingDirectory() {
 	return (_a = process.env["GITHUB_WORKSPACE"]) !== null && _a !== void 0 ? _a : process.cwd();
 }
 function getDecompressionProgram(tarPath, compressionMethod, archivePath) {
-	return __awaiter$4(this, void 0, void 0, function* () {
-		const BSD_TAR_ZSTD = tarPath.type === ArchiveToolType.BSD && compressionMethod !== CompressionMethod.Gzip && IS_WINDOWS$1;
+	return __awaiter$1(this, void 0, void 0, function* () {
+		const BSD_TAR_ZSTD = tarPath.type === ArchiveToolType.BSD && compressionMethod !== CompressionMethod.Gzip && IS_WINDOWS;
 		switch (compressionMethod) {
 			case CompressionMethod.Zstd: return BSD_TAR_ZSTD ? [
 				"zstd -d --long=30 --force -o",
 				TarFilename,
 				archivePath.replace(new RegExp(`\\${path$2.sep}`, "g"), "/")
-			] : ["--use-compress-program", IS_WINDOWS$1 ? "\"zstd -d --long=30\"" : "unzstd --long=30"];
+			] : ["--use-compress-program", IS_WINDOWS ? "\"zstd -d --long=30\"" : "unzstd --long=30"];
 			case CompressionMethod.ZstdWithoutLong: return BSD_TAR_ZSTD ? [
 				"zstd -d --force -o",
 				TarFilename,
 				archivePath.replace(new RegExp(`\\${path$2.sep}`, "g"), "/")
-			] : ["--use-compress-program", IS_WINDOWS$1 ? "\"zstd -d\"" : "unzstd"];
+			] : ["--use-compress-program", IS_WINDOWS ? "\"zstd -d\"" : "unzstd"];
 			default: return ["-z"];
 		}
 	});
 }
 function getCompressionProgram(tarPath, compressionMethod) {
-	return __awaiter$4(this, void 0, void 0, function* () {
+	return __awaiter$1(this, void 0, void 0, function* () {
 		const cacheFileName = getCacheFileName(compressionMethod);
-		const BSD_TAR_ZSTD = tarPath.type === ArchiveToolType.BSD && compressionMethod !== CompressionMethod.Gzip && IS_WINDOWS$1;
+		const BSD_TAR_ZSTD = tarPath.type === ArchiveToolType.BSD && compressionMethod !== CompressionMethod.Gzip && IS_WINDOWS;
 		switch (compressionMethod) {
 			case CompressionMethod.Zstd: return BSD_TAR_ZSTD ? [
 				"zstd -T0 --long=30 --force -o",
 				cacheFileName.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"),
 				TarFilename
-			] : ["--use-compress-program", IS_WINDOWS$1 ? "\"zstd -T0 --long=30\"" : "zstdmt --long=30"];
+			] : ["--use-compress-program", IS_WINDOWS ? "\"zstd -T0 --long=30\"" : "zstdmt --long=30"];
 			case CompressionMethod.ZstdWithoutLong: return BSD_TAR_ZSTD ? [
 				"zstd -T0 --force -o",
 				cacheFileName.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"),
 				TarFilename
-			] : ["--use-compress-program", IS_WINDOWS$1 ? "\"zstd -T0\"" : "zstdmt"];
+			] : ["--use-compress-program", IS_WINDOWS ? "\"zstd -T0\"" : "zstdmt"];
 			default: return ["-z"];
 		}
 	});
 }
 function execCommands(commands, cwd) {
-	return __awaiter$4(this, void 0, void 0, function* () {
+	return __awaiter$1(this, void 0, void 0, function* () {
 		for (const command of commands) try {
 			yield exec(command, void 0, {
 				cwd,
@@ -64977,25 +61550,25 @@ function execCommands(commands, cwd) {
 	});
 }
 function listTar(archivePath, compressionMethod) {
-	return __awaiter$4(this, void 0, void 0, function* () {
+	return __awaiter$1(this, void 0, void 0, function* () {
 		yield execCommands(yield getCommands(compressionMethod, "list", archivePath));
 	});
 }
 function extractTar(archivePath, compressionMethod) {
-	return __awaiter$4(this, void 0, void 0, function* () {
+	return __awaiter$1(this, void 0, void 0, function* () {
 		yield mkdirP(getWorkingDirectory());
 		yield execCommands(yield getCommands(compressionMethod, "extract", archivePath));
 	});
 }
 function createTar(archiveFolder, sourceDirectories, compressionMethod) {
-	return __awaiter$4(this, void 0, void 0, function* () {
+	return __awaiter$1(this, void 0, void 0, function* () {
 		writeFileSync(path$2.join(archiveFolder, ManifestFilename), sourceDirectories.join("\n"));
 		yield execCommands(yield getCommands(compressionMethod, "create"), archiveFolder);
 	});
 }
 //#endregion
 //#region node_modules/.pnpm/@actions+cache@6.2.0_supports-color@7.2.0/node_modules/@actions/cache/lib/cache.js
-var __awaiter$3 = function(thisArg, _arguments, P, generator) {
+var __awaiter = function(thisArg, _arguments, P, generator) {
 	function adopt(value) {
 		return value instanceof P ? value : new P(function(resolve) {
 			resolve(value);
@@ -65089,7 +61662,7 @@ function checkKey(key) {
 * @returns string returns the key for the cache hit, otherwise returns undefined
 */
 function restoreCache(paths_1, primaryKey_1, restoreKeys_1, options_1) {
-	return __awaiter$3(this, arguments, void 0, function* (paths, primaryKey, restoreKeys, options, enableCrossOsArchive = false) {
+	return __awaiter(this, arguments, void 0, function* (paths, primaryKey, restoreKeys, options, enableCrossOsArchive = false) {
 		const cacheServiceVersion = getCacheServiceVersion();
 		debug(`Cache service version: ${cacheServiceVersion}`);
 		checkPaths(paths);
@@ -65116,7 +61689,7 @@ function restoreCache(paths_1, primaryKey_1, restoreKeys_1, options_1) {
 * @returns string returns the key for the cache hit, otherwise returns undefined
 */
 function restoreCacheV1(paths_1, primaryKey_1, restoreKeys_1, options_1) {
-	return __awaiter$3(this, arguments, void 0, function* (paths, primaryKey, restoreKeys, options, enableCrossOsArchive = false) {
+	return __awaiter(this, arguments, void 0, function* (paths, primaryKey, restoreKeys, options, enableCrossOsArchive = false) {
 		var _a;
 		restoreKeys = restoreKeys || [];
 		const keys = [primaryKey, ...restoreKeys];
@@ -65152,11 +61725,11 @@ function restoreCacheV1(paths_1, primaryKey_1, restoreKeys_1, options_1) {
 			yield extractTar(archivePath, compressionMethod);
 			info("Cache restored successfully");
 			return cacheEntry.cacheKey;
-		} catch (error$2) {
-			const typedError = error$2;
-			if (typedError.name === ValidationError.name) throw error$2;
-			else if (typedError instanceof HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) error(`Failed to restore: ${error$2.message}`);
-			else warning(`Failed to restore: ${error$2.message}`);
+		} catch (error$1) {
+			const typedError = error$1;
+			if (typedError.name === ValidationError.name) throw error$1;
+			else if (typedError instanceof HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) error(`Failed to restore: ${error$1.message}`);
+			else warning(`Failed to restore: ${error$1.message}`);
 		} finally {
 			try {
 				yield unlinkFile(archivePath);
@@ -65177,7 +61750,7 @@ function restoreCacheV1(paths_1, primaryKey_1, restoreKeys_1, options_1) {
 * @returns string returns the key for the cache hit, otherwise returns undefined
 */
 function restoreCacheV2(paths_1, primaryKey_1, restoreKeys_1, options_1) {
-	return __awaiter$3(this, arguments, void 0, function* (paths, primaryKey, restoreKeys, options, enableCrossOsArchive = false) {
+	return __awaiter(this, arguments, void 0, function* (paths, primaryKey, restoreKeys, options, enableCrossOsArchive = false) {
 		var _a;
 		options = Object.assign(Object.assign({}, options), { useAzureSdk: true });
 		restoreKeys = restoreKeys || [];
@@ -65223,11 +61796,11 @@ function restoreCacheV2(paths_1, primaryKey_1, restoreKeys_1, options_1) {
 			yield extractTar(archivePath, compressionMethod);
 			info("Cache restored successfully");
 			return response.matchedKey;
-		} catch (error$5) {
-			const typedError = error$5;
-			if (typedError.name === ValidationError.name) throw error$5;
-			else if (typedError instanceof HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) error(`Failed to restore: ${error$5.message}`);
-			else warning(`Failed to restore: ${error$5.message}`);
+		} catch (error$4) {
+			const typedError = error$4;
+			if (typedError.name === ValidationError.name) throw error$4;
+			else if (typedError instanceof HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) error(`Failed to restore: ${error$4.message}`);
+			else warning(`Failed to restore: ${error$4.message}`);
 		} finally {
 			try {
 				if (archivePath) yield unlinkFile(archivePath);
@@ -65247,7 +61820,7 @@ function restoreCacheV2(paths_1, primaryKey_1, restoreKeys_1, options_1) {
 * @returns number returns cacheId if the cache was saved successfully and throws an error if save fails
 */
 function saveCache(paths_1, key_1, options_1) {
-	return __awaiter$3(this, arguments, void 0, function* (paths, key, options, enableCrossOsArchive = false) {
+	return __awaiter(this, arguments, void 0, function* (paths, key, options, enableCrossOsArchive = false) {
 		const cacheServiceVersion = getCacheServiceVersion();
 		debug(`Cache service version: ${cacheServiceVersion}`);
 		checkPaths(paths);
@@ -65274,7 +61847,7 @@ function saveCache(paths_1, key_1, options_1) {
 * @returns
 */
 function saveCacheV1(paths_1, key_1, options_1) {
-	return __awaiter$3(this, arguments, void 0, function* (paths, key, options, enableCrossOsArchive = false) {
+	return __awaiter(this, arguments, void 0, function* (paths, key, options, enableCrossOsArchive = false) {
 		var _a;
 		var _b;
 		var _c;
@@ -65312,9 +61885,9 @@ function saveCacheV1(paths_1, key_1, options_1) {
 			}
 			debug(`Saving Cache (ID: ${cacheId})`);
 			yield saveCache$1(cacheId, archivePath, "", options);
-		} catch (error$4) {
-			const typedError = error$4;
-			if (typedError.name === ValidationError.name) throw error$4;
+		} catch (error$3) {
+			const typedError = error$3;
+			if (typedError.name === ValidationError.name) throw error$3;
 			else if (typedError.name === ReserveCacheError.name) info(`Failed to save: ${typedError.message}`);
 			else if (typedError instanceof HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) error(`Failed to save: ${typedError.message}`);
 			else warning(`Failed to save: ${typedError.message}`);
@@ -65338,7 +61911,7 @@ function saveCacheV1(paths_1, key_1, options_1) {
 * @returns
 */
 function saveCacheV2(paths_1, key_1, options_1) {
-	return __awaiter$3(this, arguments, void 0, function* (paths, key, options, enableCrossOsArchive = false) {
+	return __awaiter(this, arguments, void 0, function* (paths, key, options, enableCrossOsArchive = false) {
 		var _a;
 		options = Object.assign(Object.assign({}, options), {
 			uploadChunkSize: 67108864,
@@ -65395,9 +61968,9 @@ function saveCacheV2(paths_1, key_1, options_1) {
 				throw new Error(`Unable to finalize cache with key ${key}, another job may be finalizing this cache.`);
 			}
 			cacheId = parseInt(finalizeResponse.entryId);
-		} catch (error$3) {
-			const typedError = error$3;
-			if (typedError.name === ValidationError.name) throw error$3;
+		} catch (error$2) {
+			const typedError = error$2;
+			if (typedError.name === ValidationError.name) throw error$2;
 			else if (typedError.name === ReserveCacheError.name) info(`Failed to save: ${typedError.message}`);
 			else if (typedError.name === FinalizeCacheError.name) warning(typedError.message);
 			else if (typedError instanceof HttpClientError && typeof typedError.statusCode === "number" && typedError.statusCode >= 500) error(`Failed to save: ${typedError.message}`);
@@ -65413,7 +61986,7 @@ function saveCacheV2(paths_1, key_1, options_1) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.10.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cargo.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.11.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cargo.js
 var Cargo = class Cargo extends BaseProgram {
 	constructor(pathToCargo) {
 		super(pathToCargo);
@@ -65429,40 +62002,71 @@ var Cargo = class Cargo extends BaseProgram {
 		}
 	}
 	/**
-	Executes `cargo install ${program}`.
-	
-	TODO: Caching ability implementation is blocked,
-	see https://github.com/actions-rs/core/issues/31
-	As for now it acts just like an stub and simply installs the program
-	on each call.
-	
-	`version` argument could be either actual program version or `"latest"` string,
-	which can be provided by user input.
-	
-	If `version` is `undefined` or `"latest"`, this method could call the Crates.io API,
-	fetch the latest version and search for it in cache.
-	TODO: Actually implement this.
-	
-	## Returns
-	
-	Path to the installed program.
-	As the $PATH should be already tuned properly at this point,
-	returned value at the moment is simply equal to the `program` argument.
+	* Find the cargo sub-command or install it
+	*
+	* @param {string} program The program to install (e.g. `cross`)
+	* @param {string} version The version to install (e.g. `1.2.3`). Defaults to `latest` when omitted.
+	* @returns {Promise<string>} `program`, verbatim.
+	*/
+	async findOrInstall(program, version) {
+		try {
+			await which(program, true);
+			return program;
+		} catch {
+			info(`${program} is not installed, installing it now`);
+		}
+		return this.installCached(program, version);
+	}
+	async install(program, version) {
+		const args = ["install"];
+		if (version !== void 0 && version !== "latest") args.push("--version", version);
+		args.push(program);
+		startGroup(`Installing "${program} = ${version ?? "latest"}"`);
+		try {
+			await this.call(args);
+		} finally {
+			endGroup();
+		}
+		return program;
+	}
+	/**
+	* Executes `cargo install ${program}`.
+	*
+	* TODO: Caching ability implementation is blocked, see https://github.com/actions-rs/core/issues/31 As for now it
+	* acts just like an stub and simply installs the program on each call.
+	*
+	* `version` argument could be either actual program version or `"latest"` string, which can be provided by user
+	* input.
+	*
+	* If `version` is `undefined` or `"latest"`, this method could call the Crates.io API, fetch the latest version and
+	* search for it in cache. TODO: Actually implement this.
+	*
+	* ## Returns
+	*
+	* Path to the installed program. As the $PATH should be already tuned properly at this point, returned value at the
+	* moment is simply equal to the `program` argument.
+	*
+	* @param {string} program The program to install (e.g. `cross`)
+	* @param {string} version The version to install (e.g. `1.2.3`). Defaults to `latest` when omitted.
+	* @param {string} primaryKey An explicit key for restoring the cache. Lookup is done with prefix matching.
+	* @param {string[]} restoreKeys An optional ordered list of keys to use for restoring the cache if no cache hit
+	*   occurred for primaryKey
+	* @returns {Promise<string>} `program`, verbatim.
 	*/
 	async installCached(program, version, primaryKey, restoreKeys = []) {
-		if (version === "latest") version = await resolveVersion(program);
-		if (primaryKey === void 0) return this.install(program, version);
+		const resolvedVersion = version === "latest" ? await resolveVersion(program) : version;
+		if (primaryKey === void 0) return this.install(program, resolvedVersion);
 		const paths = [path.join(path.dirname(this.path), program)];
-		const versionForKey = version === void 0 ? "" : `-${version}`;
+		const versionForKey = resolvedVersion === void 0 ? "" : `-${resolvedVersion}`;
 		const programKey = `${program}${versionForKey}-${primaryKey}`;
 		const cacheKey = await restoreCache(paths, programKey, restoreKeys.map((key) => {
 			return `${program}${versionForKey}-${key}`;
 		}));
 		if (cacheKey !== void 0) {
-			info(`Using cached \`${program}\` with version ${version ?? "installed-version"} from ${cacheKey}`);
+			info(`Using cached \`${program}\` with version ${resolvedVersion ?? "installed-version"} from ${cacheKey}`);
 			return program;
 		}
-		const result = await this.install(program, version);
+		const result = await this.install(program, resolvedVersion);
 		try {
 			info(`Caching \`${program}\` with key ${programKey}`);
 			await saveCache(paths, programKey);
@@ -65475,36 +62079,16 @@ var Cargo = class Cargo extends BaseProgram {
 		}
 		return result;
 	}
-	async install(program, version) {
-		const arguments_ = ["install"];
-		if (version !== void 0 && version !== "latest") arguments_.push("--version", version);
-		arguments_.push(program);
-		startGroup(`Installing "${program} = ${version ?? "latest"}"`);
-		try {
-			await this.call(arguments_);
-		} finally {
-			endGroup();
-		}
-		return program;
-	}
-	/**
-	Find the cargo sub-command or install it
-	*/
-	async findOrInstall(program, version) {
-		try {
-			await which(program, true);
-			return program;
-		} catch {
-			info(`${program} is not installed, installing it now`);
-		}
-		return this.installCached(program, version);
-	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.10.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cross.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.11.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cross.js
 var Cross = class Cross extends BaseProgram {
 	constructor(path) {
 		super(path);
+	}
+	static async get() {
+		const path = await which("cross", true);
+		return new Cross(path);
 	}
 	static async getOrInstall() {
 		try {
@@ -65514,14 +62098,10 @@ var Cross = class Cross extends BaseProgram {
 			return Cross.install();
 		}
 	}
-	static async get() {
-		const path = await which("cross", true);
-		return new Cross(path);
-	}
 	static async install(version) {
 		const cargo = await Cargo.get();
 		const cwd = process.cwd();
-		process.chdir(os$2.tmpdir());
+		process.chdir(tmpdir());
 		try {
 			const crossPath = await cargo.installCached("cross", version);
 			return new Cross(crossPath);
@@ -65530,25 +62110,27 @@ var Cross = class Cross extends BaseProgram {
 		}
 	}
 };
-process.platform;
-process.platform;
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.10.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/input.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.11.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/input.js
 /**
-Workaround for a GitHub weird input naming.
-
-For input `all-features: true` it will generate the `INPUT_ALL-FEATURES: true`
-env variable, which looks too weird.
-Here we are trying to get proper name `INPUT_NO_DEFAULT_FEATURES` first,
-and if it does not exist, trying the `INPUT_NO-DEFAULT-FEATURES`.
+* Workaround for a GitHub weird input naming.
+*
+* For input `all-features: true` it will generate the `INPUT_ALL-FEATURES: true` env variable, which looks too weird.
+* Here we are trying to get proper name `INPUT_NO_DEFAULT_FEATURES` first, and if it does not exist, trying the
+* `INPUT_NO-DEFAULT-FEATURES`.
+*
+* @param {string} name Input name, e.g. `ALL-FEATURES`.
+* @param {string} options Status of the check, optional.
+* @returns {string} Value from the input set, or `""` (empty string) if unset.
 */
-function getInput(name, options) {
-	const value = getInput$1(name.replaceAll("-", "_"), options);
+function getInput$1(name, options) {
+	const value = getInput(name.replaceAll("-", "_"), options);
 	if (value.length > 0) return value;
-	return getInput$1(name, options);
+	return getInput(name, options);
 }
+__name(getInput$1, "getInput");
 function getInputBool(name, options) {
-	const normalized = getInput(name, options).trim().toLowerCase();
+	const normalized = getInput$1(name, options).trim().toLowerCase();
 	return normalized === "true" || normalized === "1";
 }
 //#endregion
@@ -65827,11 +62409,11 @@ function firstString() {
 //#endregion
 //#region src/input.ts
 function get() {
-	let toolchain = getInput("toolchain");
+	let toolchain = getInput$1("toolchain");
 	if (toolchain.startsWith("+")) toolchain = toolchain.slice(1);
-	const workingDirectory = getInput("working-directory");
+	const workingDirectory = getInput$1("working-directory");
 	return {
-		args: parseArgsStringToArgv(getInput("args")),
+		args: parseArgsStringToArgv(getInput$1("args")),
 		useCross: getInputBool("use-cross"),
 		workingDirectory: workingDirectory === "" ? void 0 : workingDirectory,
 		toolchain: toolchain === "" ? void 0 : toolchain
