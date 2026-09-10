@@ -49,7 +49,7 @@
     "devDependencies": {
         "@actions/io": "3.0.2",
         "@codecov/vite-plugin": "2.0.1",
-        "@types/node": "24.13.3",
+        "@types/node": "24.13.4",
         "@types/semver": "7.8.0",
         "@types/source-map-support": "0.5.10",
         "@vitest/coverage-v8": "5.0.0",
