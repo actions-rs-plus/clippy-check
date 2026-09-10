@@ -16,7 +16,7 @@ jobs:
   move-git-tags:
     runs-on: ubuntu-26.04
     environment:
-      name: release
+      name: github-marketplace
       url: https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}
     steps:
       - name: Check out repo
