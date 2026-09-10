@@ -116,6 +116,16 @@ repository:
 #     permission: admin
 #   - name: docs
 #     permission: push
+
+# See https://docs.github.com/en/rest/deployments/environments#create-or-update-an-environment for the options.
+environments:
+  - name: github-marketplace
+    # Accepts `protected_branches: true` or a `custom_branches` list of branch and tag patterns. When omitted, every branch may deploy.
+    deployment_branch_policy:
+      custom_branches:
+        - name: v*
+          type: tag
+
 rulesets:
   - name: Main
     target: branch
