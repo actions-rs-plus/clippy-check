@@ -1,6 +1,6 @@
 catalogs:
   default:
-    vite: "8.2.2"
+    vite: "8.3.0"
 allowBuilds: {}
 overrides:
   "@codecov/vite-plugin>vite": "catalog:default"
