@@ -54,7 +54,7 @@
         "@types/source-map-support": "0.5.10",
         "@vitest/coverage-v8": "5.0.0",
         "@vitest/ui": "5.0.0",
-        "dependency-cruiser": "18.2.0",
+        "dependency-cruiser": "18.3.0",
         "eslint-plugin-n": "18.3.0",
         "eslint-plugin-perfectionist": "5.11.0",
         "husky": "9.1.7",
