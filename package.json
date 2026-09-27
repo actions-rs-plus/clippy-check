@@ -55,7 +55,7 @@
         "@vitest/coverage-v8": "5.0.2",
         "@vitest/ui": "5.0.2",
         "dependency-cruiser": "18.4.0",
-        "eslint-plugin-n": "18.3.0",
+        "eslint-plugin-n": "18.4.0",
         "eslint-plugin-perfectionist": "5.12.1",
         "husky": "9.1.7",
         "lint-staged": "17.6.0",
