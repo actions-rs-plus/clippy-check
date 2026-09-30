@@ -62790,27 +62790,37 @@ async function run(actionInput) {
 	if (exitCode !== 0) throw new Error(`Clippy had exited with the ${exitCode} exit code`);
 }
 //#endregion
-//#region node_modules/.pnpm/string-argv@0.3.2/node_modules/string-argv/index.js
+//#region node_modules/.pnpm/string-argv@0.4.0/node_modules/string-argv/index.js
 function parseArgsStringToArgv(value, env, file) {
-	var myRegexp = /([^\s'"]([^\s'"]*(['"])([^\3]*?)\3)+[^\s'"]*)|[^\s'"]+|(['"])([^\5]*?)\5/gi;
-	var myString = value;
-	var myArray = [];
+	const myArray = [];
 	if (env) myArray.push(env);
 	if (file) myArray.push(file);
-	var match;
-	do {
-		match = myRegexp.exec(myString);
-		if (match !== null) myArray.push(firstString(match[1], match[6], match[0]));
-	} while (match !== null);
-	return myArray;
-}
-function firstString() {
-	var args = [];
-	for (var _i = 0; _i < arguments.length; _i++) args[_i] = arguments[_i];
-	for (var i = 0; i < args.length; i++) {
-		var arg = args[i];
-		if (typeof arg === "string") return arg;
+	let current = "";
+	let inQuote = null;
+	let hasToken = false;
+	let i = 0;
+	while (i < value.length) {
+		const char = value[i];
+		if (inQuote) {
+			if (char === inQuote) inQuote = null;
+			else current += char;
+		} else if (char === "\"" || char === "'") {
+			inQuote = char;
+			hasToken = true;
+		} else if (/\s/.test(char)) {
+			if (hasToken) {
+				myArray.push(current);
+				current = "";
+				hasToken = false;
+			}
+		} else {
+			current += char;
+			hasToken = true;
+		}
+		i++;
 	}
+	if (hasToken) myArray.push(current);
+	return myArray;
 }
 //#endregion
 //#region src/input.ts
