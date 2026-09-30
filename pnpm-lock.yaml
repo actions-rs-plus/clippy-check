@@ -188,8 +188,8 @@ importers:
         specifier: 0.5.21
         version: 0.5.21
       string-argv:
-        specifier: 0.3.2
-        version: 0.3.2
+        specifier: 0.4.0
+        version: 0.4.0
     devDependencies:
       '@actions/io':
         specifier: 3.0.2
@@ -1721,6 +1721,10 @@ packages:
   string-argv@0.3.2:
     resolution: {integrity: sha512-aqD2Q0144Z+/RqG52NeHEkZauTAUWJO8c6yTftGJKO3Tja5tUgIfmIl6kExvhtxSDP7fXB6DvzkfMpCd/F3G+Q==}
     engines: {node: '>=0.6.19'}
+
+  string-argv@0.4.0:
+    resolution: {integrity: sha512-UOtaksJ3SK3KLHba2i9I27fvuZNfBlImDP5wKsCOxCDMRDNxlipCe8rmnUAaDpqlQ93upnA0SzF2pjWhttozSA==}
+    engines: {node: '>=16.20.0'}
 
   strip-bom@3.0.0:
     resolution: {integrity: sha512-vavAMRXOgBVNF6nyEEmL3DBK19iRpDcoIwW+swQ+CbGiu7lju6t+JklA1MHweoWtadgt4ISVUsXLyDq34ddcwA==}
@@ -3374,6 +3378,8 @@ snapshots:
   std-env@4.2.0: {}
 
   string-argv@0.3.2: {}
+
+  string-argv@0.4.0: {}
 
   strip-bom@3.0.0: {}
 

@@ -44,7 +44,7 @@
         "@actions/core": "3.0.1",
         "@actions/exec": "3.0.0",
         "source-map-support": "0.5.21",
-        "string-argv": "0.3.2"
+        "string-argv": "0.4.0"
     },
     "devDependencies": {
         "@actions/io": "3.0.2",
