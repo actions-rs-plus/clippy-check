@@ -118,9 +118,14 @@ const config: OxlintConfig = defineConfig({
 
         "local/require-disable-directive-description": "error",
 
+        // `src/index.ts` keeps its shebang so that `ignoreBin` exempts its top-level `await` from `node/no-top-level-await`
+        "n/hashbang": "off",
         "n/no-callback-literal": "error",
         "n/no-deprecated-api": "error",
         "n/no-extraneous-import": "error",
+        "n/no-path-concat": "error",
+        "n/no-process-exit": "error",
+        "n/no-sync": "error",
 
         "node/no-process-env": "error",
         "node/no-top-level-await": ["error", { ignoreBin: true }],
