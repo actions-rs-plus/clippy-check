@@ -17,7 +17,7 @@ const config: OxlintConfig = defineConfig({
     ],
     categories: {
         correctness: "error",
-        nursery: "off",
+        nursery: "error",
         pedantic: "error",
         perf: "error",
         restriction: "error",
@@ -55,6 +55,8 @@ const config: OxlintConfig = defineConfig({
         // tsc reports redeclarations (ts2451); this rule also flags a type and a value sharing a name, which TypeScript allows
         "no-redeclare": "off",
         "no-ternary": "off",
+        // tsc reports undefined identifiers
+        "no-undef": "off",
         "no-undefined": "off",
         "no-unreachable-loop": "error",
         // allow TODO
