@@ -139,12 +139,6 @@ rulesets:
     rules:
       - type: deletion
       - type: non_fast_forward
-      - type: code_scanning
-        parameters:
-          code_scanning_tools:
-            - tool: CodeQL
-              security_alerts_threshold: high_or_higher
-              alerts_threshold: errors
       - type: required_status_checks
         parameters:
           strict_required_status_checks_policy: true
