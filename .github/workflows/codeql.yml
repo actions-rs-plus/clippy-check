@@ -44,7 +44,7 @@ jobs:
           config-file: .github/codeql/${{ matrix.config }}
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
-          queries: security-extended,security-and-quality
+          queries: security-extended,security-and-quality,code-quality
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
