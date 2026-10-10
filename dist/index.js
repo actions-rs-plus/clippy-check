@@ -60369,6 +60369,20 @@ function logAnnotation(annotation) {
 		case AnnotationLevel.Warning: warning(annotation.message, annotation.properties);
 	}
 }
+function formatLevel(level) {
+	switch (level) {
+		case AnnotationLevel.Error: return "Error";
+		case AnnotationLevel.Notice: return "Notice";
+		case AnnotationLevel.Warning: return "Warning";
+	}
+}
+function escapeHtml(text) {
+	return text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+}
+function formatLocation(properties) {
+	if (properties.file === void 0) return "";
+	return `${properties.file}:${String(properties.startLine)}`;
+}
 async function report(stats, annotations, context) {
 	for (const annotation of annotations) logAnnotation(annotation);
 	summary.addHeading("Clippy summary", 2);
@@ -60386,6 +60400,29 @@ async function report(stats, annotations, context) {
 		[{ data: "Note" }, { data: stats.note.toString() }],
 		[{ data: "Help" }, { data: stats.help.toString() }]
 	]);
+	if (annotations.length > 0) {
+		summary.addHeading("Diagnostics", 2);
+		summary.addTable([[
+			{
+				header: true,
+				data: "Level"
+			},
+			{
+				header: true,
+				data: "Location"
+			},
+			{
+				header: true,
+				data: "Message"
+			}
+		], ...annotations.map((annotation) => {
+			return [
+				formatLevel(annotation.level),
+				escapeHtml(formatLocation(annotation.properties)),
+				escapeHtml(annotation.properties.title ?? "")
+			];
+		})]);
+	}
 	summary.addHeading("Versions", 2);
 	summary.addList([
 		context.rustc,
