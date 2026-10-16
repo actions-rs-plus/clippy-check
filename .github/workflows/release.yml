@@ -87,8 +87,40 @@ jobs:
           main_sha=$(git rev-parse HEAD)
           echo "main_sha=${main_sha}" >> "${GITHUB_OUTPUT}"
 
-          # build the context before writing .cliffignore below, the ballot has to list every commit
+          # build the context before writing .cliffignore below, the ballot has to list the excluded commits too
           git-cliff --context --unreleased --tag "${version}" > ballot-context.json
+
+      - name: Exclude superseded dependency bumps
+        shell: bash
+        id: superseded
+        env:
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          # Renovate bumps the same dependency several times per release. Each release keeps the newest bump of a dependency, the older ones are excluded and left off the ballot.
+          # The context covers every release and is built without .cliffignore, so an excluded newest bump still supersedes the older ones.
+          # The version is the last word of the message, the rest identifies the dependency.
+          git-cliff --context --offline --tag "${VERSION}" \
+            | jq --raw-output '
+                [ .[]
+                  | .commits
+                  | to_entries
+                  | map(select(.value.scope == "deps" and .value.author.name == "renovate[bot]"))
+                  | group_by([.value.group, (.value.message | split(" ") | .[:-1] | join(" "))])[]
+                  | sort_by(.key)
+                  | .[:-1][]
+                  | .value.id
+                ]
+                | unique[]
+              ' > "${RUNNER_TEMP}/superseded.txt"
+
+          jq --rawfile superseded "${RUNNER_TEMP}/superseded.txt" '
+              ($superseded | split("\n") | map(select(. != "") | {(.): true}) | add // {}) as $excluded
+              | .[0].commits |= map(select($excluded[.id] | not))
+            ' ballot-context.json > "${RUNNER_TEMP}/ballot-context.json"
+
+          mv "${RUNNER_TEMP}/ballot-context.json" ballot-context.json
+
+          echo "file=${RUNNER_TEMP}/superseded.txt" >> "${GITHUB_OUTPUT}"
 
       - name: List open release PRs
         shell: bash
@@ -116,9 +148,10 @@ jobs:
           # git-cliff reads GITHUB_TOKEN from the environment
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SIBLINGS_FILE: ${{ steps.siblings.outputs.file }}
+          SUPERSEDED_FILE: ${{ steps.superseded.outputs.file }}
           VERSION: ${{ steps.release.outputs.version }}
         run: |
-          # Every entry starts checked, so an unreleased commit is excluded only when a ballot has it unchecked
+          # Every entry starts checked, so a ballot entry is excluded only when a ballot has it unchecked
           jq --raw-output '.[0].commits[].id' ballot-context.json | sort --unique > "${RUNNER_TEMP}/unreleased.txt"
 
           # Take the unchecked entries from the live bodies of the open release PRs, this branch's PR included. A toggle shows up in the body first and only reaches .cliffignore on the next rebuild, so the body wins.
@@ -140,6 +173,7 @@ jobs:
           git show HEAD:.cliffignore > .cliffignore 2> /dev/null || : > .cliffignore
 
           grep --fixed-strings --line-regexp --file "${RUNNER_TEMP}/unchecked.txt" "${RUNNER_TEMP}/unreleased.txt" >> .cliffignore || true
+          cat "${SUPERSEDED_FILE}" >> .cliffignore
           sort --unique --output .cliffignore .cliffignore
 
           git-cliff --output CHANGELOG.md --tag "${VERSION}"
