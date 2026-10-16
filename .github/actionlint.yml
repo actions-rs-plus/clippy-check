@@ -1,0 +1,16 @@
+self-hosted-runner:
+  # ubuntu-26.04(-arm) is a GitHub-hosted runner (actions/runner-images#14226), not yet in actionlint's built-in label list
+  labels:
+    - "ubuntu-26.04"
+    - "ubuntu-26.04-arm"
+
+paths:
+  .github/workflows/*.yml:
+    ignore:
+      # actionlint does not recognize `$/` in `uses:` yet (rhysd/actionlint#732)
+      - 'reusable workflow call "\$/[^"]+" at "uses" is not following the format'
+      - 'specifying action "\$/[^"]+" in invalid format because ref is missing'
+  .github/workflows/verify-changelog-selection.yml:
+    ignore:
+      # actionlint does not recognize the `stacked` activity type yet
+      - 'invalid activity type "stacked" for "pull_request"'

@@ -54,6 +54,7 @@ runs:
         > [!NOTE]
         > A checked entry appears in `CHANGELOG.md` and in the release notes. The release commit is rebuilt after every change to the ballot.
         > An unchecked commit is still part of the release and counts toward the version.
+        > A push to `main` rebuilds the release commit with the new entries and turns auto-merge off.
         > Merge the PR once the selection is final. The Verify changelog selection check stays red until the rebuild has caught up with the ballot.
 
         INSTRUCTIONS
@@ -63,7 +64,7 @@ runs:
 
         # The body is cut at a line boundary when it exceeds GitHub's PR body limit. A cut entry has no checkbox and stays included.
         max_length=65536
-        marker_template=$'\n\n---\n\n> **Note:** COUNT more entries did not fit within GitHub\'s 65,536 character body limit. They are not shown and appear in the changelog.'
+        marker_template=$'\n\n---\n\n> [!NOTE]\n> COUNT more entries did not fit in GitHub\'s 65,536 character body limit. They are not shown and appear in the changelog.'
         body=$(< "${body_file}")
 
         if [ "${#body}" -gt "${max_length}" ]; then

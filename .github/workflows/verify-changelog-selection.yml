@@ -8,6 +8,8 @@ on:
       - reopened
       - synchronize
       - edited
+      # a PR above the bottom of a stack first matches `branches` on this event
+      - stacked
     branches:
       - main
 
@@ -26,7 +28,9 @@ jobs:
       contents: read
       pull-requests: read # to read the live PR body
     # The check is required on every PR, and a skipped job satisfies it on the PRs without a ballot
-    if: startsWith(github.event.pull_request.head.ref, 'release/v')
+    if: |
+      github.event.pull_request.state == 'open' &&
+      startsWith(github.event.pull_request.head.ref, 'release/v')
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -58,7 +62,7 @@ jobs:
           # release/v0.4.8 -> v0.4.8
           tag="${BRANCH#release/}"
 
-          # git-cliff applies .cliffignore to --context as well, which would leave the hidden commits off the ballot. Later steps read the file from git.
+          # git-cliff also applies .cliffignore to --context and would drop the hidden commits from the ballot. Later steps read the file from git.
           rm --force .cliffignore
           git-cliff --context --unreleased --offline --tag "${tag}" > "${RUNNER_TEMP}/ballot-context.json"
 
@@ -80,7 +84,7 @@ jobs:
       - name: Check the changelog section is not empty
         shell: bash
         run: |
-          # A promotion release re-tags the previous content and has an empty ballot
+          # A release of skipped commits only, such as dependency updates, has an empty ballot
           if [ ! -s "${RUNNER_TEMP}/expected.txt" ]; then
             echo "::notice::The ballot is empty, nothing to check"
             exit 0

@@ -10,7 +10,7 @@ inputs:
     description: Token with read access to the pull request
     required: true
   head:
-    description: Commit whose selection is being computed
+    description: Commit to compute the selection for
     required: false
     default: HEAD
 
@@ -45,11 +45,11 @@ runs:
         grep --perl-regexp --only-matching '^- \[[xX ]\] .*/commit/\K[0-9a-f]{40}(?=\)\)\r?$)' "${RUNNER_TEMP}/body.md" | sort --unique > "${RUNNER_TEMP}/ballot.txt" || true
         grep --perl-regexp --only-matching '^- \[ \] .*/commit/\K[0-9a-f]{40}(?=\)\)\r?$)' "${RUNNER_TEMP}/body.md" | sort --unique > "${RUNNER_TEMP}/unchecked.txt" || true
 
-        # An exclusion without a ballot line, from an earlier release or cut off by the body limit, has no checkbox to toggle and stays as committed
-        git show "${HEAD_SHA}:.cliffignore" > "${RUNNER_TEMP}/carried.txt" 2> /dev/null || true
+        # Exclusions from an earlier release, or ones the body limit cut off, have no ballot line and so no checkbox. They stay as committed.
+        git show "${HEAD_SHA}:.cliffignore" > "${RUNNER_TEMP}/committed.txt" 2> /dev/null || true
 
         # Keep the exclusions without a ballot line and replace the rest with the unchecked set
-        grep --fixed-strings --line-regexp --invert-match --file "${RUNNER_TEMP}/ballot.txt" "${RUNNER_TEMP}/carried.txt" > "${RUNNER_TEMP}/kept.txt" || true
+        grep --fixed-strings --line-regexp --invert-match --file "${RUNNER_TEMP}/ballot.txt" "${RUNNER_TEMP}/committed.txt" > "${RUNNER_TEMP}/kept.txt" || true
         cat "${RUNNER_TEMP}/kept.txt" "${RUNNER_TEMP}/unchecked.txt" | sort --unique > "${RUNNER_TEMP}/computed.cliffignore"
 
         echo "selection-file=${RUNNER_TEMP}/computed.cliffignore" >> "${GITHUB_OUTPUT}"
