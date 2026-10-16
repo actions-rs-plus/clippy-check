@@ -1,139 +1,143 @@
-# These settings are synced to GitHub by https://probot.github.io/apps/settings/
+# On every push to the default branch, the Settings app (https://probot.github.io/apps/settings/) syncs this file to GitHub.
+# Every section is optional. When a list section is present, the app deletes every entry on GitHub that the list does not contain.
+
+# When `_extends` is set to another repository of the same owner, this file inherits that repository's settings and overrides only the keys written here.
+# _extends: .github
 
 repository:
-  # See https://docs.github.com/en/rest/reference/repos#update-a-repository for all available settings.
+  # Keys match the body of https://docs.github.com/en/rest/repos/repos#update-a-repository.
 
-  # The name of the repository. Changing this will rename the repository
+  # When `name` differs from the current name, the sync renames the repository.
   # name: repo-name
-
-  # A short description of the repository that will show up on GitHub
   # description: description of repo
-
-  # A URL with more information about the repository
   # homepage: https://example.github.io/
-
-  # A comma-separated list of topics to set on the repository
+  # Takes one comma-separated string, not a list.
   # topics: github, probot
 
-  # Either `true` to make the repository private, or `false` to make it public.
-  # private: false
+  private: false
+  # Accepts `public` or `private`.
+  visibility: public
+  is_template: false
+  # Once archived, the repository accepts no push, so a sync can never set this back to `false`.
+  archived: false
 
-  # Either `true` to enable issues for this repository, `false` to disable them.
   has_issues: true
-
-  # Either `true` to enable projects for this repository, or `false` to disable them.
-  # If projects are disabled for the organization, passing `true` will cause an API error.
+  # When the organization has disabled projects, `true` makes the API return an error.
   has_projects: false
-
-  # Either `true` to enable the wiki for this repository, `false` to disable it.
   has_wiki: false
-
-  # Either `true` to enable downloads for this repository, `false` to disable them.
-  has_downloads: true
-
-  # Either `true` to enable discussions for this repository, `false` to disable them.
   has_discussions: false
+  has_pull_requests: true
+  # Accepts `all` or `collaborators_only`.
+  pull_request_creation_policy: all
 
-  # Updates the default branch for this repository.
   default_branch: main
+  # Governs forking of a private repository.
+  allow_forking: true
+  web_commit_signoff_required: false
 
-  # Either `true` to allow squash-merging pull requests, or `false` to prevent
-  # squash-merging.
   allow_squash_merge: false
-
-  # Either `true` to allow merging pull requests with a merge commit, or `false`
-  # to prevent merging pull requests with merge commits.
+  # Accepts `PR_TITLE` or `COMMIT_OR_PR_TITLE`. When `squash_merge_commit_message` is set, this key is required.
+  squash_merge_commit_title: COMMIT_OR_PR_TITLE
+  # Accepts `PR_BODY`, `COMMIT_MESSAGES`, or `BLANK`.
+  squash_merge_commit_message: COMMIT_MESSAGES
   allow_merge_commit: true
-
-  # Either `true` to allow rebase-merging pull requests, or `false` to prevent
-  # rebase-merging.
+  # Accepts `PR_TITLE` or `MERGE_MESSAGE`. When `merge_commit_message` is set, this key is required.
+  merge_commit_title: MERGE_MESSAGE
+  # Accepts `PR_BODY`, `PR_TITLE`, or `BLANK`.
+  merge_commit_message: PR_TITLE
   allow_rebase_merge: false
-
-  # Either `true` to allow auto-merge on pull requests, or `false` to disallow auto-merge.
   allow_auto_merge: true
-
-  # Either `true` to enable automatic deletion of branches on merge, or `false` to disable
   delete_branch_on_merge: true
-
-  # Either `true` to always allow a pull request head branch that is behind its base branch to be updated even if it is not required to be up to date before merging, or `false` otherwise.
+  # When a pull request is behind its base branch, `true` offers the update even if the branch is not required to be up to date.
   allow_update_branch: true
 
-  # Either `true` to enable automated security fixes, or `false` to disable
-  # automated security fixes.
-  enable_automated_security_fixes: false
+  # Every `status` accepts `enabled` or `disabled`. Push protection requires secret scanning.
+  security_and_analysis:
+    secret_scanning:
+      status: enabled
+    secret_scanning_push_protection:
+      status: enabled
+    # The keys below require a GitHub Code Security or GitHub Secret Protection license.
+    # advanced_security:
+    #   status: enabled
+    # code_security:
+    #   status: enabled
+    # secret_scanning_ai_detection:
+    #   status: enabled
+    # secret_scanning_non_provider_patterns:
+    #   status: enabled
+    # secret_scanning_delegated_alert_dismissal:
+    #   status: enabled
+    # secret_scanning_delegated_bypass:
+    #   status: enabled
+    # secret_scanning_delegated_bypass_options:
+    #   reviewers:
+    #     - reviewer_id: 1
+    #       # Accepts `TEAM` or `ROLE`.
+    #       reviewer_type: TEAM
+    #       # Accepts `ALWAYS` or `EXEMPT`.
+    #       mode: ALWAYS
 
-  # Either `true` to enable vulnerability alerts, or `false` to disable
-  # vulnerability alerts.
+  # `enable_vulnerability_alerts` toggles Dependabot alerts. `enable_automated_security_fixes` toggles Dependabot security updates.
+  enable_automated_security_fixes: false
   enable_vulnerability_alerts: true
 
-# Labels: define labels for Issues and Pull Requests
 # labels:
 #   - name: bug
-#     color: CC0000
+#     # When the color starts with `#`, quote it.
+#     color: '#CC0000'
 #     description: An issue with the system.
-#
-#   - name: feature
-#     # If including a `#`, make sure to wrap it with quotes!
-#     color: '#336699'
-#     description: New functionality.
-#
-#   - name: Help Wanted
-#     # Provide a new name to rename an existing label
-#     new_name: first-timers-only
+#     # `new_name` renames the label.
+#     new_name: defect
 
-# Milestones: define milestones for Issues and Pull Requests
 # milestones:
 #   - title: milestone-title
 #     description: milestone-description
-#     # The state of the milestone. Either `open` or `closed`
+#     # Accepts `open` or `closed`.
 #     state: open
 
-# Collaborators: give specific users access to this repository.
-# See https://docs.github.com/en/rest/reference/repos#add-a-repository-collaborator for available options
+# See https://docs.github.com/en/rest/collaborators/collaborators#add-a-repository-collaborator for the options.
 # collaborators:
-#   # - username: bkeepers
-#   #   permission: push
-#   # - username: hubot
-#   #   permission: pull
-#
-#   # Note: `permission` is only valid on organization-owned repositories.
-#   # The permission to grant the collaborator. Can be one of:
-#   # * `pull` - can pull, but not push to or administer this repository.
-#   # * `push` - can pull and push, but not administer this repository.
-#   # * `admin` - can pull, push and administer this repository.
-#   # * `maintain` - Recommended for project managers who need to manage the repository without access to sensitive or destructive actions.
-#   # * `triage` - Recommended for contributors who need to proactively manage issues and pull requests without write access.
+#   - username: bkeepers
+#     # Accepts `pull`, `triage`, `push`, `maintain`, or `admin`. On a personal repository the value is ignored.
+#     permission: push
 
-# See https://docs.github.com/en/rest/reference/teams#add-or-update-team-repository-permissions for available options
+# Teams apply to organization-owned repositories only.
+# See https://docs.github.com/en/rest/teams/teams#add-or-update-team-repository-permissions for the options.
 # teams:
 #   - name: core
-#     # The permission to grant the team. Can be one of:
-#     # * `pull` - can pull, but not push to or administer this repository.
-#     # * `push` - can pull and push, but not administer this repository.
-#     # * `admin` - can pull, push and administer this repository.
-#     # * `maintain` - Recommended for project managers who need to manage the repository without access to sensitive or destructive actions.
-#     # * `triage` - Recommended for contributors who need to proactively manage issues and pull requests without write access.
+#     # Accepts `pull`, `triage`, `push`, `maintain`, or `admin`.
 #     permission: admin
-#   - name: docs
-#     permission: push
 
 # See https://docs.github.com/en/rest/deployments/environments#create-or-update-an-environment for the options.
 environments:
   - name: github-marketplace
+    # Delays each job by this many minutes, 0 to 43200.
+    # wait_timer: 0
+    # Lists up to six users or teams. Each job waits for an approval from one of them.
+    # reviewers:
+    #   - id: 1
+    #     type: User
+    #   - id: 2
+    #     type: Team
     # Accepts `protected_branches: true` or a `custom_branches` list of branch and tag patterns. When omitted, every branch may deploy.
     deployment_branch_policy:
+      # protected_branches: true
       custom_branches:
         - name: v*
           type: tag
 
+# See https://docs.github.com/en/rest/repos/rules#create-a-repository-ruleset for the properties.
 rulesets:
   - name: Main
+    # Accepts `branch`, `tag`, or `push`.
     target: branch
-    source_type: Repository
+    # Accepts `active`, `disabled`, or `evaluate`. `evaluate` requires GitHub Enterprise.
     enforcement: active
     conditions:
       ref_name:
         exclude: []
+        # Accepts ref patterns, `~DEFAULT_BRANCH`, and `~ALL`.
         include:
           - ~DEFAULT_BRANCH
     rules:
@@ -143,7 +147,9 @@ rulesets:
         parameters:
           code_scanning_tools:
             - tool: CodeQL
+              # Accepts `none`, `critical`, `high_or_higher`, `medium_or_higher`, or `all`.
               security_alerts_threshold: high_or_higher
+              # Accepts `none`, `errors`, `errors_and_warnings`, or `all`.
               alerts_threshold: errors
       - type: required_status_checks
         parameters:
@@ -152,7 +158,7 @@ rulesets:
           required_status_checks:
             - context: All done
               integration_id: 15368
-            # These time out too much, we just want the information
+            # The codecov checks time out often, which would block merges if they were required.
             # - context: codecov/patch
             #   integration_id: 254
             # - context: codecov/project
@@ -168,56 +174,86 @@ rulesets:
           required_approving_review_count: 0
           dismiss_stale_reviews_on_push: true
           required_reviewers: []
+          # - reviewer:
+          #     id: 1
+          #     type: Team
+          #   file_patterns:
+          #     - "src/**"
+          #   minimum_approvals: 1
+          # dismissal_restriction:
+          #   enabled: true
+          #   allowed_actors:
+          #     - id: 5
+          #       # Accepts `User`, `Team`, `IntegrationInstallation`, or `RepositoryRole`.
+          #       type: RepositoryRole
           require_code_owner_review: false
           require_last_push_approval: false
           required_review_thread_resolution: false
+          # GitHub defaults this key to `true` on every ruleset, and the REST API does not document it as an input. It is in public preview.
+          require_extra_approval_for_unattributed_changes: false
+          # Accepts any of `merge`, `squash`, and `rebase`.
           allowed_merge_methods:
             - merge
+      # GitHub offers these further rule types.
+      # - type: creation
+      # - type: update
+      #   parameters:
+      #     update_allows_fetch_and_merge: true
+      # - type: required_linear_history
+      # - type: required_signatures
+      # - type: required_deployments
+      #   parameters:
+      #     required_deployment_environments:
+      #       - github-marketplace
+      # - type: merge_queue
+      #   parameters:
+      #     check_response_timeout_minutes: 60
+      #     # Accepts `ALLGREEN` or `HEADGREEN`.
+      #     grouping_strategy: ALLGREEN
+      #     max_entries_to_build: 5
+      #     max_entries_to_merge: 5
+      #     # Accepts `MERGE`, `SQUASH`, or `REBASE`.
+      #     merge_method: MERGE
+      #     min_entries_to_merge: 1
+      #     min_entries_to_merge_wait_minutes: 5
+      # `commit_author_email_pattern`, `committer_email_pattern`, `branch_name_pattern`, and `tag_name_pattern` take the same parameters as `commit_message_pattern`.
+      # - type: commit_message_pattern
+      #   parameters:
+      #     name: ""
+      #     negate: false
+      #     # Accepts `starts_with`, `ends_with`, `contains`, or `regex`.
+      #     operator: regex
+      #     pattern: ""
+      # - type: file_path_restriction
+      #   parameters:
+      #     restricted_file_paths: []
+      # - type: file_extension_restriction
+      #   parameters:
+      #     restricted_file_extensions: []
+      # - type: max_file_path_length
+      #   parameters:
+      #     max_file_path_length: 255
+      # - type: max_file_size
+      #   parameters:
+      #     # The limit is in megabytes and exempts Git LFS objects.
+      #     max_file_size: 100
+      # - type: workflows
+      #   parameters:
+      #     do_not_enforce_on_create: false
+      #     workflows:
+      #       - path: .github/workflows/ci.yml
+      #         repository_id: 1
+      #         ref: main
+      # - type: copilot_code_review
+      #   parameters:
+      #     review_draft_pull_requests: false
+      #     review_on_push: false
+      # - type: license_compliance_scanning
 
     bypass_actors:
-      # Admin role
+      # `actor_type` accepts `Integration`, `OrganizationAdmin`, `RepositoryRole`, `Team`, `DeployKey`, or `User`.
+      # `bypass_mode` accepts `always`, `pull_request`, or `exempt`.
+      # Repository role 5 is Admin.
       - actor_id: 5
         actor_type: RepositoryRole
-        bypass_mode: always
-    current_user_can_bypass: never
-
-branches:
-  - name: main
-    # https://docs.github.com/en/rest/reference/repos#update-branch-protection
-    # Branch Protection settings. Set to null to disable
-    protection: null
-#       # Required. Require at least one approving review on a pull request, before merging. Set to null to disable.
-#       required_pull_request_reviews:
-#         # The number of approvals required. (1-6)
-#         required_approving_review_count: 0
-#         # Dismiss approved reviews automatically when a new commit is pushed.
-#         dismiss_stale_reviews: true
-#         # Blocks merge until code owners have reviewed.
-#         require_code_owner_reviews: false
-#         # Specify which users and teams can dismiss pull request reviews. Pass an empty dismissal_restrictions object to disable. User and team dismissal_restrictions are only available for organization-owned repositories. Omit this parameter for personal repositories.
-#         # dismissal_restrictions:
-#         #   users: []
-#         #   teams: []
-#       # Required. Require status checks to pass before merging. Set to null to disable
-#       required_status_checks:
-#         # Required. Require branches to be up to date before merging.
-#         strict: true
-#         # Required. The list of status checks to require in order to merge into this branch
-#         checks:
-#           - context: "All done"
-#             app_id: 15368
-#           - context: "Format"
-#             app_id: 15368
-#           # - context: "codecov/project"
-#           #   app_id: 254
-#       # Commits pushed to matching refs must have verified signatures.
-#       required_signatures: false
-#       # Required. Enforce all configured restrictions for administrators. Set to true to enforce required status checks for repository administrators. Set to null to disable.
-#       enforce_admins: null
-#       # Prevent merge commits from being pushed to matching branches
-#       required_linear_history: false
-#       # Required. Restrict who can push to this branch. Team and user restrictions are only available for organization-owned repositories. Set to null to disable.
-#       restrictions: null
-#       #   apps: []
-#       #   users: []
-#       #   teams: []
+        bypass_mode: pull_request
