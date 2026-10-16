@@ -7,8 +7,7 @@ on:
       - main
 
 concurrency:
-  # each new commit to a PR runs this workflow
-  # so we need to avoid a long running older one from overwriting the 'pr-<number>-latest'
+  # each new commit to a PR runs this workflow, the older run's result is obsolete, so cancel it
   group: "${{ github.workflow }} @ ${{ github.ref_name }}"
   cancel-in-progress: true
 
@@ -24,15 +23,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           show-progress: false
           fetch-depth: 0
 
-      - name: Install cocogitto to lint commits
+      - name: Enforce strict conventional subjects
+        shell: bash
+        run: |
+          # Enforce '<type>(<scope>)!: <description>' with lowercase type and scope.
+          pattern='^[0-9a-f]+ [a-z]+(\([a-z0-9-]+\))?!?: .+$'
+          if git log --no-merges --format="%h %s" "origin/${GITHUB_BASE_REF}..HEAD" | grep --extended-regexp --invert-match "${pattern}"; then
+            echo "The commit(s) above do not match '<type>(<scope>)!: <description>' with a lowercase type and scope"
+            exit 1
+          fi
+
+      - name: Install git-cliff to lint commits
         uses: taiki-e/install-action@1168f6810a3cb30a3514bf5756a3b7f0422c6df8 # v2.87.28
         with:
-          tool: cocogitto
+          tool: git-cliff
 
       - name: Check the commits
         shell: bash
+        env:
+          GIT_CLIFF__GIT__REQUIRE_CONVENTIONAL: "true"
         run: |
-          cog check --ignore-merge-commits
+          # The range limits linting to this PR's commits, matching the step above
+          git-cliff --offline "origin/${GITHUB_BASE_REF}..HEAD" > /dev/null
