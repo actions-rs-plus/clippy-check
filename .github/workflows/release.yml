@@ -205,29 +205,28 @@ jobs:
           RELEASE_VERSION: ${{ steps.release.outputs.release_version }}
           SIBLINGS_FILE: ${{ steps.siblings.outputs.file }}
         run: |
-          # Only a checked entry appears in the changelog, so every unreleased commit starts excluded
+          # Every entry starts checked, so an unreleased commit is excluded only when a ballot has it unchecked
           jq --raw-output '.[0].commits[].id' ballot-context.json | sort --unique > "${RUNNER_TEMP}/unreleased.txt"
 
-          # Checked entries carry over from the live bodies of the open release PRs of this type, including the PR of this branch. A toggle is in the body before the rebuild puts it in CHANGELOG.md, so the body is the source.
-          : > "${RUNNER_TEMP}/checked.txt"
+          # Unchecked entries come from the live bodies of the open release PRs of this type, including the PR of this branch. A toggle is in the body before the rebuild puts it in .cliffignore, so the body is the source.
+          : > "${RUNNER_TEMP}/unchecked.txt"
 
           while read -r pr_number _; do
             gh api "repos/${GITHUB_REPOSITORY}/pulls/${pr_number}" --jq '.body // ""' \
-              | grep --perl-regexp --only-matching '^- \[[xX]\] .*/commit/\K[0-9a-f]{40}(?=\)\)\r?$)' >> "${RUNNER_TEMP}/checked.txt" || true
+              | grep --perl-regexp --only-matching '^- \[ \] .*/commit/\K[0-9a-f]{40}(?=\)\)\r?$)' >> "${RUNNER_TEMP}/unchecked.txt" || true
           done < "${SIBLINGS_FILE}"
 
-          # When the PR of a release branch was closed by hand, the body is gone and a toggle cannot be pending, so the branch's CHANGELOG.md is the latest selection
+          # When the PR of a release branch was closed by hand, the body is gone and a toggle cannot be pending, so the branch's .cliffignore is the latest selection
           if ! cut --delimiter=" " --fields=2 "${SIBLINGS_FILE}" | grep --quiet --fixed-strings --line-regexp "${BRANCH}" \
             && git ls-remote --exit-code --heads origin "${BRANCH}" > /dev/null; then
             git fetch origin "refs/heads/${BRANCH}"
-            git show "FETCH_HEAD:CHANGELOG.md" 2> /dev/null \
-              | grep --perl-regexp --only-matching '/commit/\K[0-9a-f]{40}(?=\)\)$)' >> "${RUNNER_TEMP}/checked.txt" || true
+            git show "FETCH_HEAD:.cliffignore" >> "${RUNNER_TEMP}/unchecked.txt" 2> /dev/null || true
           fi
 
           # Exclusions accumulate across releases, so the copy on main is the starting point
           git show HEAD:.cliffignore > .cliffignore 2> /dev/null || : > .cliffignore
 
-          grep --fixed-strings --line-regexp --invert-match --file "${RUNNER_TEMP}/checked.txt" "${RUNNER_TEMP}/unreleased.txt" >> .cliffignore || true
+          grep --fixed-strings --line-regexp --file "${RUNNER_TEMP}/unchecked.txt" "${RUNNER_TEMP}/unreleased.txt" >> .cliffignore || true
           sort --unique --output .cliffignore .cliffignore
 
           git-cliff --output CHANGELOG.md --tag "${RELEASE_VERSION}"
@@ -285,7 +284,7 @@ jobs:
           SIBLINGS_FILE: ${{ steps.siblings.outputs.file }}
         run: |
           # A commit landing after a release PR was opened can bump the version, which renames the release branch and leaves the old PR open.
-          # The checked entries of the old PR were carried over above.
+          # The unchecked entries of the old PR were read above.
           new_pr=$(gh pr list --head "${BRANCH}" --state open --json number --jq '.[0].number')
 
           while read -r pr_number head_ref; do

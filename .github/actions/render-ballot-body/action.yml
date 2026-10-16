@@ -61,9 +61,9 @@ runs:
         } > "${body_file}.with-instructions"
         mv "${body_file}.with-instructions" "${body_file}"
 
-        # The body is cut at a line boundary when it exceeds GitHub's PR body limit. A cut entry has no checkbox and stays excluded.
+        # The body is cut at a line boundary when it exceeds GitHub's PR body limit. A cut entry has no checkbox and stays included.
         max_length=65536
-        marker_template=$'\n\n---\n\n> **Note:** COUNT more entries did not fit within GitHub\'s 65,536 character body limit. They are not shown and stay excluded from the changelog.'
+        marker_template=$'\n\n---\n\n> **Note:** COUNT more entries did not fit within GitHub\'s 65,536 character body limit. They are not shown and appear in the changelog.'
         body=$(< "${body_file}")
 
         if [ "${#body}" -gt "${max_length}" ]; then
