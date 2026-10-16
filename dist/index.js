@@ -20356,14 +20356,14 @@ function endGroup() {
 	issue("endgroup");
 }
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.11.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/_virtual/_rolldown/runtime.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.11.1_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/_virtual/_rolldown/runtime.js
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", {
 	value,
 	configurable: true
 });
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.11.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/base-program.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.11.1_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/base-program.js
 var BaseProgram = class {
 	path;
 	constructor(path) {
@@ -20374,7 +20374,7 @@ var BaseProgram = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.11.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/crates.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.11.1_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/crates.js
 async function resolveVersion(crate) {
 	const url = `https://crates.io/api/v1/crates/${crate}`;
 	const response = await new HttpClient("@actions-rs-plus (https://github.com/actions-rs-plus/)").getJson(url);
@@ -60178,7 +60178,7 @@ function saveCacheV2(paths_1, key_1, options_1) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.11.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cargo.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.11.1_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cargo.js
 var Cargo = class Cargo extends BaseProgram {
 	constructor(pathToCargo) {
 		super(pathToCargo);
@@ -60273,7 +60273,7 @@ var Cargo = class Cargo extends BaseProgram {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.11.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cross.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.11.1_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/commands/cross.js
 var Cross = class Cross extends BaseProgram {
 	constructor(path) {
 		super(path);
@@ -60303,7 +60303,7 @@ var Cross = class Cross extends BaseProgram {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@actions-rs-plus+core@0.11.0_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/input.js
+//#region node_modules/.pnpm/@actions-rs-plus+core@0.11.1_supports-color@7.2.0/node_modules/@actions-rs-plus/core/dist/input.js
 /**
 * Workaround for a GitHub weird input naming.
 *
