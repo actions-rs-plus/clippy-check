@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Rebuild release after push
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: "${{ github.workflow }}"
+  cancel-in-progress: true # the newer run dispatches against the newer main
+
+permissions:
+  contents: read
+
+jobs:
+  rebuild:
+    name: Dispatch Release
+    runs-on: ubuntu-26.04
+    permissions:
+      actions: write # to dispatch the Release workflow
+      pull-requests: read # to list open release PRs and the PR merged by this push
+    steps:
+      - name: Dispatch Release when a release PR is open
+        shell: bash
+        env:
+          GH_REPO: ${{ github.repository }} # no checkout, so gh cannot infer the repository from a git remote
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          # When the push merged a release PR, Graduate Release is closing the other release PRs, and a dispatch now would rebuild them.
+          merged_release_prs=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${HEAD_SHA}/pulls" \
+            --jq '[.[] | select(.merged_at != null and (.head.ref | startswith("release/v")))] | length')
+
+          if [ "${merged_release_prs}" -ne 0 ]; then
+            echo "::notice::Release PR merged, nothing to rebuild"
+            exit 0
+          fi
+
+          open_release_prs=$(gh pr list --state open --limit 100 --json headRefName \
+            --jq '[.[] | select(.headRefName | startswith("release/v"))] | length')
+
+          if [ "${open_release_prs}" -eq 0 ]; then
+            echo "::notice::No open release PR, nothing to rebuild"
+            exit 0
+          fi
+
+          echo "::notice::Dispatching Release"
+
+          gh workflow run release.yml --ref main
