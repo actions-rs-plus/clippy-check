@@ -54,7 +54,7 @@ jobs:
         with:
           tool: git-cliff
 
-      - name: Check every commit in range is on the ballot
+      - name: Check the release commit accounts for every ballot entry
         shell: bash
         env:
           BRANCH: ${{ github.event.pull_request.head.ref }}
@@ -66,9 +66,14 @@ jobs:
           rm --force .cliffignore
           git-cliff --context --unreleased --offline --tag "${tag}" > "${RUNNER_TEMP}/ballot-context.json"
 
-          jq --raw-output '.[0].commits[].id' "${RUNNER_TEMP}/ballot-context.json" | sort --unique > "${RUNNER_TEMP}/expected.txt"
+          # Rendered like the ballot in render-ballot-body, so the cliff.toml template decides which commits are entries
+          git-cliff --from-context "${RUNNER_TEMP}/ballot-context.json" --output "${RUNNER_TEMP}/ballot.md"
 
-          # A commit is on the ballot when the release commit lists it in CHANGELOG.md or excludes it in .cliffignore
+          {
+            grep --perl-regexp --only-matching '/commit/\K[0-9a-f]{40}(?=\)\)$)' "${RUNNER_TEMP}/ballot.md" || true
+          } | sort --unique > "${RUNNER_TEMP}/expected.txt"
+
+          # An entry is accounted for when the release commit lists it in CHANGELOG.md or excludes it in .cliffignore
           {
             grep --perl-regexp --only-matching '/commit/\K[0-9a-f]{40}(?=\)\)$)' CHANGELOG.md || true
             git show "HEAD:.cliffignore" 2> /dev/null || true
@@ -77,7 +82,7 @@ jobs:
           missing=$(grep --fixed-strings --line-regexp --invert-match --file "${RUNNER_TEMP}/accounted.txt" "${RUNNER_TEMP}/expected.txt" | tr '\n' ' ' || true)
 
           if [ -n "${missing}" ]; then
-            echo "::error::Commits missing from the ballot: ${missing}. Re-run the Release workflow."
+            echo "::error::Ballot entries missing from the release commit: ${missing}. Re-run the Release workflow."
             exit 1
           fi
 
