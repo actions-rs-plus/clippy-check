@@ -8,14 +8,23 @@ on:
     branches:
       - main
 
+concurrency:
+  group: "${{ github.workflow }} @ ${{ github.ref_name }}"
+  cancel-in-progress: false # this job creates tags and releases, let it finish
+
 permissions:
-  contents: write # to create tags
-  pull-requests: write # to close stale release PRs
+  contents: read
 
 jobs:
   graduate:
     name: Graduate Release
     runs-on: ubuntu-26.04
+    permissions:
+      contents: write # to create the tag and the draft release
+      pull-requests: read # compute-changelog-selection reads the PR body, needs this in private repos
+    outputs:
+      tag: ${{ steps.release.outputs.tag }}
+      finalized: ${{ steps.check_release.outputs.finalized }}
     if: |
       github.event.pull_request.merged == true &&
       startsWith(github.event.pull_request.head.ref, 'release/v')
@@ -26,26 +35,32 @@ jobs:
         env:
           BRANCH: ${{ github.event.pull_request.head.ref }}
         run: |
-          # release/v0.0.3-rc.1 -> v0.0.3-rc.1
-          # release/v0.0.3-alpha.1 -> v0.0.3-alpha.1
           # release/v0.0.3 -> v0.0.3
-          tag="${BRANCH#release/}"
-          echo "tag=$tag" >> "${GITHUB_OUTPUT}"
+          echo "tag=${BRANCH#release/}" >> "${GITHUB_OUTPUT}"
 
-          if [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "prerelease=false" >> "${GITHUB_OUTPUT}"
-          else
-            echo "prerelease=true" >> "${GITHUB_OUTPUT}"
-          fi
-
+      # zizmor: ignore[artipacked] the tag steps below read from the remote, which needs the credential in .git/config
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+          persist-credentials: true
           show-progress: false
-          token: ${{ secrets.TOKEN_TO_TRIGGER_SUBSEQUENT_WORKFLOWS }}
+
+      - name: Check if tag exists
+        id: check_tag
+        shell: bash
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          if git ls-remote --tags origin "refs/tags/${TAG}" | grep --quiet "refs/tags/${TAG}$"; then
+            echo "Tag ${TAG} already exists remotely, skipping creation"
+            echo "exists=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "exists=false" >> "${GITHUB_OUTPUT}"
+          fi
 
       - name: Compute selection from the final ballot
+        if: steps.check_tag.outputs.exists == 'false'
         id: ballot
         uses: $/.github/actions/compute-changelog-selection
         with:
@@ -54,6 +69,7 @@ jobs:
           head: ${{ github.event.pull_request.merge_commit_sha }}
 
       - name: Compare the merged .cliffignore with the final ballot
+        if: steps.check_tag.outputs.exists == 'false'
         shell: bash
         env:
           MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
@@ -68,19 +84,24 @@ jobs:
           fi
 
       - name: Create tag
+        if: steps.check_tag.outputs.exists == 'false'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.release.outputs.tag }}
+          MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+        run: |
+          # lightweight tag: no tag object, just a ref to the already-signed merge commit
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/git/refs" \
+            --raw-field ref="refs/tags/${TAG}" \
+            --raw-field sha="${MERGE_SHA}"
+
+      - name: Fetch tag
         shell: bash
         env:
           TAG: ${{ steps.release.outputs.tag }}
         run: |
-          if git ls-remote --tags origin "refs/tags/${TAG}" | grep --quiet "refs/tags/${TAG}$"; then
-            echo "Tag ${TAG} already exists remotely, skipping creation"
-          else
-            git config --global user.name github-actions[bot]
-            git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
-
-            git tag "${TAG}" --message "chore(release): Release ${TAG}"
-            git push origin "${TAG}"
-          fi
+          git fetch origin "refs/tags/${TAG}:refs/tags/${TAG}"
 
       - name: Check if release exists
         id: check_release
@@ -89,11 +110,20 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ steps.release.outputs.tag }}
         run: |
-          if gh release view "${TAG}" &>/dev/null; then
+          is_draft=$(gh release view "${TAG}" --json isDraft --jq '.isDraft' 2>/dev/null) || is_draft=""
+
+          if [ -z "${is_draft}" ]; then
+            echo "exists=false" >> "${GITHUB_OUTPUT}"
+            echo "finalized=false" >> "${GITHUB_OUTPUT}"
+          elif [ "${is_draft}" == "true" ]; then
+            # a previous run died after creating the draft, the jobs below resume from it
+            echo "Draft release ${TAG} already exists, resuming"
+            echo "exists=true" >> "${GITHUB_OUTPUT}"
+            echo "finalized=false" >> "${GITHUB_OUTPUT}"
+          else
             echo "Release ${TAG} already exists, bailing"
             echo "exists=true" >> "${GITHUB_OUTPUT}"
-          else
-            echo "exists=false" >> "${GITHUB_OUTPUT}"
+            echo "finalized=true" >> "${GITHUB_OUTPUT}"
           fi
 
       - name: Install git-cliff to generate changelog
@@ -105,44 +135,62 @@ jobs:
       - name: Generate release notes
         if: steps.check_release.outputs.exists == 'false'
         shell: bash
+        env:
+          # git-cliff reads GITHUB_TOKEN from the environment
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git-cliff --output release-notes.md --current --github-token ${{ secrets.GITHUB_TOKEN }}
+          git-cliff --output release-notes.md --current
 
-      - name: Create GitHub release
+      - name: Create draft GitHub release
         if: steps.check_release.outputs.exists == 'false'
         shell: bash
         env:
-          GH_TOKEN: ${{ secrets.TOKEN_TO_TRIGGER_SUBSEQUENT_WORKFLOWS }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ steps.release.outputs.tag }}
-          PRERELEASE: ${{ steps.release.outputs.prerelease }}
         run: |
           # Truncate release-notes.md if it exceeds GitHub Release character body limit
           max_length=125000
-          truncation_message=$'\n\n---\n\n> **Note:** Release notes were truncated because they exceeded GitHub'"'"'s 125,000 character limit.'
+          truncation_message=$'\n\n---\n\n> The release notes exceed GitHub'"'"'s 125,000 character limit and were cut here.'
           file_length=$(wc --chars < release-notes.md)
 
           if [ "$file_length" -gt "$max_length" ]; then
             truncated_length=$(( max_length - ${#truncation_message} ))
-            head --bytes="$truncated_length" release-notes.md > release-notes-truncated.md
+            TRUNC="$truncated_length" perl -CSD -0777 -pe '$_ = substr($_, 0, $ENV{TRUNC})' release-notes.md > release-notes-truncated.md
             printf '%s' "$truncation_message" >> release-notes-truncated.md
             mv release-notes-truncated.md release-notes.md
           fi
 
-          prerelease_flag=""
-          if [ "${PRERELEASE}" == "true" ]; then
-            prerelease_flag="--prerelease"
-          fi
-
           gh release create "${TAG}" \
+            --draft \
             --notes-file release-notes.md \
             --title "${TAG}" \
-            --verify-tag \
-            ${prerelease_flag}
+            --verify-tag
 
-      - name: Close stale release PRs
-        if: steps.check_release.outputs.exists == 'false'
+  publish:
+    name: Publish release
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: write # to publish the release
+      pull-requests: write # to close stale release PRs
+    needs:
+      - graduate
+    if: |
+      needs.graduate.outputs.finalized == 'false'
+    steps:
+      - name: Publish release
         shell: bash
         env:
+          # publishing has to fire the release event, and anything done with GITHUB_TOKEN doesn't trigger workflows
+          GH_REPO: ${{ github.repository }} # no checkout, so gh cannot infer the repository from a git remote
+          GH_TOKEN: ${{ secrets.TOKEN_TO_TRIGGER_SUBSEQUENT_WORKFLOWS }}
+          TAG: ${{ needs.graduate.outputs.tag }}
+        run: |
+          gh release edit "${TAG}" --draft=false --latest
+
+      - name: Close stale release PRs
+        shell: bash
+        env:
+          GH_REPO: ${{ github.repository }} # no checkout, so gh cannot infer the repository from a git remote
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Close all other open PRs from release/* branches
