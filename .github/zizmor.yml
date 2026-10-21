@@ -1,0 +1,6 @@
+rules:
+  unpinned-uses:
+    config:
+      policies:
+        # `gh actions-lock` (https://github.com/github/gh-actions-lock) pins every ref to a commit in `workflows/actions.lock`
+        "*": ref-pin
