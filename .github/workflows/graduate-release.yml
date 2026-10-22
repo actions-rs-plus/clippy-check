@@ -128,7 +128,7 @@ jobs:
 
       - name: Install git-cliff to generate changelog
         if: steps.check_release.outputs.exists == 'false'
-        uses: taiki-e/install-action@v2.87.29
+        uses: taiki-e/install-action@v2.87.30
         with:
           tool: git-cliff
 
