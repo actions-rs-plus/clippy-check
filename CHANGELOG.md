@@ -1,4 +1,72 @@
 <!-- header goes here -->
+## [2.8.0](https://github.com/actions-rs-plus/clippy-check/compare/v2.7.1..v2.8.0) - 2026-10-24
+
+### 🚀 Features
+
+- Oxlint by [@kristof-mattei](https://github.com/kristof-mattei) ([`8189b41`](https://github.com/actions-rs-plus/clippy-check/commit/8189b4187b5bf7e5dd4de928fdb11787ebf4abc6))
+- List every diagnostic in the job summary by [@kristof-mattei](https://github.com/kristof-mattei) ([`cc114f3`](https://github.com/actions-rs-plus/clippy-check/commit/cc114f396e14ca8b7fca6f7d64d4cd98cdb5869c))
+
+### 🐛 Bug Fixes
+
+- *(ci)* Restore `contents: read` on `npm-build` by [@kristof-mattei](https://github.com/kristof-mattei) ([`4d1950f`](https://github.com/actions-rs-plus/clippy-check/commit/4d1950f7f19449eafb954d6fa4ff021f62364d2a))
+- *(deps)* Update string-argv (npm) to v0.4.0 by [@renovate[bot]](https://github.com/renovate[bot]) ([`1bd8f20`](https://github.com/actions-rs-plus/clippy-check/commit/1bd8f20a2157e189eb09dcab63beb9834e6b704c))
+- *(deps)* Update @actions-rs-plus/core (npm) to v0.11.1 by [@renovate[bot]](https://github.com/renovate[bot]) ([`5b6a882`](https://github.com/actions-rs-plus/clippy-check/commit/5b6a88238368f27417ffd5dbf6722fa9e2e196bb))
+- Remove exception for `node_modules/@types/`, we shouldn't be importing from those by [@kristof-mattei](https://github.com/kristof-mattei) ([`2092393`](https://github.com/actions-rs-plus/clippy-check/commit/2092393eb95e32b348f7f7fcad860eb2d45fc0a2))
+- Unicorn 73 rules by [@kristof-mattei](https://github.com/kristof-mattei) ([`982e205`](https://github.com/actions-rs-plus/clippy-check/commit/982e205183d41de31a22c611adfe6d00f2549ac0))
+- Library changed exposed namespaces by [@kristof-mattei](https://github.com/kristof-mattei) ([`f27ea4d`](https://github.com/actions-rs-plus/clippy-check/commit/f27ea4db5c801f7669abc8624cb1aec5ca45bace))
+- `oxlint` fails the pre-commit hook when every staged file is ignored by [@kristof-mattei](https://github.com/kristof-mattei) ([`6a76ccc`](https://github.com/actions-rs-plus/clippy-check/commit/6a76ccc9aa7df273656b9e7401f3cd9025772712))
+
+### 🧪 Testing
+
+- Enable mockReset to isolate automocked modules between tests by [@kristof-mattei](https://github.com/kristof-mattei) ([`edeb15d`](https://github.com/actions-rs-plus/clippy-check/commit/edeb15d64ee20ee5ca6c8a6f7b628a41d2f94c3f))
+- Enable unstubEnvs, stub env vars via vi.stubEnv by [@kristof-mattei](https://github.com/kristof-mattei) ([`2fec857`](https://github.com/actions-rs-plus/clippy-check/commit/2fec857805a767ed97e2a0b2f9076ba525071ce6))
+- Auto-revert global stubs by [@kristof-mattei](https://github.com/kristof-mattei) ([`05e9716`](https://github.com/actions-rs-plus/clippy-check/commit/05e9716d054f2b8a8591093c53deaad0fd3a36aa))
+
+### ⚙️ Miscellaneous Tasks
+
+- *(ci)* Never create a bare v0 tag by [@kristof-mattei](https://github.com/kristof-mattei) ([`bcdf52a`](https://github.com/actions-rs-plus/clippy-check/commit/bcdf52a20a852939aebee02709ed8ceabd8cd86e))
+- *(ci)* Github Actions lockfile by [@kristof-mattei](https://github.com/kristof-mattei) ([`6530ad0`](https://github.com/actions-rs-plus/clippy-check/commit/6530ad0115a6d7e52114534406090d7354b358c4))
+- *(release)* Curate the changelog with a ballot in the release PR by [@kristof-mattei](https://github.com/kristof-mattei) ([`acc352d`](https://github.com/actions-rs-plus/clippy-check/commit/acc352df778d7a252fa340365426dfbfe4ad753e))
+- *(release)* Move the semantic tags from a `github-marketplace` environment restricted to `v*` tags by [@kristof-mattei](https://github.com/kristof-mattei) ([`e25fa32`](https://github.com/actions-rs-plus/clippy-check/commit/e25fa324ae139c1e8b16dee3cb43a58b1629a962))
+- *(release)* Check new ballot entries by default by [@kristof-mattei](https://github.com/kristof-mattei) ([`4c42fe7`](https://github.com/actions-rs-plus/clippy-check/commit/4c42fe7c121fb9c75879cc0efb5255ff83d50a82))
+- *(release)* Rebuild the open release PRs on every push to `main` by [@kristof-mattei](https://github.com/kristof-mattei) ([`2990842`](https://github.com/actions-rs-plus/clippy-check/commit/299084213e3f2bbf4d02175a495fe11a925c573e))
+- *(release)* Remove pre-releases and modernize the release workflows by [@kristof-mattei](https://github.com/kristof-mattei) ([`2bd26a0`](https://github.com/actions-rs-plus/clippy-check/commit/2bd26a0b564ff35f9349656343c24f3dcbb94b6c))
+- *(release)* Modernize `cliff.toml` by [@kristof-mattei](https://github.com/kristof-mattei) ([`b26ea5e`](https://github.com/actions-rs-plus/clippy-check/commit/b26ea5ef387e96e801cffadce587267d8d1a24a4))
+- *(release)* Verify the release commit against the rendered ballot by [@kristof-mattei](https://github.com/kristof-mattei) ([`b37f9c1`](https://github.com/actions-rs-plus/clippy-check/commit/b37f9c1c71f71899ceff0daec2bd7e232ff1d696))
+- *(release)* Exclude superseded dependency bumps through `.cliffignore` by [@kristof-mattei](https://github.com/kristof-mattei) ([`cce2e89`](https://github.com/actions-rs-plus/clippy-check/commit/cce2e89cd886cb7991476b4d0132d0aa2a289196))
+- *(settings)* Declare every syncable option in `settings.yml` by [@kristof-mattei](https://github.com/kristof-mattei) ([`8f25d2f`](https://github.com/actions-rs-plus/clippy-check/commit/8f25d2f6c99c18941c07762bb51928d48cb7efca))
+- Commiting changes in dist/. See #2692 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`144c14f`](https://github.com/actions-rs-plus/clippy-check/commit/144c14f8d7112e061559a949dcfad034a529ffde))
+- Commiting changes in dist/. See #2694 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`01b3556`](https://github.com/actions-rs-plus/clippy-check/commit/01b35568162ee2ab558b2a20da706fed97b32cab))
+- Commiting changes in dist/. See #2696 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`15ba8d8`](https://github.com/actions-rs-plus/clippy-check/commit/15ba8d840af48912c9fe2d72b37c21b2be431c96))
+- Commiting changes in dist/. See #2702 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`ad45c85`](https://github.com/actions-rs-plus/clippy-check/commit/ad45c850f709ee0c4e4f012c0cbf248b074ad5c7))
+- Commiting changes in dist/. See #2725 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`2b4e879`](https://github.com/actions-rs-plus/clippy-check/commit/2b4e8793b765f366d743895d3691ea2227e323ac))
+- Commiting changes in dist/. See #2734 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`b83712b`](https://github.com/actions-rs-plus/clippy-check/commit/b83712bc35fc48d93557ffa27c083bb193f2255c))
+- Commiting changes in dist/. See #2750 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`a2a888d`](https://github.com/actions-rs-plus/clippy-check/commit/a2a888d44ff4a3c52d53b49e16315f2ffd4af6e7))
+- Commiting changes in dist/. See #2761 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`5cde6d4`](https://github.com/actions-rs-plus/clippy-check/commit/5cde6d4f86c4ab682b0e5a17a79f16a67492c973))
+- Replace `.oxlintrc.json` and `.oxfmtrc.json` with `oxlint.config.ts` and `oxfmt.config.ts` by [@kristof-mattei](https://github.com/kristof-mattei) ([`23c3ef8`](https://github.com/actions-rs-plus/clippy-check/commit/23c3ef8ac50101b77cbf10f725fce9ad3758c914))
+- Enable `n/no-unpublished-import` by [@kristof-mattei](https://github.com/kristof-mattei) ([`e4637d9`](https://github.com/actions-rs-plus/clippy-check/commit/e4637d9cd970ce66b3f210a62322bf6dd5909b3d))
+- Make lint even stricter by [@kristof-mattei](https://github.com/kristof-mattei) ([`9c5cce1`](https://github.com/actions-rs-plus/clippy-check/commit/9c5cce102332485caeb1f62d3ac408f2707ba54c))
+- Commiting changes in dist/. See #2777 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`1c29d14`](https://github.com/actions-rs-plus/clippy-check/commit/1c29d1465e26206fbea72a1791e4c3104dddd0bf))
+- Commiting changes in dist/. See #2782 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`c56d20e`](https://github.com/actions-rs-plus/clippy-check/commit/c56d20e7d9651403ebd2b3bd75019870b69f98ef))
+- Add `node/groupOxcPackages` preset, grouping `oxc-project` packages into one PR by [@kristof-mattei](https://github.com/kristof-mattei) ([`0e7a9d3`](https://github.com/actions-rs-plus/clippy-check/commit/0e7a9d338a447536e86dfdcd26b2d50c72496f6c))
+- Drop dead `coverage.exclude` from `vite.config.ts` by [@kristof-mattei](https://github.com/kristof-mattei) ([`60b4995`](https://github.com/actions-rs-plus/clippy-check/commit/60b4995c8794e2d23a2e50e63c1c05f4a015ab09))
+- Commiting changes in dist/. See #2794 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`c36f283`](https://github.com/actions-rs-plus/clippy-check/commit/c36f2830d86d74b8c7a3a6873da56c6f4ad6ff7c))
+- Commiting changes in dist/. See #2796 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`aa622c1`](https://github.com/actions-rs-plus/clippy-check/commit/aa622c122ef812b6f0958acec3edbd7528b17f7d))
+- Pin the runners to `ubuntu-26.04`, `windows-2025` and `macos-26` by [@kristof-mattei](https://github.com/kristof-mattei) ([`b6414a1`](https://github.com/actions-rs-plus/clippy-check/commit/b6414a1fe7df03147b2423b84eac9d212e911faf))
+- Commiting changes in dist/. See #2806 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`0d6eea9`](https://github.com/actions-rs-plus/clippy-check/commit/0d6eea9757e761132c7054cbfff14d0bdb66d7bf))
+- Commiting changes in dist/. See #2810 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`30fd09c`](https://github.com/actions-rs-plus/clippy-check/commit/30fd09c4647e017afa01956d914c6a826ebe8aeb))
+- Commiting changes in dist/. See #2844 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`6262df7`](https://github.com/actions-rs-plus/clippy-check/commit/6262df71b27d5ffd29579ff14c8903cc71a07dce))
+- Commiting changes in dist/. See #2862 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`de761da`](https://github.com/actions-rs-plus/clippy-check/commit/de761da62672515a82dde1525ef42be3b286ae90))
+- Remove `engines.pnpm`, it is already enforced by `packageManager` by [@kristof-mattei](https://github.com/kristof-mattei) ([`41f3241`](https://github.com/actions-rs-plus/clippy-check/commit/41f3241945af5747612f74dbaa13213ffbec680c))
+- Commiting changes in dist/. See #2870 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`4dbb2e0`](https://github.com/actions-rs-plus/clippy-check/commit/4dbb2e0d666383ec8a4940207a9975231abfe31a))
+- Commiting changes in dist/. See #2883 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`2be60cb`](https://github.com/actions-rs-plus/clippy-check/commit/2be60cbc0f3fcc134a3e327cc461b34127619588))
+- Enable `n/no-sync`, `n/no-process-exit` and `n/no-path-concat` by [@kristof-mattei](https://github.com/kristof-mattei) ([`9c6b743`](https://github.com/actions-rs-plus/clippy-check/commit/9c6b743b2a1bd0aa66c2eba43898e57e7d5e1179))
+- Enable the oxlint `nursery` category by [@kristof-mattei](https://github.com/kristof-mattei) ([`bf5a34a`](https://github.com/actions-rs-plus/clippy-check/commit/bf5a34a25719e77e90fa27e426ff111714b66322))
+- Run the `code-quality` query suite in CodeQL instead of GitHub Code Quality by [@kristof-mattei](https://github.com/kristof-mattei) ([`5bbee0c`](https://github.com/actions-rs-plus/clippy-check/commit/5bbee0cf850fd5c6cd61b29f84cad9d55b07abac))
+- Commiting changes in dist/. See #2910 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`697348a`](https://github.com/actions-rs-plus/clippy-check/commit/697348a06d02e60857d584fdccf8e05666a39875))
+- Lint commits with git-cliff instead of cocogitto by [@kristof-mattei](https://github.com/kristof-mattei) ([`18533aa`](https://github.com/actions-rs-plus/clippy-check/commit/18533aafe406a3d16f52235fee6ecf72e780a6c5))
+- Commiting changes in dist/. See #2915 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`a7045b6`](https://github.com/actions-rs-plus/clippy-check/commit/a7045b6f674298c1f2547080477920caf032034b))
+- Commiting changes in dist/. See #2919 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`8ee7206`](https://github.com/actions-rs-plus/clippy-check/commit/8ee7206c9cea0d2ce262d1992031d61c9a63ff67))
 ## [2.7.1](https://github.com/actions-rs-plus/clippy-check/compare/v2.7.0..v2.7.1) - 2026-07-29
 
 ### 🐛 Bug Fixes
@@ -22,7 +90,6 @@
 
 ### 🐛 Bug Fixes
 
-- *(deps)* Update @actions-rs-plus/core (npm) to v0.8.0 by [@renovate[bot]](https://github.com/renovate[bot]) ([`29ece38`](https://github.com/actions-rs-plus/clippy-check/commit/29ece385114f83a829b07e4b563fee2ce3eaa110))
 - *(deps)* Update @actions-rs-plus/core (npm) to v0.9.0 by [@renovate[bot]](https://github.com/renovate[bot]) ([`c318c6a`](https://github.com/actions-rs-plus/clippy-check/commit/c318c6a5e9a5e8e3146f25d3dc9ffd8ba6379006))
 - For markdown, decrease tabWidth by [@kristof-mattei](https://github.com/kristof-mattei) ([`4217034`](https://github.com/actions-rs-plus/clippy-check/commit/42170344dbb13dd4fb22b2fba655c2b2e43ef094))
 - Correct actions example by [@kristof-mattei](https://github.com/kristof-mattei) ([`e470fd0`](https://github.com/actions-rs-plus/clippy-check/commit/e470fd06f6f781cd1da9cc9f37a9d3d668e99582))
@@ -43,13 +110,7 @@
 
 - *(ci)* Merge the PR based on the branch name, not the url by [@kristof-mattei](https://github.com/kristof-mattei) ([`1af6ee9`](https://github.com/actions-rs-plus/clippy-check/commit/1af6ee9f744acd09b4755f00fc89e76dcd4e2001))
 - *(ci)* Ensure we emit the right repo url by [@kristof-mattei](https://github.com/kristof-mattei) ([`8ecb75e`](https://github.com/actions-rs-plus/clippy-check/commit/8ecb75e7eb29e8bed85b2520ef4afdb4e88c328c))
-- *(deps)* Update @actions-rs-plus/core (npm) to v0.6.3 by [@renovate[bot]](https://github.com/renovate[bot]) ([`9c4fb53`](https://github.com/actions-rs-plus/clippy-check/commit/9c4fb53885255774c8ee358393ef21776957ffa8))
-- *(deps)* Update @actions-rs-plus/core (npm) to v0.6.4 by [@renovate[bot]](https://github.com/renovate[bot]) ([`cd508ff`](https://github.com/actions-rs-plus/clippy-check/commit/cd508ff888374126b19569c994ea7dfa88bae731))
-- *(deps)* Update @actions-rs-plus/core (npm) to v0.6.5 by [@renovate[bot]](https://github.com/renovate[bot]) ([`1613550`](https://github.com/actions-rs-plus/clippy-check/commit/16135507d3699cb0a63b21bbbe6efac28a7a6307))
-- *(deps)* Update @actions-rs-plus/core (npm) to v0.6.6 by [@renovate[bot]](https://github.com/renovate[bot]) ([`82149ce`](https://github.com/actions-rs-plus/clippy-check/commit/82149ce3a6b759f5dcf1fbf8abe911a034b5d5b0))
 - *(deps)* Update @actions/core (npm) to v3.0.1 by [@renovate[bot]](https://github.com/renovate[bot]) ([`14ff693`](https://github.com/actions-rs-plus/clippy-check/commit/14ff693fb7836169b7d298b1f3e6ddc79fc4ff76))
-- *(deps)* Update @actions-rs-plus/core (npm) to v0.7.5 by [@renovate[bot]](https://github.com/renovate[bot]) ([`7d60ebe`](https://github.com/actions-rs-plus/clippy-check/commit/7d60ebefb00cb66817dd7d058a3326e866997967))
-- *(deps)* Update @actions-rs-plus/core (npm) to v0.7.6 by [@renovate[bot]](https://github.com/renovate[bot]) ([`be01e3d`](https://github.com/actions-rs-plus/clippy-check/commit/be01e3d66a7c6914a8b05b567035ee03fa428f87))
 - *(deps)* Update @actions-rs-plus/core (npm) to v0.7.7 by [@renovate[bot]](https://github.com/renovate[bot]) ([`4f444fd`](https://github.com/actions-rs-plus/clippy-check/commit/4f444fd6acae78c0d9020ff4c8722dd0bee3cc0b))
 - Undo action `pnpm-lock.yaml` modifications by [@kristof-mattei](https://github.com/kristof-mattei) ([`fa0d528`](https://github.com/actions-rs-plus/clippy-check/commit/fa0d5280fffc7241df8256bd19365d3425b56dd2))
 - PR in release proposal now links to SHA instead of non-existing (not yet) version number by [@kristof-mattei](https://github.com/kristof-mattei) ([`1724ce7`](https://github.com/actions-rs-plus/clippy-check/commit/1724ce7e7c4f8fde18d3fc32cdb821dc54ab2287))
@@ -158,21 +219,8 @@
 
 ### 🐛 Bug Fixes
 
-- *(deps)* Update @actions/core (npm) to v2.0.1 by [@renovate[bot]](https://github.com/renovate[bot]) ([`64c4b6b`](https://github.com/actions-rs-plus/clippy-check/commit/64c4b6b8e852488c96c4c072b36c3779a0678a70))
-- *(deps)* Update @actions-rs-plus/core (npm) to v0.5.4 by [@renovate[bot]](https://github.com/renovate[bot]) ([`5f3bb73`](https://github.com/actions-rs-plus/clippy-check/commit/5f3bb73240892a2d0cd5cc0728ba02ea48d9a456))
-- *(deps)* Update @actions-rs-plus/core (npm) to v0.5.5 by [@renovate[bot]](https://github.com/renovate[bot]) in #1856 ([`8483192`](https://github.com/actions-rs-plus/clippy-check/commit/8483192e233e0b58254b9ccb2c8868405bbf79aa))
-- *(deps)* Update @actions/core (npm) to v2.0.2 by [@renovate[bot]](https://github.com/renovate[bot]) in #1916 ([`f50954a`](https://github.com/actions-rs-plus/clippy-check/commit/f50954a3546083adaef2b2b80ca3030f4eee7918))
-- *(deps)* Update @actions-rs-plus/core (npm) to v0.5.6 by [@renovate[bot]](https://github.com/renovate[bot]) in #1921 ([`3347f41`](https://github.com/actions-rs-plus/clippy-check/commit/3347f41198a303a81d67145dd35ccbab528b3831))
-- *(deps)* Update @actions/core (npm) to v2.0.3 by [@renovate[bot]](https://github.com/renovate[bot]) in #1966 ([`f4e0ec2`](https://github.com/actions-rs-plus/clippy-check/commit/f4e0ec2fd4e1218ce3d9f9c653832228d7419061))
-- *(deps)* Update @actions-rs-plus/core (npm) to v0.5.7 by [@renovate[bot]](https://github.com/renovate[bot]) in #1968 ([`ac1bf9e`](https://github.com/actions-rs-plus/clippy-check/commit/ac1bf9ec3e27d5361fd1e802cb7200b90d75251f))
 - *(deps)* Update @actions/exec (npm) to v3 by [@renovate[bot]](https://github.com/renovate[bot]) ([`af7628a`](https://github.com/actions-rs-plus/clippy-check/commit/af7628a398c435fd6d9ad161ab5355b81a21aa24))
-- *(deps)* Update @actions-rs-plus/core (npm) to v0.5.8 by [@renovate[bot]](https://github.com/renovate[bot]) ([`a42fe67`](https://github.com/actions-rs-plus/clippy-check/commit/a42fe67b6966df91c288481f971cdf2790a3ee69))
-- *(deps)* Update @actions-rs-plus/core (npm) to v0.5.9 by [@renovate[bot]](https://github.com/renovate[bot]) in #1980 ([`56507a1`](https://github.com/actions-rs-plus/clippy-check/commit/56507a1acfda9b42eb5bc5af377b0c47c480d791))
 - *(deps)* Update @actions/core (npm) to v3 by [@renovate[bot]](https://github.com/renovate[bot]) ([`6f05580`](https://github.com/actions-rs-plus/clippy-check/commit/6f0558029ca36b5097ca85f729fc5c21f8c60e8b))
-- *(deps)* Update @actions-rs-plus/core (npm) to v0.5.10 by [@renovate[bot]](https://github.com/renovate[bot]) in #1983 ([`a780192`](https://github.com/actions-rs-plus/clippy-check/commit/a780192fd2d7b63c2463e1cbb4d36389bd648655))
-- *(deps)* Update @actions-rs-plus/core (npm) to v0.5.11 by [@renovate[bot]](https://github.com/renovate[bot]) in #1985 ([`b89730f`](https://github.com/actions-rs-plus/clippy-check/commit/b89730f4d876590078469b08cf7a74a653373692))
-- *(deps)* Update @actions-rs-plus/core (npm) to v0.5.12 by [@renovate[bot]](https://github.com/renovate[bot]) in #2002 ([`3981916`](https://github.com/actions-rs-plus/clippy-check/commit/3981916a3bb8a22456383a36ebb3847e42e5fa97))
-- *(deps)* Update @actions-rs-plus/core (npm) to v0.5.13 by [@renovate[bot]](https://github.com/renovate[bot]) in #2076 ([`5831989`](https://github.com/actions-rs-plus/clippy-check/commit/5831989cd9467a86223e8e58e9388781f2822f0b))
 - *(deps)* Update @actions-rs-plus/core (npm) to v0.6.2 by [@renovate[bot]](https://github.com/renovate[bot]) in #2100 ([`a0b7d4e`](https://github.com/actions-rs-plus/clippy-check/commit/a0b7d4e77ada46ddff61f4f2512d632c50529da8))
 - Vite-tsconfig-paths@v6.0.0 breaks the alias on windows by [@kristof-mattei](https://github.com/kristof-mattei) ([`6a01ade`](https://github.com/actions-rs-plus/clippy-check/commit/6a01adea82578dfd5ed9c248e337416291ea069a))
 - Missing permissions by [@kristof-mattei](https://github.com/kristof-mattei) ([`2b4722d`](https://github.com/actions-rs-plus/clippy-check/commit/2b4722d88d9892bff307f55963d3d7f699d844cd))
@@ -190,6 +238,7 @@
 ### ⚙️ Miscellaneous Tasks
 
 - *(release)* Release v2.5.0 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`61b611f`](https://github.com/actions-rs-plus/clippy-check/commit/61b611fc2eafe1fe4ae5568ecc18fcad76459c18))
+- Merge at the same time by [@kristof-mattei](https://github.com/kristof-mattei) ([`f911162`](https://github.com/actions-rs-plus/clippy-check/commit/f911162e28d69cd404f0731a4592bb22872c1a9e))
 - Commiting changes in dist/. See #1855 by [@kristof-mattei](https://github.com/kristof-mattei) ([`1eeeb02`](https://github.com/actions-rs-plus/clippy-check/commit/1eeeb02b02fc1924997786e4fb946d2fd0dcdc21))
 - Commiting changes in dist/. See #1856 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`ffee19d`](https://github.com/actions-rs-plus/clippy-check/commit/ffee19d3b30bda42b83268a99919d74858299eac))
 - Commiting changes in dist/. See #1871 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`e5e93da`](https://github.com/actions-rs-plus/clippy-check/commit/e5e93dad72c43c115045b38a935b9ae5fd97c107))
@@ -229,7 +278,6 @@
 
 - *(deps)* Update @actions/core (npm) to v2 by [@renovate[bot]](https://github.com/renovate[bot]) in #1839 ([`7cc9447`](https://github.com/actions-rs-plus/clippy-check/commit/7cc94472037a881b17d8e4ca1c50a93f73e8bdca))
 - *(deps)* Update @actions-rs-plus/core (npm) to v0.5.3 by [@renovate[bot]](https://github.com/renovate[bot]) in #1843 ([`bf75223`](https://github.com/actions-rs-plus/clippy-check/commit/bf75223f605de045e67f203b09f722f14aea9ca9))
-- *(deps)* Update @actions/exec (npm) to v2 by [@renovate[bot]](https://github.com/renovate[bot]) ([`7a784dc`](https://github.com/actions-rs-plus/clippy-check/commit/7a784dc189314178f286ad7138ecf53003f00c30))
 - *(deps)* Update @actions/exec (npm) to v2 by [@renovate[bot]](https://github.com/renovate[bot]) ([`595f622`](https://github.com/actions-rs-plus/clippy-check/commit/595f62217f10380311f4fbf9f3c08b1ef716c8b1))
 - Remove project, as projectService supersedes it by [@kristof-mattei](https://github.com/kristof-mattei) ([`b8c78ee`](https://github.com/actions-rs-plus/clippy-check/commit/b8c78eeeebdb6fca6256ba1f3d3cf03787c19c2d))
 
@@ -242,7 +290,6 @@
 - Bump packages by [@kristof-mattei](https://github.com/kristof-mattei) ([`4def65d`](https://github.com/actions-rs-plus/clippy-check/commit/4def65d1cc89237d38963f84f25e2b2f436ea426))
 - Use full version by [@kristof-mattei](https://github.com/kristof-mattei) ([`6e879d3`](https://github.com/actions-rs-plus/clippy-check/commit/6e879d3da6b3989e66376c17c840296bab3c664b))
 - Commiting changes in dist/. See #1839 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`9b41f20`](https://github.com/actions-rs-plus/clippy-check/commit/9b41f20bf1cf4af102cc2e30175528ec7b8fe2ab))
-- Merge at the same time by [@kristof-mattei](https://github.com/kristof-mattei) ([`f911162`](https://github.com/actions-rs-plus/clippy-check/commit/f911162e28d69cd404f0731a4592bb22872c1a9e))
 - Merge at the same time by [@kristof-mattei](https://github.com/kristof-mattei) ([`c2d0395`](https://github.com/actions-rs-plus/clippy-check/commit/c2d0395c041713477695ba443045071b7b154539))
 - Commiting changes in dist/. See #1845 by [@github-actions[bot]](https://github.com/github-actions[bot]) ([`e7d49e8`](https://github.com/actions-rs-plus/clippy-check/commit/e7d49e89f82011f43a1e80f45377e69d4d7fc560))
 - Run process in Docker as non-root by [@kristof-mattei](https://github.com/kristof-mattei) ([`f80e4a4`](https://github.com/actions-rs-plus/clippy-check/commit/f80e4a4522f054c816cdae65cd849e228c541db0))
@@ -260,7 +307,6 @@
 
 ### 🐛 Bug Fixes
 
-- *(deps)* Update @actions-rs-plus/core (npm) to v0.4.1 by [@renovate[bot]](https://github.com/renovate[bot]) in #1571 ([`ac8ce2d`](https://github.com/actions-rs-plus/clippy-check/commit/ac8ce2d86c1f56ba29a3931e443b63930e877e45))
 - *(deps)* Update @actions-rs-plus/core (npm) to v0.5.1 by [@renovate[bot]](https://github.com/renovate[bot]) in #1600 ([`08a0263`](https://github.com/actions-rs-plus/clippy-check/commit/08a02635d9f94ed0f93f26d7a2572162b6fdb517))
 - Also test on windows by [@kristof-mattei](https://github.com/kristof-mattei) ([`582d24e`](https://github.com/actions-rs-plus/clippy-check/commit/582d24e078bbf96afc7ec6b238bbe3376f92f99f))
 - Make the windows test part of the pass/fail by [@kristof-mattei](https://github.com/kristof-mattei) ([`d9ed099`](https://github.com/actions-rs-plus/clippy-check/commit/d9ed09953417b2a04d24daf1f385a507b854757a))
@@ -332,14 +378,7 @@
 
 ### 🐛 Bug Fixes
 
-- *(deps)* Update dependency @actions-rs-plus/core to ^0.2.0 by [@renovate[bot]](https://github.com/renovate[bot]) ([`c5d25cc`](https://github.com/actions-rs-plus/clippy-check/commit/c5d25ccab5bc9cea72e88d57b274d9e618b8857e))
-- *(deps)* Update dependency @actions-rs-plus/core to ^0.2.1 by [@renovate[bot]](https://github.com/renovate[bot]) ([`41aaa45`](https://github.com/actions-rs-plus/clippy-check/commit/41aaa4555ed131702ddcd139b2f5e6b435783a31))
-- *(deps)* Update dependency @actions-rs-plus/core to ^0.2.2 by [@renovate[bot]](https://github.com/renovate[bot]) ([`c388ba1`](https://github.com/actions-rs-plus/clippy-check/commit/c388ba191a18e938b350d62c3e14d790eb2d12f1))
-- *(deps)* Update dependency @actions-rs-plus/core to v0.2.3 by [@renovate[bot]](https://github.com/renovate[bot]) ([`cc73c0b`](https://github.com/actions-rs-plus/clippy-check/commit/cc73c0b0cf0eb49aae781be50d47a2a669ba8e69))
-- *(deps)* Update dependency @actions-rs-plus/core to v0.2.4 by [@renovate[bot]](https://github.com/renovate[bot]) ([`ef83bd0`](https://github.com/actions-rs-plus/clippy-check/commit/ef83bd000579820502454f300a359ce592ce526c))
-- *(deps)* Update dependency @actions/core to v1.11.0 by [@renovate[bot]](https://github.com/renovate[bot]) in #955 ([`48177e5`](https://github.com/actions-rs-plus/clippy-check/commit/48177e5d4cd8a4950c2af374515ea6b399805e18))
 - *(deps)* Update dependency @actions/core to v1.11.1 by [@renovate[bot]](https://github.com/renovate[bot]) in #961 ([`5a57383`](https://github.com/actions-rs-plus/clippy-check/commit/5a57383039c95cd2411215134cf251798124de25))
-- *(deps)* Update dependency @actions-rs-plus/core to v0.2.6 by [@renovate[bot]](https://github.com/renovate[bot]) in #1167 ([`8de2116`](https://github.com/actions-rs-plus/clippy-check/commit/8de2116caac93f811540fa504d9123757646487c))
 - *(deps)* Update dependency @actions-rs-plus/core to v0.2.7 by [@renovate[bot]](https://github.com/renovate[bot]) ([`652205a`](https://github.com/actions-rs-plus/clippy-check/commit/652205a5782e9b59b4d9c2e62a15a7d07ff743cc))
 - Rebuild after lock file changes by [@kristof-mattei](https://github.com/kristof-mattei) ([`60726a8`](https://github.com/actions-rs-plus/clippy-check/commit/60726a87e1cfd337b7b0527ecf293691894f3575))
 - Patch collect-v8-coverage until https://github.com/SimenB/collect-v8-coverage/pull/235 is merged in by [@kristof-mattei](https://github.com/kristof-mattei) ([`7e0ca80`](https://github.com/actions-rs-plus/clippy-check/commit/7e0ca80656cf9431ca834ce1b0f5137bbaa944e4))
@@ -488,6 +527,11 @@
 - Rebuild after package update by [@kristof-mattei](https://github.com/kristof-mattei) ([`b447113`](https://github.com/actions-rs-plus/clippy-check/commit/b4471138a4b213a7c6e317c6c3bdf68b2a4a86fa))
 - Rebuild after package update by [@kristof-mattei](https://github.com/kristof-mattei) ([`126070f`](https://github.com/actions-rs-plus/clippy-check/commit/126070f3d73d6dce5ed73229d1c542f4ce527186))
 - Move tags after release by [@kristof-mattei](https://github.com/kristof-mattei) ([`68fbfff`](https://github.com/actions-rs-plus/clippy-check/commit/68fbfffcd51d0b281c35c2cd8ae88121bfcab111))
+## [2.1.1](https://github.com/actions-rs-plus/clippy-check/compare/v2.1.0..v2.1.1) - 2023-09-28
+
+### 🐛 Bug Fixes
+
+- Also publish sourcemap-register file by [@kristof-mattei](https://github.com/kristof-mattei) ([`8fa88f9`](https://github.com/actions-rs-plus/clippy-check/commit/8fa88f9dbb36bca6801ed5cd954f447827b06ab6))
 ## [2.1.0](https://github.com/actions-rs-plus/clippy-check/compare/v2.0.0..v2.1.0) - 2023-09-27
 
 ### 🚀 Features
@@ -496,7 +540,6 @@
 
 ### 🐛 Bug Fixes
 
-- *(deps)* Update dependency @actions-rs-plus/core to ^0.1.11 by [@renovate[bot]](https://github.com/renovate[bot]) ([`0082202`](https://github.com/actions-rs-plus/clippy-check/commit/008220282cae632b03ff998d3c5b7a3a9570a045))
 - *(deps)* Update dependency @actions-rs-plus/core to ^0.1.12 by [@renovate[bot]](https://github.com/renovate[bot]) ([`c807b60`](https://github.com/actions-rs-plus/clippy-check/commit/c807b60052a427dd67a30d6b8c9904b45a32f90e))
 - Modernize by [@kristof-mattei](https://github.com/kristof-mattei) ([`8393490`](https://github.com/actions-rs-plus/clippy-check/commit/839349081d4ab7476f793ce9a14ab3f517701bbc))
 - Run on node20 by [@kristof-mattei](https://github.com/kristof-mattei) ([`7062803`](https://github.com/actions-rs-plus/clippy-check/commit/7062803d6bd43def748fef53d0db9d0cae9f3a1e))
@@ -507,7 +550,6 @@
 - Releasing itself by [@kristof-mattei](https://github.com/kristof-mattei) ([`daf187d`](https://github.com/actions-rs-plus/clippy-check/commit/daf187d83fdccea485b9a4c5005030011eaa6a42))
 - Ensure dist is up to date by [@kristof-mattei](https://github.com/kristof-mattei) ([`3ce21f0`](https://github.com/actions-rs-plus/clippy-check/commit/3ce21f0ba3db8d3c2df93952fe0cf5b90b1662dc))
 - Update build by [@kristof-mattei](https://github.com/kristof-mattei) ([`561a0c1`](https://github.com/actions-rs-plus/clippy-check/commit/561a0c1c19dd175b6f427fdca3dbbd6509323a5b))
-- Also publish sourcemap-register file by [@kristof-mattei](https://github.com/kristof-mattei) ([`8fa88f9`](https://github.com/actions-rs-plus/clippy-check/commit/8fa88f9dbb36bca6801ed5cd954f447827b06ab6))
 
 ### 💼 Other
 
