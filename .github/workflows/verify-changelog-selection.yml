@@ -50,7 +50,7 @@ jobs:
           fi
 
       - name: Install git-cliff
-        uses: taiki-e/install-action@v2.87.31
+        uses: taiki-e/install-action@v2.87.32
         with:
           tool: git-cliff
 
