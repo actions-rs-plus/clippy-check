@@ -14,14 +14,14 @@ workflows:
         - 'codecov/codecov-action@v7.1.1'
         - 'dorny/paths-filter@v4.0.3'
         - 'enricomi/publish-unit-test-result-action@v2.25.0'
-        - 'pnpm/action-setup@v6.1.0'
+        - 'pnpm/action-setup@v6.1.1'
     '.github/workflows/codeql.yml':
         - 'actions/checkout@v7.0.1'
         - 'github/codeql-action@v4.39.2'
     '.github/workflows/format.yml':
         - 'actions/checkout@v7.0.1'
         - 'actions/setup-node@v7.1.0'
-        - 'pnpm/action-setup@v6.1.0'
+        - 'pnpm/action-setup@v6.1.1'
     '.github/workflows/graduate-release.yml':
         - 'actions/checkout@v7.0.1'
         - 'taiki-e/install-action@v2.89.1'
@@ -36,7 +36,7 @@ workflows:
         - 'actions/checkout@v7.0.1'
         - 'actions/github-script@v9.0.0'
         - 'actions/setup-node@v7.1.0'
-        - 'pnpm/action-setup@v6.1.0'
+        - 'pnpm/action-setup@v6.1.1'
     '.github/workflows/verify-changelog-selection.yml':
         - 'actions/checkout@v7.0.1'
         - 'taiki-e/install-action@v2.89.1'
@@ -93,9 +93,9 @@ dependencies:
         commit: 'sha1-1fc58d04a4d4374f921bdac573c3811c240f9c26'
         owner_id: 9919
         repo_id: 259445878
-    'pnpm/action-setup@v6.1.0':
-        ref: 'v6.1.0'
-        commit: 'sha1-ea17c68df8912ef543352723c149a84f56e3d413'
+    'pnpm/action-setup@v6.1.1':
+        ref: 'v6.1.1'
+        commit: 'sha1-73e46992e05b19abd31f2f3c20e0e7370d762115'
         owner_id: 21320719
         repo_id: 262289747
     'taiki-e/install-action@v2.89.1':
