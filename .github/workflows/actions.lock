@@ -5,7 +5,7 @@ version: 'v0.0.3'
 workflows:
     '.github/workflows/apply-changelog-selection.yml':
         - 'actions/checkout@v7.0.1'
-        - 'taiki-e/install-action@v2.89.1'
+        - 'taiki-e/install-action@v2.90.0'
     '.github/workflows/ci.yml':
         - 'actions/checkout@v7.0.1'
         - 'actions/setup-node@v7.1.0'
@@ -24,14 +24,14 @@ workflows:
         - 'pnpm/action-setup@v6.1.1'
     '.github/workflows/graduate-release.yml':
         - 'actions/checkout@v7.0.1'
-        - 'taiki-e/install-action@v2.89.1'
+        - 'taiki-e/install-action@v2.90.0'
     '.github/workflows/lint-commits.yml':
         - 'actions/checkout@v7.0.1'
-        - 'taiki-e/install-action@v2.89.1'
+        - 'taiki-e/install-action@v2.90.0'
     '.github/workflows/rebuild-release-after-push.yml': []
     '.github/workflows/release.yml':
         - 'actions/checkout@v7.0.1'
-        - 'taiki-e/install-action@v2.89.1'
+        - 'taiki-e/install-action@v2.90.0'
     '.github/workflows/semantic-tags-after-release.yml':
         - 'actions/checkout@v7.0.1'
         - 'actions/github-script@v9.0.0'
@@ -39,7 +39,7 @@ workflows:
         - 'pnpm/action-setup@v6.1.1'
     '.github/workflows/verify-changelog-selection.yml':
         - 'actions/checkout@v7.0.1'
-        - 'taiki-e/install-action@v2.89.1'
+        - 'taiki-e/install-action@v2.90.0'
 dependencies:
     'actions/checkout@v7.0.1':
         ref: 'v7.0.1'
@@ -98,8 +98,8 @@ dependencies:
         commit: 'sha1-73e46992e05b19abd31f2f3c20e0e7370d762115'
         owner_id: 21320719
         repo_id: 262289747
-    'taiki-e/install-action@v2.89.1':
-        ref: 'v2.89.1'
-        commit: 'sha1-682ce6c3c696a4cd5168a05f98e51aa02b877941'
+    'taiki-e/install-action@v2.90.0':
+        ref: 'v2.90.0'
+        commit: 'sha1-b80e2bb2635f28eb98b9fce1e2f0887e1535c6b2'
         owner_id: 43724913
         repo_id: 442947557
