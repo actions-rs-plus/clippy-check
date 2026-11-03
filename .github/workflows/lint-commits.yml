@@ -38,7 +38,7 @@ jobs:
           fi
 
       - name: Install git-cliff to lint commits
-        uses: taiki-e/install-action@v2.89.1
+        uses: taiki-e/install-action@v2.90.0
         with:
           tool: git-cliff
 
