@@ -30425,7 +30425,7 @@ function convertHttpClient(requestPolicyClient) {
 		return toPipelineResponse(await requestPolicyClient.sendRequest(toWebResourceLike(request, { createProxy: true })));
 	} };
 }
-// node_modules/.pnpm/fast-xml-parser@5.11.2/node_modules/fast-xml-parser/src/util.js
+// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/util.js
 var regexName = /* @__PURE__ */ new RegExp("^[:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD][:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040]*$");
 function getAllMatches(string, regex) {
 	const matches = [];
@@ -30464,7 +30464,7 @@ var criticalProperties = [
 	"constructor",
 	"prototype"
 ];
-// node_modules/.pnpm/fast-xml-parser@5.11.2/node_modules/fast-xml-parser/src/validator.js
+// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/validator.js
 var defaultOptions$2 = {
 	allowBooleanAttributes: false,
 	unpairedTags: []
@@ -31295,7 +31295,7 @@ var EntityDecoder = class {
 		return this._applyNCRAction(effective, token, cp);
 	}
 };
-// node_modules/.pnpm/fast-xml-parser@5.11.2/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
+// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
 var defaultOnDangerousProperty = (name) => {
 	if (DANGEROUS_PROPERTY_NAMES.includes(name)) return "__" + name;
 	return name;
@@ -31421,7 +31421,7 @@ var buildOptions = function(options) {
 	});
 	return built;
 };
-// node_modules/.pnpm/fast-xml-parser@5.11.2/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
+// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
 var METADATA_SYMBOL$1;
 if (typeof Symbol !== "function") METADATA_SYMBOL$1 = "@@xmlMetadata";
 else METADATA_SYMBOL$1 = Symbol("XML Node Metadata");
@@ -31530,7 +31530,7 @@ var createValidator = (production, { xmlVersion = "1.0", asciiOnly = false, maxC
 	};
 	return validator;
 };
-// node_modules/.pnpm/fast-xml-parser@5.11.2/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
+// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
 var DocTypeReader = class {
 	constructor(options, xmlVersion) {
 		this.suppressValidationErr = !options;
@@ -32067,7 +32067,7 @@ function handleInfinity(str, num, options) {
 		default: return str;
 	}
 }
-// node_modules/.pnpm/fast-xml-parser@5.11.2/node_modules/fast-xml-parser/src/ignoreAttributes.js
+// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/ignoreAttributes.js
 function getIgnoreAttributesFn$1(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -32921,7 +32921,7 @@ var Matcher = class {
 		return this._view;
 	}
 };
-// node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/contexts/html.js
+// node_modules/.pnpm/is-unsafe@2.0.3/node_modules/is-unsafe/src/contexts/html.js
 /**
 * HTML context patterns.
 *
@@ -33018,7 +33018,7 @@ var HTML_PATTERNS = [
 		pattern: /<form[\s>/]/i
 	}
 ];
-// node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/contexts/xml.js
+// node_modules/.pnpm/is-unsafe@2.0.3/node_modules/is-unsafe/src/contexts/xml.js
 /**
 * XML context patterns.
 *
@@ -33092,7 +33092,7 @@ var XML_PATTERNS = [
 		pattern: /\?>/
 	}
 ];
-// node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/contexts/svg.js
+// node_modules/.pnpm/is-unsafe@2.0.3/node_modules/is-unsafe/src/contexts/svg.js
 /**
 * SVG context patterns.
 *
@@ -33169,7 +33169,7 @@ var SVG_PATTERNS = [
 		pattern: /style\s*=[\s\S]{0,60}javascript\s*:/i
 	}
 ];
-// node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/contexts/sql.js
+// node_modules/.pnpm/is-unsafe@2.0.3/node_modules/is-unsafe/src/contexts/sql.js
 /**
 * SQL context patterns — high-precision rules only.
 *
@@ -33260,7 +33260,7 @@ var SQL_PATTERNS = [
 		pattern: /\bINFORMATION_SCHEMA\b/i
 	}
 ];
-// node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/contexts/shell.js
+// node_modules/.pnpm/is-unsafe@2.0.3/node_modules/is-unsafe/src/contexts/shell.js
 /**
 * SHELL context patterns.
 *
@@ -33360,7 +33360,7 @@ var SHELL_PATTERNS = [
 		pattern: /\b(?:curl|wget)\s+(?:https?:\/\/|ftp:\/\/|-)/i
 	}
 ];
-// node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/contexts/redos.js
+// node_modules/.pnpm/is-unsafe@2.0.3/node_modules/is-unsafe/src/contexts/redos.js
 /**
 * REDOS context patterns.
 *
@@ -33414,7 +33414,7 @@ var REDOS_PATTERNS = [
 		pattern: /\([^)]{0,200}(?:\|[^|)]{0,50}){9,}\)/
 	}
 ];
-// node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/contexts/nosql.js
+// node_modules/.pnpm/is-unsafe@2.0.3/node_modules/is-unsafe/src/contexts/nosql.js
 var sep = "[\"'\\s]*:";
 var NOSQL_PATTERNS = [
 	{
@@ -33498,7 +33498,7 @@ var NOSQL_PATTERNS = [
 		pattern: /\[["']__proto__["']\]/
 	}
 ];
-// node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/contexts/log.js
+// node_modules/.pnpm/is-unsafe@2.0.3/node_modules/is-unsafe/src/contexts/log.js
 /**
 * LOG context patterns.
 *
@@ -33581,7 +33581,7 @@ var LOG_PATTERNS = [
 		pattern: /\x1b\[/
 	}
 ];
-// node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/contexts/sql-strict.js
+// node_modules/.pnpm/is-unsafe@2.0.3/node_modules/is-unsafe/src/contexts/sql-strict.js
 /**
 * SQL-STRICT context patterns.
 *
@@ -33622,10 +33622,56 @@ var SQL_STRICT_EXTRA = [
 	}
 ];
 var SQL_STRICT_PATTERNS = [...SQL_PATTERNS, ...SQL_STRICT_EXTRA];
-// node_modules/.pnpm/is-unsafe@2.0.2/node_modules/is-unsafe/src/index.js
+// node_modules/.pnpm/is-unsafe@2.0.3/node_modules/is-unsafe/src/util/decode-entities.js
+/**
+* Decode the HTML character references that matter for markup-context
+* detection.
+*
+* Browsers decode character references in attribute values before they
+* interpret a URL, so `javascript&#58;alert(1)` in an href is the
+* `javascript:` scheme. The HTML/XML/SVG rules match literal characters, so
+* without this step such payloads slip through.
+*
+* Deliberately NOT a full entity decoder. It decodes only:
+*   - decimal refs  &#58;  &#058;  &#00000058;  &#58   (any leading zeros,
+*                   trailing ; optional — browsers accept both)
+*   - hex refs      &#x3a; &#X3A; &#x0000003a; &#x3a   (same)
+*   - named refs    &colon;  &Tab;  &NewLine;
+*       Named refs are CASE-SENSITIVE and REQUIRE the trailing ';', exactly
+*       like a browser (so `&COLON;` and `&colon` are not decoded).
+*       &Tab; / &NewLine; matter because the URL parser strips tab/newline,
+*       so `java&Tab;script:` is still a javascript: URL.
+*
+* It does NOT decode &amp; (single pass only), so double-encoded text such as
+* "&amp;lt;script&amp;gt;" stays literal — a browser renders that as text.
+*
+* All quantifiers are bounded; no ReDoS risk.
+*
+* @param {string} input
+* @returns {string}
+*/
+var NAMED = Object.freeze({
+	colon: ":",
+	Tab: "	",
+	NewLine: "\n"
+});
+var ENTITY_RE = /&(?:#[xX]0*([0-9a-fA-F]{1,6});?|#0*([0-9]{1,7});?|([a-zA-Z][a-zA-Z0-9]{1,15});)/g;
+function decodeEntities(input) {
+	if (input.indexOf("&") === -1) return input;
+	return input.replace(ENTITY_RE, (match, hex, dec, name) => {
+		if (name !== void 0) return Object.prototype.hasOwnProperty.call(NAMED, name) ? NAMED[name] : match;
+		const cp = hex !== void 0 ? parseInt(hex, 16) : parseInt(dec, 10);
+		if (!Number.isFinite(cp) || cp > 1114111) return match;
+		return String.fromCodePoint(cp);
+	});
+}
+// node_modules/.pnpm/is-unsafe@2.0.3/node_modules/is-unsafe/src/index.js
 HTML_PATTERNS.label = "HTML";
 XML_PATTERNS.label = "XML";
 SVG_PATTERNS.label = "SVG";
+HTML_PATTERNS.decodeEntities = true;
+XML_PATTERNS.decodeEntities = true;
+SVG_PATTERNS.decodeEntities = true;
 SQL_PATTERNS.label = "SQL";
 SQL_STRICT_PATTERNS.label = "SQL-STRICT";
 SHELL_PATTERNS.label = "SHELL";
@@ -33697,6 +33743,19 @@ function normalise(context) {
 	};
 }
 /**
+* For markup contexts, return an entity-decoded copy of `value` to test
+* alongside the raw input, or null when there is nothing extra to test.
+*
+* @param {string} value
+* @param {Rule[]} list
+* @returns {string|null}
+*/
+function decodedCopy(value, list) {
+	if (!list.decodeEntities) return null;
+	const decoded = decodeEntities(value);
+	return decoded === value ? null : decoded;
+}
+/**
 * Test value against a single PatternList. Returns the first MatchResult or null.
 *
 * @param {string} value
@@ -33705,7 +33764,8 @@ function normalise(context) {
 */
 function matchList(value, list) {
 	const label = list.label ?? "CUSTOM";
-	for (const rule of list) if (rule.pattern.test(value)) return {
+	const decoded = decodedCopy(value, list);
+	for (const rule of list) if (rule.pattern.test(value) || decoded !== null && rule.pattern.test(decoded)) return {
 		context: label,
 		id: rule.id,
 		description: rule.description,
@@ -33739,7 +33799,7 @@ function isUnsafe(value, context) {
 	for (const list of lists) if (matchList(value, list) !== null) return true;
 	return false;
 }
-// node_modules/.pnpm/fast-xml-parser@5.11.2/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
+// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
 /**
 * Extract raw attributes (without prefix) from prefixed attribute map
 * @param {object} prefixedAttrs - Attributes with prefix from buildAttributesMap
@@ -33914,7 +33974,12 @@ function buildAttributesMap(attrStr, jPath, tagName, force = false) {
 	}
 }
 var parseXml = function(xmlData) {
-	xmlData = xmlData.replace(/\r\n?/g, "\n");
+	const options = this.options;
+	const crlfPositions = options.captureMetaData ? [] : void 0;
+	xmlData = xmlData.replace(/\r\n?/g, options.captureMetaData ? (newline, index) => {
+		if (newline.length === 2) crlfPositions.push(index - crlfPositions.length);
+		return "\n";
+	} : "\n");
 	const xmlObj = new XmlNode("!xml");
 	let currentNode = xmlObj;
 	let textData = "";
@@ -33923,7 +33988,6 @@ var parseXml = function(xmlData) {
 	this.entityExpansionCount = 0;
 	this.currentExpandedLength = 0;
 	this.doctypefound = false;
-	const options = this.options;
 	const docTypeReader = new DocTypeReader(options.processEntities);
 	const xmlLen = xmlData.length;
 	for (let i = 0; i < xmlLen; i++) if (xmlData[i] === "<") {
@@ -33946,7 +34010,7 @@ var parseXml = function(xmlData) {
 			this.matcher.pop();
 			this.isCurrentNodeStopNode = false;
 			currentNode = this.tagsNodeStack.pop() || xmlObj;
-			if (options.captureMetaData && currentNode) currentNode.addEndIndex(closeIndex + 1);
+			if (options.captureMetaData && currentNode) currentNode.addEndIndex(getOriginalIndex(closeIndex + 1, crlfPositions));
 			textData = "";
 			i = closeIndex;
 		} else if (c1 === 63) {
@@ -33963,8 +34027,9 @@ var parseXml = function(xmlData) {
 				const childNode = new XmlNode(tagData.tagName);
 				childNode.add(options.textNodeName, "");
 				if (tagData.tagName !== tagData.tagExp && tagData.attrExpPresent && options.ignoreAttributes !== true) childNode[":@"] = attsMap;
-				this.addChild(currentNode, childNode, this.readonlyMatcher, i);
-				if (options.captureMetaData) currentNode.addEndIndex(tagData.closeIndex + 2);
+				const startIndex = options.captureMetaData ? getOriginalIndex(i, crlfPositions) : i;
+				this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
+				if (options.captureMetaData) currentNode.addEndIndex(getOriginalIndex(tagData.closeIndex + 2, crlfPositions));
 			}
 			i = tagData.closeIndex + 1;
 		} else if (c1 === 33 && xmlData.charCodeAt(i + 2) === 45 && xmlData.charCodeAt(i + 3) === 45) {
@@ -34029,7 +34094,7 @@ var parseXml = function(xmlData) {
 				if (prefixedAttrs) extractRawAttributes(prefixedAttrs, options);
 			}
 			if (tagName !== xmlObj.tagname) this.isCurrentNodeStopNode = this.isItStopNode();
-			const startIndex = i;
+			const startIndex = options.captureMetaData ? getOriginalIndex(i, crlfPositions) : i;
 			if (this.isCurrentNodeStopNode) {
 				let tagContent = "";
 				if (isSelfClosing) i = result.closeIndex;
@@ -34046,21 +34111,21 @@ var parseXml = function(xmlData) {
 				this.matcher.pop();
 				this.isCurrentNodeStopNode = false;
 				this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
-				if (options.captureMetaData) currentNode.addEndIndex(i + 1);
+				if (options.captureMetaData) currentNode.addEndIndex(getOriginalIndex(i + 1, crlfPositions));
 			} else {
 				if (isSelfClosing) {
 					({tagName, tagExp} = transformTagName(options.transformTagName, tagName, tagExp, options));
 					const childNode = new XmlNode(tagName);
 					if (prefixedAttrs) childNode[":@"] = prefixedAttrs;
 					this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
-					if (options.captureMetaData) currentNode.addEndIndex(closeIndex + 1);
+					if (options.captureMetaData) currentNode.addEndIndex(getOriginalIndex(closeIndex + 1, crlfPositions));
 					this.matcher.pop();
 					this.isCurrentNodeStopNode = false;
 				} else if (options.unpairedTagsSet.has(tagName)) {
 					const childNode = new XmlNode(tagName);
 					if (prefixedAttrs) childNode[":@"] = prefixedAttrs;
 					this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
-					if (options.captureMetaData) currentNode.addEndIndex(result.closeIndex + 1);
+					if (options.captureMetaData) currentNode.addEndIndex(getOriginalIndex(result.closeIndex + 1, crlfPositions));
 					this.matcher.pop();
 					this.isCurrentNodeStopNode = false;
 					i = result.closeIndex;
@@ -34080,6 +34145,16 @@ var parseXml = function(xmlData) {
 	} else textData += xmlData[i];
 	return xmlObj.child;
 };
+function getOriginalIndex(index, crlfPositions) {
+	let low = 0;
+	let high = crlfPositions.length;
+	while (low < high) {
+		const middle = Math.floor((low + high) / 2);
+		if (crlfPositions[middle] < index) low = middle + 1;
+		else high = middle;
+	}
+	return index + low;
+}
 function addChild(currentNode, childNode, matcher, startIndex) {
 	if (!this.options.captureMetaData) startIndex = void 0;
 	const jPathOrMatcher = this.options.jPath ? matcher.toString() : matcher;
@@ -34212,6 +34287,8 @@ function readTagExp(xmlData, i, removeNSPrefix, closingChar = ">") {
 function readStopNodeData(xmlData, tagName, i) {
 	const startIndex = i;
 	let openTagCount = 1;
+	let lenient = false;
+	let nextGt = -1;
 	const xmllen = xmlData.length;
 	for (; i < xmllen; i++) if (xmlData[i] === "<") {
 		const c1 = xmlData.charCodeAt(i + 1);
@@ -34229,10 +34306,23 @@ function readStopNodeData(xmlData, tagName, i) {
 		else if (c1 === 33 && xmlData.charCodeAt(i + 2) === 45 && xmlData.charCodeAt(i + 3) === 45) i = findClosingIndex(xmlData, "-->", i + 3, "StopNode is not closed.");
 		else if (c1 === 33 && xmlData.charCodeAt(i + 2) === 91) i = findClosingIndex(xmlData, "]]>", i, "StopNode is not closed.") - 2;
 		else {
-			const tagData = readTagExp(xmlData, i, false);
+			const tagData = lenient ? void 0 : readTagExp(xmlData, i, false);
 			if (tagData) {
-				if ((tagData && tagData.tagName) === tagName && tagData.tagExp[tagData.tagExp.length - 1] !== "/") openTagCount++;
+				if (tagData.tagName === tagName && tagData.tagExp[tagData.tagExp.length - 1] !== "/") openTagCount++;
 				i = tagData.closeIndex;
+			} else {
+				lenient = true;
+				if (nextGt < i) {
+					nextGt = xmlData.indexOf(">", i);
+					if (nextGt === -1) return;
+				}
+				const nextLt = xmlData.indexOf("<", i + 1);
+				if (nextLt === -1 || nextLt > nextGt) {
+					const exp = xmlData.substring(i + 1, nextGt);
+					const sep = exp.search(/\s/);
+					if ((sep === -1 ? exp : exp.substring(0, sep)) === tagName && exp[exp.length - 1] !== "/") openTagCount++;
+					i = nextGt;
+				}
 			}
 		}
 	}
@@ -34263,7 +34353,7 @@ function sanitizeName(name, options) {
 	else if (DANGEROUS_PROPERTY_NAMES.includes(name)) return options.onDangerousProperty(name);
 	return name;
 }
-// node_modules/.pnpm/fast-xml-parser@5.11.2/node_modules/fast-xml-parser/src/xmlparser/node2json.js
+// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/xmlparser/node2json.js
 var METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
 /**
 * Helper function to strip attribute prefix from attribute map
@@ -34366,7 +34456,7 @@ function isLeafTag(obj, options) {
 	if (propCount === 1 && (obj[textNodeName] || typeof obj[textNodeName] === "boolean" || obj[textNodeName] === 0)) return true;
 	return false;
 }
-// node_modules/.pnpm/fast-xml-parser@5.11.2/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
+// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
 var XMLParser = class {
 	constructor(options) {
 		this.externalEntities = {};
@@ -35045,9 +35135,9 @@ function isAttribute(name) {
 	if (name.startsWith(this.options.attributeNamePrefix) && name !== this.options.textNodeName) return name.substr(this.attrPrefixLen);
 	else return false;
 }
-// node_modules/.pnpm/fast-xml-parser@5.11.2/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
+// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
 var json2xml_default = Builder;
-// node_modules/.pnpm/fast-xml-parser@5.11.2/node_modules/fast-xml-parser/src/fxp.js
+// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/fxp.js
 var XMLValidator = { validate };
 // node_modules/.pnpm/@azure+core-xml@1.6.0/node_modules/@azure/core-xml/dist/esm/xml.js
 function getCommonOptions(options) {
