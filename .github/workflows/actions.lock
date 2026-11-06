@@ -13,7 +13,7 @@ workflows:
         - 'actions/upload-code-coverage@v1.4.4'
         - 'codecov/codecov-action@v7.1.1'
         - 'dorny/paths-filter@v4.0.3'
-        - 'enricomi/publish-unit-test-result-action@v2.25.0'
+        - 'enricomi/publish-unit-test-result-action@v2.26.0'
         - 'pnpm/action-setup@v6.1.1'
     '.github/workflows/codeql.yml':
         - 'actions/checkout@v7.0.1'
@@ -83,9 +83,9 @@ dependencies:
         commit: 'sha1-ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d'
         owner_id: 1588572
         repo_id: 265601040
-    'enricomi/publish-unit-test-result-action@v2.25.0':
-        ref: 'v2.25.0'
-        commit: 'sha1-7622c5bf3d112a72ab4fa3951c2aa5723d8ab92d'
+    'enricomi/publish-unit-test-result-action@v2.26.0':
+        ref: 'v2.26.0'
+        commit: 'sha1-da5b7be67623cd59bbbd1a0ce4f022050a55605f'
         owner_id: 44700269
         repo_id: 290227969
     'github/codeql-action@v4.39.3':
