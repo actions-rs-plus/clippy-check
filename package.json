@@ -65,7 +65,7 @@
         "semver": "7.8.6",
         "typescript": "6.0.3",
         "vite": "catalog:default",
-        "vite-plugin-checker": "0.14.5",
+        "vite-plugin-checker": "1.0.0",
         "vitest": "5.1.0"
     },
     "lint-staged": {
