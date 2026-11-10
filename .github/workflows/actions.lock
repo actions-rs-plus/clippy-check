@@ -3,6 +3,9 @@
 # Docs: https://gh.io/actions-lockfile
 version: 'v0.0.3'
 workflows:
+    '.github/workflows/actionlint.yml':
+        - 'actions/checkout@v7.0.1'
+        - 'kjanat/actionlint@v1.17.1'
     '.github/workflows/apply-changelog-selection.yml':
         - 'actions/checkout@v7.0.1'
         - 'taiki-e/install-action@v2.90.3'
@@ -93,6 +96,11 @@ dependencies:
         commit: 'sha1-33d7b85da1a04171e211befe2c739303b9a4c066'
         owner_id: 9919
         repo_id: 259445878
+    'kjanat/actionlint@v1.17.1':
+        ref: 'v1.17.1'
+        commit: 'sha1-220b76cfa568e00ed8b3c476898f849a722b88e2'
+        owner_id: 6353477
+        repo_id: 1326162482
     'pnpm/action-setup@v6.1.1':
         ref: 'v6.1.1'
         commit: 'sha1-73e46992e05b19abd31f2f3c20e0e7370d762115'
