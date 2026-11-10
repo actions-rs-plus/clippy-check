@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Actionlint
+
+on:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: "${{ github.workflow }} @ ${{ github.ref_name }}"
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  actionlint:
+    name: Actionlint
+    runs-on: ubuntu-26.04
+    if: ${{ !startsWith(github.head_ref, 'release/') }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+          show-progress: false
+
+      - name: Run actionlint
+        uses: kjanat/actionlint@v1.17.1
+        with:
+          pyflakes: false
+
+      # # actionlint only reaches shell inside `run:` blocks, standalone scripts need their own pass
+      # - name: Install shellcheck
+      #   uses: taiki-e/install-action@v2.90.3
+      #   with:
+      #     tool: shellcheck
+
+      # - name: Run shellcheck
+      #   shell: bash
+      #   run: |
+      #     git ls-files -z '*.sh' | xargs --null shellcheck
