@@ -294,8 +294,8 @@ jobs:
   all-done:
     name: All done
     # this is the job that should be marked as required on GitHub. It's the only one that'll reliably trigger
-    # when any upstream fails: success
-    # when all upstream skips: pass
+    # when any upstream fails or is cancelled: failure
+    # when all upstream skips: success
     # when all upstream success: success
     # combination of upstream skip and success: success
     runs-on: ubuntu-26.04
