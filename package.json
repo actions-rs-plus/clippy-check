@@ -52,8 +52,8 @@
         "@types/node": "24.19.2",
         "@types/semver": "7.8.0",
         "@types/source-map-support": "0.5.10",
-        "@vitest/coverage-v8": "5.1.0",
-        "@vitest/ui": "5.1.0",
+        "@vitest/coverage-v8": "5.1.1",
+        "@vitest/ui": "5.1.1",
         "dependency-cruiser": "18.8.0",
         "eslint-plugin-n": "18.5.0",
         "eslint-plugin-perfectionist": "5.14.0",
@@ -66,7 +66,7 @@
         "typescript": "6.0.3",
         "vite": "catalog:default",
         "vite-plugin-checker": "1.0.0",
-        "vitest": "5.1.0"
+        "vitest": "5.1.1"
     },
     "lint-staged": {
         "*.{ts,tsx}": [
