@@ -13,9 +13,9 @@ import { EventEmitter } from "events";
 import assert, { ok } from "assert";
 import * as util$1 from "util";
 import http from "node:http";
-import { Readable, Transform } from "node:stream";
+import { Readable, Transform, finished } from "node:stream";
 import buffer from "node:buffer";
-import util, { inspect } from "node:util";
+import util, { inspect, types } from "node:util";
 import zlib from "node:zlib";
 import { createHmac } from "node:crypto";
 import * as child from "child_process";
@@ -20460,22 +20460,6 @@ function partialMatch(patterns, itemPath) {
 	return patterns.some((x) => !x.negate && x.partialMatch(itemPath));
 }
 // node_modules/.pnpm/balanced-match@4.0.4/node_modules/balanced-match/dist/esm/index.js
-var balanced = (a, b, str) => {
-	const ma = a instanceof RegExp ? maybeMatch(a, str) : a;
-	const mb = b instanceof RegExp ? maybeMatch(b, str) : b;
-	const r = ma !== null && mb != null && range$1(ma, mb, str);
-	return r && {
-		start: r[0],
-		end: r[1],
-		pre: str.slice(0, r[0]),
-		body: str.slice(r[0] + ma.length, r[1]),
-		post: str.slice(r[1] + mb.length)
-	};
-};
-var maybeMatch = (reg, str) => {
-	const m = str.match(reg);
-	return m ? m[0] : null;
-};
 var range$1 = /* @__PURE__ */ __name$1((a, b, str) => {
 	let begs;
 	let beg;
@@ -20510,12 +20494,12 @@ var range$1 = /* @__PURE__ */ __name$1((a, b, str) => {
 	}
 	return result;
 }, "range");
-// node_modules/.pnpm/brace-expansion@5.0.12/node_modules/brace-expansion/dist/esm/index.js
-var escSlash = "\0SLASH" + Math.random() + "\0";
-var escOpen = "\0OPEN" + Math.random() + "\0";
-var escClose = "\0CLOSE" + Math.random() + "\0";
-var escComma = "\0COMMA" + Math.random() + "\0";
-var escPeriod = "\0PERIOD" + Math.random() + "\0";
+// node_modules/.pnpm/brace-expansion@5.0.13/node_modules/brace-expansion/dist/esm/index.js
+var escSlash = "\0SLASH" + Math.random().toFixed(16) + "\0";
+var escOpen = "\0OPEN" + Math.random().toFixed(16) + "\0";
+var escClose = "\0CLOSE" + Math.random().toFixed(16) + "\0";
+var escComma = "\0COMMA" + Math.random().toFixed(16) + "\0";
+var escPeriod = "\0PERIOD" + Math.random().toFixed(16) + "\0";
 var escSlashPattern = new RegExp(escSlash, "g");
 var escOpenPattern = new RegExp(escOpen, "g");
 var escClosePattern = new RegExp(escClose, "g");
@@ -20530,6 +20514,8 @@ var EXPANSION_MAX = 1e5;
 var EXPANSION_MAX_LENGTH = 4e6;
 var EXPANSION_MAX_DEPTH = 1e3;
 var EXPANSION_MAX_REWRITES = 1e3;
+var EXPANSION_MAX_STEPS = 2e7;
+var CALL_STEPS = 16;
 function numeric(str) {
 	return !isNaN(str) ? parseInt(str, 10) : str.charCodeAt(0);
 }
@@ -20542,16 +20528,64 @@ function unescapeBraces(str) {
 function pushAll(target, items) {
 	for (let i = 0; i < items.length; i++) target.push(items[i]);
 }
+function balancedWithBudget(str, masked, budget) {
+	if (budget.remaining < 0) return;
+	const r = range$1("{", "}", masked);
+	const unmatched = r !== void 0 && masked.indexOf("{") < r[0];
+	budget.remaining -= r && !unmatched ? r[1] + 1 : str.length;
+	if (!r || budget.remaining < 0) return;
+	return {
+		end: r[1],
+		pre: str.slice(0, r[0]),
+		body: str.slice(r[0] + 1, r[1]),
+		post: str.slice(r[1] + 1),
+		unmatched
+	};
+}
+function maskUnmatchedOpens(masked, budget) {
+	budget.remaining -= masked.length;
+	const open = [];
+	for (let i = 0; i < masked.length; i++) {
+		const c = masked.charCodeAt(i);
+		if (c === 123) open.push(i);
+		else if (c === 125 && open.length) open.pop();
+	}
+	let out = "";
+	let last = 0;
+	for (let i = 0; i < open.length; i++) {
+		const at = open[i];
+		out += masked.slice(last, at) + "\0";
+		last = at + 1;
+	}
+	return out + masked.slice(last);
+}
+function commaSetFollows(str, budget) {
+	budget.remaining -= str.length;
+	if (budget.remaining < 0) return false;
+	let close = false;
+	for (let i = str.length - 1; i >= 0; i--) {
+		const c = str.charCodeAt(i);
+		if (c === 125) close = true;
+		else if (c === 10 || c === 13 || c === 8232 || c === 8233) close = false;
+		else if (c === 44 && close && str.charCodeAt(i + 1) !== 44) return true;
+	}
+	return false;
+}
 /**
 * Basically just str.split(","), but handling cases
 * where we have nested braced sections, which should be
 * treated as individual members, like {a,{b,c},d}
+*
+* Returns `undefined` if the step budget runs out before the whole set is
+* split, since splitting what is left on every comma would tear apart the
+* nested sets it still holds.
 */
-function parseCommaParts(str) {
+function parseCommaParts(str, budget) {
 	const parts = [];
 	let carry = "";
 	for (;;) {
-		const m = balanced("{", "}", str);
+		const m = balancedWithBudget(str, str, budget);
+		if (budget.remaining < 0) return;
 		if (!m) {
 			const tail = str.split(",");
 			tail[0] = carry + tail[0];
@@ -20571,11 +20605,18 @@ function parseCommaParts(str) {
 		str = post;
 	}
 }
+function bound(value, fallback) {
+	return value === void 0 || isNaN(value) ? fallback : value;
+}
 function expand(str, options = {}) {
 	if (!str) return [];
-	const { max = EXPANSION_MAX, maxLength = EXPANSION_MAX_LENGTH, maxDepth = EXPANSION_MAX_DEPTH, maxRewrites = EXPANSION_MAX_REWRITES } = options;
+	const max = bound(options.max, EXPANSION_MAX);
+	const maxLength = bound(options.maxLength, EXPANSION_MAX_LENGTH);
+	const maxDepth = bound(options.maxDepth, EXPANSION_MAX_DEPTH);
+	const maxRewrites = bound(options.maxRewrites, EXPANSION_MAX_REWRITES);
+	const maxSteps = bound(options.maxSteps, EXPANSION_MAX_STEPS);
 	if (str.slice(0, 2) === "{}") str = "\\{\\}" + str.slice(2);
-	return expand_(escapeBraces(str), max, maxLength, maxDepth, 0, maxRewrites, true).map(unescapeBraces);
+	return expand_(escapeBraces(str), max, maxLength, maxDepth, 0, maxRewrites, { remaining: maxSteps }, true).map(unescapeBraces);
 }
 function embrace(str) {
 	return "{" + str + "}";
@@ -20589,20 +20630,29 @@ function lte(i, y) {
 function gte(i, y) {
 	return i >= y;
 }
-function combine(acc, pre, values, max, maxLength, dropEmpties) {
+function combine(acc, pre, values, max, maxLength, dropEmpties, budget) {
 	const out = [];
 	let length = 0;
-	for (let a = 0; a < acc.length; a++) for (let v = 0; v < values.length; v++) {
-		if (out.length >= max) return out;
-		const expansion = acc[a] + pre + values[v];
-		if (dropEmpties && !expansion) continue;
-		if (length + expansion.length > maxLength) return out;
-		out.push(expansion);
-		length += expansion.length;
+	let nonEmpty;
+	outer: for (let a = 0; a < acc.length; a++) {
+		const prefix = acc[a] + pre;
+		let vs = values;
+		if (dropEmpties && !prefix) {
+			if (!nonEmpty) nonEmpty = values.filter((v) => v);
+			vs = nonEmpty;
+		}
+		for (let v = 0; v < vs.length; v++) {
+			if (out.length >= max) break outer;
+			const expansion = prefix + vs[v];
+			if (length + expansion.length > maxLength) break outer;
+			out.push(expansion);
+			length += expansion.length;
+		}
 	}
+	budget.remaining -= out.length;
 	return out;
 }
-function expandSequence(body, isAlphaSequence, max, maxLength) {
+function expandSequence(body, isAlphaSequence, max, maxLength, budget) {
 	const n = body.split(/\.\./);
 	const N = [];
 	/* c8 ignore start */
@@ -20618,8 +20668,11 @@ function expandSequence(body, isAlphaSequence, max, maxLength) {
 		test = gte;
 	}
 	const pad = n.some(isPadded);
+	const cost = pad ? width : 1;
 	let length = 0;
 	for (let i = x; test(i, y) && N.length < max; i += incr) {
+		budget.remaining -= cost;
+		if (budget.remaining < 0) return;
 		let c;
 		if (isAlphaSequence) {
 			c = String.fromCharCode(i);
@@ -20641,21 +20694,26 @@ function expandSequence(body, isAlphaSequence, max, maxLength) {
 	}
 	return N;
 }
-function expand_(str, max, maxLength, maxDepth, depth, maxRewrites, isTop) {
+function expand_(str, max, maxLength, maxDepth, depth, maxRewrites, budget, isTop) {
+	budget.remaining -= CALL_STEPS;
 	if (depth > maxDepth) return [str];
 	let acc = [""];
 	let rewrites = 0;
 	let dropEmpties = false;
 	let firstGroup = true;
+	let masked = str;
 	for (;;) {
-		const m = balanced("{", "}", str);
-		if (!m) return combine(acc, str, [""], max, maxLength, dropEmpties);
+		const m = balancedWithBudget(str, masked, budget);
+		if (!m) return combine(acc, str, [""], max, maxLength, dropEmpties, budget);
+		if (m.unmatched) masked = maskUnmatchedOpens(masked, budget);
 		const pre = m.pre;
+		const literal = () => combine(acc, pre + "{" + m.body + "}" + m.post, [""], max, maxLength, dropEmpties, budget);
 		if (/\$$/.test(pre)) {
-			acc = combine(acc, pre + "{" + m.body + "}", [""], max, maxLength, dropEmpties && !m.post.length);
+			acc = combine(acc, pre + "{" + m.body + "}", [""], max, maxLength, dropEmpties && !m.post.length, budget);
 			firstGroup = false;
 			if (!m.post.length) break;
 			str = m.post;
+			masked = masked.slice(m.end + 1);
 			continue;
 		}
 		const isNumericSequence = /^-?\d+\.\.-?\d+(?:\.\.-?\d+)?$/.test(m.body);
@@ -20663,29 +20721,37 @@ function expand_(str, max, maxLength, maxDepth, depth, maxRewrites, isTop) {
 		const isSequence = isNumericSequence || isAlphaSequence;
 		const isOptions = m.body.indexOf(",") >= 0;
 		if (!isSequence && !isOptions) {
-			if (rewrites < maxRewrites && m.post.match(/,(?!,).*\}/)) {
+			if (rewrites < maxRewrites && commaSetFollows(m.post, budget)) {
 				rewrites++;
 				str = m.pre + "{" + m.body + escClose + m.post;
+				masked = masked.slice(0, m.end) + escClose + masked.slice(m.end + 1);
 				isTop = true;
 				continue;
 			}
-			return combine(acc, pre + "{" + m.body + "}" + m.post, [""], max, maxLength, dropEmpties);
+			return literal();
 		}
 		if (firstGroup) {
 			dropEmpties = isTop && !isSequence;
 			firstGroup = false;
 		}
 		let values;
-		if (isSequence) values = expandSequence(m.body, isAlphaSequence, max, maxLength);
-		else {
-			let n = parseCommaParts(m.body);
+		if (isSequence) {
+			values = expandSequence(m.body, isAlphaSequence, max, maxLength, budget);
+			if (!values) return literal();
+		} else {
+			let n = parseCommaParts(m.body, budget);
+			if (!n) return literal();
 			if (n.length === 1 && n[0] !== void 0) {
-				n = expand_(n[0], max, maxLength, maxDepth, depth + 1, maxRewrites, false).map(embrace);
+				n = expand_(n[0], max, maxLength, maxDepth, depth + 1, maxRewrites, budget, false).map(embrace);
+				if (budget.remaining < 0) return literal();
 				/* c8 ignore start */
 				if (n.length === 1) {
-					acc = combine(acc, pre + n[0], [""], max, maxLength, dropEmpties && !m.post.length);
+					const next = combine(acc, pre + n[0], [""], max, maxLength, dropEmpties && !m.post.length, budget);
+					if (budget.remaining < 0) return literal();
+					acc = next;
 					if (!m.post.length) break;
 					str = m.post;
+					masked = masked.slice(m.end + 1);
 					continue;
 				}
 			}
@@ -20694,7 +20760,8 @@ function expand_(str, max, maxLength, maxDepth, depth, maxRewrites, isTop) {
 			values = [];
 			let valuesLength = 0;
 			outer: for (let j = 0; j < n.length; j++) {
-				const expanded = expand_(n[j], max, maxLength, maxDepth, depth + 1, maxRewrites, false);
+				const expanded = expand_(n[j], max, maxLength, maxDepth, depth + 1, maxRewrites, budget, false);
+				if (budget.remaining < 0) return literal();
 				for (let k = 0; k < expanded.length; k++) {
 					const v = expanded[k];
 					if (dropsEmpties && !v) continue;
@@ -20704,9 +20771,12 @@ function expand_(str, max, maxLength, maxDepth, depth, maxRewrites, isTop) {
 				}
 			}
 		}
-		acc = combine(acc, pre, values, max, maxLength, dropEmpties && !m.post.length);
+		const next = combine(acc, pre, values, max, maxLength, dropEmpties && !m.post.length, budget);
+		if (budget.remaining < 0) return literal();
+		acc = next;
 		if (!m.post.length) break;
 		str = m.post;
+		masked = masked.slice(m.end + 1);
 	}
 	return acc;
 }
@@ -20862,14 +20932,14 @@ var unescape = (s, { windowsPathsNoEscape = false, magicalBraces = true } = {}) 
 };
 // node_modules/.pnpm/minimatch@10.2.6/node_modules/minimatch/dist/esm/ast.js
 var _a;
-var types$1 = /* @__PURE__ */ new Set([
+var types$2 = /* @__PURE__ */ new Set([
 	"!",
 	"?",
 	"+",
 	"*",
 	"@"
 ]);
-var isExtglobType = (c) => types$1.has(c);
+var isExtglobType = (c) => types$2.has(c);
 var isExtglobAST = (c) => isExtglobType(c.type);
 var adoptionMap = /* @__PURE__ */ new Map([
 	["!", ["@"]],
@@ -24375,7 +24445,7 @@ function getRuntimeToken() {
 	if (!token) throw new Error("Unable to get the ACTIONS_RUNTIME_TOKEN env variable");
 	return token;
 }
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/abort-controller/AbortError.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/abort-controller/AbortError.js
 /**
 * This error is thrown when an asynchronous operation has been aborted.
 * Check for this error by testing the `name` that the name property of the
@@ -24414,11 +24484,11 @@ var AbortError$1 = class extends Error {
 		this.name = "AbortError";
 	}
 };
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/logger/log.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/logger/log.js
 function log(message, ...args) {
 	process$1.stderr.write(`${util.format(message, ...args)}${EOL$1}`);
 }
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/env.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/env.js
 /**
 * Returns the value of the specified environment variable.
 *
@@ -24429,7 +24499,7 @@ function getEnvironmentVariable(name) {
 }
 typeof process$1.versions.deno === "string" && process$1.versions.deno.length;
 typeof process$1.versions.bun === "string" && process$1.versions.bun.length;
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/logger/debug.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/logger/debug.js
 var debugEnvVariable = getEnvironmentVariable("DEBUG");
 var enabledString;
 var enabledNamespaces = [];
@@ -24550,7 +24620,7 @@ function extend(namespace) {
 	newDebugger.log = this.log;
 	return newDebugger;
 }
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/logger/logger.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/logger/logger.js
 var TYPESPEC_RUNTIME_LOG_LEVELS = [
 	"verbose",
 	"info",
@@ -24642,7 +24712,7 @@ function createClientLogger$1(namespace) {
 	return context$1.createClientLogger(namespace);
 }
 __name$1(createClientLogger$1, "createClientLogger");
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/httpHeaders.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/httpHeaders.js
 function normalizeName(name) {
 	return name.toLowerCase();
 }
@@ -24727,7 +24797,7 @@ function createHttpHeaders$1(rawHeaders) {
 	return new HttpHeadersImpl(rawHeaders);
 }
 __name$1(createHttpHeaders$1, "createHttpHeaders");
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/uuidUtils.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/uuidUtils.js
 /**
 * Generated Universally Unique Identifier
 *
@@ -24737,7 +24807,7 @@ function randomUUID$1() {
 	return globalThis.crypto.randomUUID();
 }
 __name$1(randomUUID$1, "randomUUID");
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/pipelineRequest.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/pipelineRequest.js
 var PipelineRequestImpl = class {
 	url;
 	method;
@@ -24789,7 +24859,7 @@ function createPipelineRequest$1(options) {
 	return new PipelineRequestImpl(options);
 }
 __name$1(createPipelineRequest$1, "createPipelineRequest");
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/pipeline.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/pipeline.js
 var ValidPhaseNames = /* @__PURE__ */ new Set([
 	"Deserialize",
 	"Serialize",
@@ -24988,7 +25058,7 @@ function createEmptyPipeline$1() {
 	return HttpPipeline.create();
 }
 __name$1(createEmptyPipeline$1, "createEmptyPipeline");
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/object.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/object.js
 /**
 * Helper to determine when an input is a generic JS object.
 * @returns true when input is an object type that is not null, Array, RegExp, or Date.
@@ -24996,7 +25066,7 @@ __name$1(createEmptyPipeline$1, "createEmptyPipeline");
 function isObject(input) {
 	return typeof input === "object" && input !== null && !Array.isArray(input) && !(input instanceof RegExp) && !(input instanceof Date);
 }
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/error.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/error.js
 /**
 * Typeguard for an error object shape (has name and message)
 * @param e - Something caught by a catch clause.
@@ -25010,9 +25080,9 @@ function isError$1(e) {
 	return false;
 }
 __name$1(isError$1, "isError");
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/inspect.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/inspect.js
 var custom = inspect.custom;
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/sanitizer.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/sanitizer.js
 var RedactedString = "REDACTED";
 var defaultAllowedHeaderNames = [
 	"x-ms-client-request-id",
@@ -25024,6 +25094,7 @@ var defaultAllowedHeaderNames = [
 	"ms-cv",
 	"return-client-request-id",
 	"traceparent",
+	"azure-deprecating",
 	"Access-Control-Allow-Credentials",
 	"Access-Control-Allow-Headers",
 	"Access-Control-Allow-Methods",
@@ -25120,7 +25191,7 @@ var Sanitizer = class {
 		return sanitized;
 	}
 };
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/restError.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/restError.js
 var errorSanitizer = new Sanitizer();
 /**
 * A custom error type for failed pipeline requests.
@@ -25204,7 +25275,7 @@ function isRestError$2(e) {
 	return isError$1(e) && e.name === "RestError";
 }
 __name$1(isRestError$2, "isRestError");
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/bytesEncoding.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/bytesEncoding.js
 /**
 * The helper that transforms bytes with specific character encoding into string
 * @param bytes - the uint8array bytes
@@ -25225,12 +25296,368 @@ function stringToUint8Array$1(value, format) {
 	return Buffer.from(value, format);
 }
 __name$1(stringToUint8Array$1, "stringToUint8Array");
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/log.js
-var logger$4 = createClientLogger$1("ts-http-runtime");
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/nodeHttpClient.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/log.js
+var logger$5 = createClientLogger$1("ts-http-runtime");
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/requestBodyHeaders.js
+/**
+* Converts a flat `[name, value, ...]` raw header array to `[name, value]` pairs,
+* or returns an existing pair array unchanged, preserving order and duplicates.
+*
+* @param headers - Header names and values in either array format.
+* @returns The header pairs in their original order.
+* @see https://nodejs.org/api/http.html#messagerawheaders
+*/
+function getHeaderPairs(headers) {
+	return Array.isArray(headers[0]) ? headers : Array.from({ length: Math.ceil(headers.length / 2) }, (_, index) => [headers[index * 2], headers[index * 2 + 1]]);
+}
+function isIterable(value) {
+	return Symbol.iterator in value && typeof value[Symbol.iterator] === "function";
+}
+function removeContinueToken(value) {
+	if (typeof value === "string") {
+		const tokens = value.split(",");
+		const remaining = tokens.filter((token) => token.trim().toLowerCase() !== "100-continue");
+		if (remaining.length === tokens.length) return value;
+		return remaining.map((token) => token.trim()).filter(Boolean).join(", ") || void 0;
+	}
+	if (Array.isArray(value)) {
+		const remaining = value.map(removeContinueToken).filter((entry) => entry !== void 0);
+		return remaining.length > 0 ? remaining : void 0;
+	}
+	return value;
+}
+function stripRequestBodyHeaders(request, removeFraming) {
+	const stripHeaderValue = (name, value) => {
+		const lowerName = name.toLowerCase();
+		if (removeFraming && (lowerName === "content-length" || lowerName === "transfer-encoding" || lowerName === "trailer")) return;
+		return lowerName === "expect" ? removeContinueToken(value) : value;
+	};
+	const stripHeaderPairs = (pairs) => pairs.flatMap(([name, value]) => {
+		const updated = typeof name === "string" ? stripHeaderValue(name, value) : value;
+		return updated === void 0 ? [] : [[name, updated]];
+	});
+	for (const [name, value] of request.headers) {
+		const updated = stripHeaderValue(name, value);
+		if (updated === void 0) request.headers.delete(name);
+		else if (typeof updated === "string" && updated !== value) request.headers.set(name, updated);
+	}
+	const overrides = request.requestOverrides;
+	if (!overrides || !("headers" in overrides)) return;
+	const headers = overrides.headers;
+	if (Array.isArray(headers)) {
+		const updatedPairs = stripHeaderPairs(getHeaderPairs(headers));
+		request.requestOverrides = {
+			...overrides,
+			headers: Array.isArray(headers[0]) ? updatedPairs : updatedPairs.flat()
+		};
+	} else if (headers && typeof headers === "object" && isIterable(headers)) {
+		const pairs = Array.from(headers, (entry) => {
+			if (!Array.isArray(entry) || entry.length !== 2) throw new TypeError("Header entry must be a name/value pair");
+			return entry;
+		});
+		request.requestOverrides = {
+			...overrides,
+			headers: stripHeaderPairs(pairs)
+		};
+	} else if (headers && typeof headers === "object") {
+		const updatedHeaders = {};
+		for (const [name, value] of Object.entries(headers)) {
+			const updated = stripHeaderValue(name, value);
+			if (updated !== void 0) updatedHeaders[name] = updated;
+		}
+		request.requestOverrides = {
+			...overrides,
+			headers: updatedHeaders
+		};
+	}
+}
+/**
+* Removes only the 100-continue expectation from pipeline and replacement headers.
+* Raw header arrays retain their shape, and caller-supplied override headers are not mutated.
+* Iterable override collections are materialized as reusable name/value pairs.
+*
+* @param request - The request whose body is known to be empty.
+*/
+function removeExpectContinueHeader(request) {
+	stripRequestBodyHeaders(request, false);
+}
+/**
+* Removes obsolete body framing, trailer declarations, and the 100-continue expectation
+* after discarding a body.
+*
+* @param request - The request whose body has been discarded.
+*/
+function removeRequestBodyHeaders(request) {
+	stripRequestBodyHeaders(request, true);
+}
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/nodeExpectContinue.js
+var EXPECT_CONTINUE_TIMEOUT_IN_MS = 1e3;
+function getHeaderValues(headers, name) {
+	if (Array.isArray(headers)) return getHeaderPairs(headers).filter(([key]) => typeof key === "string" && key.toLowerCase() === name).flatMap(([, value]) => Array.isArray(value) ? value : [value]);
+	if (headers && typeof headers === "object") {
+		if ("get" in headers && typeof headers.get === "function") {
+			const value = headers.get(name);
+			return value === void 0 || value === null ? [] : [value];
+		}
+		let value;
+		for (const [key, entry] of Object.entries(headers)) if (key.toLowerCase() === name) value = entry;
+		return value === void 0 ? [] : Array.isArray(value) ? value : [value];
+	}
+	return [];
+}
+function getEffectiveHeaderValues(request, name) {
+	return getHeaderValues(request.requestOverrides && "headers" in request.requestOverrides ? request.requestOverrides.headers : request.headers, name.toLowerCase());
+}
+function hasExpectContinue(request) {
+	return getEffectiveHeaderValues(request, "expect").some((value) => typeof value === "string" && value.split(",").some((token) => token.trim().toLowerCase() === "100-continue"));
+}
+function addHeader(headers, name, value) {
+	if (!Array.isArray(headers)) return {
+		...headers,
+		[name]: value
+	};
+	return Array.isArray(headers[0]) ? [...headers, [name, value]] : [
+		...headers,
+		name,
+		value
+	];
+}
+function hasHeader(headers, name) {
+	if (Array.isArray(headers)) return getHeaderPairs(headers).some(([key]) => typeof key === "string" && key.toLowerCase() === name);
+	return Object.keys(headers ?? {}).some((key) => key.toLowerCase() === name);
+}
+function addExpectContinueFraming(options, bodyLength) {
+	if (hasHeader(options.headers, "content-length") || hasHeader(options.headers, "transfer-encoding")) return;
+	options.headers = addHeader(options.headers, bodyLength === null ? "Transfer-Encoding" : "Content-Length", bodyLength === null ? "chunked" : String(bodyLength));
+}
+function createExpectContinueRequest(options) {
+	let fallback;
+	let waiting = true;
+	let bodyStarted = false;
+	let errorReported = false;
+	let request;
+	let bodyError;
+	const bodyStream = options.bodyStream;
+	bodyStream?.once("error", onBodyError);
+	if (bodyStream && "errored" in bodyStream && bodyStream.errored instanceof Error) {
+		process.nextTick(onBodyError, bodyStream.errored);
+		return;
+	}
+	try {
+		request = options.createRequest(onResponse);
+	} catch (error) {
+		onError(error);
+		return;
+	}
+	function stopWaiting(keepBodyObserved = false) {
+		waiting = false;
+		if (fallback !== void 0) {
+			clearTimeout(fallback);
+			fallback = void 0;
+		}
+		request?.removeListener("continue", sendBody);
+		request?.removeListener("socket", onSocket);
+		if (!keepBodyObserved) bodyStream?.removeListener("error", onBodyError);
+	}
+	function onError(error) {
+		const requestError = error instanceof Error ? error : new Error(String(error));
+		if (!errorReported) {
+			errorReported = true;
+			stopWaiting();
+			options.onError(requestError);
+		}
+		return requestError;
+	}
+	function onBodyError(error) {
+		if (errorReported || !waiting && !bodyStarted) return;
+		errorReported = true;
+		bodyError = error instanceof Error ? error : new Error(String(error));
+		stopWaiting();
+		options.onBodyError(error);
+		request?.destroy(bodyError);
+	}
+	function sendBody() {
+		if (!waiting) return;
+		bodyStarted = true;
+		stopWaiting(true);
+		try {
+			options.sendBody(request);
+		} catch (error) {
+			onBodyError(error);
+		} finally {
+			bodyStream?.removeListener("error", onBodyError);
+		}
+	}
+	function onAbort() {
+		stopWaiting();
+		options.onAbort(request);
+	}
+	function onSocket() {
+		if (!waiting) return;
+		try {
+			request.flushHeaders();
+			if (!waiting) return;
+			request.write("", (error) => {
+				if (error) request.destroy(onError(error));
+				else if (waiting) fallback = setTimeout(sendBody, EXPECT_CONTINUE_TIMEOUT_IN_MS);
+			});
+		} catch (error) {
+			request.destroy(onError(error));
+		}
+	}
+	function onResponse(response) {
+		stopWaiting();
+		if (!bodyStarted) {
+			request.shouldKeepAlive = false;
+			const destroyRequest = () => {
+				response.removeListener("end", destroyRequest);
+				response.removeListener("close", destroyRequest);
+				request.destroy();
+			};
+			response.once("end", destroyRequest);
+			response.once("close", destroyRequest);
+			if (response.readableEnded || response.destroyed) destroyRequest();
+		}
+		options.onResponse(response);
+	}
+	request.once("error", onError);
+	if (bodyError) {
+		request.destroy(bodyError);
+		return;
+	}
+	if (options.abortSignal.aborted) {
+		onAbort();
+		return;
+	}
+	options.abortSignal.addEventListener("abort", onAbort, { once: true });
+	request.once("close", () => stopWaiting());
+	if (request.destroyed || request.closed) stopWaiting();
+	if (!waiting) return;
+	request.once("continue", sendBody);
+	if (request.socket) onSocket();
+	else request.once("socket", onSocket);
+}
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/responseBody.js
+var responseBodySources = /* @__PURE__ */ new WeakMap();
+var responseBodyDisposers = /* @__PURE__ */ new WeakMap();
+var requestCompletions = /* @__PURE__ */ new WeakMap();
+var responseBodyCompletions = /* @__PURE__ */ new WeakMap();
+function setRequestCompletion(response, completion) {
+	requestCompletions.set(response, completion);
+	completion.then(() => requestCompletions.get(response) === completion && requestCompletions.delete(response)).catch((error) => {
+		logger$5.warning("Error tracking request completion", error);
+	});
+}
+/**
+* Returns a promise that resolves when the response's outgoing request has completed.
+*
+* @param response - The response whose request completion should be observed.
+* @returns The request completion promise, if the transport provides one.
+*/
+function getRequestCompletion(response) {
+	return requestCompletions.get(response);
+}
+/**
+* Returns a promise that resolves when the response body has completed, errored, or been canceled.
+*
+* @param response - The response whose body completion should be observed.
+* @returns The response body completion promise, if the transport provides one.
+*/
+function getResponseBodyCompletion(response) {
+	return responseBodyCompletions.get(response);
+}
+function isNodeResponseBody(value) {
+	return typeof value === "object" && value !== null && "resume" in value && typeof value.resume === "function";
+}
+function isNodeEventEmitterBody(value) {
+	return "on" in value && typeof value.on === "function" && "once" in value && typeof value.once === "function" && "removeListener" in value && typeof value.removeListener === "function";
+}
+function isBrowserResponseBody(value) {
+	return typeof value === "object" && value !== null && "cancel" in value && typeof value.cancel === "function";
+}
+function setResponseBodySource(body, source) {
+	if (isNodeResponseBody(body) && isNodeResponseBody(source)) responseBodySources.set(body, source);
+}
+function setResponseBodyDisposer(response, dispose) {
+	responseBodyDisposers.set(response, dispose);
+	return () => {
+		if (responseBodyDisposers.get(response) === dispose) responseBodyDisposers.delete(response);
+	};
+}
+/**
+* Destroys a Node stream, or drains it if destruction is unavailable,
+* and recursively disposes its tracked upstream sources.
+*/
+function disposeNodeResponseBody(readableStream, disposed = /* @__PURE__ */ new Set()) {
+	if (disposed.has(readableStream)) return;
+	disposed.add(readableStream);
+	const source = responseBodySources.get(readableStream);
+	responseBodySources.delete(readableStream);
+	if (readableStream.closed !== true) {
+		if (readableStream.destroy) {
+			if (isNodeEventEmitterBody(readableStream)) {
+				const onError = (error) => {
+					logger$5.warning("Error disposing Node stream", error);
+				};
+				const onClose = () => {
+					readableStream.removeListener("error", onError);
+				};
+				readableStream.on("error", onError);
+				readableStream.once("close", onClose);
+				try {
+					readableStream.destroy();
+				} catch (error) {
+					readableStream.removeListener("error", onError);
+					readableStream.removeListener("close", onClose);
+					throw error;
+				}
+			} else readableStream.destroy();
+		} else readableStream.resume();
+	}
+	if (source) disposeNodeResponseBody(source, disposed);
+}
+/**
+* Disposes a raw Node stream and its tracked upstream sources without throwing.
+*
+* @param stream - The stream to destroy, or drain if destruction is unavailable.
+*/
+function disposeNodeStream(stream) {
+	try {
+		disposeNodeResponseBody(stream);
+	} catch (error) {
+		logger$5.warning("Error disposing Node stream", error);
+	}
+}
+/**
+* Releases the body of a response that will not be read, so the underlying connection can be
+* reused or closed. Handles Node readable streams and browser web streams, and never throws:
+* disposal failures are logged as warnings.
+*
+* @param response - The response whose `readableStreamBody` or `browserStreamBody` should be disposed.
+*/
+async function disposeResponseBody(response) {
+	try {
+		const dispose = responseBodyDisposers.get(response);
+		responseBodyDisposers.delete(response);
+		try {
+			const readableStream = response.readableStreamBody;
+			if (isNodeResponseBody(readableStream)) {
+				disposeNodeStream(readableStream);
+				return;
+			}
+			const browserStream = response.browserStreamBody;
+			if (isBrowserResponseBody(browserStream)) await browserStream.cancel();
+		} finally {
+			dispose?.();
+		}
+	} catch (error) {
+		logger$5.warning("Error disposing response body", error);
+	}
+}
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/nodeHttpClient.js
 var DEFAULT_TLS_SETTINGS = {};
 function isReadableStream(body) {
-	return body && typeof body.pipe === "function";
+	return typeof body === "object" && body !== null && "pipe" in body && typeof body.pipe === "function";
 }
 function isStreamComplete(stream) {
 	if (stream.readable === false) return Promise.resolve();
@@ -25247,7 +25674,11 @@ function isStreamComplete(stream) {
 	});
 }
 function isArrayBuffer(body) {
-	return body && typeof body.byteLength === "number";
+	return types.isArrayBuffer(body) || ArrayBuffer.isView(body);
+}
+function arrayBufferToBuffer(body) {
+	if (Buffer.isBuffer(body)) return body;
+	return ArrayBuffer.isView(body) ? Buffer.from(body.buffer, body.byteOffset, body.byteLength) : Buffer.from(body);
 }
 var ReportTransform = class extends Transform {
 	loadedBytes = 0;
@@ -25267,6 +25698,85 @@ var ReportTransform = class extends Transform {
 		this.progressCallback = progressCallback;
 	}
 };
+function createRequestLifecycle(request, options, isInsecure, resolve, reject) {
+	let clientRequest;
+	let response;
+	let requestDone = false;
+	let resolveRequestComplete;
+	const requestComplete = new Promise((_resolve) => {
+		resolveRequestComplete = _resolve;
+	});
+	const onComplete = () => {
+		requestDone = true;
+		clientRequest.removeListener("finish", onComplete);
+		clientRequest.removeListener("close", onComplete);
+		resolveRequestComplete();
+	};
+	const onResponse = (incomingResponse) => {
+		response = incomingResponse;
+		resolve({
+			response: incomingResponse,
+			requestComplete,
+			isRequestComplete: () => requestDone,
+			disposeRequest: () => {
+				if (!requestDone) clientRequest.destroy();
+			}
+		});
+	};
+	return {
+		createRequest: (onResponseCallback = onResponse) => {
+			clientRequest = isInsecure ? http.request(options, onResponseCallback) : https.request(options, onResponseCallback);
+			clientRequest.once("finish", onComplete);
+			clientRequest.once("close", onComplete);
+			return clientRequest;
+		},
+		onResponse,
+		rejectRequest: (error) => {
+			reject(toRequestSendError(error, request));
+		},
+		abortRequest: (req) => {
+			const abortError = new AbortError$1("The operation was aborted. Rejecting from abort signal callback while making request.");
+			response?.destroy(abortError);
+			req.destroy(abortError);
+			reject(abortError);
+		}
+	};
+}
+function toRequestSendError(error, request) {
+	if (isRestError$2(error)) return error;
+	const prematureClose = error.code === "ERR_STREAM_PREMATURE_CLOSE";
+	return new RestError$2(prematureClose ? "Request body stream closed before ending" : error.message, {
+		code: prematureClose ? RestError$2.REQUEST_SEND_ERROR : error.code ?? RestError$2.REQUEST_SEND_ERROR,
+		request
+	});
+}
+function sendRequestBody(clientRequest, body, request, onError) {
+	if (body && isReadableStream(body)) pipeUploadStream(body, clientRequest, request, onError);
+	else if (body) {
+		if (typeof body === "string" || Buffer.isBuffer(body)) clientRequest.end(body);
+		else {
+			logger$5.error("Unrecognized body type", body);
+			throw new RestError$2("Unrecognized body type", { request });
+		}
+	} else clientRequest.end();
+}
+function prepareRequestBody(request, useExpectContinue) {
+	const requestBody = request.body;
+	const resolvedBody = typeof requestBody === "function" ? requestBody() : requestBody;
+	const body = resolvedBody && isArrayBuffer(resolvedBody) ? arrayBufferToBuffer(resolvedBody) : resolvedBody;
+	if (!useExpectContinue && body && !request.headers.has("Content-Length")) {
+		const bodyLength = getBodyLength(body);
+		if (bodyLength !== null) request.headers.set("Content-Length", bodyLength);
+	}
+	if (!body || !request.onUploadProgress) return body;
+	const uploadReportStream = new ReportTransform(request.onUploadProgress);
+	uploadReportStream.on("error", (e) => {
+		logger$5.error("Error in upload progress", e);
+	});
+	if (isReadableStream(body)) pipeUploadStream(body, uploadReportStream, request);
+	else uploadReportStream.end(body);
+	return uploadReportStream;
+}
 /**
 * A HttpClient implementation that uses Node's "https" module to send HTTPS requests.
 * @internal
@@ -25279,115 +25789,139 @@ var NodeHttpClient = class {
 	* @param request - The request to be made.
 	*/
 	async sendRequest(request) {
+		const requestBody = request.body;
 		const abortController = new AbortController();
 		let abortListener;
-		if (request.abortSignal) {
-			if (request.abortSignal.aborted) throw new AbortError$1("The operation was aborted. Request has already been canceled.");
+		const requestAbortSignal = request.abortSignal;
+		if (requestAbortSignal) {
+			if (requestAbortSignal.aborted) throw new AbortError$1("The operation was aborted. Request has already been canceled.");
 			abortListener = (event) => {
 				if (event.type === "abort") abortController.abort();
 			};
-			request.abortSignal.addEventListener("abort", abortListener);
+			requestAbortSignal.addEventListener("abort", abortListener);
 		}
 		let timeoutId;
 		if (request.timeout > 0) timeoutId = setTimeout(() => {
 			const sanitizer = new Sanitizer();
-			logger$4.info(`request to '${sanitizer.sanitizeUrl(request.url)}' timed out. canceling...`);
+			logger$5.info(`request to '${sanitizer.sanitizeUrl(request.url)}' timed out. canceling...`);
 			abortController.abort();
 		}, request.timeout);
 		const acceptEncoding = request.headers.get("Accept-Encoding");
 		const shouldDecompress = acceptEncoding?.includes("gzip") || acceptEncoding?.includes("deflate");
-		let body = typeof request.body === "function" ? request.body() : request.body;
-		if (body && !request.headers.has("Content-Length")) {
-			const bodyLength = getBodyLength(body);
-			if (bodyLength !== null) request.headers.set("Content-Length", bodyLength);
-		}
+		let body;
 		let responseStream;
+		let requestComplete = Promise.resolve();
 		try {
-			if (body && request.onUploadProgress) {
-				const onUploadProgress = request.onUploadProgress;
-				const uploadReportStream = new ReportTransform(onUploadProgress);
-				uploadReportStream.on("error", (e) => {
-					logger$4.error("Error in upload progress", e);
-				});
-				if (isReadableStream(body)) body.pipe(uploadReportStream);
-				else uploadReportStream.end(body);
-				body = uploadReportStream;
+			let useExpectContinue = hasExpectContinue(request);
+			const knownBodyLength = useExpectContinue && typeof requestBody !== "function" ? getBodyLength(requestBody ?? null) : null;
+			if (knownBodyLength === 0) {
+				removeExpectContinueHeader(request);
+				useExpectContinue = false;
 			}
-			const res = await this.makeRequest(request, abortController, body);
+			if (!useExpectContinue) body = prepareRequestBody(request, false);
+			const result = useExpectContinue ? await this.makeRequestWithExpectContinue(request, abortController, () => {
+				body = prepareRequestBody(request, true);
+				return body;
+			}, knownBodyLength) : await this.makeRequest(request, abortController, body);
+			requestComplete = result.requestComplete;
+			const res = result.response;
 			const headers = getResponseHeaders(res);
 			const response = {
 				status: res.statusCode ?? 0,
 				headers,
 				request
 			};
-			if (request.method === "HEAD") {
+			if (!result.isRequestComplete()) {
+				setRequestCompletion(response, result.requestComplete);
+				const clearDisposer = setResponseBodyDisposer(response, result.disposeRequest);
+				result.requestComplete.then(clearDisposer).catch((error) => {
+					logger$5.warning("Error disposing request", error);
+				});
+			}
+			if ((typeof request.requestOverrides?.method === "string" ? request.requestOverrides.method.toUpperCase() : request.method) === "HEAD") {
 				res.resume();
 				return response;
 			}
-			responseStream = shouldDecompress ? getDecodedResponseStream(res, headers) : res;
+			responseStream = shouldDecompress ? getDecodedResponseStream(res, headers, abortController.signal) : res;
 			const onDownloadProgress = request.onDownloadProgress;
 			if (onDownloadProgress) {
 				const downloadReportStream = new ReportTransform(onDownloadProgress);
 				downloadReportStream.on("error", (e) => {
-					logger$4.error("Error in download progress", e);
+					logger$5.error("Error in download progress", e);
 				});
-				responseStream.pipe(downloadReportStream);
-				responseStream = downloadReportStream;
+				responseStream = pipeResponseStream(responseStream, downloadReportStream, abortController.signal);
 			}
 			if (request.streamResponseStatusCodes?.has(Number.POSITIVE_INFINITY) || request.streamResponseStatusCodes?.has(response.status)) response.readableStreamBody = responseStream;
 			else response.bodyAsText = await streamToText(responseStream);
 			return response;
+		} catch (error) {
+			if (isReadableStream(body)) disposeNodeStream(body);
+			if (responseStream) disposeNodeStream(responseStream);
+			throw error;
 		} finally {
 			if (timeoutId !== void 0) clearTimeout(timeoutId);
-			if (request.abortSignal && abortListener) {
+			if (requestAbortSignal && abortListener) {
 				let uploadStreamDone = Promise.resolve();
 				if (isReadableStream(body)) uploadStreamDone = isStreamComplete(body);
 				let downloadStreamDone = Promise.resolve();
 				if (isReadableStream(responseStream)) downloadStreamDone = isStreamComplete(responseStream);
-				Promise.all([uploadStreamDone, downloadStreamDone]).then(() => {
-					if (abortListener) request.abortSignal?.removeEventListener("abort", abortListener);
+				Promise.all([
+					requestComplete,
+					uploadStreamDone,
+					downloadStreamDone
+				]).then(() => {
+					if (abortListener) requestAbortSignal.removeEventListener("abort", abortListener);
 				}).catch((e) => {
-					logger$4.warning("Error when cleaning up abortListener on httpRequest", e);
+					logger$5.warning("Error when cleaning up abortListener on httpRequest", e);
 				});
 			}
 		}
 	}
 	makeRequest(request, abortController, body) {
+		const { options, isInsecure } = this.getRequestOptions(request);
+		return new Promise((resolve, reject) => {
+			const { createRequest, rejectRequest, abortRequest } = createRequestLifecycle(request, options, isInsecure, resolve, reject);
+			const req = createRequest();
+			req.once("error", rejectRequest);
+			abortController.signal.addEventListener("abort", () => abortRequest(req));
+			sendRequestBody(req, body, request, rejectRequest);
+		});
+	}
+	makeRequestWithExpectContinue(request, abortController, prepareBody, knownBodyLength) {
+		const { options, isInsecure } = this.getRequestOptions(request);
+		addExpectContinueFraming(options, knownBodyLength);
+		return new Promise((resolve, reject) => {
+			const { createRequest, onResponse, rejectRequest, abortRequest } = createRequestLifecycle(request, options, isInsecure, resolve, reject);
+			createExpectContinueRequest({
+				abortSignal: abortController.signal,
+				bodyStream: isReadableStream(request.body) ? request.body : void 0,
+				createRequest,
+				onAbort: abortRequest,
+				onError: rejectRequest,
+				onBodyError: reject,
+				onResponse,
+				sendBody: (clientRequest) => {
+					sendRequestBody(clientRequest, prepareBody(), request, rejectRequest);
+				}
+			});
+		});
+	}
+	getRequestOptions(request) {
 		const url = new URL(request.url);
 		const isInsecure = url.protocol !== "https:";
 		if (isInsecure && !request.allowInsecureConnection) throw new Error(`Cannot connect to ${request.url} while allowInsecureConnection is false.`);
-		const options = {
-			agent: request.agent ?? this.getOrCreateAgent(request, isInsecure),
-			hostname: url.hostname,
-			path: `${url.pathname}${url.search}`,
-			port: url.port,
-			method: request.method,
-			headers: request.headers.toJSON({ preserveCase: true }),
-			...request.requestOverrides
+		return {
+			isInsecure,
+			options: {
+				agent: request.agent ?? this.getOrCreateAgent(request, isInsecure),
+				hostname: url.hostname,
+				path: `${url.pathname}${url.search}`,
+				port: url.port,
+				method: request.method,
+				headers: request.headers.toJSON({ preserveCase: true }),
+				...request.requestOverrides
+			}
 		};
-		return new Promise((resolve, reject) => {
-			const req = isInsecure ? http.request(options, resolve) : https.request(options, resolve);
-			req.once("error", (err) => {
-				reject(new RestError$2(err.message, {
-					code: err.code ?? RestError$2.REQUEST_SEND_ERROR,
-					request
-				}));
-			});
-			abortController.signal.addEventListener("abort", () => {
-				const abortError = new AbortError$1("The operation was aborted. Rejecting from abort signal callback while making request.");
-				req.destroy(abortError);
-				reject(abortError);
-			});
-			if (body && isReadableStream(body)) body.pipe(req);
-			else if (body) {
-				if (typeof body === "string" || Buffer.isBuffer(body)) req.end(body);
-				else if (isArrayBuffer(body)) req.end(ArrayBuffer.isView(body) ? Buffer.from(body.buffer, body.byteOffset, body.byteLength) : Buffer.from(body));
-				else {
-					logger$4.error("Unrecognized body type", body);
-					reject(new RestError$2("Unrecognized body type"));
-				}
-			} else req.end();
-		});
 	}
 	getOrCreateAgent(request, isInsecure) {
 		const disableKeepAlive = request.disableKeepAlive;
@@ -25400,7 +25934,7 @@ var NodeHttpClient = class {
 			const tlsSettings = request.tlsSettings ?? DEFAULT_TLS_SETTINGS;
 			let agent = this.cachedHttpsAgents.get(tlsSettings);
 			if (agent && agent.options.keepAlive === !disableKeepAlive) return agent;
-			logger$4.info("No cached TLS Agent exist, creating a new Agent");
+			logger$5.info("No cached TLS Agent exist, creating a new Agent");
 			agent = new https.Agent({
 				keepAlive: !disableKeepAlive,
 				...tlsSettings
@@ -25420,33 +25954,63 @@ function getResponseHeaders(res) {
 	}
 	return headers;
 }
-function getDecodedResponseStream(stream, headers) {
+function getDecodedResponseStream(stream, headers, abortSignal) {
 	const contentEncoding = headers.get("Content-Encoding");
-	if (contentEncoding === "gzip") {
-		const unzip = zlib.createGunzip();
-		stream.pipe(unzip);
-		return unzip;
-	} else if (contentEncoding === "deflate") {
-		const inflate = zlib.createInflate();
-		stream.pipe(inflate);
-		return inflate;
-	}
+	if (contentEncoding === "gzip") return pipeResponseStream(stream, zlib.createGunzip(), abortSignal);
+	else if (contentEncoding === "deflate") return pipeResponseStream(stream, zlib.createInflate(), abortSignal);
 	return stream;
+}
+function pipeUploadStream(source, destination, request, onError) {
+	let tearingDown = false;
+	const cleanupFinished = finished(source, { writable: false }, onSourceComplete);
+	function onSourceComplete(error) {
+		cleanupFinished();
+		destination.removeListener("close", onDestinationClose);
+		if (error && !tearingDown) {
+			const requestError = toRequestSendError(error, request);
+			destination.destroy(requestError);
+			onError?.(requestError);
+		}
+	}
+	function onDestinationClose() {
+		tearingDown = true;
+		source.unpipe(destination);
+		disposeNodeStream(source);
+	}
+	destination.once("close", onDestinationClose);
+	source.pipe(destination);
+}
+function pipeResponseStream(source, destination, abortSignal) {
+	setResponseBodySource(destination, source);
+	let cleanupSource = () => {};
+	let cleanupDestination = () => {};
+	cleanupSource = finished(source, { writable: false }, (error) => {
+		cleanupSource();
+		if (error) destination.destroy(abortSignal.aborted ? new AbortError$1() : error);
+	});
+	cleanupDestination = finished(destination, { writable: false }, () => {
+		cleanupDestination();
+		source.unpipe(destination);
+		if (source.readable) disposeNodeStream(source);
+	});
+	return source.pipe(destination);
 }
 function streamToText(stream) {
 	return new Promise((resolve, reject) => {
 		const buffer = [];
-		stream.on("data", (chunk) => {
+		const cleanupFinished = finished(stream, { writable: false }, onComplete);
+		function onData(chunk) {
 			if (Buffer.isBuffer(chunk)) buffer.push(chunk);
 			else buffer.push(Buffer.from(chunk));
-		});
-		stream.on("end", () => {
-			resolve(Buffer.concat(buffer).toString("utf8"));
-		});
-		stream.on("error", (e) => {
-			if (e && e?.name === "AbortError") reject(e);
-			else reject(new RestError$2(`Error reading response as text: ${e.message}`, { code: RestError$2.PARSE_ERROR }));
-		});
+		}
+		function onComplete(error) {
+			cleanupFinished();
+			stream.removeListener("data", onData);
+			if (error?.name === "AbortError") reject(error);
+			else if (error) reject(new RestError$2(`Error reading response as text: ${error.message}`, { code: RestError$2.PARSE_ERROR }));
+			else resolve(Buffer.concat(buffer).toString("utf8"));
+		}
+		stream.on("data", onData);
 	});
 }
 /** @internal */
@@ -25455,7 +26019,7 @@ function getBodyLength(body) {
 	else if (Buffer.isBuffer(body)) return body.length;
 	else if (isReadableStream(body)) return null;
 	else if (isArrayBuffer(body)) return body.byteLength;
-	else if (typeof body === "string") return Buffer.from(body).length;
+	else if (typeof body === "string") return Buffer.byteLength(body);
 	else return null;
 }
 /**
@@ -25465,7 +26029,7 @@ function getBodyLength(body) {
 function createNodeHttpClient() {
 	return new NodeHttpClient();
 }
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/defaultHttpClient.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/defaultHttpClient.js
 /**
 * Create the correct HttpClient for the current environment.
 */
@@ -25473,7 +26037,7 @@ function createDefaultHttpClient$2() {
 	return createNodeHttpClient();
 }
 __name$1(createDefaultHttpClient$2, "createDefaultHttpClient");
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/logPolicy.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/logPolicy.js
 /**
 * The programmatic identifier of the logPolicy.
 */
@@ -25483,7 +26047,7 @@ var logPolicyName = "logPolicy";
 * @param options - Options to configure logPolicy.
 */
 function logPolicy$1(options = {}) {
-	const logger = options.logger ?? logger$4.info;
+	const logger = options.logger ?? logger$5.info;
 	const sanitizer = new Sanitizer({
 		additionalAllowedHeaderNames: options.additionalAllowedHeaderNames,
 		additionalAllowedQueryParameters: options.additionalAllowedQueryParameters
@@ -25501,7 +26065,7 @@ function logPolicy$1(options = {}) {
 	};
 }
 __name$1(logPolicy$1, "logPolicy");
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/random.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/random.js
 /**
 * Returns a random integer value between a lower and upper bound,
 * inclusive of both bounds.
@@ -25515,7 +26079,7 @@ function getRandomIntegerInclusive(min, max) {
 	max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/delay.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/delay.js
 /**
 * Calculates the delay interval for retry attempts using exponential delay with jitter.
 * @param retryAttempt - The current retry attempt number.
@@ -25527,7 +26091,7 @@ function calculateRetryDelay(retryAttempt, config) {
 	const clampedDelay = Math.min(config.maxRetryDelayInMs, exponentialDelay);
 	return { retryAfterInMs: clampedDelay / 2 + getRandomIntegerInclusive(0, clampedDelay / 2) };
 }
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/helpers.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/helpers.js
 var StandardAbortMessage$1 = "The operation was aborted.";
 /**
 * A wrapper for setTimeout that resolves a promise after delayInMs milliseconds.
@@ -25573,7 +26137,7 @@ function parseHeaderValueAsNumber(response, headerName) {
 	if (Number.isNaN(valueAsNum)) return;
 	return valueAsNum;
 }
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/retryStrategies/throttlingRetryStrategy.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/retryStrategies/throttlingRetryStrategy.js
 /**
 * The header that comes back from services representing
 * the amount of time (minimum) to wait to retry (in seconds or timestamp after which we can retry).
@@ -25632,7 +26196,7 @@ function throttlingRetryStrategy() {
 		}
 	};
 }
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/retryStrategies/exponentialRetryStrategy.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/retryStrategies/exponentialRetryStrategy.js
 var DEFAULT_CLIENT_RETRY_INTERVAL = 1e3;
 var DEFAULT_CLIENT_MAX_RETRY_INTERVAL = 64e3;
 /**
@@ -25674,7 +26238,7 @@ function isSystemError(err) {
 	if (!err) return false;
 	return err.code === "ETIMEDOUT" || err.code === "ESOCKETTIMEDOUT" || err.code === "ECONNREFUSED" || err.code === "ECONNRESET" || err.code === "ENOENT" || err.code === "ENOTFOUND";
 }
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/retryPolicy.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/retryPolicy.js
 var retryPolicyLogger = createClientLogger$1("ts-http-runtime retryPolicy");
 /**
 * The programmatic identifier of the retryPolicy.
@@ -25734,11 +26298,13 @@ function retryPolicy(strategies, options = { maxRetries: 3 }) {
 					}
 					if (retryAfterInMs || retryAfterInMs === 0) {
 						strategyLogger.info(`Retry ${retryCount}: Retry strategy ${strategy.name} retries after ${retryAfterInMs}`);
+						if (response) await disposeResponseBody(response);
 						await delay$2(retryAfterInMs, void 0, { abortSignal: request.abortSignal });
 						continue retryRequest;
 					}
 					if (redirectTo) {
 						strategyLogger.info(`Retry ${retryCount}: Retry strategy ${strategy.name} redirects to ${redirectTo}`);
+						if (response) await disposeResponseBody(response);
 						request.url = redirectTo;
 						continue retryRequest;
 					}
@@ -25755,7 +26321,7 @@ function retryPolicy(strategies, options = { maxRetries: 3 }) {
 		}
 	};
 }
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/defaultRetryPolicy.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/defaultRetryPolicy.js
 /**
 * Name of the {@link defaultRetryPolicy}
 */
@@ -25773,7 +26339,7 @@ function defaultRetryPolicy$1(options = {}) {
 	};
 }
 __name$1(defaultRetryPolicy$1, "defaultRetryPolicy");
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/formData.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/formData.js
 /**
 * If the request body is a native FormData, convert it to our FormDataMap
 * representation and clear the body. Node.js's HTTP stack doesn't handle
@@ -25792,7 +26358,7 @@ function convertBodyToFormDataMap(body) {
 		return formDataMap;
 	}
 }
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/formDataPolicy.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/formDataPolicy.js
 /**
 * The programmatic identifier of the formDataPolicy.
 */
@@ -25848,7 +26414,7 @@ async function prepareFormData(formData, request) {
 	}
 	request.multipartBody = { parts };
 }
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/agentPolicy.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/agentPolicy.js
 /**
 * Name of the Agent Policy
 */
@@ -25866,7 +26432,7 @@ function agentPolicy$1(agent) {
 	};
 }
 __name$1(agentPolicy$1, "agentPolicy");
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/tlsPolicy.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/tlsPolicy.js
 /**
 * Name of the TLS Policy
 */
@@ -27233,7 +27799,7 @@ var require_dist = /* @__PURE__ */ __commonJSMin(((exports, module, this$1) => {
 		return ret;
 	}
 }));
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/proxyPolicy.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/proxyPolicy.js
 var import_dist = require_dist$1();
 var import_dist$1 = require_dist();
 var HTTPS_PROXY = "HTTPS_PROXY";
@@ -27330,7 +27896,7 @@ function getUrlFromProxySettings(settings) {
 function setProxyAgentOnRequest(request, cachedAgents, proxyUrl) {
 	if (request.agent) return;
 	const isInsecure = new URL(request.url).protocol !== "https:";
-	if (request.tlsSettings) logger$4.warning("TLS settings are not supported in combination with custom Proxy, certificates provided to the client will be ignored.");
+	if (request.tlsSettings) logger$5.warning("TLS settings are not supported in combination with custom Proxy, certificates provided to the client will be ignored.");
 	if (isInsecure) {
 		if (!cachedAgents.httpProxyAgent) cachedAgents.httpProxyAgent = new import_dist$1.HttpProxyAgent(proxyUrl);
 		request.agent = cachedAgents.httpProxyAgent;
@@ -27360,7 +27926,7 @@ function proxyPolicy$1(proxySettings, options) {
 	};
 }
 __name$1(proxyPolicy$1, "proxyPolicy");
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/decompressResponsePolicy.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/decompressResponsePolicy.js
 /**
 * The programmatic identifier of the decompressResponsePolicy.
 */
@@ -27379,7 +27945,7 @@ function decompressResponsePolicy$1() {
 	};
 }
 __name$1(decompressResponsePolicy$1, "decompressResponsePolicy");
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/redirectPolicy.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/redirectPolicy.js
 /**
 * The programmatic identifier of the redirectPolicy.
 */
@@ -27412,26 +27978,31 @@ async function handleRedirect(next, response, maxRetries, allowCrossOriginRedire
 		if (!allowCrossOriginRedirects) {
 			const originalUrl = new URL(request.url);
 			if (url.origin !== originalUrl.origin) {
-				logger$4.verbose(`Skipping cross-origin redirect from ${originalUrl.origin} to ${url.origin}.`);
+				logger$5.verbose(`Skipping cross-origin redirect from ${originalUrl.origin} to ${url.origin}.`);
 				return response;
 			}
 		}
 		request.url = url.toString();
 		if (status === 303) {
 			request.method = "GET";
-			request.headers.delete("Content-Length");
+			if (request.requestOverrides && "method" in request.requestOverrides) request.requestOverrides = {
+				...request.requestOverrides,
+				method: "GET"
+			};
+			removeRequestBodyHeaders(request);
 			delete request.body;
 		}
 		request.headers.delete("Authorization");
+		await disposeResponseBody(response);
 		return handleRedirect(next, await next(request), maxRetries, allowCrossOriginRedirects, currentRetries + 1);
 	}
 	return response;
 }
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/typeGuards.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/typeGuards.js
 function isBlob(x) {
 	return x instanceof Blob;
 }
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/concat.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/util/concat.js
 async function* streamAsyncIterator() {
 	const reader = this.getReader();
 	try {
@@ -27476,7 +28047,7 @@ async function concat(sources) {
 		})());
 	};
 }
-// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.9_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/multipartPolicy.js
+// node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/policies/multipartPolicy.js
 function generateBoundary() {
 	return `----AzSDKFormBoundary${randomUUID$1()}`;
 }
@@ -27574,7 +28145,7 @@ function createClientLogger(namespace) {
 	return context.createClientLogger(namespace);
 }
 // node_modules/.pnpm/@azure+core-rest-pipeline@1.23.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/log.js
-var logger$3 = createClientLogger("core-rest-pipeline");
+var logger$4 = createClientLogger("core-rest-pipeline");
 // node_modules/.pnpm/@azure+core-rest-pipeline@1.23.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/policies/logPolicy.js
 /**
 * A policy that logs all requests and responses.
@@ -27582,7 +28153,7 @@ var logger$3 = createClientLogger("core-rest-pipeline");
 */
 function logPolicy(options = {}) {
 	return logPolicy$1({
-		logger: logger$3.info,
+		logger: logger$4.info,
 		...options
 	});
 }
@@ -28179,7 +28750,7 @@ function tryCreateTracingClient() {
 			packageVersion: SDK_VERSION$1
 		});
 	} catch (e) {
-		logger$3.warning(`Error when creating the TracingClient: ${getErrorMessage(e)}`);
+		logger$4.warning(`Error when creating the TracingClient: ${getErrorMessage(e)}`);
 		return;
 	}
 }
@@ -28200,7 +28771,7 @@ function tryCreateSpan(tracingClient, request, spanAttributes) {
 			tracingContext: updatedOptions.tracingOptions.tracingContext
 		};
 	} catch (e) {
-		logger$3.warning(`Skipping creating a tracing span due to an error: ${getErrorMessage(e)}`);
+		logger$4.warning(`Skipping creating a tracing span due to an error: ${getErrorMessage(e)}`);
 		return;
 	}
 }
@@ -28213,7 +28784,7 @@ function tryProcessError(span, error) {
 		if (isRestError$1(error) && error.statusCode) span.setAttribute("http.status_code", error.statusCode);
 		span.end();
 	} catch (e) {
-		logger$3.warning(`Skipping tracing span processing due to an error: ${getErrorMessage(e)}`);
+		logger$4.warning(`Skipping tracing span processing due to an error: ${getErrorMessage(e)}`);
 	}
 }
 function tryProcessResponse(span, response) {
@@ -28224,7 +28795,7 @@ function tryProcessResponse(span, response) {
 		if (response.status >= 400) span.setStatus({ status: "error" });
 		span.end();
 	} catch (e) {
-		logger$3.warning(`Skipping tracing span processing due to an error: ${getErrorMessage(e)}`);
+		logger$4.warning(`Skipping tracing span processing due to an error: ${getErrorMessage(e)}`);
 	}
 }
 // node_modules/.pnpm/@azure+core-rest-pipeline@1.23.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/util/wrapAbortSignal.js
@@ -28518,7 +29089,7 @@ async function authorizeRequestOnCaeChallenge(onChallengeOptions, caeClaims) {
 */
 function bearerTokenAuthenticationPolicy(options) {
 	const { credential, scopes, challengeCallbacks } = options;
-	const logger = options.logger || logger$3;
+	const logger = options.logger || logger$4;
 	const callbacks = {
 		authorizeRequest: challengeCallbacks?.authorizeRequest?.bind(challengeCallbacks) ?? defaultAuthorizeRequest,
 		authorizeRequestOnChallenge: challengeCallbacks?.authorizeRequestOnChallenge?.bind(challengeCallbacks)
@@ -28648,7 +29219,7 @@ function isTokenCredential(credential) {
 	const castCredential = credential;
 	return castCredential && typeof castCredential.getToken === "function" && (castCredential.signRequest === void 0 || castCredential.getToken.length > 0);
 }
-// node_modules/.pnpm/@azure+core-http-compat@2.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__@azure+co_0e22cb651e3ad97981244ae883d66a5d/node_modules/@azure/core-http-compat/dist/esm/policies/disableKeepAlivePolicy.js
+// node_modules/.pnpm/@azure+core-http-compat@2.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__@azure+co_f2a1d886be1f991b68b70ac632390b34/node_modules/@azure/core-http-compat/dist/esm/policies/disableKeepAlivePolicy.js
 var disableKeepAlivePolicyName = "DisableKeepAlivePolicy";
 function createDisableKeepAlivePolicy() {
 	return {
@@ -28665,7 +29236,7 @@ function createDisableKeepAlivePolicy() {
 function pipelineContainsDisableKeepAlivePolicy(pipeline) {
 	return pipeline.getOrderedPolicies().some((policy) => policy.name === disableKeepAlivePolicyName);
 }
-// node_modules/.pnpm/@azure+core-client@1.11.1_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/base64.js
+// node_modules/.pnpm/@azure+core-client@1.11.2_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/base64.js
 /**
 * Encodes a byte array in base64 format.
 * @param value - the Uint8Array to encode
@@ -28682,7 +29253,7 @@ function encodeByteArray(value) {
 function decodeString(value) {
 	return stringToUint8Array(value, "base64");
 }
-// node_modules/.pnpm/@azure+core-client@1.11.1_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/utils.js
+// node_modules/.pnpm/@azure+core-client@1.11.2_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/utils.js
 /**
 * A type guard for a primitive response body.
 * @param value - Value to test
@@ -28772,7 +29343,7 @@ function flattenResponse(fullResponse, responseSpec) {
 		shouldWrapBody: isPrimitiveBody(fullResponse.parsedBody, expectedBodyTypeName)
 	});
 }
-// node_modules/.pnpm/@azure+core-client@1.11.1_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/serializer.js
+// node_modules/.pnpm/@azure+core-client@1.11.2_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/serializer.js
 var SerializerImpl = class {
 	modelMappers;
 	isXML;
@@ -29038,7 +29609,15 @@ function serializeDictionaryType(serializer, mapper, object, objectName, isXml, 
 	const valueType = mapper.type.value;
 	if (!valueType || typeof valueType !== "object") throw new Error(`"value" metadata for a Dictionary must be defined in the mapper and it must of type "object" in ${objectName}.`);
 	const tempDictionary = {};
-	for (const key of Object.keys(object)) tempDictionary[key] = getXmlObjectValue(valueType, serializer.serialize(valueType, object[key], objectName, options), isXml, options);
+	for (const key of Object.keys(object)) {
+		const serializedValue = serializer.serialize(valueType, object[key], objectName, options);
+		Object.defineProperty(tempDictionary, key, {
+			value: getXmlObjectValue(valueType, serializedValue, isXml, options),
+			enumerable: true,
+			configurable: true,
+			writable: true
+		});
+	}
 	if (isXml && mapper.xmlNamespace) {
 		const xmlnsKey = mapper.xmlNamespacePrefix ? `xmlns:${mapper.xmlNamespacePrefix}` : "xmlns";
 		const result = tempDictionary;
@@ -29179,7 +29758,12 @@ function deserializeCompositeType(serializer, mapper, responseBody, objectName, 
 		if (headerCollectionPrefix) {
 			const dictionary = {};
 			for (const headerKey of Object.keys(responseBody)) {
-				if (headerKey.startsWith(headerCollectionPrefix)) dictionary[headerKey.substring(headerCollectionPrefix.length)] = serializer.deserialize(propertyMapper.type.value, responseBody[headerKey], propertyObjectName, options);
+				if (headerKey.startsWith(headerCollectionPrefix)) Object.defineProperty(dictionary, headerKey.substring(headerCollectionPrefix.length), {
+					value: serializer.deserialize(propertyMapper.type.value, responseBody[headerKey], propertyObjectName, options),
+					enumerable: true,
+					configurable: true,
+					writable: true
+				});
 				handledPropertyNames.push(headerKey);
 			}
 			instance[key] = dictionary;
@@ -29260,7 +29844,12 @@ function deserializeDictionaryType(serializer, mapper, responseBody, objectName,
 	if (!value || typeof value !== "object") throw new Error(`"value" metadata for a Dictionary must be defined in the mapper and it must of type "object" in ${objectName}`);
 	if (responseBody) {
 		const tempDictionary = {};
-		for (const key of Object.keys(responseBody)) tempDictionary[key] = serializer.deserialize(value, responseBody[key], objectName, options);
+		for (const key of Object.keys(responseBody)) Object.defineProperty(tempDictionary, key, {
+			value: serializer.deserialize(value, responseBody[key], objectName, options),
+			enumerable: true,
+			configurable: true,
+			writable: true
+		});
 		return tempDictionary;
 	}
 	return responseBody;
@@ -29340,7 +29929,7 @@ var state = (/* @__PURE__ */ __commonJSMin(((exports) => {
 	*/
 	exports.state = { operationRequestMap: /* @__PURE__ */ new WeakMap() };
 })))().state;
-// node_modules/.pnpm/@azure+core-client@1.11.1_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/operationHelpers.js
+// node_modules/.pnpm/@azure+core-client@1.11.2_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/operationHelpers.js
 /**
 * @internal
 * Retrieves the value to use for a given operation argument
@@ -29413,7 +30002,7 @@ function getOperationRequestInfo(request) {
 	}
 	return info;
 }
-// node_modules/.pnpm/@azure+core-client@1.11.1_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/deserializationPolicy.js
+// node_modules/.pnpm/@azure+core-client@1.11.2_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/deserializationPolicy.js
 var defaultJsonContentTypes = ["application/json", "text/json"];
 var defaultXmlContentTypes = ["application/xml", "application/atom+xml"];
 /**
@@ -29569,7 +30158,7 @@ async function parse(jsonContentTypes, xmlContentTypes, operationResponse, opts,
 	}
 	return operationResponse;
 }
-// node_modules/.pnpm/@azure+core-client@1.11.1_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/interfaceHelpers.js
+// node_modules/.pnpm/@azure+core-client@1.11.2_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/interfaceHelpers.js
 /**
 * Gets the list of status codes for streaming responses.
 * @internal
@@ -29593,7 +30182,7 @@ function getPathStringFromParameter(parameter) {
 	else result = mapper.serializedName;
 	return result;
 }
-// node_modules/.pnpm/@azure+core-client@1.11.1_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/serializationPolicy.js
+// node_modules/.pnpm/@azure+core-client@1.11.2_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/serializationPolicy.js
 /**
 * The programmatic identifier of the serializationPolicy.
 */
@@ -29708,7 +30297,7 @@ function prepareXMLRootList(obj, elementName, xmlNamespaceKey, xmlNamespace) {
 	result["$"] = { [xmlNamespaceKey]: xmlNamespace };
 	return result;
 }
-// node_modules/.pnpm/@azure+core-client@1.11.1_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/pipeline.js
+// node_modules/.pnpm/@azure+core-client@1.11.2_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/pipeline.js
 /**
 * Creates a new Pipeline for use with a Service Client.
 * Adds in deserializationPolicy by default.
@@ -29725,14 +30314,14 @@ function createClientPipeline(options = {}) {
 	pipeline.addPolicy(deserializationPolicy(options.deserializationOptions), { phase: "Deserialize" });
 	return pipeline;
 }
-// node_modules/.pnpm/@azure+core-client@1.11.1_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/httpClientCache.js
+// node_modules/.pnpm/@azure+core-client@1.11.2_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/httpClientCache.js
 var cachedHttpClient;
 function getCachedDefaultHttpClient$1() {
 	if (!cachedHttpClient) cachedHttpClient = createDefaultHttpClient$1();
 	return cachedHttpClient;
 }
 __name$1(getCachedDefaultHttpClient$1, "getCachedDefaultHttpClient");
-// node_modules/.pnpm/@azure+core-client@1.11.1_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/urlHelpers.js
+// node_modules/.pnpm/@azure+core-client@1.11.2_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/urlHelpers.js
 var CollectionFormatToDelimiterMap = {
 	CSV: ",",
 	SSV: " ",
@@ -29868,9 +30457,9 @@ function appendQueryParams(url, queryParams, sequenceParams, noOverwrite = false
 	parsedUrl.search = searchPieces.length ? `?${searchPieces.join("&")}` : "";
 	return parsedUrl.toString();
 }
-// node_modules/.pnpm/@azure+core-client@1.11.1_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/log.js
-var logger$2 = createClientLogger("core-client");
-// node_modules/.pnpm/@azure+core-client@1.11.1_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/serviceClient.js
+// node_modules/.pnpm/@azure+core-client@1.11.2_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/log.js
+var logger$3 = createClientLogger("core-client");
+// node_modules/.pnpm/@azure+core-client@1.11.2_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/serviceClient.js
 /**
 * Initializes a new instance of the ServiceClient.
 */
@@ -29904,7 +30493,7 @@ var ServiceClient = class {
 	constructor(options = {}) {
 		this._requestContentType = options.requestContentType;
 		this._endpoint = options.endpoint ?? options.baseUri;
-		if (options.baseUri) logger$2.warning("The baseUri option for SDK Clients has been deprecated, please use endpoint instead.");
+		if (options.baseUri) logger$3.warning("The baseUri option for SDK Clients has been deprecated, please use endpoint instead.");
 		this._allowInsecureConnection = options.allowInsecureConnection;
 		this._httpClient = options.httpClient || getCachedDefaultHttpClient$1();
 		this.pipeline = options.pipeline || createDefaultPipeline(options);
@@ -29983,7 +30572,7 @@ function getCredentialScopes(options) {
 	if (options.baseUri) return `${options.baseUri}/.default`;
 	if (options.credential) throw new Error(`When using credentials, the ServiceClientOptions must contain either a endpoint or a credentialScopes. Unable to create a bearerTokenAuthenticationPolicy`);
 }
-// node_modules/.pnpm/@azure+core-client@1.11.1_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/authorizeRequestOnTenantChallenge.js
+// node_modules/.pnpm/@azure+core-client@1.11.2_supports-color@7.2.0/node_modules/@azure/core-client/dist/esm/authorizeRequestOnTenantChallenge.js
 /**
 * A set of constants used internally when processing requests.
 */
@@ -30075,7 +30664,7 @@ function requestToOptions(request) {
 		tracingOptions: request.tracingOptions
 	};
 }
-// node_modules/.pnpm/@azure+core-http-compat@2.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__@azure+co_0e22cb651e3ad97981244ae883d66a5d/node_modules/@azure/core-http-compat/dist/esm/util.js
+// node_modules/.pnpm/@azure+core-http-compat@2.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__@azure+co_f2a1d886be1f991b68b70ac632390b34/node_modules/@azure/core-http-compat/dist/esm/util.js
 var originalRequestSymbol = Symbol("Original PipelineRequest");
 var originalClientRequestSymbol = Symbol.for("@azure/core-client original request");
 var passThroughProps = /* @__PURE__ */ new Set([
@@ -30297,7 +30886,7 @@ var HttpHeaders = class HttpHeaders {
 		return new HttpHeaders(resultPreservingCasing);
 	}
 };
-// node_modules/.pnpm/@azure+core-http-compat@2.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__@azure+co_0e22cb651e3ad97981244ae883d66a5d/node_modules/@azure/core-http-compat/dist/esm/response.js
+// node_modules/.pnpm/@azure+core-http-compat@2.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__@azure+co_f2a1d886be1f991b68b70ac632390b34/node_modules/@azure/core-http-compat/dist/esm/response.js
 var originalResponse = Symbol("Original FullOperationResponse");
 /**
 * A helper to convert response objects from the new pipeline back to the old one.
@@ -30342,7 +30931,7 @@ function toPipelineResponse(compatResponse) {
 		request: toPipelineRequest(compatResponse.request)
 	};
 }
-// node_modules/.pnpm/@azure+core-http-compat@2.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__@azure+co_0e22cb651e3ad97981244ae883d66a5d/node_modules/@azure/core-http-compat/dist/esm/extendedClient.js
+// node_modules/.pnpm/@azure+core-http-compat@2.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__@azure+co_f2a1d886be1f991b68b70ac632390b34/node_modules/@azure/core-http-compat/dist/esm/extendedClient.js
 /**
 * Client to provide compatability between core V1 & V2.
 */
@@ -30375,7 +30964,7 @@ var ExtendedServiceClient = class extends ServiceClient {
 		return result;
 	}
 };
-// node_modules/.pnpm/@azure+core-http-compat@2.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__@azure+co_0e22cb651e3ad97981244ae883d66a5d/node_modules/@azure/core-http-compat/dist/esm/policies/requestPolicyFactoryPolicy.js
+// node_modules/.pnpm/@azure+core-http-compat@2.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__@azure+co_f2a1d886be1f991b68b70ac632390b34/node_modules/@azure/core-http-compat/dist/esm/policies/requestPolicyFactoryPolicy.js
 /**
 * An enum for compatibility with RequestPolicy
 */
@@ -30414,7 +31003,7 @@ function createRequestPolicyFactoryPolicy(factories) {
 		}
 	};
 }
-// node_modules/.pnpm/@azure+core-http-compat@2.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__@azure+co_0e22cb651e3ad97981244ae883d66a5d/node_modules/@azure/core-http-compat/dist/esm/httpClientAdapter.js
+// node_modules/.pnpm/@azure+core-http-compat@2.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__@azure+co_f2a1d886be1f991b68b70ac632390b34/node_modules/@azure/core-http-compat/dist/esm/httpClientAdapter.js
 /**
 * Converts a RequestPolicy based HttpClient to a PipelineRequest based HttpClient.
 * @param requestPolicyClient - A HttpClient compatible with core-http
@@ -30425,7 +31014,7 @@ function convertHttpClient(requestPolicyClient) {
 		return toPipelineResponse(await requestPolicyClient.sendRequest(toWebResourceLike(request, { createProxy: true })));
 	} };
 }
-// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/util.js
+// node_modules/.pnpm/fast-xml-parser@5.12.1/node_modules/fast-xml-parser/src/util.js
 var regexName = /* @__PURE__ */ new RegExp("^[:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD][:A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040]*$");
 function getAllMatches(string, regex) {
 	const matches = [];
@@ -30464,7 +31053,7 @@ var criticalProperties = [
 	"constructor",
 	"prototype"
 ];
-// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/validator.js
+// node_modules/.pnpm/fast-xml-parser@5.12.1/node_modules/fast-xml-parser/src/validator.js
 var defaultOptions$2 = {
 	allowBooleanAttributes: false,
 	unpairedTags: []
@@ -30647,9 +31236,9 @@ function readAttributeStr(xmlData, i) {
 * and moving to the next starting position — one full backtrack per
 * position, which is quadratic in the length of the run.
 *
-* A single forward-only scan can never backtrack, so it can't be made slow
-* this way no matter how much whitespace the input contains — it's always
-* proportional to the length of the string, once.
+* The scan is forward-only: the cursor never moves backwards, so each
+* character is visited a constant number of times and the cost is linear
+* in the length of the string.
 *
 * Each returned token mirrors the shape the old regex match array had, so
 * the validation logic below (which reads token[1]..token[6]) didn't need
@@ -30676,7 +31265,7 @@ function scanAttributeTokens(attrStr) {
 		while (i < len && isWhiteSpace(attrStr[i])) i++;
 		if (i >= len) break;
 		if (attrStr[i] === "=") {
-			i = tokenStart + 1;
+			i++;
 			continue;
 		}
 		const leadingWs = attrStr.slice(tokenStart, i);
@@ -31295,7 +31884,7 @@ var EntityDecoder = class {
 		return this._applyNCRAction(effective, token, cp);
 	}
 };
-// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
+// node_modules/.pnpm/fast-xml-parser@5.12.1/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
 var defaultOnDangerousProperty = (name) => {
 	if (DANGEROUS_PROPERTY_NAMES.includes(name)) return "__" + name;
 	return name;
@@ -31421,7 +32010,7 @@ var buildOptions = function(options) {
 	});
 	return built;
 };
-// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
+// node_modules/.pnpm/fast-xml-parser@5.12.1/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
 var METADATA_SYMBOL$1;
 if (typeof Symbol !== "function") METADATA_SYMBOL$1 = "@@xmlMetadata";
 else METADATA_SYMBOL$1 = Symbol("XML Node Metadata");
@@ -31530,7 +32119,7 @@ var createValidator = (production, { xmlVersion = "1.0", asciiOnly = false, maxC
 	};
 	return validator;
 };
-// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
+// node_modules/.pnpm/fast-xml-parser@5.12.1/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
 var DocTypeReader = class {
 	constructor(options, xmlVersion) {
 		this.suppressValidationErr = !options;
@@ -32067,7 +32656,7 @@ function handleInfinity(str, num, options) {
 		default: return str;
 	}
 }
-// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/ignoreAttributes.js
+// node_modules/.pnpm/fast-xml-parser@5.12.1/node_modules/fast-xml-parser/src/ignoreAttributes.js
 function getIgnoreAttributesFn$1(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -33799,7 +34388,7 @@ function isUnsafe(value, context) {
 	for (const list of lists) if (matchList(value, list) !== null) return true;
 	return false;
 }
-// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
+// node_modules/.pnpm/fast-xml-parser@5.12.1/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
 /**
 * Extract raw attributes (without prefix) from prefixed attribute map
 * @param {object} prefixedAttrs - Attributes with prefix from buildAttributesMap
@@ -33919,7 +34508,10 @@ function resolveNameSpace(tagname) {
 	}
 	return tagname;
 }
-var attrsRegx = /* @__PURE__ */ new RegExp("([^\\s=]+)\\s*(=\\s*(['\"])([\\s\\S]*?)\\3)?", "gm");
+var attrsRegx = /([^\s=]+)\s*(=\s*(?:"([^"]*)"|'([^']*)'))?/gm;
+function attrValue(match) {
+	return match[3] !== void 0 ? match[3] : match[4];
+}
 function buildAttributesMap(attrStr, jPath, tagName, force = false) {
 	const options = this.options;
 	if (force === true || options.ignoreAttributes !== true && typeof attrStr === "string") {
@@ -33931,7 +34523,7 @@ function buildAttributesMap(attrStr, jPath, tagName, force = false) {
 		const rawAttrsForMatcher = {};
 		for (let i = 0; i < len; i++) {
 			const attrName = this.resolveNameSpace(matches[i][1]);
-			const oldVal = matches[i][4];
+			const oldVal = attrValue(matches[i]);
 			if (attrName.length && oldVal !== void 0) {
 				let val = oldVal;
 				if (options.trimValues) val = val.trim();
@@ -33951,7 +34543,7 @@ function buildAttributesMap(attrStr, jPath, tagName, force = false) {
 			if (attrName.length) {
 				if (options.transformAttributeName) aName = options.transformAttributeName(aName);
 				aName = sanitizeName(aName, options);
-				if (matches[i][4] !== void 0) {
+				if (attrValue(matches[i]) !== void 0) {
 					const oldVal = processedVals[i];
 					const newVal = options.attributeValueProcessor(attrName, oldVal, jPathStr);
 					if (newVal === null || newVal === void 0) attrs[aName] = oldVal;
@@ -34207,7 +34799,6 @@ function isItStopNode() {
 * @returns 
 */
 function tagExpWithClosingIndex(xmlData, i, closingChar = ">") {
-	let attrBoundary = 0;
 	const len = xmlData.length;
 	const closeCode0 = closingChar.charCodeAt(0);
 	const closeCode1 = closingChar.length > 1 ? closingChar.charCodeAt(1) : -1;
@@ -34215,10 +34806,10 @@ function tagExpWithClosingIndex(xmlData, i, closingChar = ">") {
 	let segmentStart = i;
 	for (let index = i; index < len; index++) {
 		const code = xmlData.charCodeAt(index);
-		if (attrBoundary) {
-			if (code === attrBoundary) attrBoundary = 0;
-		} else if (code === 34 || code === 39) attrBoundary = code;
-		else if (code === closeCode0) {
+		if (code === 34 || code === 39) {
+			index = xmlData.indexOf(xmlData[index], index + 1);
+			if (index === -1) return;
+		} else if (code === closeCode0) {
 			if (closeCode1 !== -1) {
 				if (xmlData.charCodeAt(index + 1) === closeCode1) {
 					result += xmlData.substring(segmentStart, index);
@@ -34234,7 +34825,7 @@ function tagExpWithClosingIndex(xmlData, i, closingChar = ">") {
 					index
 				};
 			}
-		} else if (code === 9 && !attrBoundary) {
+		} else if (code === 9) {
 			result += xmlData.substring(segmentStart, index) + " ";
 			segmentStart = index + 1;
 		}
@@ -34353,7 +34944,7 @@ function sanitizeName(name, options) {
 	else if (DANGEROUS_PROPERTY_NAMES.includes(name)) return options.onDangerousProperty(name);
 	return name;
 }
-// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/xmlparser/node2json.js
+// node_modules/.pnpm/fast-xml-parser@5.12.1/node_modules/fast-xml-parser/src/xmlparser/node2json.js
 var METADATA_SYMBOL = XmlNode.getMetaDataSymbol();
 /**
 * Helper function to strip attribute prefix from attribute map
@@ -34456,7 +35047,7 @@ function isLeafTag(obj, options) {
 	if (propCount === 1 && (obj[textNodeName] || typeof obj[textNodeName] === "boolean" || obj[textNodeName] === 0)) return true;
 	return false;
 }
-// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
+// node_modules/.pnpm/fast-xml-parser@5.12.1/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
 var XMLParser = class {
 	constructor(options) {
 		this.externalEntities = {};
@@ -34507,7 +35098,7 @@ var XMLParser = class {
 		return XmlNode.getMetaDataSymbol();
 	}
 };
-// node_modules/.pnpm/fast-xml-builder@1.3.1/node_modules/fast-xml-builder/src/util.js
+// node_modules/.pnpm/fast-xml-builder@1.3.2/node_modules/fast-xml-builder/src/util.js
 function valToStr(val) {
 	return typeof val === "number" && Object.is(val, -0) ? "-0" : String(val);
 }
@@ -34520,7 +35111,31 @@ function safeCdata(val) {
 function escapeAttribute(val) {
 	return valToStr(val).replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 }
-// node_modules/.pnpm/fast-xml-builder@1.3.1/node_modules/fast-xml-builder/src/orderedJs2Xml.js
+/**
+* Resolve a tag or attribute name through sanitizeName if configured.
+* Validation via xml-naming's qName is performed first; the sanitizeName
+* callback is invoked only when the name is invalid. If sanitizeName is
+* false (default), no validation occurs and the name is used as-is.
+*
+* @param {string}  name        - raw name from the JS object
+* @param {boolean} isAttribute - true when resolving an attribute name
+* @param {object}  options
+* @param {Matcher} matcher     - current matcher state (readonly from callback perspective)
+* @param {function} qNameValidator - function to validate tag names
+*/
+function resolveName(name, isAttribute, options, matcher, validator) {
+	if (!options.sanitizeName) return name;
+	const isPI = !isAttribute && name[0] === "?";
+	const bare = isPI ? name.slice(1) : name;
+	if (validator(bare)) return name;
+	const result = options.sanitizeName(bare, {
+		isAttribute,
+		matcher: matcher.readOnly()
+	});
+	if (typeof result !== "string" || !validator(result)) throw new Error(`sanitizeName returned an invalid XML name for "${bare}"`);
+	return isPI ? "?" + result : result;
+}
+// node_modules/.pnpm/fast-xml-builder@1.3.2/node_modules/fast-xml-builder/src/orderedJs2Xml.js
 var EOL$2 = "\n";
 /**
 * Detect XML version from the first element of the ordered array input.
@@ -34542,27 +35157,6 @@ function detectXmlVersionFromArray(jArray, options) {
 	}
 	return "1.0";
 }
-/**
-* Resolve a tag or attribute name through sanitizeName if configured.
-* Validation via xml-naming's qName is performed first; the sanitizeName
-* callback is invoked only when the name is invalid. If sanitizeName is
-* false (default), no validation occurs and the name is used as-is.
-*
-* @param {string}  name        - raw name from the JS object
-* @param {boolean} isAttribute - true when resolving an attribute name
-* @param {object}  options
-* @param {Matcher} matcher     - current matcher state (readonly from callback perspective)
-* @param {function} qNameValidator - function to validate tag names
-*/
-function resolveTagName$1(name, isAttribute, options, matcher, qNameValidator) {
-	if (!options.sanitizeName) return name;
-	if (qNameValidator(name)) return name;
-	return options.sanitizeName(name, {
-		isAttribute,
-		matcher: matcher.readOnly()
-	});
-}
-__name$1(resolveTagName$1, "resolveTagName");
 /**
 * @param {array} jArray
 * @param {any} options
@@ -34597,7 +35191,7 @@ function arrToStr(arr, options, indentation, matcher, stopNodeExpressions, qName
 		const tagObj = arr[i];
 		const rawTagName = propName(tagObj);
 		if (rawTagName === void 0) continue;
-		const tagName = rawTagName === options.textNodeName || rawTagName === options.cdataPropName || rawTagName === options.commentPropName || rawTagName[0] === "?" ? rawTagName : resolveTagName$1(rawTagName, false, options, matcher, qNameValidator);
+		const tagName = rawTagName === options.textNodeName || rawTagName === options.cdataPropName || rawTagName === options.commentPropName ? rawTagName : resolveName(rawTagName, false, options, matcher, qNameValidator);
 		const attrValues = extractAttributeValues(tagObj[":@"], options);
 		matcher.push(tagName, attrValues);
 		const isStopNode = checkStopNode(matcher, stopNodeExpressions);
@@ -34639,7 +35233,7 @@ function arrToStr(arr, options, indentation, matcher, stopNodeExpressions, qName
 		if (newIdentation !== "") newIdentation += options.indentBy;
 		const tagStart = indentation + `<${tagName}${attr_to_str(tagObj[":@"], options, isStopNode, matcher, qNameValidator)}`;
 		let tagValue;
-		if (isStopNode) tagValue = getRawContent(tagObj[rawTagName], options);
+		if (isStopNode) tagValue = getRawContent(tagObj[rawTagName], options, matcher.getDepth());
 		else tagValue = arrToStr(tagObj[rawTagName], options, newIdentation, matcher, stopNodeExpressions, qNameValidator);
 		if (options.unpairedTags.indexOf(tagName) !== -1) {
 			if (options.suppressUnpairedNode) xmlStr += tagStart + ">";
@@ -34677,7 +35271,8 @@ function extractAttributeValues(attrMap, options) {
 * Extract raw content from a stopNode without any processing
 * This preserves the content exactly as-is, including special characters
 */
-function getRawContent(arr, options) {
+function getRawContent(arr, options, depth = 0) {
+	if (options.maxNestedTags && depth > options.maxNestedTags) throw new Error("Maximum nested tags exceeded");
 	if (!Array.isArray(arr)) {
 		if (arr !== void 0 && arr !== null) return valToStr(arr);
 		return "";
@@ -34692,7 +35287,7 @@ function getRawContent(arr, options) {
 		else if (tagName && tagName[0] === "?") continue;
 		else if (tagName) {
 			const attStr = attr_to_str_raw(item[":@"], options);
-			const nestedContent = getRawContent(item[tagName], options);
+			const nestedContent = getRawContent(item[tagName], options, depth + 1);
 			if (!nestedContent || nestedContent.length === 0) content += `<${tagName}${attStr}/>`;
 			else content += `<${tagName}${attStr}>${nestedContent}</${tagName}>`;
 		}
@@ -34729,7 +35324,7 @@ function attr_to_str(attrMap, options, isStopNode, matcher, qNameValidator) {
 	if (attrMap && !options.ignoreAttributes) for (let attr in attrMap) {
 		if (!Object.prototype.hasOwnProperty.call(attrMap, attr)) continue;
 		const cleanAttrName = attr.substr(options.attributeNamePrefix.length);
-		const resolvedAttrName = isStopNode ? cleanAttrName : resolveTagName$1(cleanAttrName, true, options, matcher, qNameValidator);
+		const resolvedAttrName = isStopNode ? cleanAttrName : resolveName(cleanAttrName, true, options, matcher, qNameValidator);
 		let attrVal;
 		if (isStopNode) attrVal = attrMap[attr];
 		else {
@@ -34753,7 +35348,7 @@ function replaceEntitiesValue(textValue, options) {
 	}
 	return textValue;
 }
-// node_modules/.pnpm/fast-xml-builder@1.3.1/node_modules/fast-xml-builder/src/ignoreAttributes.js
+// node_modules/.pnpm/fast-xml-builder@1.3.2/node_modules/fast-xml-builder/src/ignoreAttributes.js
 function getIgnoreAttributesFn(ignoreAttributes) {
 	if (typeof ignoreAttributes === "function") return ignoreAttributes;
 	if (Array.isArray(ignoreAttributes)) return (attrName) => {
@@ -34764,7 +35359,7 @@ function getIgnoreAttributesFn(ignoreAttributes) {
 	};
 	return () => false;
 }
-// node_modules/.pnpm/fast-xml-builder@1.3.1/node_modules/fast-xml-builder/src/fxb.js
+// node_modules/.pnpm/fast-xml-builder@1.3.2/node_modules/fast-xml-builder/src/fxb.js
 var defaultOptions = {
 	attributeNamePrefix: "@_",
 	attributesGroupName: false,
@@ -34864,26 +35459,6 @@ function detectXmlVersionFromObj(jObj, options) {
 	}
 	return "1.0";
 }
-/**
-* Resolve a tag or attribute name through sanitizeName if configured.
-* Validation via xml-naming's qName is performed first; the sanitizeName
-* callback is invoked only when the name is invalid. If sanitizeName is
-* false (default), no validation occurs and the name is used as-is.
-*
-* @param {string}  name        - raw name from the JS object
-* @param {boolean} isAttribute - true when resolving an attribute name
-* @param {object}  options
-* @param {Matcher} matcher     - current matcher state (readonly from callback perspective)
-* @param {function} qNameValidator - function to validate tag names
-*/
-function resolveTagName(name, isAttribute, options, matcher, qNameValidator) {
-	if (!options.sanitizeName) return name;
-	if (qNameValidator(name)) return name;
-	return options.sanitizeName(name, {
-		isAttribute,
-		matcher: matcher.readOnly()
-	});
-}
 Builder.prototype.build = function(jObj) {
 	if (this.options.preserveOrder) return toXml(jObj, this.options);
 	else {
@@ -34901,7 +35476,7 @@ Builder.prototype.j2x = function(jObj, level, matcher, qNameValidator) {
 	const isCurrentStopNode = this.checkStopNode(matcher);
 	for (let key in jObj) {
 		if (!Object.prototype.hasOwnProperty.call(jObj, key)) continue;
-		const resolvedKey = key === this.options.textNodeName || key === this.options.cdataPropName || key === this.options.commentPropName || this.options.attributesGroupName && key === this.options.attributesGroupName || this.isAttribute(key) || key[0] === "?" ? key : resolveTagName(key, false, this.options, matcher, qNameValidator);
+		const resolvedKey = key === this.options.textNodeName || key === this.options.cdataPropName || key === this.options.commentPropName || this.options.attributesGroupName && key === this.options.attributesGroupName || this.isAttribute(key) ? key : resolveName(key, false, this.options, matcher, qNameValidator);
 		if (typeof jObj[key] === "undefined") {
 			if (this.isAttribute(key)) val += "";
 		} else if (jObj[key] === null) {
@@ -34913,7 +35488,7 @@ Builder.prototype.j2x = function(jObj, level, matcher, qNameValidator) {
 		else if (typeof jObj[key] !== "object") {
 			const attr = this.isAttribute(key);
 			if (attr && !this.ignoreAttributesFn(attr, jPath)) {
-				const resolvedAttr = resolveTagName(attr, true, this.options, matcher, qNameValidator);
+				const resolvedAttr = resolveName(attr, true, this.options, matcher, qNameValidator);
 				attrStr += this.buildAttrPairStr(resolvedAttr, valToStr(jObj[key]), isCurrentStopNode);
 			} else if (!attr) {
 				if (key === this.options.textNodeName) {
@@ -34969,7 +35544,7 @@ Builder.prototype.j2x = function(jObj, level, matcher, qNameValidator) {
 			const Ks = Object.keys(jObj[key]);
 			const L = Ks.length;
 			for (let j = 0; j < L; j++) {
-				const resolvedAttr = resolveTagName(Ks[j], true, this.options, matcher, qNameValidator);
+				const resolvedAttr = resolveName(Ks[j], true, this.options, matcher, qNameValidator);
 				attrStr += this.buildAttrPairStr(resolvedAttr, valToStr(jObj[key][Ks[j]]), isCurrentStopNode);
 			}
 		} else val += this.processTextOrObjNode(jObj[key], resolvedKey, level, matcher, qNameValidator);
@@ -34991,7 +35566,7 @@ function processTextOrObjNode(object, key, level, matcher, qNameValidator) {
 	const attrValues = this.extractAttributes(object);
 	matcher.push(key, attrValues);
 	if (this.checkStopNode(matcher)) {
-		const rawContent = this.buildRawContent(object);
+		const rawContent = this.buildRawContent(object, matcher.getDepth());
 		const attrStr = this.buildAttributesForStopNode(object);
 		matcher.pop();
 		return this.buildObjectNode(rawContent, key, attrStr, level);
@@ -35024,7 +35599,8 @@ Builder.prototype.extractAttributes = function(obj) {
 	}
 	return hasAttrs ? attrValues : null;
 };
-Builder.prototype.buildRawContent = function(obj) {
+Builder.prototype.buildRawContent = function(obj, depth = 0) {
+	if (this.options.maxNestedTags && depth >= this.options.maxNestedTags) throw new Error("Maximum nested tags exceeded");
 	if (typeof obj === "string") return obj;
 	if (typeof obj !== "object" || obj === null) return String(obj);
 	if (obj[this.options.textNodeName] !== void 0) return obj[this.options.textNodeName];
@@ -35038,13 +35614,13 @@ Builder.prototype.buildRawContent = function(obj) {
 		else if (Array.isArray(value)) {
 			for (let item of value) if (typeof item === "string" || typeof item === "number") content += `<${key}>${item}</${key}>`;
 			else if (typeof item === "object" && item !== null) {
-				const nestedContent = this.buildRawContent(item);
+				const nestedContent = this.buildRawContent(item, depth + 1);
 				const nestedAttrs = this.buildAttributesForStopNode(item);
 				if (nestedContent === "") content += `<${key}${nestedAttrs}/>`;
 				else content += `<${key}${nestedAttrs}>${nestedContent}</${key}>`;
 			}
 		} else if (typeof value === "object" && value !== null) {
-			const nestedContent = this.buildRawContent(value);
+			const nestedContent = this.buildRawContent(value, depth + 1);
 			const nestedAttrs = this.buildAttributesForStopNode(value);
 			if (nestedContent === "") content += `<${key}${nestedAttrs}/>`;
 			else content += `<${key}${nestedAttrs}>${nestedContent}</${key}>`;
@@ -35135,11 +35711,11 @@ function isAttribute(name) {
 	if (name.startsWith(this.options.attributeNamePrefix) && name !== this.options.textNodeName) return name.substr(this.attrPrefixLen);
 	else return false;
 }
-// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
+// node_modules/.pnpm/fast-xml-parser@5.12.1/node_modules/fast-xml-parser/src/xmlbuilder/json2xml.js
 var json2xml_default = Builder;
-// node_modules/.pnpm/fast-xml-parser@5.12.0/node_modules/fast-xml-parser/src/fxp.js
+// node_modules/.pnpm/fast-xml-parser@5.12.1/node_modules/fast-xml-parser/src/fxp.js
 var XMLValidator = { validate };
-// node_modules/.pnpm/@azure+core-xml@1.6.0/node_modules/@azure/core-xml/dist/esm/xml.js
+// node_modules/.pnpm/@azure+core-xml@1.6.1/node_modules/@azure/core-xml/dist/esm/xml.js
 function getCommonOptions(options) {
 	return {
 		attributesGroupName: "$",
@@ -35207,8 +35783,8 @@ async function parseXML(str, opts = {}) {
 /**
 * The `@azure/logger` configuration for this package.
 */
-var logger$1 = createClientLogger("storage-blob");
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/BuffersStream.js
+var logger$2 = createClientLogger("storage-blob");
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/BuffersStream.js
 /**
 * This class generates a readable stream from the data in an array of buffers.
 */
@@ -35281,7 +35857,7 @@ var BuffersStream = class extends Readable {
 		else if (outBuffers.length === 1) this.push(outBuffers[0]);
 	}
 };
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/PooledBuffer.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/PooledBuffer.js
 /**
 * maxBufferLength is max size of each buffer in the pooled buffers.
 */
@@ -35368,7 +35944,7 @@ var PooledBuffer = class {
 		return new BuffersStream(this.buffers, this.size);
 	}
 };
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/BufferScheduler.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/BufferScheduler.js
 /**
 * This class accepts a Node.js Readable stream as input, and keeps reading data
 * from the stream into the internal buffer structure, until it reaches maxBuffers.
@@ -35609,7 +36185,9 @@ var BufferScheduler = class {
 		if (!this.isError && this.resolveData() && !this.isStreamEnd) this.readable.resume();
 	}
 };
-// node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/restError.js
+// node_modules/.pnpm/@azure+core-rest-pipeline@1.25.1_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/log.js
+var logger$1 = createClientLogger("core-rest-pipeline");
+// node_modules/.pnpm/@azure+core-rest-pipeline@1.25.1_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/restError.js
 /**
 * A custom error type for failed pipeline requests.
 */
@@ -35621,7 +36199,7 @@ var RestError = RestError$2;
 function isRestError(e) {
 	return isRestError$2(e);
 }
-// node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/util/wrapAbortSignal.js
+// node_modules/.pnpm/@azure+core-rest-pipeline@1.25.1_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/util/wrapAbortSignal.js
 /**
 * Creates a native AbortSignal which reflects the state of the provided AbortSignalLike.
 * If the AbortSignalLike is already a native AbortSignal, it is returned as is.
@@ -35649,29 +36227,80 @@ function wrapAbortSignalLike(abortSignalLike) {
 		cleanup
 	};
 }
-// node_modules/.pnpm/@azure+core-rest-pipeline@1.25.0_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/defaultHttpClient.js
+// node_modules/.pnpm/@azure+core-rest-pipeline@1.25.1_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/util/cleanupOnCompletion.js
+/**
+* Runs the cleanup callback associated with the response and its request once they are complete.
+*/
+function cleanupOnRequestResponseCompletion(response, cleanup) {
+	const stream = response?.readableStreamBody;
+	const requestCompletion = response ? getRequestCompletion(response) : void 0;
+	const browserResponseCompletion = response ? getResponseBodyCompletion(response) : void 0;
+	let requestDone = requestCompletion === void 0;
+	let nodeResponseDone = !stream || !stream.readable;
+	let browserResponseDone = browserResponseCompletion === void 0;
+	let cleanedUp = false;
+	const cleanupIfComplete = () => {
+		if (cleanedUp || !requestDone || !nodeResponseDone || !browserResponseDone) return;
+		cleanedUp = true;
+		cleanup();
+	};
+	const onResponseComplete = () => {
+		stream?.removeListener("end", onResponseComplete);
+		stream?.removeListener("close", onResponseComplete);
+		stream?.removeListener("error", onResponseComplete);
+		nodeResponseDone = true;
+		try {
+			cleanupIfComplete();
+		} catch (error) {
+			logger$1.warning("Error cleaning up after response stream completion", error);
+		}
+	};
+	if (!nodeResponseDone && stream) {
+		stream.once("end", onResponseComplete);
+		stream.once("close", onResponseComplete);
+		stream.once("error", onResponseComplete);
+	}
+	if (requestCompletion) requestCompletion.then(() => {
+		requestDone = true;
+		return cleanupIfComplete();
+	}).catch((error) => {
+		logger$1.warning("Error cleaning up after request completion", error);
+	});
+	if (browserResponseCompletion) browserResponseCompletion.then(() => {
+		browserResponseDone = true;
+		return cleanupIfComplete();
+	}).catch((error) => {
+		logger$1.warning("Error cleaning up after response body completion", error);
+	});
+	cleanupIfComplete();
+}
+// node_modules/.pnpm/@azure+core-rest-pipeline@1.25.1_supports-color@7.2.0/node_modules/@azure/core-rest-pipeline/dist/esm/defaultHttpClient.js
 /**
 * Create the correct HttpClient for the current environment.
 */
 function createDefaultHttpClient() {
 	const client = createDefaultHttpClient$2();
 	return { async sendRequest(request) {
-		const { abortSignal, cleanup } = request.abortSignal ? wrapAbortSignalLike(request.abortSignal) : {};
+		const originalAbortSignal = request.abortSignal;
+		const { abortSignal, cleanup } = originalAbortSignal ? wrapAbortSignalLike(originalAbortSignal) : {};
+		let response;
 		try {
 			request.abortSignal = abortSignal;
-			return await client.sendRequest(request);
+			response = await client.sendRequest(request);
+			return response;
 		} finally {
-			cleanup?.();
+			request.abortSignal = originalAbortSignal;
+			if (cleanup) cleanupOnRequestResponseCompletion(response, cleanup);
 		}
 	} };
 }
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/cache.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/cache.js
 var _defaultHttpClient;
 function getCachedDefaultHttpClient() {
 	if (!_defaultHttpClient) _defaultHttpClient = createDefaultHttpClient();
 	return _defaultHttpClient;
 }
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/RequestPolicy.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/RequestPolicy.js
 /**
 * The base class from which all request policies derive.
 */
@@ -35703,7 +36332,7 @@ var BaseRequestPolicy = class {
 		this._options.log(logLevel, message);
 	}
 };
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageBrowserPolicy.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageBrowserPolicy.js
 /**
 * StorageBrowserPolicy will handle differences between Node.js and browser runtime, including:
 *
@@ -35735,7 +36364,7 @@ var StorageBrowserPolicy = class extends BaseRequestPolicy {
 		return this._nextPolicy.sendRequest(request);
 	}
 };
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/StorageBrowserPolicyFactory.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/StorageBrowserPolicyFactory.js
 /**
 * StorageBrowserPolicyFactory is a factory class helping generating StorageBrowserPolicy objects.
 */
@@ -35750,7 +36379,7 @@ var StorageBrowserPolicyFactory = class {
 		return new StorageBrowserPolicy(nextPolicy, options);
 	}
 };
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/CredentialPolicy.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/CredentialPolicy.js
 /**
 * Credential policy used to sign HTTP(S) requests before sending. This is an
 * abstract class.
@@ -35774,7 +36403,7 @@ var CredentialPolicy = class extends BaseRequestPolicy {
 		return request;
 	}
 };
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/AnonymousCredentialPolicy.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/AnonymousCredentialPolicy.js
 /**
 * AnonymousCredentialPolicy is used with HTTP(S) requests that read public resources
 * or for use with Shared Access Signatures (SAS).
@@ -35789,7 +36418,7 @@ var AnonymousCredentialPolicy = class extends CredentialPolicy {
 		super(nextPolicy, options);
 	}
 };
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/credentials/Credential.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/credentials/Credential.js
 /**
 * Credential is an abstract class for Azure Storage HTTP requests signing. This
 * class will host an credentialPolicyCreator factory which generates CredentialPolicy.
@@ -35805,7 +36434,7 @@ var Credential = class {
 		throw new Error("Method should be implemented in children classes.");
 	}
 };
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/credentials/AnonymousCredential.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/credentials/AnonymousCredential.js
 /**
 * AnonymousCredential provides a credentialPolicyCreator member used to create
 * AnonymousCredentialPolicy objects. AnonymousCredentialPolicy is used with
@@ -35823,7 +36452,7 @@ var AnonymousCredential = class extends Credential {
 		return new AnonymousCredentialPolicy(nextPolicy, options);
 	}
 };
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/utils/constants.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/utils/constants.js
 var URLConstants$1 = { Parameters: {
 	FORCE_BROWSER_NO_CACHE: "_",
 	SIGNATURE: "sig",
@@ -35857,7 +36486,7 @@ var HeaderConstants = {
 	X_MS_VERSION: "x-ms-version",
 	X_MS_CopySourceErrorCode: "x-ms-copy-source-error-code"
 };
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/utils/utils.common.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/utils/utils.common.js
 /**
 * Set URL parameter name and value. If name exists in URL parameters, old value
 * will be replaced by name key. If not provide value, the parameter will be deleted.
@@ -35952,7 +36581,7 @@ async function delay(timeInMs, aborter, abortError) {
 		if (aborter !== void 0) aborter.addEventListener("abort", abortHandler);
 	});
 }
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/utils/SharedKeyComparator.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/utils/SharedKeyComparator.js
 var table_lv0 = new Uint32Array([
 	0,
 	0,
@@ -36373,7 +37002,7 @@ function isLessThan(lhs, rhs) {
 	}
 	return false;
 }
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageSharedKeyCredentialPolicy.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageSharedKeyCredentialPolicy.js
 /**
 * StorageSharedKeyCredentialPolicy is a policy used to sign HTTP request with a shared key.
 */
@@ -36485,7 +37114,7 @@ var StorageSharedKeyCredentialPolicy = class extends CredentialPolicy {
 		return canonicalizedResourceString;
 	}
 };
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/credentials/StorageSharedKeyCredential.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/credentials/StorageSharedKeyCredential.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -36528,12 +37157,12 @@ var StorageSharedKeyCredential = class extends Credential {
 		return createHmac("sha256", this.accountKey).update(stringToSign, "utf8").digest("base64");
 	}
 };
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/log.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/log.js
 /**
 * The `@azure/logger` configuration for this package.
 */
 var logger = createClientLogger("storage-common");
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicyType.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicyType.js
 /**
 * RetryPolicy types.
 */
@@ -36548,7 +37177,7 @@ var StorageRetryPolicyType;
 	*/
 	StorageRetryPolicyType[StorageRetryPolicyType["FIXED"] = 1] = "FIXED";
 })(StorageRetryPolicyType || (StorageRetryPolicyType = {}));
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicy.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicy.js
 var DEFAULT_RETRY_OPTIONS$1 = {
 	maxRetryDelayInMs: 12e4,
 	maxTries: 4,
@@ -36697,7 +37326,7 @@ var StorageRetryPolicy = class extends BaseRequestPolicy {
 		return delay(delayTimeInMs, abortSignal, RETRY_ABORT_ERROR$1);
 	}
 };
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/StorageRetryPolicyFactory.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/StorageRetryPolicyFactory.js
 /**
 * StorageRetryPolicyFactory is a factory class helping generating {@link StorageRetryPolicy} objects.
 */
@@ -36720,7 +37349,7 @@ var StorageRetryPolicyFactory = class {
 		return new StorageRetryPolicy(nextPolicy, options, this.retryOptions);
 	}
 };
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageBrowserPolicyV2.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageBrowserPolicyV2.js
 /**
 * The programmatic identifier of the StorageBrowserPolicy.
 */
@@ -36739,7 +37368,7 @@ function storageBrowserPolicy() {
 		}
 	};
 }
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageCorrectContentLengthPolicy.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageCorrectContentLengthPolicy.js
 /**
 * The programmatic identifier of the storageCorrectContentLengthPolicy.
 */
@@ -36759,7 +37388,7 @@ function storageCorrectContentLengthPolicy() {
 		}
 	};
 }
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicyV2.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageRetryPolicyV2.js
 /**
 * Name of the {@link storageRetryPolicy}
 */
@@ -36891,7 +37520,7 @@ function storageRetryPolicy(options = {}) {
 		}
 	};
 }
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageSharedKeyCredentialPolicyV2.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageSharedKeyCredentialPolicyV2.js
 /**
 * The programmatic identifier of the storageSharedKeyCredentialPolicy.
 */
@@ -36987,7 +37616,7 @@ function storageSharedKeyCredentialPolicy(options) {
 		}
 	};
 }
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageRequestFailureDetailsParserPolicy.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/policies/StorageRequestFailureDetailsParserPolicy.js
 /**
 * The programmatic identifier of the StorageRequestFailureDetailsParserPolicy.
 */
@@ -37012,7 +37641,7 @@ function storageRequestFailureDetailsParserPolicy() {
 		}
 	};
 }
-// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.1_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/credentials/UserDelegationKeyCredential.js
+// node_modules/.pnpm/@azure+storage-common@12.5.0_@azure+core-client@1.11.2_supports-color@7.2.0__supports-color@7.2.0/node_modules/@azure/storage-common/dist/esm/credentials/UserDelegationKeyCredential.js
 /**
 * ONLY AVAILABLE IN NODE.JS RUNTIME.
 *
@@ -37327,7 +37956,7 @@ function getCoreClientOptions(pipeline) {
 			loggingOptions: {
 				additionalAllowedHeaderNames: StorageBlobLoggingAllowedHeaderNames,
 				additionalAllowedQueryParameters: StorageBlobLoggingAllowedQueryParameters,
-				logger: logger$1.info
+				logger: logger$2.info
 			},
 			userAgentOptions: { userAgentPrefix },
 			serializationOptions: {
@@ -56010,9 +56639,9 @@ var package_exports = /* @__PURE__ */ __exportAll({
 	repository: () => repository,
 	scripts: () => scripts,
 	type: () => type,
-	types: () => types,
+	types: () => types$1,
 	version: () => version$1
-}), name, version$1, description, keywords, homepage, type, main$1, types, exports$1, directories, files, publishConfig, repository, scripts, bugs, dependencies, devDependencies, overrides, package_default;
+}), name, version$1, description, keywords, homepage, type, main$1, types$1, exports$1, directories, files, publishConfig, repository, scripts, bugs, dependencies, devDependencies, overrides, package_default;
 var init_package = __esmMin((() => {
 	name = "@actions/cache";
 	version$1 = "6.3.0";
@@ -56025,7 +56654,7 @@ var init_package = __esmMin((() => {
 	homepage = "https://github.com/actions/toolkit/tree/main/packages/cache";
 	type = "module";
 	main$1 = "lib/cache.js";
-	types = "lib/cache.d.ts";
+	types$1 = "lib/cache.d.ts";
 	exports$1 = { ".": {
 		"types": "./lib/cache.d.ts",
 		"import": "./lib/cache.js"
@@ -56077,7 +56706,7 @@ var init_package = __esmMin((() => {
 		license: "MIT",
 		type,
 		main: main$1,
-		types,
+		types: types$1,
 		exports: exports$1,
 		directories,
 		files,
