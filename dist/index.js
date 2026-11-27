@@ -1,35 +1,35 @@
 #!/usr/bin/env node
 import { createRequire } from "node:module";
-import * as path$2 from "path";
-import * as fs$1 from "fs";
+import * as path$1 from "path";
+import * as os from "os";
+import os$1, { EOL as EOL$1 } from "os";
+import * as fs from "fs";
 import { constants, existsSync, promises, writeFileSync } from "fs";
-import * as os$2 from "os";
-import os, { EOL } from "os";
 import * as crypto from "crypto";
-import * as http$1 from "http";
-import * as https$1 from "https";
+import * as http from "http";
+import * as https from "https";
 import * as events from "events";
 import { EventEmitter } from "events";
-import assert, { ok } from "assert";
-import * as util$1 from "util";
-import http from "node:http";
-import { Readable, Transform, finished } from "node:stream";
-import buffer from "node:buffer";
-import util, { inspect, types } from "node:util";
-import zlib from "node:zlib";
-import { createHmac } from "node:crypto";
-import * as child from "child_process";
+import assert$1, { ok } from "assert";
+import * as util from "util";
 import { setTimeout as setTimeout$1 } from "timers";
-import path from "node:path";
+import path$2 from "node:path";
+import { URL as URL$1 } from "url";
+import os$2, { EOL as EOL$2, tmpdir } from "node:os";
+import util$1, { inspect, types as types$2 } from "node:util";
+import process$1 from "node:process";
+import * as child from "child_process";
+import { Readable, Transform, finished } from "node:stream";
+import * as buffer from "buffer";
+import { Buffer as Buffer$1 } from "buffer";
+import { createHmac } from "node:crypto";
+import buffer$1 from "node:buffer";
 import * as stream from "stream";
 import { Readable as Readable$1 } from "stream";
-import { URL as URL$1 } from "url";
-import os$1, { EOL as EOL$1, tmpdir } from "node:os";
-import process$1 from "node:process";
-import https from "node:https";
-import * as buffer$1 from "buffer";
-import { Buffer as Buffer$1 } from "buffer";
-import fs from "node:fs";
+import http$1 from "node:http";
+import https$1 from "node:https";
+import zlib from "node:zlib";
+import fs$1 from "node:fs";
 // \0rolldown/runtime.js
 var __create = Object.create;
 var __defProp$1 = Object.defineProperty;
@@ -50,14 +50,14 @@ var __esmMin = (fn, res, err) => () => {
 	}
 };
 var __commonJSMin = (cb, mod) => () => (mod || (cb((mod = { exports: {} }).exports, mod, mod.exports), cb = null), mod.exports);
-var __exportAll = (all, no_symbols) => {
-	let target = {};
+var __exportAll = (all, flags) => {
+	let target = Object.setPrototypeOf({}, null);
 	for (var name in all) __defProp$1(target, name, {
 		get: all[name],
 		enumerable: true
 	});
-	if (!no_symbols) __defProp$1(target, Symbol.toStringTag, { value: "Module" });
-	return target;
+	if (!(flags & 1)) __defProp$1(target, Symbol.toStringTag, { value: "Module" });
+	return flags & 2 ? target : Object.preventExtensions(target);
 };
 var __copyProps = (to, from, except, desc) => {
 	if (from && typeof from === "object" || typeof from === "function") for (var keys = __getOwnPropNames(from), i = 0, n = keys.length, key; i < n; i++) {
@@ -1397,7 +1397,7 @@ var require_source_map_consumer = /* @__PURE__ */ __commonJSMin(((exports) => {
 					continue;
 				}
 			}
-			mapping.lastGeneratedColumn = Infinity;
+			mapping.lastGeneratedColumn = 1e400;
 		}
 	};
 	/**
@@ -2546,7 +2546,7 @@ function toCommandProperties(annotationProperties) {
 */
 function issueCommand(command, properties, message) {
 	const cmd = new Command(command, properties, message);
-	process.stdout.write(cmd.toString() + os$2.EOL);
+	process.stdout.write(cmd.toString() + os.EOL);
 }
 function issue(name, message = "") {
 	issueCommand(name, {}, message);
@@ -2600,8 +2600,7 @@ function getProxyUrl(reqUrl) {
 }
 function checkBypass(reqUrl) {
 	if (!reqUrl.hostname) return false;
-	const reqHost = reqUrl.hostname;
-	if (isLoopbackAddress(reqHost)) return true;
+	if (isLoopbackAddress(reqUrl.hostname)) return true;
 	const noProxy = process.env["no_proxy"] || process.env["NO_PROXY"] || "";
 	if (!noProxy) return false;
 	let reqPort;
@@ -4384,7 +4383,7 @@ var require_dispatcher_base = /* @__PURE__ */ __commonJSMin(((exports, module) =
 		get webSocketOptions() {
 			return {
 				maxFragments: this[kWebSocketOptions].maxFragments ?? 131072,
-				maxPayloadSize: this[kWebSocketOptions].maxPayloadSize ?? 134217728
+				maxPayloadSize: this[kWebSocketOptions].maxPayloadSize ?? 0x8000000
 			};
 		}
 		get eventSourceOptions() {
@@ -7701,9 +7700,7 @@ Content-Type: ${value.type || "application/octet-stream"}\r\n\r\n`);
 	* @param {import('./response').Response|import('./request').Request} requestOrResponse
 	*/
 	function bodyMimeType(requestOrResponse) {
-		/** @type {import('./headers').HeadersList} */
-		const headers = requestOrResponse[kState].headersList;
-		const mimeType = extractMimeType(headers);
+		const mimeType = extractMimeType(requestOrResponse[kState].headersList);
 		if (mimeType === "failure") return null;
 		return mimeType;
 	}
@@ -8684,7 +8681,7 @@ var require_client_h2 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		});
 		return {
 			version: "h2",
-			defaultPipelining: Infinity,
+			defaultPipelining: 1e400,
 			write(...args) {
 				return writeH2(client, ...args);
 			},
@@ -12069,7 +12066,7 @@ var require_pending_interceptors_formatter = /* @__PURE__ */ __commonJSMin(((exp
 				"Status code": statusCode,
 				Persistent: persist ? PERSISTENT : NOT_PERSISTENT,
 				Invocations: timesInvoked,
-				Remaining: persist ? Infinity : times - timesInvoked
+				Remaining: persist ? 1e400 : times - timesInvoked
 			}));
 			this.logger.table(withPrettyHeaders);
 			return this.transform.read().toString();
@@ -12519,7 +12516,7 @@ var require_dns = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			pick: interceptorOpts?.pick ?? null,
 			dualStack,
 			affinity,
-			maxItems: interceptorOpts?.maxItems ?? Infinity
+			maxItems: interceptorOpts?.maxItems ?? 1e400
 		});
 		return (dispatch) => {
 			return function dnsInterceptor(origDispatchOpts, handler) {
@@ -15594,7 +15591,7 @@ var require_cache = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			}
 			return true;
 		}
-		#internalMatchAll(request, options, maxResponses = Infinity) {
+		#internalMatchAll(request, options, maxResponses = 1e400) {
 			let r = null;
 			if (request !== void 0) {
 				if (request instanceof Request) {
@@ -18976,7 +18973,7 @@ var HttpClient = class {
 		const info = {};
 		info.parsedUrl = requestUrl;
 		const usingSsl = info.parsedUrl.protocol === "https:";
-		info.httpModule = usingSsl ? https$1 : http$1;
+		info.httpModule = usingSsl ? https : http;
 		const defaultPort = usingSsl ? 443 : 80;
 		info.options = {};
 		info.options.host = info.parsedUrl.hostname;
@@ -19046,7 +19043,7 @@ var HttpClient = class {
 		if (agent) return agent;
 		const usingSsl = parsedUrl.protocol === "https:";
 		let maxSockets = 100;
-		if (this.requestOptions) maxSockets = this.requestOptions.maxSockets || http$1.globalAgent.maxSockets;
+		if (this.requestOptions) maxSockets = this.requestOptions.maxSockets || http.globalAgent.maxSockets;
 		if (proxyUrl && proxyUrl.hostname) {
 			const agentOptions = {
 				maxSockets,
@@ -19068,7 +19065,7 @@ var HttpClient = class {
 				keepAlive: this._keepAlive,
 				maxSockets
 			};
-			agent = usingSsl ? new https$1.Agent(options) : new http$1.Agent(options);
+			agent = usingSsl ? new https.Agent(options) : new http.Agent(options);
 			this._agent = agent;
 		}
 		if (usingSsl && this._ignoreSslError) agent.options = Object.assign(agent.options || {}, { rejectUnauthorized: false });
@@ -19323,7 +19320,7 @@ var Summary = class {
 	* @returns {Summary} summary instance
 	*/
 	addEOL() {
-		return this.addRaw(EOL);
+		return this.addRaw(EOL$1);
 	}
 	/**
 	* Adds an HTML codeblock to the summary buffer
@@ -19497,9 +19494,9 @@ var __awaiter$16 = function(thisArg, _arguments, P, generator) {
 		step((generator = generator.apply(thisArg, _arguments || [])).next());
 	});
 };
-var { chmod, copyFile, lstat, mkdir, open, readdir, rename, rm, rmdir, stat, symlink, unlink } = fs$1.promises;
+var { chmod, copyFile, lstat, mkdir, open, readdir, rename, rm, rmdir, stat, symlink, unlink } = fs.promises;
 var IS_WINDOWS$7 = process.platform === "win32";
-fs$1.constants.O_RDONLY;
+fs.constants.O_RDONLY;
 function exists(fsPath) {
 	return __awaiter$16(this, void 0, void 0, function* () {
 		try {
@@ -19537,7 +19534,7 @@ function tryGetExecutablePath(filePath, extensions) {
 		}
 		if (stats && stats.isFile()) {
 			if (IS_WINDOWS$7) {
-				const upperExt = path$2.extname(filePath).toUpperCase();
+				const upperExt = path$1.extname(filePath).toUpperCase();
 				if (extensions.some((validExt) => validExt.toUpperCase() === upperExt)) return filePath;
 			} else if (isUnixExecutable(stats)) return filePath;
 		}
@@ -19553,10 +19550,10 @@ function tryGetExecutablePath(filePath, extensions) {
 			if (stats && stats.isFile()) {
 				if (IS_WINDOWS$7) {
 					try {
-						const directory = path$2.dirname(filePath);
-						const upperName = path$2.basename(filePath).toUpperCase();
+						const directory = path$1.dirname(filePath);
+						const upperName = path$1.basename(filePath).toUpperCase();
 						for (const actualName of yield readdir(directory)) if (upperName === actualName.toUpperCase()) {
-							filePath = path$2.join(directory, actualName);
+							filePath = path$1.join(directory, actualName);
 							break;
 						}
 					} catch (err) {
@@ -19678,21 +19675,21 @@ function findInPath(tool) {
 		if (!tool) throw new Error("parameter 'tool' is required");
 		const extensions = [];
 		if (IS_WINDOWS$7 && process.env["PATHEXT"]) {
-			for (const extension of process.env["PATHEXT"].split(path$2.delimiter)) if (extension) extensions.push(extension);
+			for (const extension of process.env["PATHEXT"].split(path$1.delimiter)) if (extension) extensions.push(extension);
 		}
 		if (isRooted(tool)) {
 			const filePath = yield tryGetExecutablePath(tool, extensions);
 			if (filePath) return [filePath];
 			return [];
 		}
-		if (tool.includes(path$2.sep)) return [];
+		if (tool.includes(path$1.sep)) return [];
 		const directories = [];
 		if (process.env.PATH) {
-			for (const p of process.env.PATH.split(path$2.delimiter)) if (p) directories.push(p);
+			for (const p of process.env.PATH.split(path$1.delimiter)) if (p) directories.push(p);
 		}
 		const matches = [];
 		for (const directory of directories) {
-			const filePath = yield tryGetExecutablePath(path$2.join(directory, tool), extensions);
+			const filePath = yield tryGetExecutablePath(path$1.join(directory, tool), extensions);
 			if (filePath) matches.push(filePath);
 		}
 		return matches;
@@ -19762,11 +19759,11 @@ var ToolRunner = class extends events.EventEmitter {
 	_processLineBuffer(data, strBuffer, onLine) {
 		try {
 			let s = strBuffer + data.toString();
-			let n = s.indexOf(os$2.EOL);
+			let n = s.indexOf(os.EOL);
 			while (n > -1) {
 				onLine(s.substring(0, n));
-				s = s.substring(n + os$2.EOL.length);
-				n = s.indexOf(os$2.EOL);
+				s = s.substring(n + os.EOL.length);
+				n = s.indexOf(os.EOL);
 			}
 			return s;
 		} catch (err) {
@@ -19899,14 +19896,14 @@ var ToolRunner = class extends events.EventEmitter {
 	*/
 	exec() {
 		return __awaiter$14(this, void 0, void 0, function* () {
-			if (!isRooted(this.toolPath) && (this.toolPath.includes("/") || IS_WINDOWS$6 && this.toolPath.includes("\\"))) this.toolPath = path$2.resolve(process.cwd(), this.options.cwd || process.cwd(), this.toolPath);
+			if (!isRooted(this.toolPath) && (this.toolPath.includes("/") || IS_WINDOWS$6 && this.toolPath.includes("\\"))) this.toolPath = path$1.resolve(process.cwd(), this.options.cwd || process.cwd(), this.toolPath);
 			this.toolPath = yield which(this.toolPath, true);
 			return new Promise((resolve, reject) => __awaiter$14(this, void 0, void 0, function* () {
 				this._debug(`exec tool: ${this.toolPath}`);
 				this._debug("arguments:");
 				for (const arg of this.args) this._debug(`   ${arg}`);
 				const optionsNonNull = this._cloneExecOptions(this.options);
-				if (!optionsNonNull.silent && optionsNonNull.outStream) optionsNonNull.outStream.write(this._getCommandString(optionsNonNull) + os$2.EOL);
+				if (!optionsNonNull.silent && optionsNonNull.outStream) optionsNonNull.outStream.write(this._getCommandString(optionsNonNull) + os.EOL);
 				const state = new ExecState(optionsNonNull, this.toolPath);
 				state.on("debug", (message) => {
 					this._debug(message);
@@ -20102,8 +20099,8 @@ function exec(commandLine, args, options) {
 		return new ToolRunner(toolPath, args, options).exec();
 	});
 }
-os.platform();
-os.arch();
+os$1.platform();
+os$1.arch();
 /**
 * The code to exit an action
 */
@@ -20216,7 +20213,7 @@ function notice(message, properties = {}) {
 * @param message info message
 */
 function info(message) {
-	process.stdout.write(message + os$2.EOL);
+	process.stdout.write(message + os.EOL);
 }
 /**
 * Begin an output group.
@@ -20317,7 +20314,7 @@ var IS_WINDOWS$5 = process.platform === "win32";
 function dirname(p) {
 	p = safeTrimTrailingSeparator(p);
 	if (IS_WINDOWS$5 && /^\\\\[^\\]+(\\[^\\]+)?$/.test(p)) return p;
-	let result = path$2.dirname(p);
+	let result = path$1.dirname(p);
 	if (IS_WINDOWS$5 && /^\\\\[^\\]+\\[^\\]+\\$/.test(result)) result = safeTrimTrailingSeparator(result);
 	return result;
 }
@@ -20326,13 +20323,13 @@ function dirname(p) {
 * or `C:` are expanded based on the current working directory.
 */
 function ensureAbsoluteRoot(root, itemPath) {
-	assert(root, `ensureAbsoluteRoot parameter 'root' must not be empty`);
-	assert(itemPath, `ensureAbsoluteRoot parameter 'itemPath' must not be empty`);
+	assert$1(root, `ensureAbsoluteRoot parameter 'root' must not be empty`);
+	assert$1(itemPath, `ensureAbsoluteRoot parameter 'itemPath' must not be empty`);
 	if (hasAbsoluteRoot(itemPath)) return itemPath;
 	if (IS_WINDOWS$5) {
 		if (itemPath.match(/^[A-Z]:[^\\/]|^[A-Z]:$/i)) {
 			let cwd = process.cwd();
-			assert(cwd.match(/^[A-Z]:\\/i), `Expected current directory to start with an absolute drive root. Actual '${cwd}'`);
+			assert$1(cwd.match(/^[A-Z]:\\/i), `Expected current directory to start with an absolute drive root. Actual '${cwd}'`);
 			if (itemPath[0].toUpperCase() === cwd[0].toUpperCase()) {
 				if (itemPath.length === 2) return `${itemPath[0]}:\\${cwd.substr(3)}`;
 				else {
@@ -20342,12 +20339,12 @@ function ensureAbsoluteRoot(root, itemPath) {
 			} else return `${itemPath[0]}:\\${itemPath.substr(2)}`;
 		} else if (normalizeSeparators(itemPath).match(/^\\$|^\\[^\\]/)) {
 			const cwd = process.cwd();
-			assert(cwd.match(/^[A-Z]:\\/i), `Expected current directory to start with an absolute drive root. Actual '${cwd}'`);
+			assert$1(cwd.match(/^[A-Z]:\\/i), `Expected current directory to start with an absolute drive root. Actual '${cwd}'`);
 			return `${cwd[0]}:\\${itemPath.substr(1)}`;
 		}
 	}
-	assert(hasAbsoluteRoot(root), `ensureAbsoluteRoot parameter 'root' must have an absolute root`);
-	if (root.endsWith("/") || IS_WINDOWS$5 && root.endsWith("\\")) {} else root += path$2.sep;
+	assert$1(hasAbsoluteRoot(root), `ensureAbsoluteRoot parameter 'root' must have an absolute root`);
+	if (root.endsWith("/") || IS_WINDOWS$5 && root.endsWith("\\")) {} else root += path$1.sep;
 	return root + itemPath;
 }
 /**
@@ -20355,7 +20352,7 @@ function ensureAbsoluteRoot(root, itemPath) {
 * `\\hello\share` and `C:\hello` (and using alternate separator).
 */
 function hasAbsoluteRoot(itemPath) {
-	assert(itemPath, `hasAbsoluteRoot parameter 'itemPath' must not be empty`);
+	assert$1(itemPath, `hasAbsoluteRoot parameter 'itemPath' must not be empty`);
 	itemPath = normalizeSeparators(itemPath);
 	if (IS_WINDOWS$5) return itemPath.startsWith("\\\\") || /^[A-Z]:\\/i.test(itemPath);
 	return itemPath.startsWith("/");
@@ -20365,7 +20362,7 @@ function hasAbsoluteRoot(itemPath) {
 * `\`, `\hello`, `\\hello\share`, `C:`, and `C:\hello` (and using alternate separator).
 */
 function hasRoot(itemPath) {
-	assert(itemPath, `isRooted parameter 'itemPath' must not be empty`);
+	assert$1(itemPath, `isRooted parameter 'itemPath' must not be empty`);
 	itemPath = normalizeSeparators(itemPath);
 	if (IS_WINDOWS$5) return itemPath.startsWith("\\") || /^[A-Z]:/i.test(itemPath);
 	return itemPath.startsWith("/");
@@ -20388,8 +20385,8 @@ function normalizeSeparators(p) {
 function safeTrimTrailingSeparator(p) {
 	if (!p) return "";
 	p = normalizeSeparators(p);
-	if (!p.endsWith(path$2.sep)) return p;
-	if (p === path$2.sep) return p;
+	if (!p.endsWith(path$1.sep)) return p;
+	if (p === path$1.sep) return p;
 	if (IS_WINDOWS$5 && /^[A-Z]:\\$/i.test(p)) return p;
 	return p.substr(0, p.length - 1);
 }
@@ -20932,14 +20929,14 @@ var unescape = (s, { windowsPathsNoEscape = false, magicalBraces = true } = {}) 
 };
 // node_modules/.pnpm/minimatch@10.2.6/node_modules/minimatch/dist/esm/ast.js
 var _a;
-var types$2 = /* @__PURE__ */ new Set([
+var types$1 = /* @__PURE__ */ new Set([
 	"!",
 	"?",
 	"+",
 	"*",
 	"@"
 ]);
-var isExtglobType = (c) => types$2.has(c);
+var isExtglobType = (c) => types$1.has(c);
 var isExtglobAST = (c) => isExtglobType(c.type);
 var adoptionMap = /* @__PURE__ */ new Map([
 	["!", ["@"]],
@@ -21511,11 +21508,11 @@ var qmarksTestNoExtDot = ([$0]) => {
 };
 /* c8 ignore start */
 var defaultPlatform = typeof process === "object" && process ? typeof process.env === "object" && process.env && process.env.__MINIMATCH_TESTING_PLATFORM__ || process.platform : "posix";
-var path$1 = {
+var path = {
 	win32: { sep: "\\" },
 	posix: { sep: "/" }
 };
-minimatch.sep = defaultPlatform === "win32" ? path$1.win32.sep : path$1.posix.sep;
+minimatch.sep = defaultPlatform === "win32" ? path.win32.sep : path.posix.sep;
 var GLOBSTAR = Symbol("globstar **");
 minimatch.GLOBSTAR = GLOBSTAR;
 var star = "[^/]*?";
@@ -22087,14 +22084,14 @@ var Path = class {
 	constructor(itemPath) {
 		this.segments = [];
 		if (typeof itemPath === "string") {
-			assert(itemPath, `Parameter 'itemPath' must not be empty`);
+			assert$1(itemPath, `Parameter 'itemPath' must not be empty`);
 			itemPath = safeTrimTrailingSeparator(itemPath);
-			if (!hasRoot(itemPath)) this.segments = itemPath.split(path$2.sep);
+			if (!hasRoot(itemPath)) this.segments = itemPath.split(path$1.sep);
 			else {
 				let remaining = itemPath;
 				let dir = dirname(remaining);
 				while (dir !== remaining) {
-					const basename = path$2.basename(remaining);
+					const basename = path$1.basename(remaining);
 					this.segments.unshift(basename);
 					remaining = dir;
 					dir = dirname(remaining);
@@ -22102,17 +22099,17 @@ var Path = class {
 				this.segments.unshift(remaining);
 			}
 		} else {
-			assert(itemPath.length > 0, `Parameter 'itemPath' must not be an empty array`);
+			assert$1(itemPath.length > 0, `Parameter 'itemPath' must not be an empty array`);
 			for (let i = 0; i < itemPath.length; i++) {
 				let segment = itemPath[i];
-				assert(segment, `Parameter 'itemPath' must not contain any empty segments`);
+				assert$1(segment, `Parameter 'itemPath' must not contain any empty segments`);
 				segment = normalizeSeparators(itemPath[i]);
 				if (i === 0 && hasRoot(segment)) {
 					segment = safeTrimTrailingSeparator(segment);
-					assert(segment === dirname(segment), `Parameter 'itemPath' root segment contains information for multiple segments`);
+					assert$1(segment === dirname(segment), `Parameter 'itemPath' root segment contains information for multiple segments`);
 					this.segments.push(segment);
 				} else {
-					assert(!segment.includes(path$2.sep), `Parameter 'itemPath' contains unexpected path separators`);
+					assert$1(!segment.includes(path$1.sep), `Parameter 'itemPath' contains unexpected path separators`);
 					this.segments.push(segment);
 				}
 			}
@@ -22123,10 +22120,10 @@ var Path = class {
 	*/
 	toString() {
 		let result = this.segments[0];
-		let skipSlash = result.endsWith(path$2.sep) || IS_WINDOWS$3 && /^[A-Z]:$/i.test(result);
+		let skipSlash = result.endsWith(path$1.sep) || IS_WINDOWS$3 && /^[A-Z]:$/i.test(result);
 		for (let i = 1; i < this.segments.length; i++) {
 			if (skipSlash) skipSlash = false;
-			else result += path$2.sep;
+			else result += path$1.sep;
 			result += this.segments[i];
 		}
 		return result;
@@ -22144,9 +22141,9 @@ var Pattern = class Pattern {
 		if (typeof patternOrNegate === "string") pattern = patternOrNegate.trim();
 		else {
 			segments = segments || [];
-			assert(segments.length, `Parameter 'segments' must not empty`);
+			assert$1(segments.length, `Parameter 'segments' must not empty`);
 			const root = Pattern.getLiteral(segments[0]);
-			assert(root && hasAbsoluteRoot(root), `Parameter 'segments' first element must be a root path`);
+			assert$1(root && hasAbsoluteRoot(root), `Parameter 'segments' first element must be a root path`);
 			pattern = new Path(segments).toString().trim();
 			if (patternOrNegate) pattern = `!${pattern}`;
 		}
@@ -22156,7 +22153,7 @@ var Pattern = class Pattern {
 		}
 		pattern = Pattern.fixupPattern(pattern, homedir);
 		this.segments = new Path(pattern).segments;
-		this.trailingSeparator = normalizeSeparators(pattern).endsWith(path$2.sep);
+		this.trailingSeparator = normalizeSeparators(pattern).endsWith(path$1.sep);
 		pattern = safeTrimTrailingSeparator(pattern);
 		let foundGlob = false;
 		const searchSegments = this.segments.map((x) => Pattern.getLiteral(x)).filter((x) => !foundGlob && !(foundGlob = x === ""));
@@ -22180,7 +22177,7 @@ var Pattern = class Pattern {
 	match(itemPath) {
 		if (this.segments[this.segments.length - 1] === "**") {
 			itemPath = normalizeSeparators(itemPath);
-			if (!itemPath.endsWith(path$2.sep) && this.isImplicitPattern === false) itemPath = `${itemPath}${path$2.sep}`;
+			if (!itemPath.endsWith(path$1.sep) && this.isImplicitPattern === false) itemPath = `${itemPath}${path$1.sep}`;
 		} else itemPath = safeTrimTrailingSeparator(itemPath);
 		if (this.minimatch.match(itemPath)) return this.trailingSeparator ? MatchKind.Directory : MatchKind.All;
 		return MatchKind.None;
@@ -22203,16 +22200,16 @@ var Pattern = class Pattern {
 	* Normalizes slashes and ensures absolute root
 	*/
 	static fixupPattern(pattern, homedir) {
-		assert(pattern, "pattern cannot be empty");
+		assert$1(pattern, "pattern cannot be empty");
 		const literalSegments = new Path(pattern).segments.map((x) => Pattern.getLiteral(x));
-		assert(literalSegments.every((x, i) => (x !== "." || i === 0) && x !== ".."), `Invalid pattern '${pattern}'. Relative pathing '.' and '..' is not allowed.`);
-		assert(!hasRoot(pattern) || literalSegments[0], `Invalid pattern '${pattern}'. Root segment must not contain globs.`);
+		assert$1(literalSegments.every((x, i) => (x !== "." || i === 0) && x !== ".."), `Invalid pattern '${pattern}'. Relative pathing '.' and '..' is not allowed.`);
+		assert$1(!hasRoot(pattern) || literalSegments[0], `Invalid pattern '${pattern}'. Root segment must not contain globs.`);
 		pattern = normalizeSeparators(pattern);
-		if (pattern === "." || pattern.startsWith(`.${path$2.sep}`)) pattern = Pattern.globEscape(process.cwd()) + pattern.substr(1);
-		else if (pattern === "~" || pattern.startsWith(`~${path$2.sep}`)) {
-			homedir = homedir || os$2.homedir();
-			assert(homedir, "Unable to determine HOME directory");
-			assert(hasAbsoluteRoot(homedir), `Expected HOME directory to be a rooted path. Actual '${homedir}'`);
+		if (pattern === "." || pattern.startsWith(`.${path$1.sep}`)) pattern = Pattern.globEscape(process.cwd()) + pattern.substr(1);
+		else if (pattern === "~" || pattern.startsWith(`~${path$1.sep}`)) {
+			homedir = homedir || os.homedir();
+			assert$1(homedir, "Unable to determine HOME directory");
+			assert$1(hasAbsoluteRoot(homedir), `Expected HOME directory to be a rooted path. Actual '${homedir}'`);
 			pattern = Pattern.globEscape(homedir) + pattern.substr(1);
 		} else if (IS_WINDOWS$2 && (pattern.match(/^[A-Z]:$/i) || pattern.match(/^[A-Z]:[^\\]/i))) {
 			let root = ensureAbsoluteRoot("C:\\dummy-root", pattern.substr(0, 2));
@@ -22428,7 +22425,7 @@ var DefaultGlobber = class DefaultGlobber {
 			for (const searchPath of getSearchPaths(patterns)) {
 				debug(`Search path '${searchPath}'`);
 				try {
-					yield __await(fs$1.promises.lstat(searchPath));
+					yield __await(fs.promises.lstat(searchPath));
 				} catch (err) {
 					if (err.code === "ENOENT") continue;
 					throw err;
@@ -22443,12 +22440,12 @@ var DefaultGlobber = class DefaultGlobber {
 				if (!match && !partialMatch$1) continue;
 				const stats = yield __await(DefaultGlobber.stat(item, options, traversalChain));
 				if (!stats) continue;
-				if (options.excludeHiddenFiles && path$2.basename(item.path).match(/^\./)) continue;
+				if (options.excludeHiddenFiles && path$1.basename(item.path).match(/^\./)) continue;
 				if (stats.isDirectory()) {
 					if (match & MatchKind.Directory && options.matchDirectories) yield yield __await(item.path);
 					else if (!partialMatch$1) continue;
 					const childLevel = item.level + 1;
-					const childItems = (yield __await(fs$1.promises.readdir(item.path))).map((x) => new SearchState(path$2.join(item.path, x), childLevel));
+					const childItems = (yield __await(fs.promises.readdir(item.path))).map((x) => new SearchState(path$1.join(item.path, x), childLevel));
 					stack.push(...childItems.reverse());
 				} else if (match & MatchKind.File) yield yield __await(item.path);
 			}
@@ -22475,7 +22472,7 @@ var DefaultGlobber = class DefaultGlobber {
 		return __awaiter$10(this, void 0, void 0, function* () {
 			let stats;
 			if (options.followSymbolicLinks) try {
-				stats = yield fs$1.promises.stat(item.path);
+				stats = yield fs.promises.stat(item.path);
 			} catch (err) {
 				if (err.code === "ENOENT") {
 					if (options.omitBrokenSymbolicLinks) {
@@ -22486,9 +22483,9 @@ var DefaultGlobber = class DefaultGlobber {
 				}
 				throw err;
 			}
-			else stats = yield fs$1.promises.lstat(item.path);
+			else stats = yield fs.promises.lstat(item.path);
 			if (stats.isDirectory() && options.followSymbolicLinks) {
-				const realPath = yield fs$1.promises.realpath(item.path);
+				const realPath = yield fs.promises.realpath(item.path);
 				while (traversalChain.length >= item.level) traversalChain.pop();
 				if (traversalChain.some((x) => x === realPath)) {
 					debug(`Symlink cycle detected for path '${item.path}' and realpath '${realPath}'`);
@@ -22546,7 +22543,7 @@ var require_constants = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		MAX_SAFE_COMPONENT_LENGTH: 16,
 		MAX_SAFE_BUILD_LENGTH: 250,
 		MAX_SAFE_INTEGER: Number.MAX_SAFE_INTEGER || 
-		/* istanbul ignore next */ 9007199254740991,
+		/* istanbul ignore next */ 0x1fffffffffffff,
 		WHITESPACE_CHARACTERS: [
 			"	",
 			"\n",
@@ -23117,8 +23114,7 @@ var require_coerce = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			coerceRtlRegex.lastIndex = -1;
 		}
 		if (match === null) return null;
-		const major = match[2];
-		return parse(`${major}.${match[3] || "0"}.${match[4] || "0"}${options.includePrerelease && match[5] ? `-${match[5]}` : ""}${options.includePrerelease && match[6] ? `+${match[6]}` : ""}`, options);
+		return parse(`${match[2]}.${match[3] || "0"}.${match[4] || "0"}${options.includePrerelease && match[5] ? `-${match[5]}` : ""}${options.includePrerelease && match[6] ? `+${match[6]}` : ""}`, options);
 	};
 	module.exports = coerce;
 }));
@@ -24343,15 +24339,15 @@ function createTempDirectory() {
 			if (IS_WINDOWS) baseLocation = process.env["USERPROFILE"] || "C:\\";
 			else if (process.platform === "darwin") baseLocation = "/Users";
 			else baseLocation = "/home";
-			tempDirectory = path$2.join(baseLocation, "actions", "temp");
+			tempDirectory = path$1.join(baseLocation, "actions", "temp");
 		}
-		const dest = path$2.join(tempDirectory, crypto.randomUUID());
+		const dest = path$1.join(tempDirectory, crypto.randomUUID());
 		yield mkdirP(dest);
 		return dest;
 	});
 }
 function getArchiveFileSizeInBytes(filePath) {
-	return fs$1.statSync(filePath).size;
+	return fs.statSync(filePath).size;
 }
 function resolvePaths(patterns) {
 	return __awaiter$7(this, void 0, void 0, function* () {
@@ -24368,7 +24364,7 @@ function resolvePaths(patterns) {
 				_c = _g.value;
 				_e = false;
 				const file = _c;
-				const relativeFile = path$2.relative(workspace, file).replace(new RegExp(`\\${path$2.sep}`, "g"), "/");
+				const relativeFile = path$1.relative(workspace, file).replace(new RegExp(`\\${path$1.sep}`, "g"), "/");
 				debug(`Matched: ${relativeFile}`);
 				if (relativeFile === "") paths.push(".");
 				else paths.push(`${relativeFile}`);
@@ -24387,7 +24383,7 @@ function resolvePaths(patterns) {
 }
 function unlinkFile(filePath) {
 	return __awaiter$7(this, void 0, void 0, function* () {
-		return util$1.promisify(fs$1.unlink)(filePath);
+		return util.promisify(fs.unlink)(filePath);
 	});
 }
 function getVersion(app_1) {
@@ -24425,7 +24421,7 @@ function getCacheFileName(compressionMethod) {
 }
 function getGnuTarPathOnWindows() {
 	return __awaiter$7(this, void 0, void 0, function* () {
-		if (fs$1.existsSync(GnuTarPathOnWindows)) return GnuTarPathOnWindows;
+		if (fs.existsSync(GnuTarPathOnWindows)) return GnuTarPathOnWindows;
 		return (yield getVersion("tar")).toLowerCase().includes("gnu tar") ? which("tar") : "";
 	});
 }
@@ -24486,7 +24482,7 @@ var AbortError$1 = class extends Error {
 };
 // node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/logger/log.js
 function log(message, ...args) {
-	process$1.stderr.write(`${util.format(message, ...args)}${EOL$1}`);
+	process$1.stderr.write(`${util$1.format(message, ...args)}${EOL$2}`);
 }
 // node_modules/.pnpm/@typespec+ts-http-runtime@0.3.11_supports-color@7.2.0/node_modules/@typespec/ts-http-runtime/dist/esm/env.js
 /**
@@ -25674,7 +25670,7 @@ function isStreamComplete(stream) {
 	});
 }
 function isArrayBuffer(body) {
-	return types.isArrayBuffer(body) || ArrayBuffer.isView(body);
+	return types$2.isArrayBuffer(body) || ArrayBuffer.isView(body);
 }
 function arrayBufferToBuffer(body) {
 	if (Buffer.isBuffer(body)) return body;
@@ -25725,7 +25721,7 @@ function createRequestLifecycle(request, options, isInsecure, resolve, reject) {
 	};
 	return {
 		createRequest: (onResponseCallback = onResponse) => {
-			clientRequest = isInsecure ? http.request(options, onResponseCallback) : https.request(options, onResponseCallback);
+			clientRequest = isInsecure ? http$1.request(options, onResponseCallback) : https$1.request(options, onResponseCallback);
 			clientRequest.once("finish", onComplete);
 			clientRequest.once("close", onComplete);
 			return clientRequest;
@@ -25926,16 +25922,16 @@ var NodeHttpClient = class {
 	getOrCreateAgent(request, isInsecure) {
 		const disableKeepAlive = request.disableKeepAlive;
 		if (isInsecure) {
-			if (disableKeepAlive) return http.globalAgent;
-			if (!this.cachedHttpAgent) this.cachedHttpAgent = new http.Agent({ keepAlive: true });
+			if (disableKeepAlive) return http$1.globalAgent;
+			if (!this.cachedHttpAgent) this.cachedHttpAgent = new http$1.Agent({ keepAlive: true });
 			return this.cachedHttpAgent;
 		} else {
-			if (disableKeepAlive && !request.tlsSettings) return https.globalAgent;
+			if (disableKeepAlive && !request.tlsSettings) return https$1.globalAgent;
 			const tlsSettings = request.tlsSettings ?? DEFAULT_TLS_SETTINGS;
 			let agent = this.cachedHttpsAgents.get(tlsSettings);
 			if (agent && agent.options.keepAlive === !disableKeepAlive) return agent;
 			logger$5.info("No cached TLS Agent exist, creating a new Agent");
-			agent = new https.Agent({
+			agent = new https$1.Agent({
 				keepAlive: !disableKeepAlive,
 				...tlsSettings
 			});
@@ -27386,7 +27382,7 @@ var require_dist$2 = /* @__PURE__ */ __commonJSMin(((exports, module, this$4) =>
 			return stack.split("\n").some((l) => l.indexOf("(https.js:") !== -1 || l.indexOf("node:https:") !== -1);
 		}
 		incrementSockets(name) {
-			if (this.maxSockets === Infinity && this.maxTotalSockets === Infinity) return null;
+			if (this.maxSockets === 1e400 && this.maxTotalSockets === 1e400) return null;
 			if (!this.sockets[name]) this.sockets[name] = [];
 			const fakeSocket = new net.Socket({ writable: false });
 			this.sockets[name].push(fakeSocket);
@@ -28183,7 +28179,7 @@ function getHeaderName() {
 */
 async function setPlatformSpecificData(map) {
 	if (process$1 && process$1.versions) {
-		const osInfo = `${os$1.type()} ${os$1.release()}; ${os$1.arch()}`;
+		const osInfo = `${os$2.type()} ${os$2.release()}; ${os$2.arch()}`;
 		const versions = process$1.versions;
 		if (versions.bun) map.set("Bun", `${versions.bun} (${osInfo})`);
 		else if (versions.deno) map.set("Deno", `${versions.deno} (${osInfo})`);
@@ -29957,10 +29953,9 @@ function getOperationArgumentValueFromParameter(operationArguments, parameter, f
 	} else {
 		if (parameterMapper.required) value = {};
 		for (const [propertyName, propertyPath] of Object.entries(parameterPath)) {
-			const propertyMapper = parameterMapper.type.modelProperties[propertyName];
 			const propertyValue = getOperationArgumentValueFromParameter(operationArguments, {
 				parameterPath: propertyPath,
-				mapper: propertyMapper
+				mapper: parameterMapper.type.modelProperties[propertyName]
 			}, fallbackObject);
 			if (propertyValue !== void 0) {
 				if (!value) value = {};
@@ -30032,8 +30027,7 @@ function deserializationPolicy(options = {}) {
 }
 function getOperationResponseMap(parsedResponse) {
 	let result;
-	const request = parsedResponse.request;
-	const operationInfo = getOperationRequestInfo(request);
+	const operationInfo = getOperationRequestInfo(parsedResponse.request);
 	const operationSpec = operationInfo?.operationSpec;
 	if (operationSpec) {
 		if (!operationInfo?.operationResponseGetter) result = operationSpec.responses[parsedResponse.status];
@@ -30042,8 +30036,7 @@ function getOperationResponseMap(parsedResponse) {
 	return result;
 }
 function shouldDeserializeResponse(parsedResponse) {
-	const request = parsedResponse.request;
-	const shouldDeserialize = getOperationRequestInfo(request)?.shouldDeserialize;
+	const shouldDeserialize = getOperationRequestInfo(parsedResponse.request)?.shouldDeserialize;
 	let result;
 	if (shouldDeserialize === void 0) result = true;
 	else if (typeof shouldDeserialize === "boolean") result = shouldDeserialize;
@@ -31956,7 +31949,7 @@ function normalizeProcessEntities(value, htmlEntities) {
 		enabled: value,
 		maxEntitySize: 1e4,
 		maxExpansionDepth: 1e4,
-		maxTotalExpansions: Infinity,
+		maxTotalExpansions: 1e400,
 		maxExpandedLength: 1e5,
 		maxEntityCount: 1e3,
 		allowedTags: null,
@@ -31967,7 +31960,7 @@ function normalizeProcessEntities(value, htmlEntities) {
 		enabled: value.enabled !== false,
 		maxEntitySize: Math.max(1, value.maxEntitySize ?? 1e4),
 		maxExpansionDepth: Math.max(1, value.maxExpansionDepth ?? 1e4),
-		maxTotalExpansions: Math.max(1, value.maxTotalExpansions ?? Infinity),
+		maxTotalExpansions: Math.max(1, value.maxTotalExpansions ?? 1e400),
 		maxExpandedLength: Math.max(1, value.maxExpandedLength ?? 1e5),
 		maxEntityCount: Math.max(1, value.maxEntityCount ?? 1e3),
 		allowedTags: value.allowedTags ?? null,
@@ -32648,7 +32641,7 @@ function parse_int(numStr, base) {
 * @returns {string|number|null} based on infinity option
 */
 function handleInfinity(str, num, options) {
-	const isPositive = num === Infinity;
+	const isPositive = num === 1e400;
 	switch (options.infinity.toLowerCase()) {
 		case "null": return null;
 		case "infinity": return num;
@@ -35136,7 +35129,7 @@ function resolveName(name, isAttribute, options, matcher, validator) {
 	return isPI ? "?" + result : result;
 }
 // node_modules/.pnpm/fast-xml-builder@1.3.2/node_modules/fast-xml-builder/src/orderedJs2Xml.js
-var EOL$2 = "\n";
+var EOL = "\n";
 /**
 * Detect XML version from the first element of the ordered array input.
 * The first element must be a ?xml processing instruction with a version attribute.
@@ -35164,7 +35157,7 @@ function detectXmlVersionFromArray(jArray, options) {
 */
 function toXml(jArray, options) {
 	let indentation = "";
-	if (options.format) indentation = EOL$2;
+	if (options.format) indentation = EOL;
 	const stopNodeExpressions = [];
 	if (options.stopNodes && Array.isArray(options.stopNodes)) for (let i = 0; i < options.stopNodes.length; i++) {
 		const node = options.stopNodes[i];
@@ -35209,15 +35202,13 @@ function arrToStr(arr, options, indentation, matcher, stopNodeExpressions, qName
 			continue;
 		} else if (tagName === options.cdataPropName) {
 			if (isPreviousElementTag) xmlStr += indentation;
-			const val = tagObj[rawTagName][0][options.textNodeName];
-			const safeVal = safeCdata(val);
+			const safeVal = safeCdata(tagObj[rawTagName][0][options.textNodeName]);
 			xmlStr += `<![CDATA[${safeVal}]]>`;
 			isPreviousElementTag = false;
 			matcher.pop();
 			continue;
 		} else if (tagName === options.commentPropName) {
-			const val = tagObj[rawTagName][0][options.textNodeName];
-			const safeVal = safeComment(val);
+			const safeVal = safeComment(tagObj[rawTagName][0][options.textNodeName]);
 			xmlStr += indentation + `<!--${safeVal}-->`;
 			isPreviousElementTag = true;
 			matcher.pop();
@@ -35861,7 +35852,7 @@ var BuffersStream = class extends Readable {
 /**
 * maxBufferLength is max size of each buffer in the pooled buffers.
 */
-var maxBufferLength = buffer.constants.MAX_LENGTH;
+var maxBufferLength = buffer$1.constants.MAX_LENGTH;
 /**
 * This class provides a buffer container which conceptually has no hard size limit.
 * It accepts a capacity, an array of input buffers and the total length of input data.
@@ -53391,7 +53382,7 @@ async function streamToBuffer(stream, buffer, offset, end, encoding) {
 */
 async function readStreamToLocalFile(rs, file) {
 	return new Promise((resolve, reject) => {
-		const ws = fs.createWriteStream(file);
+		const ws = fs$1.createWriteStream(file);
 		rs.on("error", (err) => {
 			reject(err);
 		});
@@ -53407,8 +53398,8 @@ async function readStreamToLocalFile(rs, file) {
 *
 * Promisified version of fs.stat().
 */
-var fsStat = util.promisify(fs.stat);
-var fsCreateReadStream = fs.createReadStream;
+var fsStat = util$1.promisify(fs$1.stat);
+var fsCreateReadStream = fs$1.createReadStream;
 // node_modules/.pnpm/@azure+storage-blob@12.31.0_supports-color@7.2.0/node_modules/@azure/storage-blob/dist/esm/Clients.js
 /**
 * A BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob,
@@ -54137,14 +54128,13 @@ var BlobClient = class BlobClient extends StorageClient {
 			for (let off = offset; off < offset + count; off = off + blockSize) batch.addOperation(async () => {
 				let chunkEnd = offset + count;
 				if (off + blockSize < chunkEnd) chunkEnd = off + blockSize;
-				const stream = (await this.download(off, chunkEnd - off, {
+				await streamToBuffer((await this.download(off, chunkEnd - off, {
 					abortSignal: options.abortSignal,
 					conditions: options.conditions,
 					maxRetryRequests: options.maxRetryRequestsPerBlock,
 					customerProvidedKey: options.customerProvidedKey,
 					tracingOptions: updatedOptions.tracingOptions
-				})).readableStreamBody;
-				await streamToBuffer(stream, buffer, off - offset, chunkEnd - offset);
+				})).readableStreamBody, buffer, off - offset, chunkEnd - offset);
 				transferProgress += chunkEnd - off;
 				if (options.onProgress) options.onProgress({ loadedBytes: transferProgress });
 			});
@@ -55106,7 +55096,7 @@ var BlockBlobClient = class BlockBlobClient extends BlobClient {
 		const maxSingleShotSize = options.maxSingleShotSize ?? 268435456;
 		if (maxSingleShotSize < 0 || maxSingleShotSize > 268435456) throw new RangeError(`maxSingleShotSize option must be >= 0 and <= ${BLOCK_BLOB_MAX_UPLOAD_BLOB_BYTES}`);
 		if (blockSize === 0) {
-			if (size > 4194304e3 * 5e4) throw new RangeError(`${size} is too larger to upload to a block blob.`);
+			if (size > 2097152e8) throw new RangeError(`${size} is too larger to upload to a block blob.`);
 			if (size > maxSingleShotSize) {
 				blockSize = Math.ceil(size / BLOCK_BLOB_MAX_BLOCKS);
 				if (blockSize < 4194304) blockSize = DEFAULT_BLOB_DOWNLOAD_BLOCK_BYTES;
@@ -55159,7 +55149,7 @@ var BlockBlobClient = class BlockBlobClient extends BlobClient {
 			return this.uploadSeekableInternal((offset, count) => {
 				return () => fsCreateReadStream(filePath, {
 					autoClose: true,
-					end: count ? offset + count - 1 : Infinity,
+					end: count ? offset + count - 1 : 1e400,
 					start: offset
 				});
 			}, size, {
@@ -56106,7 +56096,7 @@ function uploadCacheArchiveSDK(signedUploadURL, archivePath, options) {
 		const uploadOptions = {
 			blockSize: options === null || options === void 0 ? void 0 : options.uploadChunkSize,
 			concurrency: options === null || options === void 0 ? void 0 : options.uploadConcurrency,
-			maxSingleShotSize: 134217728,
+			maxSingleShotSize: 0x8000000,
 			onProgress: uploadProgress.onProgress()
 		};
 		try {
@@ -56260,7 +56250,7 @@ var __awaiter$4 = function(thisArg, _arguments, P, generator) {
 */
 function pipeResponseToStream(response, output) {
 	return __awaiter$4(this, void 0, void 0, function* () {
-		yield util$1.promisify(stream.pipeline)(response.message, output);
+		yield util.promisify(stream.pipeline)(response.message, output);
 	});
 }
 /**
@@ -56363,7 +56353,7 @@ var DownloadProgress = class {
 */
 function downloadCacheHttpClient(archiveLocation, archivePath) {
 	return __awaiter$4(this, void 0, void 0, function* () {
-		const writeStream = fs$1.createWriteStream(archivePath);
+		const writeStream = fs.createWriteStream(archivePath);
 		const httpClient = new HttpClient("actions/cache");
 		const downloadResponse = yield retryHttpClientResponse("downloadCache", () => __awaiter$4(this, void 0, void 0, function* () {
 			return httpClient.get(archiveLocation);
@@ -56390,7 +56380,7 @@ function downloadCacheHttpClient(archiveLocation, archivePath) {
 function downloadCacheHttpClientConcurrent(archiveLocation, archivePath, options) {
 	return __awaiter$4(this, void 0, void 0, function* () {
 		var _a;
-		const archiveDescriptor = yield fs$1.promises.open(archivePath, "w");
+		const archiveDescriptor = yield fs.promises.open(archivePath, "w");
 		const httpClient = new HttpClient("actions/cache", void 0, {
 			socketTimeout: options.timeoutInMs,
 			keepAlive: true
@@ -56485,9 +56475,9 @@ function downloadCacheStorageSDK(archiveLocation, archivePath, options) {
 			debug("Unable to determine content length, downloading file with http-client...");
 			yield downloadCacheHttpClient(archiveLocation, archivePath);
 		} else {
-			const maxSegmentSize = Math.min(134217728, buffer$1.constants.MAX_LENGTH);
+			const maxSegmentSize = Math.min(0x8000000, buffer.constants.MAX_LENGTH);
 			const downloadProgress = new DownloadProgress(contentLength);
-			const fd = fs$1.openSync(archivePath, "w");
+			const fd = fs.openSync(archivePath, "w");
 			try {
 				downloadProgress.startDisplayTimer();
 				const controller = new AbortController();
@@ -56504,11 +56494,11 @@ function downloadCacheStorageSDK(archiveLocation, archivePath, options) {
 					if (result === "timeout") {
 						controller.abort();
 						throw new Error("Aborting cache download as the download time exceeded the timeout.");
-					} else if (Buffer.isBuffer(result)) fs$1.writeFileSync(fd, result);
+					} else if (Buffer.isBuffer(result)) fs.writeFileSync(fd, result);
 				}
 			} finally {
 				downloadProgress.stopDisplayTimer();
-				fs$1.closeSync(fd);
+				fs.closeSync(fd);
 			}
 		}
 	});
@@ -56544,7 +56534,7 @@ function getUploadOptions(copy) {
 	* Add env var overrides
 	*/
 	result.uploadConcurrency = !isNaN(Number(process.env["CACHE_UPLOAD_CONCURRENCY"])) ? Math.min(32, Number(process.env["CACHE_UPLOAD_CONCURRENCY"])) : result.uploadConcurrency;
-	result.uploadChunkSize = !isNaN(Number(process.env["CACHE_UPLOAD_CHUNK_SIZE"])) ? Math.min(134217728, Number(process.env["CACHE_UPLOAD_CHUNK_SIZE"]) * 1024 * 1024) : result.uploadChunkSize;
+	result.uploadChunkSize = !isNaN(Number(process.env["CACHE_UPLOAD_CHUNK_SIZE"])) ? Math.min(0x8000000, Number(process.env["CACHE_UPLOAD_CHUNK_SIZE"]) * 1024 * 1024) : result.uploadChunkSize;
 	debug(`Use Azure SDK: ${result.useAzureSdk}`);
 	debug(`Upload concurrency: ${result.uploadConcurrency}`);
 	debug(`Upload chunk size: ${result.uploadChunkSize}`);
@@ -56639,9 +56629,9 @@ var package_exports = /* @__PURE__ */ __exportAll({
 	repository: () => repository,
 	scripts: () => scripts,
 	type: () => type,
-	types: () => types$1,
+	types: () => types,
 	version: () => version$1
-}), name, version$1, description, keywords, homepage, type, main$1, types$1, exports$1, directories, files, publishConfig, repository, scripts, bugs, dependencies, devDependencies, overrides, package_default;
+}), name, version$1, description, keywords, homepage, type, main$1, types, exports$1, directories, files, publishConfig, repository, scripts, bugs, dependencies, devDependencies, overrides, package_default;
 var init_package = __esmMin((() => {
 	name = "@actions/cache";
 	version$1 = "6.3.0";
@@ -56654,7 +56644,7 @@ var init_package = __esmMin((() => {
 	homepage = "https://github.com/actions/toolkit/tree/main/packages/cache";
 	type = "module";
 	main$1 = "lib/cache.js";
-	types$1 = "lib/cache.d.ts";
+	types = "lib/cache.d.ts";
 	exports$1 = { ".": {
 		"types": "./lib/cache.d.ts",
 		"import": "./lib/cache.js"
@@ -56706,7 +56696,7 @@ var init_package = __esmMin((() => {
 		license: "MIT",
 		type,
 		main: main$1,
-		types: types$1,
+		types,
 		exports: exports$1,
 		directories,
 		files,
@@ -56861,7 +56851,7 @@ function uploadFile(httpClient, cacheId, archivePath, options) {
 	return __awaiter$3(this, void 0, void 0, function* () {
 		const fileSize = getArchiveFileSizeInBytes(archivePath);
 		const resourceUrl = getCacheApiUrl(`caches/${cacheId.toString()}`);
-		const fd = fs$1.openSync(archivePath, "r");
+		const fd = fs.openSync(archivePath, "r");
 		const uploadOptions = getUploadOptions(options);
 		const concurrency = assertDefined("uploadConcurrency", uploadOptions.uploadConcurrency);
 		const maxChunkSize = assertDefined("uploadChunkSize", uploadOptions.uploadChunkSize);
@@ -56875,7 +56865,7 @@ function uploadFile(httpClient, cacheId, archivePath, options) {
 					const start = offset;
 					const end = offset + chunkSize - 1;
 					offset += maxChunkSize;
-					yield uploadChunk(httpClient, resourceUrl, () => fs$1.createReadStream(archivePath, {
+					yield uploadChunk(httpClient, resourceUrl, () => fs.createReadStream(archivePath, {
 						fd,
 						start,
 						end,
@@ -56886,7 +56876,7 @@ function uploadFile(httpClient, cacheId, archivePath, options) {
 				}
 			})));
 		} finally {
-			fs$1.closeSync(fd);
+			fs.closeSync(fd);
 		}
 	});
 }
@@ -57235,8 +57225,8 @@ function int64fromString(dec) {
 */
 function int64toString(bitsLow, bitsHigh) {
 	if (bitsHigh >>> 0 <= 2097151) return "" + (TWO_PWR_32_DBL$1 * bitsHigh + (bitsLow >>> 0));
-	let low = bitsLow & 16777215;
-	let mid = (bitsLow >>> 24 | bitsHigh << 8) >>> 0 & 16777215;
+	let low = bitsLow & 0xffffff;
+	let mid = (bitsLow >>> 24 | bitsHigh << 8) >>> 0 & 0xffffff;
 	let high = bitsHigh >> 16 & 65535;
 	let digitA = low + mid * 6777216 + high * 6710656;
 	let digitB = mid + high * 8147497;
@@ -57335,7 +57325,7 @@ function assertBi(bi) {
 }
 var RE_DECIMAL_STR = /^-?[0-9]+$/;
 var TWO_PWR_32_DBL = 4294967296;
-var HALF_2_PWR_32 = 2147483648;
+var HALF_2_PWR_32 = 0x80000000;
 var SharedPbLong = class {
 	/**
 	* Create a new instance with the given bits.
@@ -57672,15 +57662,14 @@ var BinaryReader = class {
 /**
 * assert that condition is true or throw error (with message)
 */
-function assert$1(condition, msg) {
+function assert(condition, msg) {
 	if (!condition) throw new Error(msg);
 }
-__name$1(assert$1, "assert");
 var FLOAT32_MAX = 34028234663852886e22;
 var FLOAT32_MIN = -34028234663852886e22;
-var UINT32_MAX = 4294967295;
-var INT32_MAX = 2147483647;
-var INT32_MIN = -2147483648;
+var UINT32_MAX = 0xffffffff;
+var INT32_MAX = 0x7fffffff;
+var INT32_MIN = -0x80000000;
 function assertInt32(arg) {
 	if (typeof arg !== "number") throw new Error("invalid int 32: " + typeof arg);
 	if (!Number.isInteger(arg) || arg > INT32_MAX || arg < INT32_MIN) throw new Error("invalid int 32: " + arg);
@@ -58414,21 +58403,21 @@ var ReflectionJsonReader = class {
 	* google.protobuf.NullValue accepts only JSON `null` (or the old `"NULL_VALUE"`).
 	*/
 	enum(type, json, fieldName, ignoreUnknownFields) {
-		if (type[0] == "google.protobuf.NullValue") assert$1(json === null || json === "NULL_VALUE", `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} only accepts null.`);
+		if (type[0] == "google.protobuf.NullValue") assert(json === null || json === "NULL_VALUE", `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} only accepts null.`);
 		if (json === null) return 0;
 		switch (typeof json) {
 			case "number":
-				assert$1(Number.isInteger(json), `Unable to parse field ${this.info.typeName}#${fieldName}, enum can only be integral number, got ${json}.`);
+				assert(Number.isInteger(json), `Unable to parse field ${this.info.typeName}#${fieldName}, enum can only be integral number, got ${json}.`);
 				return json;
 			case "string":
 				let localEnumName = json;
 				if (type[2] && json.substring(0, type[2].length) === type[2]) localEnumName = json.substring(type[2].length);
 				let enumNumber = type[1][localEnumName];
 				if (typeof enumNumber === "undefined" && ignoreUnknownFields) return false;
-				assert$1(typeof enumNumber == "number", `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} has no value for "${json}".`);
+				assert(typeof enumNumber == "number", `Unable to parse field ${this.info.typeName}#${fieldName}, enum ${type[0]} has no value for "${json}".`);
 				return enumNumber;
 		}
-		assert$1(false, `Unable to parse field ${this.info.typeName}#${fieldName}, cannot parse enum value from ${typeof json}".`);
+		assert(false, `Unable to parse field ${this.info.typeName}#${fieldName}, cannot parse enum value from ${typeof json}".`);
 	}
 	scalar(json, type, longType, fieldName) {
 		let e;
@@ -58498,6 +58487,12 @@ var ReflectionJsonReader = class {
 						e = "extra whitespace";
 						break;
 					}
+					try {
+						encodeURIComponent(json);
+					} catch (e) {
+						e = "invalid UTF8";
+						break;
+					}
 					return json;
 				case ScalarType.BYTES:
 					if (json === null || json === "") return /* @__PURE__ */ new Uint8Array(0);
@@ -58538,7 +58533,7 @@ var ReflectionJsonWriter = class {
 			if (group.oneofKind !== field.localName) continue;
 			const opt = field.kind == "scalar" || field.kind == "enum" ? Object.assign(Object.assign({}, options), { emitDefaultValues: true }) : options;
 			let jsonValue = this.field(field, group[field.localName], opt);
-			assert$1(jsonValue !== void 0);
+			assert(jsonValue !== void 0);
 			json[options.useProtoFieldName ? field.name : field.jsonName] = jsonValue;
 		}
 		return json;
@@ -58546,13 +58541,13 @@ var ReflectionJsonWriter = class {
 	field(field, value, options) {
 		let jsonValue = void 0;
 		if (field.kind == "map") {
-			assert$1(typeof value == "object" && value !== null);
+			assert(typeof value == "object" && value !== null);
 			const jsonObj = {};
 			switch (field.V.kind) {
 				case "scalar":
 					for (const [entryKey, entryValue] of Object.entries(value)) {
 						const val = this.scalar(field.V.T, entryValue, field.name, false, true);
-						assert$1(val !== void 0);
+						assert(val !== void 0);
 						jsonObj[entryKey.toString()] = val;
 					}
 					break;
@@ -58560,37 +58555,37 @@ var ReflectionJsonWriter = class {
 					const messageType = field.V.T();
 					for (const [entryKey, entryValue] of Object.entries(value)) {
 						const val = this.message(messageType, entryValue, field.name, options);
-						assert$1(val !== void 0);
+						assert(val !== void 0);
 						jsonObj[entryKey.toString()] = val;
 					}
 					break;
 				case "enum":
 					const enumInfo = field.V.T();
 					for (const [entryKey, entryValue] of Object.entries(value)) {
-						assert$1(entryValue === void 0 || typeof entryValue == "number");
+						assert(entryValue === void 0 || typeof entryValue == "number");
 						const val = this.enum(enumInfo, entryValue, field.name, false, true, options.enumAsInteger);
-						assert$1(val !== void 0);
+						assert(val !== void 0);
 						jsonObj[entryKey.toString()] = val;
 					}
 			}
 			if (options.emitDefaultValues || Object.keys(jsonObj).length > 0) jsonValue = jsonObj;
 		} else if (field.repeat) {
-			assert$1(Array.isArray(value));
+			assert(Array.isArray(value));
 			const jsonArr = [];
 			switch (field.kind) {
 				case "scalar":
 					for (let i = 0; i < value.length; i++) {
 						const val = this.scalar(field.T, value[i], field.name, field.opt, true);
-						assert$1(val !== void 0);
+						assert(val !== void 0);
 						jsonArr.push(val);
 					}
 					break;
 				case "enum":
 					const enumInfo = field.T();
 					for (let i = 0; i < value.length; i++) {
-						assert$1(value[i] === void 0 || typeof value[i] == "number");
+						assert(value[i] === void 0 || typeof value[i] == "number");
 						const val = this.enum(enumInfo, value[i], field.name, field.opt, true, options.enumAsInteger);
-						assert$1(val !== void 0);
+						assert(val !== void 0);
 						jsonArr.push(val);
 					}
 					break;
@@ -58598,7 +58593,7 @@ var ReflectionJsonWriter = class {
 					const messageType = field.T();
 					for (let i = 0; i < value.length; i++) {
 						const val = this.message(messageType, value[i], field.name, options);
-						assert$1(val !== void 0);
+						assert(val !== void 0);
 						jsonArr.push(val);
 					}
 			}
@@ -58620,12 +58615,12 @@ var ReflectionJsonWriter = class {
 	enum(type, value, fieldName, optional, emitDefaultValues, enumAsInteger) {
 		if (type[0] == "google.protobuf.NullValue") return !emitDefaultValues && !optional ? void 0 : null;
 		if (value === void 0) {
-			assert$1(optional);
+			assert(optional);
 			return;
 		}
 		if (value === 0 && !emitDefaultValues && !optional) return void 0;
-		assert$1(typeof value == "number");
-		assert$1(Number.isInteger(value));
+		assert(typeof value == "number");
+		assert(Number.isInteger(value));
 		if (enumAsInteger || !type[1].hasOwnProperty(value)) return value;
 		if (type[2]) return type[2] + type[1][value];
 		return type[1][value];
@@ -58636,7 +58631,7 @@ var ReflectionJsonWriter = class {
 	}
 	scalar(type, value, fieldName, optional, emitDefaultValues) {
 		if (value === void 0) {
-			assert$1(optional);
+			assert(optional);
 			return;
 		}
 		const ed = emitDefaultValues || optional;
@@ -58655,34 +58650,34 @@ var ReflectionJsonWriter = class {
 			case ScalarType.FLOAT: assertFloat32(value);
 			case ScalarType.DOUBLE:
 				if (value === 0) return ed ? 0 : void 0;
-				assert$1(typeof value == "number");
+				assert(typeof value == "number");
 				if (Number.isNaN(value)) return "NaN";
 				if (value === Number.POSITIVE_INFINITY) return "Infinity";
 				if (value === Number.NEGATIVE_INFINITY) return "-Infinity";
 				return value;
 			case ScalarType.STRING:
 				if (value === "") return ed ? "" : void 0;
-				assert$1(typeof value == "string");
+				assert(typeof value == "string");
 				return value;
 			case ScalarType.BOOL:
 				if (value === false) return ed ? false : void 0;
-				assert$1(typeof value == "boolean");
+				assert(typeof value == "boolean");
 				return value;
 			case ScalarType.UINT64:
 			case ScalarType.FIXED64:
-				assert$1(typeof value == "number" || typeof value == "string" || typeof value == "bigint");
+				assert(typeof value == "number" || typeof value == "string" || typeof value == "bigint");
 				let ulong = PbULong.from(value);
 				if (ulong.isZero() && !ed) return void 0;
 				return ulong.toString();
 			case ScalarType.INT64:
 			case ScalarType.SFIXED64:
 			case ScalarType.SINT64:
-				assert$1(typeof value == "number" || typeof value == "string" || typeof value == "bigint");
+				assert(typeof value == "number" || typeof value == "string" || typeof value == "bigint");
 				let long = PbLong.from(value);
 				if (long.isZero() && !ed) return void 0;
 				return long.toString();
 			case ScalarType.BYTES:
-				assert$1(value instanceof Uint8Array);
+				assert(value instanceof Uint8Array);
 				if (!value.byteLength) return ed ? "" : void 0;
 				return base64encode(value);
 		}
@@ -58882,20 +58877,20 @@ var ReflectionBinaryWriter = class {
 				case "enum":
 					let T = field.kind == "enum" ? ScalarType.INT32 : field.T;
 					if (repeated) {
-						assert$1(Array.isArray(value));
+						assert(Array.isArray(value));
 						if (repeated == RepeatType.PACKED) this.packed(writer, T, field.no, value);
 						else for (const item of value) this.scalar(writer, T, field.no, item, true);
-					} else if (value === void 0) assert$1(field.opt);
+					} else if (value === void 0) assert(field.opt);
 					else this.scalar(writer, T, field.no, value, emitDefault || field.opt);
 					break;
 				case "message":
 					if (repeated) {
-						assert$1(Array.isArray(value));
+						assert(Array.isArray(value));
 						for (const item of value) this.message(writer, options, field.T(), field.no, item);
 					} else this.message(writer, options, field.T(), field.no, value);
 					break;
 				case "map":
-					assert$1(typeof value == "object" && value !== null);
+					assert(typeof value == "object" && value !== null);
 					for (const [key, val] of Object.entries(value)) this.mapEntry(writer, options, field, key, val);
 			}
 		}
@@ -58915,7 +58910,7 @@ var ReflectionBinaryWriter = class {
 				keyValue = Number.parseInt(key);
 				break;
 			case ScalarType.BOOL:
-				assert$1(key == "true" || key == "false");
+				assert(key == "true" || key == "false");
 				keyValue = key == "true";
 		}
 		this.scalar(writer, field.K, 1, keyValue, true);
@@ -58950,7 +58945,7 @@ var ReflectionBinaryWriter = class {
 	*/
 	packed(writer, type, fieldNo, value) {
 		if (!value.length) return;
-		assert$1(type !== ScalarType.BYTES && type !== ScalarType.STRING);
+		assert(type !== ScalarType.BYTES && type !== ScalarType.STRING);
 		writer.tag(fieldNo, WireType.LengthDelimited);
 		writer.fork();
 		let [, method] = this.scalarInfo(type);
@@ -60281,12 +60276,12 @@ function getTarArgs(tarPath_1, compressionMethod_1, type_1) {
 		const BSD_TAR_ZSTD = tarPath.type === ArchiveToolType.BSD && compressionMethod !== CompressionMethod.Gzip && IS_WINDOWS;
 		switch (type) {
 			case "create":
-				args.push("--posix", "-cf", BSD_TAR_ZSTD ? tarFile : cacheFileName.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"), "--exclude", BSD_TAR_ZSTD ? tarFile : cacheFileName.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"), "-P", "-C", workingDirectory.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"), "--files-from", ManifestFilename);
+				args.push("--posix", "-cf", BSD_TAR_ZSTD ? tarFile : cacheFileName.replace(new RegExp(`\\${path$1.sep}`, "g"), "/"), "--exclude", BSD_TAR_ZSTD ? tarFile : cacheFileName.replace(new RegExp(`\\${path$1.sep}`, "g"), "/"), "-P", "-C", workingDirectory.replace(new RegExp(`\\${path$1.sep}`, "g"), "/"), "--files-from", ManifestFilename);
 				break;
 			case "extract":
-				args.push("-xf", BSD_TAR_ZSTD ? tarFile : archivePath.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"), "-P", "-C", BSD_TAR_ZSTD ? quoteAbsolutePath(workingDirectory) : workingDirectory.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"));
+				args.push("-xf", BSD_TAR_ZSTD ? tarFile : archivePath.replace(new RegExp(`\\${path$1.sep}`, "g"), "/"), "-P", "-C", BSD_TAR_ZSTD ? quoteAbsolutePath(workingDirectory) : workingDirectory.replace(new RegExp(`\\${path$1.sep}`, "g"), "/"));
 				break;
-			case "list": args.push("-tf", BSD_TAR_ZSTD ? tarFile : archivePath.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"), "-P");
+			case "list": args.push("-tf", BSD_TAR_ZSTD ? tarFile : archivePath.replace(new RegExp(`\\${path$1.sep}`, "g"), "/"), "-P");
 		}
 		if (tarPath.type === ArchiveToolType.GNU) switch (process.platform) {
 			case "win32":
@@ -60317,7 +60312,7 @@ function getWorkingDirectory() {
 	return (_a = process.env["GITHUB_WORKSPACE"]) !== null && _a !== void 0 ? _a : process.cwd();
 }
 function quoteAbsolutePath(filePath) {
-	return `"${path$2.resolve(filePath).replace(new RegExp(`\\${path$2.sep}`, "g"), "/")}"`;
+	return `"${path$1.resolve(filePath).replace(new RegExp(`\\${path$1.sep}`, "g"), "/")}"`;
 }
 function getDecompressionProgram(tarPath, compressionMethod, archivePath) {
 	return __awaiter$1(this, void 0, void 0, function* () {
@@ -60344,12 +60339,12 @@ function getCompressionProgram(tarPath, compressionMethod) {
 		switch (compressionMethod) {
 			case CompressionMethod.Zstd: return BSD_TAR_ZSTD ? [
 				"zstd -T0 --long=30 --force -o",
-				cacheFileName.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"),
+				cacheFileName.replace(new RegExp(`\\${path$1.sep}`, "g"), "/"),
 				TarFilename
 			] : ["--use-compress-program", IS_WINDOWS ? "\"zstd -T0 --long=30\"" : "zstdmt --long=30"];
 			case CompressionMethod.ZstdWithoutLong: return BSD_TAR_ZSTD ? [
 				"zstd -T0 --force -o",
-				cacheFileName.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"),
+				cacheFileName.replace(new RegExp(`\\${path$1.sep}`, "g"), "/"),
 				TarFilename
 			] : ["--use-compress-program", IS_WINDOWS ? "\"zstd -T0\"" : "zstdmt"];
 			default: return ["-z"];
@@ -60396,7 +60391,7 @@ function extractTar(archivePath, compressionMethod) {
 }
 function createTar(archiveFolder, sourceDirectories, compressionMethod) {
 	return __awaiter$1(this, void 0, void 0, function* () {
-		writeFileSync(path$2.join(archiveFolder, ManifestFilename), sourceDirectories.join("\n"));
+		writeFileSync(path$1.join(archiveFolder, ManifestFilename), sourceDirectories.join("\n"));
 		const { commands } = yield getCommands(compressionMethod, "create");
 		yield execCommands(commands, archiveFolder);
 	});
@@ -60550,7 +60545,7 @@ function restoreCacheV1(paths_1, primaryKey_1, restoreKeys_1, options_1) {
 				info("Lookup only - skipping download");
 				return cacheEntry.cacheKey;
 			}
-			archivePath = path$2.join(yield createTempDirectory(), getCacheFileName(compressionMethod));
+			archivePath = path$1.join(yield createTempDirectory(), getCacheFileName(compressionMethod));
 			debug(`Archive Path: ${archivePath}`);
 			yield downloadCache(cacheEntry.archiveLocation, archivePath, options);
 			if (isDebug()) yield listTar(archivePath, compressionMethod);
@@ -60620,7 +60615,7 @@ function restoreCacheV2(paths_1, primaryKey_1, restoreKeys_1, options_1) {
 				info("Lookup only - skipping download");
 				return response.matchedKey;
 			}
-			archivePath = path$2.join(yield createTempDirectory(), getCacheFileName(compressionMethod));
+			archivePath = path$1.join(yield createTempDirectory(), getCacheFileName(compressionMethod));
 			debug(`Archive path: ${archivePath}`);
 			debug(`Starting download of archive to: ${archivePath}`);
 			yield downloadCache(response.signedDownloadUrl, archivePath, options);
@@ -60695,12 +60690,12 @@ function saveCacheV1(paths_1, key_1, options_1) {
 		debug(`${JSON.stringify(cachePaths)}`);
 		if (cachePaths.length === 0) throw new Error(`Path Validation Error: Path(s) specified in the action for caching do(es) not exist, hence no cache is being saved.`);
 		const archiveFolder = yield createTempDirectory();
-		const archivePath = path$2.join(archiveFolder, getCacheFileName(compressionMethod));
+		const archivePath = path$1.join(archiveFolder, getCacheFileName(compressionMethod));
 		debug(`Archive Path: ${archivePath}`);
 		try {
 			yield createTar(archiveFolder, cachePaths, compressionMethod);
 			if (isDebug()) yield listTar(archivePath, compressionMethod);
-			const fileSizeLimit = 10737418240;
+			const fileSizeLimit = 0x280000000;
 			const archiveFileSize = getArchiveFileSizeInBytes(archivePath);
 			debug(`File Size: ${archiveFileSize}`);
 			if (archiveFileSize > fileSizeLimit && !isGhes()) throw new Error(`Cache size of ~${Math.round(archiveFileSize / 1048576)} MB (${archiveFileSize} B) is over the 10GB limit, not saving cache.`);
@@ -60760,7 +60755,7 @@ function saveCacheV2(paths_1, key_1, options_1) {
 		debug(`${JSON.stringify(cachePaths)}`);
 		if (cachePaths.length === 0) throw new Error(`Path Validation Error: Path(s) specified in the action for caching do(es) not exist, hence no cache is being saved.`);
 		const archiveFolder = yield createTempDirectory();
-		const archivePath = path$2.join(archiveFolder, getCacheFileName(compressionMethod));
+		const archivePath = path$1.join(archiveFolder, getCacheFileName(compressionMethod));
 		debug(`Archive Path: ${archivePath}`);
 		try {
 			yield createTar(archiveFolder, cachePaths, compressionMethod);
@@ -60889,7 +60884,7 @@ var Cargo = class Cargo extends BaseProgram {
 	async installCached(program, version, primaryKey, restoreKeys = []) {
 		const resolvedVersion = version === "latest" ? await resolveVersion(program) : version;
 		if (primaryKey === void 0) return this.install(program, resolvedVersion);
-		const paths = [path.join(path.dirname(this.path), program)];
+		const paths = [path$2.join(path$2.dirname(this.path), program)];
 		const versionForKey = resolvedVersion === void 0 ? "" : `-${resolvedVersion}`;
 		const programKey = `${program}${versionForKey}-${primaryKey}`;
 		const cacheKey = await restoreCache(paths, programKey, restoreKeys.map((key) => {
@@ -61062,8 +61057,8 @@ var OutputParser = class OutputParser {
 		}];
 		return primarySpans.map((primarySpan) => {
 			let pathToFile = primarySpan.file_name;
-			if (this.workingDirectory !== null) pathToFile = path.join(this.workingDirectory, pathToFile);
-			if (os$1.platform() === "win32") pathToFile = pathToFile.split(path.win32.sep).join(path.posix.sep);
+			if (this.workingDirectory !== null) pathToFile = path$2.join(this.workingDirectory, pathToFile);
+			if (os$2.platform() === "win32") pathToFile = pathToFile.split(path$2.win32.sep).join(path$2.posix.sep);
 			const annotation = {
 				level,
 				message: contents.message.rendered,
@@ -61209,7 +61204,7 @@ async function runClippy(actionInput, program) {
 			});
 		} }
 	};
-	if (actionInput.workingDirectory !== void 0 && actionInput.workingDirectory !== "") options.cwd = path.join(process.cwd(), actionInput.workingDirectory);
+	if (actionInput.workingDirectory !== void 0 && actionInput.workingDirectory !== "") options.cwd = path$2.join(process.cwd(), actionInput.workingDirectory);
 	let exitCode;
 	try {
 		startGroup("Executing cargo clippy (JSON output)");
